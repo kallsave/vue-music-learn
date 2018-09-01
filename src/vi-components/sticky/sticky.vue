@@ -1,0 +1,280 @@
+<template>
+  <div class="vi-sticky">
+    <vi-scroll
+      ref="scroll"
+      :refresh-data="refreshData"
+      :scroll-events="scrollEvents"
+      :options="options"
+      @scroll="scrollHandle">
+      <slot></slot>
+    </vi-scroll>
+    <div ref="fixed" :style="fixedStyle" v-show="fixedVisable"></div>
+  </div>
+</template>
+
+<script>
+import ViScroll from '../scroll/scroll'
+
+import {
+  getRect,
+  prefixStyle
+} from '@/common/helpers/dom.js'
+
+import { isEmptyObject } from '@/common/helpers/util.js'
+
+const transformStyleKey = prefixStyle('transform')
+
+const COMPONENT_NAME = 'vi-sticky'
+
+const EVENT_CHANGE = 'sticky-change'
+
+const EVENT_CANCEL = 'sticky-cancel'
+
+const EVENT_SCROLL = 'scroll'
+
+// appendChild同时有removeChild的效果,所以要复制一遍node节点
+function deepAppendChild(father, children) {
+  // dom转换json的顺序是从里到外递归
+  function domToJson (dom) {
+    if (dom.children.length === 0) {
+      return {
+        node: dom,
+        children: []
+      }
+    } else {
+      let json = {
+        node: dom,
+        children: []
+      }
+      for (let i = 0; i < dom.children.length; i++) {
+        json.children.push(domToJson(dom.children[i]))
+      }
+      return json
+    }
+  }
+  // 把children的dom节点信息记录
+  let tree = domToJson(children)
+  appendTree(father, tree)
+  // 插dom的顺序是从外到里
+  function appendTree(father, childrenTree) {
+    if (childrenTree.children && childrenTree.children.length === 0) {
+      father.appendChild(childrenTree.node)
+    } else {
+      father.appendChild(childrenTree.node)
+      for (let i = 0; i < childrenTree.children.length; i++) {
+        appendTree(childrenTree.node, childrenTree.children[i])
+      }
+    }
+  }
+}
+
+export default {
+  name: COMPONENT_NAME,
+  components: {
+    ViScroll
+  },
+  provide() {
+    return {
+      Sticky: this
+    }
+  },
+  props: {
+    zIndex: {
+      type: Number,
+      default: 10
+    },
+    // refresh
+    refreshData: {
+      type: [Object, Array],
+      default() {
+        return {}
+      }
+    },
+    // 重新计算位置
+    stickyData: {
+      type: [Object, Array],
+      default() {
+        return {}
+      }
+    },
+    fixedY: {
+      type: Number,
+      default: 0
+    },
+    options: {
+      type: Object,
+      default() {
+        return {
+          probeType: 3
+        }
+      }
+    },
+    scrollEvents: {
+      type: Array,
+      default() {
+        return ['scroll']
+      }
+    }
+  },
+  data() {
+    return {
+      scrollY: 0,
+      fixedStyle: {},
+      fixedVisable: false,
+      stickyMap: {},
+      stickyTop: 0,
+      diff: 0,
+      transformTop: 0,
+      listHeight: [],
+    }
+  },
+  created() {
+  },
+  mounted() {
+    this._calculateStickyTop()
+    this._findFixedElement()
+    this._findScroll()
+  },
+  watch: {
+    stickyData: {
+      deep: true,
+      handler() {
+        this.scrollTop()
+        this.$nextTick(() => {
+          for (let key in this.stickyMap) {
+            this.stickyMap[key].calculateStickyTop()
+          }
+        })
+      }
+    },
+    scrollY(newVal) {
+      if (newVal > 0) {
+        return
+      }
+      let length = this.listHeight.length
+      if (!length) {
+        return
+      }
+      newVal = Math.abs(newVal)
+      for (let i = 0; i < length; i++) {
+        let item1 = this.listHeight[i]
+        let item2 = this.listHeight[i + 1]
+        if (!item2 && newVal >= item1.stickyTop) {
+          this.currentSticky = this.stickyMap[item1.eleKey]
+          this.diff = newVal - item1.stickyTop
+          return
+        } else if (item2 && newVal > item1.stickyTop && newVal < item2.stickyTop) {
+          this.currentSticky = this.stickyMap[item1.eleKey]
+          this.diff = newVal - item1.stickyTop
+          this.nextDiff = item2.stickyTop - newVal
+          this.transformTop = item1.clientHeight - this.nextDiff
+          return
+        } else if (item2 && newVal >= item2.stickyTop) {
+          this.currentSticky = this.stickyMap[item2.eleKey]
+          this.transformTop = 0
+          this.diff = newVal - item2.stickyTop
+          return
+        } else {
+          this.reset()
+        }
+      }
+      this.fixedStyle = {}
+      this.fixedVisable = false
+    },
+    diff(newVal) {
+      // 如果已经在吸顶了
+      if (this.current === this.currentSticky && this.fixedVisable) {
+        return
+      }
+      this.current = this.currentSticky
+      this.fixedVisable = true
+      this.fixedStyle = {
+        'position': 'absolute',
+        'top': `${this.fixedY}px`,
+        'width': `${this.currentSticky.clientWidth}px`,
+        'z-index': this.zIndex,
+        'height': `${this.currentSticky.clientHeight}px`
+      }
+      this.reset()
+      const element = this.currentSticky.$el
+      deepAppendChild(this.fixedElement, element)
+      this.$emit(EVENT_CHANGE, this.currentSticky)
+    },
+    transformTop(newVal) {
+      let fixTransformTop = newVal > 0 ? -newVal : 0
+      if (this.fixTransformTop === fixTransformTop) {
+        return
+      }
+      this.fixTransformTop = fixTransformTop
+      this.fixedElement.style[transformStyleKey] = `translateY(${fixTransformTop}px)`
+    }
+  },
+  methods: {
+    scrollHandle(pos) {
+      this.scrollY = pos.y
+      this.$emit('scroll', pos, this.scroll)
+    },
+    _findFixedElement() {
+      if (!this.$refs.fixed) {
+        return
+      }
+      this.fixedElement = this.$refs.fixed
+    },
+    _calculateStickyTop() {
+      this.stickyTop = this.$el.getBoundingClientRect().top
+    },
+    calculateListHeight() {
+      let result = []
+      for (let key in this.stickyMap) {
+        result.push({
+          eleKey: key,
+          stickyTop: this.stickyMap[key].stickyTop,
+          clientHeight: this.stickyMap[key].clientHeight
+        })
+      }
+      this.listHeight = result.sort((a, b) => {
+        return a.stickyTop - b.stickyTop
+      })
+      this.current = null
+    },
+    _findScroll() {
+      if (!this.$refs.scroll) {
+        return
+      }
+      this.scroll = this.$refs.scroll.scroll
+    },
+    refresh() {
+      this.$refs.scroll && this.$refs.scroll.refresh()
+    },
+    scrollTop() {
+      this.reset()
+      this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0, 0)
+    },
+    reset() {
+      if (this.fixedElement.firstElementChild) {
+        const remove = this.fixedElement.removeChild(this.fixedElement.firstElementChild)
+        if (remove.eleKey) {
+          deepAppendChild(this.stickyMap[remove.eleKey].eleComponent.$el, remove)
+          this.$emit(EVENT_CANCEL)
+        }
+      }
+      this.refresh()
+    },
+    calculateStickyEleTop () {
+      for (let key in this.stickyMap) {
+        this.stickyMap[key].calculateStickyTop()
+      }
+    },
+    scrollTo() {
+      this.$refs.scroll.scrollTo(arguments)
+    }
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+.vi-sticky
+  top: 0
+  position: relative
+  height: 100%
+</style>

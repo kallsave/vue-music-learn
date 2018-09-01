@@ -1,0 +1,35 @@
+@font-face {
+  // 修改这里
+  font-family: 'vi-toast-icon';
+  src:  url('./fonts/vi-toast-icon.eot?hf7743');
+  src:  url('./fonts/vi-toast-icon.eot?hf7743#iefix') format('embedded-opentype'),
+    url('./fonts/vi-toast-icon.ttf?hf7743') format('truetype'),
+    url('./fonts/vi-toast-icon.woff?hf7743') format('woff'),
+    url('./fonts/vi-toast-icon.svg?hf7743#vi-toast-icon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="vi-toast-icon"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'vi-toast-icon' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.vi-toast-icon-correct:before {
+  content: "\e901";
+}
+.vi-toast-icon-error:before {
+  content: "\e900";
+}
+.vi-toast-icon-option:before {
+  content: "\e902";
+}
