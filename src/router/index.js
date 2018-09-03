@@ -1,23 +1,23 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// index路由
-import Index from '@/pages/index/index.vue'
-import Recommend from '@/pages/index/children/recommend/recommend.vue'
-import Singer from '@/pages/index/children/singer/singer.vue'
-import Search from '@/pages/index/children/search/search.vue'
-import Rank from '@/pages/index/children/rank/rank.vue'
-
 // 测试组件路由
-import Test from '@/pages/test/index.vue'
-import WechatSticky from '@/pages/test/children/wechat-sticky/wechat-sticky.vue'
-import ScrollTest from '@/pages/test/children/scroll-test/scroll-test.vue'
+const Test = () => import(/* webpackChunkName: "Test" */ '@/pages/test/index.vue')
+const WechatSticky = () => import(/* webpackChunkName: "WechatSticky" */ '@/pages/test/children/wechat-sticky/wechat-sticky.vue')
+const ScrollTest = () => import(/* webpackChunkName: "ScrollTest" */ '@/pages/test/children/scroll-test/scroll-test.vue')
 
-// music-list路由
-import MusicList from '@/pages/music-list/index.vue'
-import SingerDetail from '@/pages/music-list/children/singer-detail/singer-detail.vue'
-import RecommendDetail from '@/pages/music-list/children/recommend-detail/recommend-detail.vue'
-import RankDetail from '@/pages/music-list/children/rank-detail/rank-detail.vue'
+// index路由
+const Index = () => import(/* webpackChunkName: "Index" */ '@/pages/index/index.vue')
+const Recommend = () => import(/* webpackChunkName: "Recommend" */ '@/pages/index/children/recommend/recommend.vue')
+const Singer = () => import(/* webpackChunkName: "Singer" */ '@/pages/index/children/singer/singer.vue')
+const Search = () => import(/* webpackChunkName: "Search" */ '@/pages/index/children/search/search.vue')
+const Rank = () => import(/* webpackChunkName: "Rank" */ '@/pages/index/children/rank/rank.vue')
+
+// music路由
+const MusicList = () => import(/* webpackChunkName: "MusicList" */ '@/pages/music/index.vue')
+const SingerDetail = () => import(/* webpackChunkName: "SingerDetail" */ '@/pages/music/children/singer-detail/singer-detail.vue')
+const RecommendDetail = () => import(/* webpackChunkName: "RecommendDetail" */ '@/pages/music/children/recommend-detail/recommend-detail.vue')
+const RankDetail = () => import(/* webpackChunkName: "RankDetail" */ '@/pages/music/children/rank-detail/rank-detail.vue')
 
 Vue.use(Router)
 
@@ -34,7 +34,7 @@ export default new Router({
         {
           path: '/test/scroll-test',
           component: ScrollTest
-        }
+        },
       ]
     },
     {
@@ -52,29 +52,29 @@ export default new Router({
         },
         {
           path: '/search',
-          component: Search
+          component: Search,
         },
         {
           path: '/rank',
-          component: Rank
+          component: Rank,
         },
       ]
     },
     {
-      path: '/music-list',
+      path: '/music',
       component: MusicList,
       children: [
         {
-          path: '/music-list/recommend-detail/:id',
-          component: RecommendDetail
+          path: '/music/recommend-detail/:id',
+          component: RecommendDetail,
         },
         {
-          path: '/music-list/singer-detail/:id',
-          component: SingerDetail
+          path: '/music/singer-detail/:id',
+          component: SingerDetail,
         },
         {
-          path: '/music-list/rank-detail/:id',
-          component: RankDetail
+          path: '/music/rank-detail/:id',
+          component: RankDetail,
         }
       ]
     },

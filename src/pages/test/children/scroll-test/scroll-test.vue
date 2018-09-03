@@ -4,8 +4,13 @@
       <div class="title">scroll</div>
     </div>
     <div class="match-list">
-      <vi-scroll
-        :options="options">
+      <vi-sticky
+        ref="scroll"
+        :data="matchList"
+        :options="options"
+        :scroll-events="['scroll', 'scroll-end', 'before-scroll-start']"
+        @pulling-down="onPullDown"
+        @pulling-up="onPullingUp">
         <ul class="match-inner">
           <li class="match-item" v-for="(item, index) in matchList" :key="index">
             <div class="left-team">
@@ -24,7 +29,7 @@
             </div>
           </li>
         </ul>
-      </vi-scroll>
+      </vi-sticky>
     </div>
   </div>
 </template>
@@ -35,6 +40,9 @@ import matchList from '@/common/data/match-list'
 const SOURCE = 'soccer'
 
 const TYPE = 'ended'
+
+const UP = 'up'
+const DOWN = 'down'
 
 const typesMap = {
   ended: 0,
@@ -65,14 +73,54 @@ export default {
           threshold: 100,
           txt: {
             more: '加载更多',
+            // 不传则底部不会有空白
             noMore: '没有更多的比赛啦'
           }
         },
+        probyType: 3
       },
+      // 新数据有限,只能拉三次
+      matchListRefreshCount: 4,
     }
   },
   created() {
   },
+  methods: {
+    onPullDown() {
+      this.loadMatch('down')
+    },
+    onPullingUp() {
+      this.loadMatch('up')
+    },
+    loadMatch(type) {
+      this.matchListRefreshCount--
+      // 假数据
+      setTimeout(() => {
+        if (this.matchListRefreshCount > 0) {
+          // 有新数据的情况
+          let match = []
+          for (let index = 5; index > 0; index--) {
+            match.push(this.matchList[index])
+          }
+          // 如果是下拉刷新
+          if (type === DOWN) {
+            this.matchList.unshift(...match)
+          } else if (type === UP) {
+            this.matchList = this.matchList.concat(match)
+          }
+        } else {
+          // data没更新,要手动恢复到正常状态
+          this.$refs.scroll.forceUpdate()
+          // 如果是下拉刷新,关闭下拉刷新功能
+          if (type === UP) {
+            this.$nextTick(() => {
+              this.options.pullUpLoad = false
+            })
+          }
+        }
+      }, 500)
+    }
+  }
 }
 </script>
 
@@ -93,6 +141,8 @@ export default {
   .match-list
     height: calc(100vh - 56px)
     background-color: #E2E5EA
+    // color一直继承给上下拉组件的laoding和no-more
+    color: peru
     .match-inner
       background-color: #FFFFFF
       .match-item

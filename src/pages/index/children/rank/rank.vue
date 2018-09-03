@@ -5,7 +5,7 @@
         ref="scroll"
         :scroll-events="['scroll']"
         :options="scrollOptions"
-        :refresh-data="[rankList]"
+        :data="[rankList]"
         @scroll="scrollHandler">
         <vi-loading
           ref="rankListLoading"
@@ -80,7 +80,7 @@ export default {
       }
       console.log(item)
       this.$router.push({
-        path: `/music-list/rank-detail/${item.id}`
+        path: `/music/rank-detail/${item.id}`
       })
       this.setTopList(item)
     }

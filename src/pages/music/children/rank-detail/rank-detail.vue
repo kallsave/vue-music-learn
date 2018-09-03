@@ -50,7 +50,6 @@ export default {
       getMusicList({
         topid: this.topList.id
       }).then((res) => {
-        console.log(res)
         this.songList = this._normalizeSongList(res.songlist)
         this.isFetchSongList = true
       })

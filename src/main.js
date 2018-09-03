@@ -3,6 +3,11 @@ import App from './App'
 import router from './router'
 import store from './store'
 import VueLazyLoad from 'vue-lazyload'
+
+// vue-navigation貌似不是那么好用
+// 需不需要keep-alive可以在vue的组件中具体设置
+// import Navigation from 'vue-navigation'
+
 // import fastclick from 'fastclick'
 
 import '@/common/stylus/index.styl'
@@ -18,10 +23,12 @@ import ViSticky from '@/vi-components/sticky/index.js'
 import ViProgressBar from '@/vi-components/progress-bar/index.js'
 import ViProgressCircle from '@/vi-components/progress-circle/index.js'
 import BaseSearchBox from '@/base-components/search-box/index.js'
+import ViSlideRouter from '@/vi-components/slide-router/index.js'
 
 import ReverScroll from '@/rever-components/scroll/index.js'
 import ReverSticky from '@/rever-components/scroll/plugins/sticky/index.js'
 
+// Vue.use(Navigation, {router, store})
 Vue.use(ViScroll)
 Vue.use(ViSlide)
 Vue.use(ViLoadListCon)
@@ -36,6 +43,7 @@ Vue.use(ReverSticky)
 Vue.use(ViProgressBar)
 Vue.use(ViProgressCircle)
 Vue.use(BaseSearchBox)
+Vue.use(ViSlideRouter)
 
 // fastclick.attach(document.body)
 
@@ -60,5 +68,5 @@ new Vue({
   el: '#app',
   router: router,
   store: store,
-  render: h => h(App)
+  render: h => h(App),
 })

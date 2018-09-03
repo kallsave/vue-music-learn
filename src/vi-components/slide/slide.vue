@@ -38,12 +38,6 @@ const EVENT_LOAD_IMAGE = 'load-image'
 export default {
   name: COMPONENT_NAME,
   props: {
-    refreshData: {
-      type: [Object, Array],
-      default() {
-        return {}
-      }
-    },
     data: {
       type: Array,
       default() {
@@ -81,7 +75,7 @@ export default {
     // 封装vi组件请不要使用setTimeout20,
     // 这会造成父组件$nextTick拿不到slide滚动条
     this.$nextTick(() => {
-      this.setslideWidth()
+      this.setSlideWidth()
       this._initDots()
       this._initslide()
       if (this.autoPlay) {
@@ -93,24 +87,14 @@ export default {
   watch: {
     data() {
       this.$nextTick(() => {
-        this.setslideWidth()
+        this.setSlideWidth()
       })
     },
-    refreshData: {
-      // 深度观察
-      deep: true,
-      handler(newVal) {
-        this.$nextTick(() => {
-          this.setslideWidth()
-        })
-      }
-    }
   },
   methods: {
     // slide的content盒子的宽度是要用js计算的,和scroll不一样
     // 并且如果loop了,那么会创建两个缓冲div
-    // 在考虑要不要把这个接口暴露给外部
-    setslideWidth(isResize) {
+    setSlideWidth(isResize) {
       let width = 0
       let slideWidth = this.$refs.slide.clientWidth
       this.children = this.$refs.slideGroup.children
@@ -168,7 +152,7 @@ export default {
         return
       }
       // 已经创造过两个div了,不需要再创造
-      this.setslideWidth(true)
+      this.setSlideWidth(true)
       this.slide.refresh()
     },
     _slideToPage(index) {

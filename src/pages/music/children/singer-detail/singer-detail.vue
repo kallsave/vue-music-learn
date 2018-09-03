@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'singer'
+      'singer',
     ]),
     title() {
       return this.singer.name
@@ -42,6 +42,7 @@ export default {
         this.$router.push('/singer')
         return
       }
+      this.isFetchSongList = false
       getSingerDetail({
         singermid: this.singer.id
       }).then((res) => {

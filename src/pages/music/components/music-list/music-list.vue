@@ -1,5 +1,5 @@
 <template>
-  <div class="music-list">
+  <div class="music">
     <div class="header">
       <div class="back" @click="back">
         <i class="icon-back"></i>
@@ -17,7 +17,7 @@
           @scroll="scrollHandler"
           @sticky-cancel="stickyCancel">
           <div class="scroll-blank" ref="scrollBlank">
-            <vi-sticky-ele :ele-key="11" v-if="isFetchSongList">
+            <vi-sticky-ele :ele-key="11" v-show="isFetchSongList">
               <div class="play-wrapper">
                 <div ref="playBtn" class="play" @click="random($event)">
                   <i class="icon-play"></i>
@@ -93,8 +93,8 @@ export default {
     this.imageHeight = document.body.clientWidth * 0.7
   },
   mounted() {
-    this.$refs.scrollBlank.style.height = `${this.imageHeight - RESERVED_HEIGHT}px`
     this.$refs.songLoading.show()
+    this.$refs.scrollBlank.style.height = `${this.imageHeight - RESERVED_HEIGHT}px`
   },
   computed: {
     bgStyle() {
@@ -124,16 +124,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'selectPlay',
+      'randomPlay',
+    ]),
     handlePlayList(playList) {
       if (playList.length) {
         this.$refs.stickyWrapper.style.paddingBottom = `${60}px`
         this.$refs.sticky.refresh()
       }
     },
-    ...mapActions([
-      'selectPlay',
-      'randomPlay',
-    ]),
     back() {
       this.$router.back()
     },
@@ -176,7 +176,7 @@ export default {
 @import "~@/common/stylus/variable"
 @import "~@/common/stylus/mixin"
 
-.music-list
+.music
   position: fixed
   z-index: $z-index-page
   top: 0

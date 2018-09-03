@@ -15,7 +15,7 @@
         </div>
         <div class="middle">
           <vi-slide
-            :refresh-data="refreshData"
+            ref="slide"
             @scroll-end="slideEnd">
             <div class="middle-l">
               <div class="cd-wrapper">
@@ -48,8 +48,7 @@
               <vi-scroll
                 ref="lyricScroll"
                 :scroll-events="['scroll']"
-                :options="scrollOptions"
-                :refresh-data="currentLyric ? currentLyric.lines : []">
+                :options="scrollOptions">
                 <div class="lyric-wrapper">
                   <div v-if="currentLyric">
                     <p ref="lyricLine" class="text"
@@ -135,12 +134,13 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import createKeyframe from 'create-keyframe-animation'
 import { prefixStyle, getTransformAngle } from '@/common/helpers/dom.js'
 import { padZero, shuffle } from '@/common/helpers/util.js'
 import { playMode } from '@/store/config.js'
 import Lyric from 'lyric-parser'
+import { createSong, Song } from '@/common/class/song.js'
 
 const DURATION_MOVE = 400
 const DURATION_ROTATE = 20000
@@ -162,9 +162,6 @@ export default {
       bigImgAngle: 0,
       currentLyric: null,
       currentLineNum: 0,
-      refreshData: {
-        fullScreen: false
-      },
       scrollOptions: {
         probeType: 3
       },
@@ -172,8 +169,11 @@ export default {
       playingLyric: ''
     }
   },
-  mounted() {
-
+  created() {
+    // localStorage不能保存class的处理
+    if (this.currentSong && !(this.currentSong instanceof Song)) {
+      this.addSongClass()
+    }
   },
   computed: {
     ...mapGetters([
@@ -212,7 +212,9 @@ export default {
   },
   watch: {
     fullScreen(newVal) {
-      this.refreshData.fullScreen = newVal
+      this.$nextTick(() => {
+        this.$refs.slide.setSlideWidth()
+      })
     },
     // 切换歌曲,未知歌曲的资源是否能使用是不可预见的
     currentSong(newVal, oldVal) {
@@ -241,7 +243,6 @@ export default {
         } else {
           audio.pause()
         }
-
         if (newVal) {
           this.bigImgAfterEnter(this.$refs.bigImg, DURATION_START_ROTATE)
           this.miniImgAfterEnter(this.$refs.miniImg, DURATION_START_ROTATE)
@@ -272,6 +273,9 @@ export default {
       setPlayMode: 'SET_PLAY_MODE',
       setPlayList: 'SET_PLAYLIST'
     }),
+    ...mapActions([
+      'addSongClass'
+    ]),
     close() {
       this.setFullScreen(false)
     },
@@ -324,6 +328,7 @@ export default {
         if (!this.playing || !this.songReady) {
           return
         }
+        this.$refs.bigImg.style[transform] = ''
         let frameList = [
           {
             rotate: this.bigImgAngle
@@ -420,6 +425,7 @@ export default {
     },
     miniImgAfterEnter(el, startRotateTime) {
       startRotateTime = startRotateTime || 0
+      this.$refs.miniImg.style[transform] = ''
       setTimeout(() => {
         if (!this.playing || !this.songReady) {
           return
@@ -617,6 +623,9 @@ export default {
       this.currentSong.getLyric().then((lyric) => {
         this.currentLyric = new Lyric(lyric, this.handleLyric)
         this.currentLyric.play()
+        this.$nextTick(() => {
+          this.$refs.lyricScroll.refresh()
+        })
       })
     },
     handleLyric({lineNum, txt}) {

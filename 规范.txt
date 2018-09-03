@@ -65,6 +65,12 @@ vi-components是全局components
 
 5.store是vue-vuex的配置文件
 
+6.关于keep-alive
+~列表页 => 详情页最经典的方式是列表页keep-alive,详情页不做keep-alive处理
+通过keep-alive的exclude="no-keep-alive" 给详情页的组件加上name:"no-keep-alive"
+详情页操作反馈到列表页的数据改变通过vuex来操作
+
+
 #其他
 1.因为大量使用了better-scroll,
 为避免多层scroll嵌套带来的层级问题,使用vue-resource时不需要外层scroll的页面尽量新开路由

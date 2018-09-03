@@ -6,7 +6,11 @@
       <vi-sticky-ele :ele-key="'1'">
         <tab></tab>
       </vi-sticky-ele>
-      <router-view></router-view>
+      <vi-slide-router :router-list="routerList">
+        <keep-alive exclude="no-keep-alive">
+          <router-view></router-view>
+        </keep-alive>
+      </vi-slide-router>
     </vi-sticky>
   </div>
 </template>
@@ -16,16 +20,33 @@ import MHeader from './components/m-header/m-header.vue'
 import Tab from './components/tab/tab.vue'
 
 export default {
-  name: 'App',
+  components: {
+    MHeader,
+    Tab,
+  },
+  data() {
+    return {
+      routerList: [
+        {
+          path: '/recommend',
+        },
+        {
+          path: '/singer',
+        },
+        {
+          path: '/rank',
+        },
+        {
+          path: '/search',
+        }
+      ]
+    }
+  },
   methods: {
     stickyChange() {
       this.$refs.sticky.scroll.disable()
     },
   },
-  components: {
-    MHeader,
-    Tab,
-  }
 }
 </script>
 

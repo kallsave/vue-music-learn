@@ -2,7 +2,6 @@
   <div class="vi-index-list">
     <vi-scroll
       ref="scroll"
-      :refresh-data="data"
       :data="data"
       :scroll-events="['scroll']"
       :options="scrollOptions"
@@ -58,12 +57,6 @@ export default {
       default() {
         return []
       }
-    },
-    refreshData: {
-      type: [Object, Array],
-      default() {
-        return {}
-      }
     }
   },
   data() {
@@ -103,13 +96,6 @@ export default {
   },
   watch: {
     data() {
-      this.$nextTick(() => {
-        this._calculateAnchorHeight()
-        this._calculateHeight()
-        this._calculateListTitleHeight()
-      })
-    },
-    refreshData() {
       this.$nextTick(() => {
         this._calculateAnchorHeight()
         this._calculateHeight()

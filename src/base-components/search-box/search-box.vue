@@ -3,6 +3,7 @@
     <i class="icon-search"></i>
     <input ref="query" class="box"
       v-model="query" :placeholder="placeholder"
+      @focus="focusHandler"
       @input="inputHandler"
       @change="changeHandler"/>
     <i class="icon-dismiss" v-show="query"
@@ -16,6 +17,7 @@ const COMPONENT_NAME = 'base-search-box'
 const EVENT_CHANGE = 'change'
 const EVENT_INPUT = 'input'
 const EVENT_CLEAR = 'clear'
+const EVENT_FOCUS = 'focus'
 
 export default {
   name: COMPONENT_NAME,
@@ -47,6 +49,9 @@ export default {
     },
     changeHandler(e) {
       this.$emit(EVENT_CHANGE, this.query)
+    },
+    focusHandler(e) {
+      this.$emit(EVENT_FOCUS)
     },
     clear() {
       this.$emit(EVENT_CLEAR)

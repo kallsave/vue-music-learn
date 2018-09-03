@@ -18,6 +18,8 @@
 </template>
 
 <script>
+
+import Singer from '@/common/class/singer.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { getSingerList } from '@/api/singer.js'
 import { mapMutations } from 'vuex'
@@ -48,10 +50,12 @@ export default {
       }
     },
     _getSingerList() {
-      getSingerList().then((res) => {
-        this.$refs.singerLoading.hide()
-        this.singerList = this._normalizeSinger(res.data.list)
-      })
+      setTimeout(() => {
+        getSingerList().then((res) => {
+          this.$refs.singerLoading && this.$refs.singerLoading.hide()
+          this.singerList = this._normalizeSinger(res.data.list)
+        })
+      }, 1000)
     },
     _normalizeSinger(list) {
       let map = {
@@ -62,11 +66,10 @@ export default {
       }
       list.forEach((item, index) => {
         if (index < HOT_SINGER_LEN) {
-          map.hot.items.push({
+          map.hot.items.push(new Singer({
             name: item.Fsinger_name,
-            id: item.Fsinger_mid,
-            avatar: `https://y.gtimg.cn/music/photo_new/T001R300x300M000${item.Fsinger_mid}.jpg?max_age=2592000`
-          })
+            id: item.Fsinger_mid
+          }))
         }
         const key = item.Findex
         // 对象的属性读取可以轻松实现Array.every
@@ -76,11 +79,10 @@ export default {
             items: []
           }
         }
-        map[key].items.push({
+        map[key].items.push(new Singer({
           name: item.Fsinger_name,
-          id: item.Fsinger_mid,
-          avatar: `https://y.gtimg.cn/music/photo_new/T001R300x300M000${item.Fsinger_mid}.jpg?max_age=2592000`
-        })
+          id: item.Fsinger_mid
+        }))
       })
       let ret = []
       let hot = []
@@ -100,7 +102,7 @@ export default {
     selectSinger(singer) {
       this.setSinger(singer)
       this.$router.push({
-        path: `/music-list/singer-detail/${singer.id}`
+        path: `/music/singer-detail/${singer.id}`
       })
     },
   }

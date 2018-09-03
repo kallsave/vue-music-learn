@@ -5,7 +5,7 @@
         ref="scroll"
         :scroll-events="['scroll']"
         :options="scrollOptions"
-        :refresh-data="discList"
+        :data="discList"
         @scroll="scrollHandler">
         <vi-loading
           ref="allLoading"
@@ -15,7 +15,6 @@
         <div class="slide-wrapper">
           <vi-slide ref="slider"
             :initPageIndex="currentPageIndex"
-            :refresh-data="recommends"
             :data="recommends"
             :loop="false"
             :showDots="true"
@@ -71,6 +70,9 @@ import { mapMutations } from 'vuex'
 import { sticky } from '../../mixins/inject-sticky.js'
 
 export default {
+  // keep-alive用
+  // keep-alive可以是暂时的,用vuex设置时间点,让exclude改变,然后马上有生效
+  name: 'no-keep-alive',
   mixins: [sticky, playListMixin],
   data() {
     return {
@@ -86,15 +88,6 @@ export default {
   },
   mounted() {
     this.$refs.allLoading.show()
-    // this.toast = this.$createViToast({
-    //   scale: 0.8,
-    //   mask: false,
-    //   titleColor: '#ffcd32',
-    //   iconColor: '#ffcd32',
-    //   title: '正在加载...',
-    //   icon: 'loading',
-    //   timeout: 0,
-    // }).show()
     this._getData()
   },
   methods: {
@@ -153,7 +146,7 @@ export default {
       }
       // 先跳转后设置vuex
       this.$router.push({
-        path: `/music-list/recommend-detail/${item.dissid}`
+        path: `/music/recommend-detail/${item.dissid}`
       })
       this.setDisc(item)
     }

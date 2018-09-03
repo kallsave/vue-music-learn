@@ -2,7 +2,7 @@
   <div class="vi-sticky">
     <vi-scroll
       ref="scroll"
-      :refresh-data="refreshData"
+      :data="data"
       :scroll-events="scrollEvents"
       :options="options"
       @scroll="scrollHandle">
@@ -27,10 +27,10 @@ const transformStyleKey = prefixStyle('transform')
 const COMPONENT_NAME = 'vi-sticky'
 
 const EVENT_CHANGE = 'sticky-change'
-
 const EVENT_CANCEL = 'sticky-cancel'
-
 const EVENT_SCROLL = 'scroll'
+const EVENT_PULLING_DOWN = 'pulling-down'
+const EVENT_PULLING_UP = 'pulling-up'
 
 // appendChild同时有removeChild的效果,所以要复制一遍node节点
 function deepAppendChild(father, children) {
@@ -84,10 +84,10 @@ export default {
       default: 10
     },
     // refresh
-    refreshData: {
-      type: [Object, Array],
+    data: {
+      type: Array,
       default() {
-        return {}
+        return []
       }
     },
     // 重新计算位置
@@ -128,14 +128,31 @@ export default {
       listHeight: [],
     }
   },
-  created() {
-  },
   mounted() {
     this._calculateStickyTop()
     this._findFixedElement()
     this._findScroll()
+    if (this.pullDownRefresh) {
+      this.$refs.scroll.$on(EVENT_PULLING_DOWN, () => {
+        this.$emit(EVENT_PULLING_DOWN, arguments)
+      })
+    }
+    if (this.pullUpLoad) {
+      this.$refs.scroll.$on(EVENT_PULLING_UP, () => {
+        this.$emit(EVENT_PULLING_UP, arguments)
+      })
+    }
+  },
+  computed: {
+    pullDownRefresh() {
+      return this.options.pullDownRefresh
+    },
+    pullUpLoad() {
+      return this.options.pullUpLoad
+    },
   },
   watch: {
+    // 影响sticky位置计算的data
     stickyData: {
       deep: true,
       handler() {
@@ -212,7 +229,7 @@ export default {
   methods: {
     scrollHandle(pos) {
       this.scrollY = pos.y
-      this.$emit('scroll', pos, this.scroll)
+      this.$emit(EVENT_SCROLL, pos, this.scroll)
     },
     _findFixedElement() {
       if (!this.$refs.fixed) {
@@ -267,6 +284,9 @@ export default {
     },
     scrollTo() {
       this.$refs.scroll.scrollTo(arguments)
+    },
+    forceUpdate() {
+      this.$refs.scroll.forceUpdate(arguments)
     }
   }
 }

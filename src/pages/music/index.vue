@@ -6,7 +6,7 @@
 
 <script>
 export default {
-
+  name: 'no-keep-alive'
 }
 </script>
 

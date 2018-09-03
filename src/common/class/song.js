@@ -2,7 +2,8 @@ import { getLyric } from '@/api/song.js'
 import { Base64 } from 'js-base64'
 import { param } from '@/api/config.js'
 
-export default class Song {
+// 给localStorage的缓存添加类使用这个函数
+export class Song {
   constructor({id, mid, singer, name, album, duration, strMediaMid, image, url}) {
     this.id = id
     this.mid = mid
@@ -33,10 +34,11 @@ export default class Song {
   }
 }
 
+// 从接口处理数据使用这个函数
 export function createSong (musicData) {
   const url = param(`http://dl.stream.qqmusic.qq.com/C400${musicData.strMediaMid}.m4a`, {
-    guid: 5257709642,
-    vkey: '36ACCB0876F6A7E80A9BF21B14F0E3B902AB635E0876A79F9025833BC4ED2D7BE71EE9BA6A5E0B25EDDFC897194D58EDB9B67835A334570D',
+    guid: 6063687138,
+    vkey: 'E8B55C8D500023225C8C116AE9A3A66B2B37F2704A03B195C5895B87AB79308DD1556675D00AB052573ABBA6D136B1EE28254282D00F2A6E',
     uin: 0,
     fromtag: 38
   })
@@ -59,8 +61,13 @@ function filterSinger (singer) {
   if (!singer) {
     return ''
   }
-  singer.forEach((item) => {
-    result.push(item.name)
-  })
-  return result.join('/')
+  if (singer instanceof String) {
+    return singer
+  }
+  if (singer instanceof Array) {
+    singer.forEach((item) => {
+      result.push(item.name)
+    })
+    return result.join('/')
+  }
 }

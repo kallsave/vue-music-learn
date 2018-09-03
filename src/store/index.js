@@ -8,11 +8,12 @@ import createLogger from 'vuex/dist/logger'
 import createPersistedState from 'vuex-persistedstate'
 
 // store是集合了各种storages的操作,默认是不带expire的localStorage
+// localStorage比cookie好,如果数据超过4k,cookie将丢失数据导致vuex没有保存
 // 可以定制化自己的配置
 // https://github.com/marcuswestin/store.js#make-your-own-build
 const engine = require('store/src/store-engine')
 const storages = [
-  require('store/storages/cookieStorage')
+  require('store/storages/localStorage')
 ]
 
 const storePlugins = [
@@ -24,10 +25,15 @@ const store = engine.createStore(storages, storePlugins)
 
 const debug = process.env.NODE_ENV !== 'production'
 
+// createPersistedState和Vuex结合缺陷之一,不能保存对象的prototype,需要注意
+// createPersistedState和Vuex结合缺陷之二,不能区分处理key的报存时间,而是把整个vuex报存
+// createPersistedState只能处理常规的数据,需要其他需求用store操作
 const VuexPlugins = [
   createPersistedState({
     storage: {
-      getItem: (key) => store.get(key),
+      getItem: (key) => {
+        return store.get(key)
+      },
       setItem: (key, value) => {
         store.set(key, value, new Date().getTime() + 10000 * 60)
       },

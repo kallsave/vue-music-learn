@@ -1,17 +1,20 @@
 <template>
   <div class="search">
-    <div ref="scrollWrapper" class="search-sticky-wrapper">
+    <div class="search-sticky-wrapper">
       <vi-sticky
         ref="scroll"
+        :data="result"
         :scroll-events="['scroll']"
         :options="scrollOptions"
-        @scroll="scrollHandler">
+        @scroll="scrollHandler"
+        @pulling-up="onPullingUp">
         <vi-sticky-ele :ele-key="'search'">
           <div class="search-box-wrapper">
             <base-search-box
               ref="searchBox"
               v-model="query"
-              @clear="clearHandler"></base-search-box>
+              @clear="clearHandler"
+              @focus="focusHandler"></base-search-box>
           </div>
         </vi-sticky-ele>
         <div class="shortcut-scroll-wrapper" v-show="!query">
@@ -20,16 +23,17 @@
             <ul>
               <li class="item" :key="index"
                 v-for="(item, index) in hotKey"
-                @click="addQuery(item.k)">
+                @click="query = item.k">
                 <span>{{item.k}}</span>
               </li>
             </ul>
           </div>
         </div>
-        <div class="result-scroll-wrapper" v-show="query">
+        <div ref="scrollWrapper" class="result-scroll-wrapper" v-show="query">
           <ul class="suggest-list">
             <li class="suggest-item" :key="index"
-              v-for="(item, index) in result">
+              v-for="(item, index) in result"
+              @click="selectItem(item)">
               <div class="icon">
                 <i :class="getIconCls(item)"></i>
               </div>
@@ -38,6 +42,9 @@
               </div>
             </li>
           </ul>
+        </div>
+        <div v-show="!result.length && isFetchSearch" class="no-result-wrapper">
+          <no-result :title="'抱歉，暂无搜索结果'"></no-result>
         </div>
       </vi-sticky>
     </div>
@@ -49,12 +56,19 @@ import { getHotKey, search } from '@/api/search.js'
 import { sticky } from '../../mixins/inject-sticky.js'
 import { createSong } from '@/common/class/song.js'
 import { debounce } from '@/common/helpers/util.js'
+import NoResult from './components/no-result/no-result.vue'
+import { playListMixin } from '@/common/mixins/player.js'
+import {mapMutations, mapActions} from 'vuex'
+import Singer from '@/common/class/singer.js'
 
 const TYPE_SINGER = 'singer'
 const perpage = 20
 
 export default {
-  mixins: [sticky],
+  components: {
+    NoResult
+  },
+  mixins: [sticky, playListMixin],
   props: {
     isShowSinger: {
       type: Boolean,
@@ -66,50 +80,71 @@ export default {
       hotKey: [],
       page: 1,
       query: '',
-      result: []
+      result: [],
+      scrollOptions: {
+        probeType: 3,
+        // 下拉加载
+        pullUpLoad: {
+          threshold: 100,
+          txt: {
+            more: '正在载入更多',
+            noMore: '没有更多的结果啦'
+          }
+        },
+      },
+      isFetchSearch: false,
     }
   },
-  created() {
-    this._getHotKey()
-    this.$watch('query', debounce((newVal) => {
-      this.search().then(() => {
-        this.$nextTick(() => {
-          console.log('refresh')
-          if (newVal) {
-            this.Sticky.scroll.enable()
-            this.Sticky.scroll.refresh()
-            this.$refs.scroll.scroll.enable()
-            this.$refs.scroll.scroll.refresh()
-          } else {
-            this.Sticky.scroll.disable()
-            this.$refs.scroll.scroll.disable()
-          }
-        })
-      })
-    }, 2000))
-  },
   mounted() {
-    this.$nextTick(() => {
-      if (this.query) {
-        this.Sticky.scroll.enable()
-        this.$refs.scroll.scroll.enable()
-      } else {
-        this.Sticky.scroll.disable()
-        this.$refs.scroll.scroll.disable()
-      }
-    })
+    this._getHotKey()
+    this._watchQuery()
   },
   methods: {
+    ...mapMutations({
+      setSinger: 'SET_SINGER'
+    }),
+    ...mapActions([
+      'insertSong'
+    ]),
+    handlePlayList(playList) {
+      if (playList.length) {
+        this.$refs.scrollWrapper.style.paddingBottom = `${60 + 44}px`
+        this.$refs.scroll.refresh()
+      }
+    },
     _getHotKey() {
       getHotKey().then((res) => {
         this.hotKey = res.data.hotkey.slice(0, 10)
-        console.log(this.hotKey)
       })
     },
-    addQuery(query) {
-      this.$refs.searchBox.setQuery(query)
+    _watchQuery() {
+      this.$nextTick(() => {
+        if (this.query) {
+          this.Sticky.scroll.enable()
+          this.$refs.scroll.scroll.enable()
+        } else {
+          this.Sticky.scroll.disable()
+          this.$refs.scroll.scroll.disable()
+        }
+      })
+      this.$watch('query', debounce((newVal) => {
+        this.page = 1
+        this.isFetchSearch = false
+        if (newVal) {
+          this.Sticky.scroll.enable()
+          this.$refs.scroll.scroll.enable()
+          this.$refs.scroll.scroll.scrollTo(0, 0, 100)
+        } else {
+          this.Sticky.scroll.disable()
+          this.$refs.scroll.scroll.disable()
+        }
+        this.search().then((res) => {
+          this.result = this._genResult(res.data)
+          this.isFetchSearch = true
+        })
+      }, 400))
     },
-    search() {
+    search(res) {
       return new Promise((resolve, reject) => {
         search({
           w: this.query,
@@ -118,10 +153,18 @@ export default {
           n: perpage,
           perpage: perpage,
         }).then((res) => {
-          this.result = this._genResult(res.data)
-          resolve()
+          this._checkMore(res.data)
+          resolve(res)
         })
       })
+    },
+    _checkMore(data) {
+      const song = data.song
+      if (!song.list.length || (song.curnum + song.curpage * perpage) > song.totalnum) {
+        this.hasMore = false
+      } else {
+        this.hasMore = true
+      }
     },
     _genResult(data) {
       let ret = []
@@ -136,7 +179,9 @@ export default {
     _normalizeSongs(list) {
       let ret = []
       list.forEach((musicData) => {
-        if (musicData.songid && musicData.albummid) {
+        if (musicData.songid && musicData.albummid && musicData.songmid) {
+          musicData.strMediaMid = musicData.songmid
+          // 类化数据
           ret.push(createSong(musicData))
         }
       })
@@ -157,15 +202,36 @@ export default {
       }
     },
     clearHandler() {
-      console.log(666)
       this.query = ''
     },
-    _checkMore(data) {
-      const song = data.song
-      if (!song.list.length || (song.curnum + song.curpage * perpage) > song.totalnum) {
-        this.hasMore = false
+    onPullingUp() {
+      if (this.hasMore) {
+        this.page++
+        this.search().then((res) => {
+          this.result = this.result.concat(this._genResult(res.data))
+        })
+      } else {
+        this.$refs.scroll.forceUpdate()
       }
     },
+    focusHandler() {
+      this.isFetchSearch = false
+    },
+    selectItem(item) {
+      if (item.type === TYPE_SINGER) {
+        const singer = new Singer({
+          id: item.singermid,
+          name: item.singername
+        })
+        this.$router.push({
+          path: `/music/singer-detail/${singer.id}`
+        })
+        this.setSinger(singer)
+      } else {
+        // 插入歌曲在当前页播放
+        this.insertSong(item)
+      }
+    }
   }
 }
 </script>
@@ -182,7 +248,8 @@ export default {
     position: relative
     height: 100vh
     box-sizing: border-box
-    padding-bottom: 80px
+    font-size: $font-size-medium
+    color: peru
     .search-box-wrapper
       box-sizing: border-box
       padding: 20px
@@ -191,7 +258,6 @@ export default {
       position: relative
       box-sizing: border-box
       height: 100vh
-      overflow: hidden
       .hot-key
         margin: 0 20px 20px 20px
         .title
@@ -225,8 +291,8 @@ export default {
     .result-scroll-wrapper
       position: relative
       box-sizing: border-box
-      height: 100vh
-      overflow: hidden
+      // sticky带来的padding-bottom
+      padding-bottom: 44px
       .suggest-list
         box-sizing: border-box
         padding: 0 30px
