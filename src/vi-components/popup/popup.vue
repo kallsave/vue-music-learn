@@ -37,6 +37,10 @@ export default {
     customMask: {
       type: String,
       default: ''
+    },
+    zIndex: {
+      type: Number,
+      default: 100
     }
   },
   methods: {

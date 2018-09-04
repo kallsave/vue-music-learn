@@ -89,5 +89,4 @@ export const addSongClass = function ({state, commit}) {
   })
   commit(types.SET_PLAYLIST, playList)
   commit(types.SET_SEQUENCE_LIST, sequenceList)
-  console.log(state.playList)
 }

@@ -73,14 +73,11 @@ export default {
   },
   methods: {
     imgLoad() {
-      console.log('imgLoad')
       this.$refs.sticky && this.$refs.sticky.scrollTop()
     },
     stickyChange(key) {
-      console.log(key)
     },
     clickHandle() {
-      console.log(66)
     }
   }
 }

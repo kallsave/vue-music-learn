@@ -16,21 +16,6 @@ export default {
       require: true
     }
   },
-  created() {
-    this.Sticky.$on('change', function(a) {
-      console.log('a', a)
-    })
-  },
-  watch: {
-    // 异步数据需要重写计算
-    'Sticky.data'() {
-      this.Sticky.scrollTop()
-      this.$nextTick(() => {
-        this._calculateStickyTop()
-        this.Sticky.calculateListHeight()
-      })
-    }
-  },
   mounted() {
     this.$nextTick(() => {
       this._calculateStickyTop()

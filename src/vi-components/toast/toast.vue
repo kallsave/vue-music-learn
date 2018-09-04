@@ -1,7 +1,6 @@
 <!--toast组件一定是居中的,如果需要不居中的loading请使用非编程式占位的的loading-->
 <template>
-  <vi-popup
-    :mask="false"
+  <vi-popup :mask="false"
     v-show="isVisible"
     touchmove.prevent.native>
     <div class="vi-toast" :style="{'transform': `scale(${scale})`}">
@@ -79,7 +78,7 @@ export default {
       type: String,
       default: ''
     },
-    timeout: {
+    time: {
       type: Number,
       default: 0
     },
@@ -90,27 +89,30 @@ export default {
   },
   data() {
     return {
-      balde: 12,
+      balde: 12
     }
   },
-  mounted() {
-    if (this.timeout) {
-      this.timer = setTimeout(() => {
-        clearTimeout(this.timer)
-        this.isVisible = false
-      }, this.timeout)
-    }
-  },
-  watch: {
-    timeout(newVal) {
-      if (newVal) {
-        clearTimeout(this.timer)
-        this.timer = setTimeout(() => {
-          this.isVisible = false
-        }, newVal)
-      }
+  methods: {
+    show() {
+      this.isVisible = true
+      this.clearTimer()
+      this.$nextTick(() => {
+        if (this.time !== 0) {
+          this.timer = setTimeout(() => {
+            this.hide()
+          }, this.time)
+        }
+      })
     },
-  },
+    hide() {
+      this.isVisible = false
+      this.clearTimer()
+    },
+    clearTimer() {
+      clearTimeout(this.timer)
+      this.timer = null
+    }
+  }
 }
 </script>
 

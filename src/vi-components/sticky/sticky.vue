@@ -129,7 +129,6 @@ export default {
     }
   },
   mounted() {
-    this._calculateStickyTop()
     this._findFixedElement()
     this._findScroll()
     if (this.pullDownRefresh) {
@@ -142,6 +141,10 @@ export default {
         this.$emit(EVENT_PULLING_UP, arguments)
       })
     }
+    // 所有子组件的this.$nextTick之后
+    this.$nextTick(() => {
+      this._calculateStickyTop()
+    })
   },
   computed: {
     pullDownRefresh() {
@@ -156,12 +159,7 @@ export default {
     stickyData: {
       deep: true,
       handler() {
-        this.scrollTop()
-        this.$nextTick(() => {
-          for (let key in this.stickyMap) {
-            this.stickyMap[key].calculateStickyTop()
-          }
-        })
+        this.forceCalculateStickyTop()
       }
     },
     scrollY(newVal) {
@@ -239,8 +237,12 @@ export default {
     },
     _calculateStickyTop() {
       this.stickyTop = this.$el.getBoundingClientRect().top
+      for (let key in this.stickyMap) {
+        this.stickyMap[key].calculate()
+      }
+      this._calculateListHeight()
     },
-    calculateListHeight() {
+    _calculateListHeight() {
       let result = []
       for (let key in this.stickyMap) {
         result.push({
@@ -252,7 +254,6 @@ export default {
       this.listHeight = result.sort((a, b) => {
         return a.stickyTop - b.stickyTop
       })
-      this.current = null
     },
     _findScroll() {
       if (!this.$refs.scroll) {
@@ -277,16 +278,18 @@ export default {
       }
       this.refresh()
     },
-    calculateStickyEleTop () {
-      for (let key in this.stickyMap) {
-        this.stickyMap[key].calculateStickyTop()
-      }
-    },
     scrollTo() {
       this.$refs.scroll.scrollTo(arguments)
     },
     forceUpdate() {
       this.$refs.scroll.forceUpdate(arguments)
+    },
+    forceCalculateStickyTop() {
+      this.scrollTop()
+      this.$nextTick(() => {
+        this._calculateStickyTop()
+        this.refresh()
+      })
     }
   }
 }

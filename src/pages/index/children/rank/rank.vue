@@ -78,7 +78,6 @@ export default {
       if (!e._constructed) {
         return
       }
-      console.log(item)
       this.$router.push({
         path: `/music/rank-detail/${item.id}`
       })

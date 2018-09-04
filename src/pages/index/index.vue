@@ -45,7 +45,7 @@ export default {
   methods: {
     stickyChange() {
       this.$refs.sticky.scroll.disable()
-    },
+    }
   },
 }
 </script>

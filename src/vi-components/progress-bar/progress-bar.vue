@@ -81,7 +81,6 @@ export default {
       // e.pageX鼠标指针位置相对于文档零点x坐标
       const rect = this.$refs.progressBar.getBoundingClientRect().left
       const offsetWidth = e.pageX - rect
-      console.log(offsetWidth)
       this._offset(offsetWidth)
       this._triggerPercent()
 

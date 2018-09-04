@@ -60,32 +60,31 @@ export default {
         titleColor: '#fff',
         iconColor: '#fff',
         icon: 'loading',
-        timeout: 0,
-        customTransition: ''
+        time: 0,
+        mask: true,
       }
     }
-  },
-  created() {
-  },
-  mounted() {
-    if (this.options.timeout) {
-      this.timer = setTimeout(() => {
-        clearTimeout(this.timer)
-        this.isVisible = false
-      }, this.options.timeout)
-    }
-  },
-  watch: {
-    'options.timeout'(newVal) {
-      if (newVal) {
-        this.timer = setTimeout(() => {
-          clearTimeout(this.timer)
-          this.isVisible = false
-        }, newVal)
-      }
-    },
   },
   methods: {
+    show() {
+      this.isVisible = true
+      this.clearTimer()
+      this.$nextTick(() => {
+        if (this.options.time !== 0) {
+          this.timer = setTimeout(() => {
+            this.hide()
+          }, this.options.time)
+        }
+      })
+    },
+    hide() {
+      this.isVisible = false
+      this.clearTimer()
+    },
+    clearTimer() {
+      clearTimeout(this.timer)
+      this.timer = null
+    },
     maskClick() {
       this.$emit('mask-click')
     }

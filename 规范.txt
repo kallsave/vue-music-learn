@@ -1,6 +1,6 @@
 ## html规范
 1.class使用-分割单词
-2.使用预加载的引用功能,减少html中的class,一个dom尽量只有一个class
+2.减少html中的class,一个dom尽量只有一个class
 3.一行代码的长度不得超过编辑器的长度,子元素尽量都换行
 4.ref > v-if = v-show > class > for = key > : > @
 
@@ -8,7 +8,7 @@
 1.遵循eslint代码规范
 2.常量需要使用const大写申明,单词区分用下滑线标识
 3.只给内部用的函数用_开头
-4.components > mixins > provide > inject >  props > created > mounted > computed > watch > methods > updated
+4.components > mixins > provide > inject >  props > data > created > mounted > computed > watch > methods > updated
 5.mounted中避免使用this.$nextTick,
 虽然子组件在mounted使用this.$nextTick可以确保父组件中所有的子组件的dom都挂载完毕
 
@@ -73,7 +73,7 @@ vi-components是全局components
 
 #其他
 1.因为大量使用了better-scroll,
-为避免多层scroll嵌套带来的层级问题,使用vue-resource时不需要外层scroll的页面尽量新开路由
+为避免多层scroll嵌套带来的层级问题,使用vue-router时不需要外层scroll的页面尽量新开路由
 
 
 

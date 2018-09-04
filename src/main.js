@@ -24,6 +24,7 @@ import ViProgressBar from '@/vi-components/progress-bar/index.js'
 import ViProgressCircle from '@/vi-components/progress-circle/index.js'
 import BaseSearchBox from '@/base-components/search-box/index.js'
 import ViSlideRouter from '@/vi-components/slide-router/index.js'
+import ViToastTxt from '@/vi-components/toast-txt/index.js'
 
 import ReverScroll from '@/rever-components/scroll/index.js'
 import ReverSticky from '@/rever-components/scroll/plugins/sticky/index.js'
@@ -44,6 +45,7 @@ Vue.use(ViProgressBar)
 Vue.use(ViProgressCircle)
 Vue.use(BaseSearchBox)
 Vue.use(ViSlideRouter)
+Vue.use(ViToastTxt)
 
 // fastclick.attach(document.body)
 

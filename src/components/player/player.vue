@@ -577,7 +577,7 @@ export default {
         iconColor: '#ffcd32',
         title: '资源出错啦',
         icon: 'error',
-        timeout: 2000 + Math.random(),
+        time: 2000,
       }).show()
     },
     updateTime(e) {
@@ -600,13 +600,31 @@ export default {
       }
     },
     changeMode() {
+      let txt = ''
       const mode = (this.mode + 1) % 3
       this.setPlayMode(mode)
       let list = null
       if (mode === playMode.random) {
         list = shuffle(this.sequenceList)
+        txt = '随机播放'
+        this.$createViToastTxt({
+          txt,
+          time: 2000
+        }).show()
+      } else if (mode === playMode.loop) {
+        list = this.sequenceList
+        txt = '单曲循环'
+        this.$createViToastTxt({
+          txt,
+          time: 2000
+        }).show()
       } else {
         list = this.sequenceList
+        txt = '列表循环'
+        this.$createViToastTxt({
+          txt,
+          time: 2000
+        }).show()
       }
       // 先改变currentIndex再改变playList
       this.resetCurrentIndex(list)

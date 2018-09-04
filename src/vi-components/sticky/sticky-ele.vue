@@ -16,6 +16,11 @@ export default {
       require: true
     }
   },
+  data() {
+    return {
+      stickyTop: 0
+    }
+  },
   mounted() {
     // 在父组件的所有子组件渲染完成后
     this.$nextTick(() => {
@@ -25,21 +30,26 @@ export default {
   methods: {
     _map() {
       this.$el.firstElementChild.eleKey = this.eleKey
-      this.$el.style.height = `${this.$el.firstElementChild.clientHeight}px`
       this.Sticky.stickyMap[this.eleKey] = {
         eleComponent: this,
         eleKey: this.eleKey,
         $el: this.$el.firstElementChild,
-        clientWidth: this.$el.firstElementChild.clientWidth,
-        clientHeight: this.$el.firstElementChild.clientHeight,
-        calculateStickyTop: this.calculateStickyTop
+        calculate: this.calculate
       }
-      this.calculateStickyTop()
     },
-    calculateStickyTop() {
-      const stickyTop = this.$el.firstElementChild.getBoundingClientRect().top - this.Sticky.stickyTop
-      this.Sticky.stickyMap[this.eleKey].stickyTop = stickyTop - this.Sticky.fixedY
-      this.Sticky.calculateListHeight()
+    // 就算一些dom的数值,这些数据要考虑异步的场景
+    calculate() {
+      const stickyTop = this.$el.firstElementChild.getBoundingClientRect().top - this.Sticky.stickyTop - this.Sticky.fixedY
+      const clientWidth = this.$el.firstElementChild.clientWidth
+      const clientHeight = this.$el.firstElementChild.clientHeight
+      const map = {
+        stickyTop,
+        clientWidth,
+        clientHeight,
+      }
+      Object.assign(this.Sticky.stickyMap[this.eleKey], map)
+      this.$el.style.width = `${clientWidth}px`
+      this.$el.style.height = `${clientHeight}px`
     }
   },
   destroyed() {

@@ -46,7 +46,7 @@
 import SongList from '@/components/song-list/song-list.vue'
 import { playListMixin } from '@/common/mixins/player.js'
 import { prefixStyle } from '@/common/helpers/dom.js'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 const transform = prefixStyle('transform')
 const backdrop = prefixStyle('backdrop-filter')
@@ -87,6 +87,9 @@ export default {
         click: true
       },
       scrollY: 0,
+      stickyData: {
+        isFetchSongList: false
+      }
     }
   },
   created() {
@@ -97,6 +100,9 @@ export default {
     this.$refs.scrollBlank.style.height = `${this.imageHeight - RESERVED_HEIGHT}px`
   },
   computed: {
+    ...mapGetters([
+      'fullScreen'
+    ]),
     bgStyle() {
       return `background-image:url(${this.bgImage})`
     }
@@ -118,10 +124,10 @@ export default {
       if (newVal) {
         this.$refs.songLoading && this.$refs.songLoading.hide()
         this.$nextTick(() => {
-          this.$refs.sticky.refresh()
+          this.$refs.sticky.forceCalculateStickyTop()
         })
       }
-    }
+    },
   },
   methods: {
     ...mapActions([
