@@ -106,11 +106,9 @@ export default {
     ...mapActions([
       'insertSong'
     ]),
-    handlePlayList(playList) {
-      if (playList.length) {
-        this.$refs.scrollWrapper.style.paddingBottom = `${60 + 44}px`
-        this.$refs.scroll.refresh()
-      }
+    handlePlayList() {
+      this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
+      this.$refs.scroll.refresh()
     },
     _getHotKey() {
       getHotKey().then((res) => {
@@ -127,22 +125,24 @@ export default {
           this.$refs.scroll.scroll.disable()
         }
       })
-      this.$watch('query', debounce((newVal) => {
-        this.page = 1
+      this.$watch('query', (newVal) => {
         this.isFetchSearch = false
-        if (newVal) {
-          this.Sticky.scroll.enable()
-          this.$refs.scroll.scroll.enable()
-          this.$refs.scroll.scroll.scrollTo(0, 0, 100)
-        } else {
-          this.Sticky.scroll.disable()
-          this.$refs.scroll.scroll.disable()
-        }
-        this.search().then((res) => {
-          this.result = this._genResult(res.data)
-          this.isFetchSearch = true
-        })
-      }, 400))
+        debounce((newVal) => {
+          this.page = 1
+          if (newVal) {
+            this.Sticky.scroll.enable()
+            this.$refs.scroll.scroll.enable()
+            this.$refs.scroll.scroll.scrollTo(0, 0, 100)
+          } else {
+            this.Sticky.scroll.disable()
+            this.$refs.scroll.scroll.disable()
+          }
+          this.search().then((res) => {
+            this.result = this._genResult(res.data)
+            this.isFetchSearch = true
+          })
+        }, 400)(newVal)
+      })
     },
     search(res) {
       return new Promise((resolve, reject) => {
@@ -245,9 +245,11 @@ export default {
   height: calc(100vh - 44px)
   overflow: hidden
   .search-sticky-wrapper
-    position: relative
-    height: 100vh
     box-sizing: border-box
+    position: fixed
+    width: 100%
+    top: 88px
+    bottom: 0
     font-size: $font-size-medium
     color: peru
     .search-box-wrapper

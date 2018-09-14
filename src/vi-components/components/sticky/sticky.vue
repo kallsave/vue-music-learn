@@ -8,7 +8,7 @@
       @scroll="scrollHandle">
       <slot></slot>
     </vi-scroll>
-    <div ref="fixed" :style="fixedStyle" v-show="fixedVisable"></div>
+    <div ref="fixed" v-show="fixedVisable" :style="fixedStyle"></div>
   </div>
 </template>
 

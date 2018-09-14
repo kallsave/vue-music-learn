@@ -134,11 +134,9 @@ export default {
       'selectPlay',
       'randomPlay',
     ]),
-    handlePlayList(playList) {
-      if (playList.length) {
-        this.$refs.stickyWrapper.style.paddingBottom = `${60}px`
-        this.$refs.sticky.refresh()
-      }
+    handlePlayList() {
+      this.$refs.stickyWrapper.style.paddingBottom = `${60}px`
+      this.$refs.sticky.refresh()
     },
     back() {
       this.$router.back()

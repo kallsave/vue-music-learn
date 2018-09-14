@@ -23,7 +23,8 @@
 vi-components相当于第三方vi组件库或者是基于第三方ui组件的封装
 vi-components是全局components
 部分提供body挂载,由createAPI或者mount-in-body调用
-样式使用vi-前缀严格开头,不使用scoped,不使用webpack的alias语法
+样式使用vi-前缀严格开头,不使用scoped,
+// 不使用webpack的alias语法
 需要有component-name
 使用局部图标字体,重写命名规则防止和全局图标字体冲突
 
@@ -71,9 +72,7 @@ vi-components是全局components
 详情页操作反馈到列表页的数据改变通过vuex来操作
 
 
-#其他
-1.因为大量使用了better-scroll,
-为避免多层scroll嵌套带来的层级问题,使用vue-router时不需要外层scroll的页面尽量新开路由
+# 其他
 
 
 

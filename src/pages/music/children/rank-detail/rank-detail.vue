@@ -28,10 +28,10 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'topList'
+      'rankAlbum'
     ]),
     title() {
-      return this.topList.topTitle
+      return this.rankAlbum.topTitle
     },
     bgImage() {
       if (this.songList.length) {
@@ -43,12 +43,12 @@ export default {
   methods: {
     _getMusicList() {
       // store失效返回上层
-      if (!this.topList.id) {
+      if (!this.rankAlbum.id) {
         this.$router.push('/rank')
         return
       }
       getMusicList({
-        topid: this.topList.id
+        topid: this.rankAlbum.id
       }).then((res) => {
         this.songList = this._normalizeSongList(res.songlist)
         this.isFetchSongList = true

@@ -43,11 +43,9 @@ export default {
     ...mapMutations({
       setSinger: 'SET_SINGER',
     }),
-    handlePlayList(playList) {
-      if (playList.length) {
-        this.$refs.scrollWrapper.style.paddingBottom = `${44 + 60}px`
-        this.$refs.scroll.refresh()
-      }
+    handlePlayList() {
+      this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
+      this.$refs.scroll.refresh()
     },
     _getSingerList() {
       setTimeout(() => {
@@ -118,8 +116,9 @@ export default {
   height: calc(100vh - 44px)
   overflow: hidden
   .index-list-scroll-wrapper
-    position: relative
-    height: 100vh
     box-sizing: border-box
-    padding-bottom: 44px
+    position: fixed
+    width: 100%
+    top: 88px
+    bottom: 0
 </style>

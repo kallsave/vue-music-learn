@@ -138,7 +138,7 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import createKeyframe from 'create-keyframe-animation'
 import { prefixStyle, getTransformAngle } from '@/common/helpers/dom.js'
 import { padZero, shuffle } from '@/common/helpers/util.js'
-import { playMode } from '@/store/config.js'
+import { playMode } from '@/store/modules/player/config.js'
 import Lyric from 'lyric-parser'
 import { createSong, Song } from '@/common/class/song.js'
 
@@ -271,7 +271,7 @@ export default {
       setPlayState: 'SET_PLAYING_STATE',
       setCurrentIndex: 'SET_CURRENT_INDEX',
       setPlayMode: 'SET_PLAY_MODE',
-      setPlayList: 'SET_PLAYLIST'
+      setPlayList: 'SET_PLAY_LIST'
     }),
     ...mapActions([
       'addSongClass'

@@ -31,14 +31,17 @@ export default {
   },
   methods: {
     show() {
-      this.isVisible = true
-      this.clearTimer()
+      this.hide()
       this.$nextTick(() => {
-        if (this.time !== 0) {
-          this.timer = setTimeout(() => {
-            this.hide()
-          }, this.time)
-        }
+        this.isVisible = true
+        this.clearTimer()
+        this.$nextTick(() => {
+          if (this.time !== 0) {
+            this.timer = setTimeout(() => {
+              this.hide()
+            }, this.time)
+          }
+        })
       })
     },
     hide() {

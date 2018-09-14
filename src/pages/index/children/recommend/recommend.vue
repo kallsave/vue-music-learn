@@ -59,7 +59,6 @@
         </div>
       </vi-scroll>
     </div>
-    <router-view></router-view>
   </div>
 </template>
 
@@ -92,13 +91,11 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setDisc: 'SET_DISC'
+      setRecommendAlbum: 'SET_RECOMMEND_ALBUM'
     }),
-    handlePlayList(playList) {
-      if (playList.length) {
-        this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
-        this.$refs.scroll.refresh()
-      }
+    handlePlayList() {
+      this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
+      this.$refs.scroll.refresh()
     },
     _getData() {
       Promise.all([this._getRecommend(), this._getDiscList()]).then((res) => {
@@ -148,7 +145,7 @@ export default {
       this.$router.push({
         path: `/music/recommend-detail/${item.dissid}`
       })
-      this.setDisc(item)
+      this.setRecommendAlbum(item)
     }
   },
   destroyed() {
@@ -159,20 +156,22 @@ export default {
 
 <style lang="stylus" scoped>
 @import "~@/common/stylus/variable.styl"
+
 .recommend
   width: 100%
-  // calc的百分比是相对宽度的
   height: calc(100vh - 44px)
   overflow: hidden
   .scroll-wrapper
-    position: relative
     box-sizing: border-box
-    height: 100vh
+    position: fixed
+    width: 100%
+    top: 88px
+    bottom: 0
     .slide-wrapper
       overflow: hidden
       .slide-item
-        float: left
         box-sizing: border-box
+        float: left
         overflow: hidden
         text-align: center
         a

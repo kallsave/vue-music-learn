@@ -12,15 +12,15 @@
           :scale="0.8"
           :title-color="'#ffcd32'"
           :icon-color="'#ffcd32'"></vi-loading>
-        <ul>
+        <ul class="rank-list">
           <li class="item" :key="index"
             v-for="(item, index) in rankList"
             @click="selectItem($event, item)">
             <div class="icon">
               <img width="100" height="100" v-lazy="item.picUrl"/>
             </div>
-            <ul class="songlist">
-              <li class="song" :key="index"
+            <ul class="song-name-list">
+              <li class="song-name" :key="index"
                 v-for="(song, index) in item.songList">
                 <span>{{index + 1}}</span>
                 <span>{{song.songname}}-{{song.singername}}</span>
@@ -47,28 +47,21 @@ export default {
     }
   },
   mounted() {
-    this.$refs.rankListLoading.show()
+    console.log('aaa')
+    // this.$refs.rankListLoading.show()
     this._getTopList()
-  },
-  watch: {
-    // rankList() {
-    //   setTimeout(() => {
-    //     this.$Lazyload.lazyLoadHandler()
-    //   }, 20)
-    // }
   },
   methods: {
     ...mapMutations({
-      setTopList: 'SET_TOP_LIST'
+      setRankAlbum: 'SET_RANK_ALBUM'
     }),
-    handlePlayList(playList) {
-      if (playList.length) {
-        this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
-        this.$refs.scroll.refresh()
-      }
+    handlePlayList() {
+      this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
+      this.$refs.scroll.refresh()
     },
     _getTopList() {
       getTopList().then((res) => {
+        console.log('rank请求数据')
         this.$refs.rankListLoading && this.$refs.rankListLoading.hide()
         this.rankList = res.data.topList
       })
@@ -81,7 +74,7 @@ export default {
       this.$router.push({
         path: `/music/rank-detail/${item.id}`
       })
-      this.setTopList(item)
+      this.setRankAlbum(item)
     }
   }
 }
@@ -96,32 +89,35 @@ export default {
   height: calc(100vh - 44px)
   overflow: hidden
   .scroll-wrapper
-    position: relative
     box-sizing: border-box
-    height: 100vh
-    .item
-      display: flex
-      margin: 0 20px
-      padding-top: 20px
-      height: 100px
-      &:last-child
-        padding-bottom: 20px
-      .icon
-        flex: 0 0 100px
-        width: 100px
-        height: 100px
-      .songlist
-        flex: 1
+    position: fixed
+    width: 100%
+    top: 88px
+    bottom: 0
+    .rank-list
+      .item
         display: flex
-        flex-direction: column
-        justify-content: center
-        padding: 0 20px
+        margin: 0 20px
+        padding-top: 20px
         height: 100px
-        overflow: hidden
-        background: $color-highlight-background
-        color: $color-text-d
-        font-size: $font-size-small
-        .song
-          no-wrap()
-          line-height: 26px
+        &:last-child
+          padding-bottom: 20px
+        .icon
+          flex: 0 0 100px
+          width: 100px
+          height: 100px
+        .song-name-list
+          flex: 1
+          display: flex
+          flex-direction: column
+          justify-content: center
+          padding: 0 20px
+          height: 100px
+          overflow: hidden
+          background: $color-highlight-background
+          color: $color-text-d
+          font-size: $font-size-small
+          .song-name
+            no-wrap()
+            line-height: 26px
 </style>

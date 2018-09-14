@@ -9,8 +9,9 @@ export function padZero (num, n = 2) {
 }
 
 // 返回min~max之间的整数
-function getRandomInt(min, max) {
+function getRandomInt (min, max) {
   // Math.random()不包括1,有缺陷
+  // Matho.random的作用
   return Math.random() * (max - min + 1) + min | 0
 }
 
@@ -34,7 +35,7 @@ export function isEmptyObject (obj) {
 }
 
 // 转驼峰
-export function camelize(str) {
+export function camelize (str) {
   str = String(str)
   return str.replace(/-(\w)/g, function (m, c) {
     return c ? c.toUpperCase() : ''
@@ -42,19 +43,22 @@ export function camelize(str) {
 }
 
 // 驼峰转'-'
-export function middleline(str) {
+export function middleline (str) {
   str = String(str)
   return str.replace(/([A-Z])/g, '-$1').toLowerCase()
 }
 
-// setTimeout节流
-export function debounce(func, delay) {
+// setTimeout节流高阶函数,被节流函数和一个节流时间
+export function debounce (func, delay) {
   let timer
 
+  // 捕获args传给下一级
+  // ...args是...arguments的简写
   return function (...args) {
     if (timer) {
       clearTimeout(timer)
     }
+    // 箭头函数的arguments是外部函数的arguments
     timer = setTimeout(() => {
       func.apply(this, args)
     }, delay)
@@ -62,7 +66,7 @@ export function debounce(func, delay) {
 }
 
 // 深度合并,不是深度克隆
-function deepAssign(to, from) {
+function deepAssign (to, from) {
   for (let key in from) {
     if (!to[key] || typeof to[key] !== 'object') {
       to[key] = from[key]

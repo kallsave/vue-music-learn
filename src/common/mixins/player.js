@@ -1,9 +1,23 @@
 import { mapGetters } from 'vuex'
-// import { playMode } from '@/store/config'
-
 export const playListMixin = {
+  data() {
+    return {
+      hadHandlerPlayList: false
+    }
+  },
   mounted() {
-    this.handlePlayList(this.playList)
+    if (this.playList.length && !this.hadHandlerPlayList) {
+      console.log('mounted playList')
+      this.hadHandlerPlayList = true
+      this.handlePlayList()
+    }
+  },
+  activated() {
+    if (this.playList.length && !this.hadHandlerPlayList) {
+      console.log('activated playList')
+      this.hadHandlerPlayList = true
+      this.handlePlayList()
+    }
   },
   computed: {
     ...mapGetters([
@@ -11,18 +25,18 @@ export const playListMixin = {
     ])
   },
   watch: {
-    playList(newVal) {
-      this.handlePlayList(newVal)
+    playList(newVal, oldVal) {
+      if (newVal.length && !oldVal.length && !this.hadHandlerPlayList) {
+        this.hadHandlerPlayList = true
+        this.handlePlayList()
+      }
     }
-  },
-  activated() {
-    this.handlePlayList(this.playList)
   },
   methods: {
     handlePlayList() {
       throw new Error('component must implement handlePlayList method')
     }
-  }
+  },
 }
 
 export const playerMixin = {

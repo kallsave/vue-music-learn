@@ -11,41 +11,19 @@ import VueLazyLoad from 'vue-lazyload'
 // import fastclick from 'fastclick'
 
 import '@/common/stylus/index.styl'
-import ViScroll from '@/vi-components/scroll/index.js'
-import ViSlide from '@/vi-components/slide/index.js'
-import ViLoadListCon from '@/vi-components/load-list-con/index.js'
-import ViPopup from '@/vi-components/popup/index.js'
-import ViToast from '@/vi-components/toast/index.js'
-import BodyViToast from '@/vi-components/toast/mount-in-body.js'
-import ViLoading from '@/vi-components/loading/index.js'
+import Vi from '@/vi-components/index.js'
+
 import BaseIndexList from '@/base-components/index-list/index.js'
-import ViSticky from '@/vi-components/sticky/index.js'
-import ViProgressBar from '@/vi-components/progress-bar/index.js'
-import ViProgressCircle from '@/vi-components/progress-circle/index.js'
 import BaseSearchBox from '@/base-components/search-box/index.js'
-import ViSlideRouter from '@/vi-components/slide-router/index.js'
-import ViToastTxt from '@/vi-components/toast-txt/index.js'
 
 import ReverScroll from '@/rever-components/scroll/index.js'
 import ReverSticky from '@/rever-components/scroll/plugins/sticky/index.js'
 
-// Vue.use(Navigation, {router, store})
-Vue.use(ViScroll)
-Vue.use(ViSlide)
-Vue.use(ViLoadListCon)
-Vue.use(ViToast)
-Vue.use(ViPopup)
-Vue.use(BodyViToast)
-Vue.use(ViLoading)
+Vue.use(Vi)
+Vue.use(BaseSearchBox)
 Vue.use(BaseIndexList)
-Vue.use(ViSticky)
 Vue.use(ReverScroll)
 Vue.use(ReverSticky)
-Vue.use(ViProgressBar)
-Vue.use(ViProgressCircle)
-Vue.use(BaseSearchBox)
-Vue.use(ViSlideRouter)
-Vue.use(ViToastTxt)
 
 // fastclick.attach(document.body)
 

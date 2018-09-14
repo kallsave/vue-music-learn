@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as actions from './actions'
-import * as getters from './getters'
-import state from './state'
-import mutations from './mutations'
+
+// modules
+import singers from './modules/singer/index.js'
+import player from './modules/player/index.js'
+import rankAlbum from './modules/rank-album/index.js'
+import recommendAlbum from './modules/recommend-album/index.js'
+
 import createLogger from 'vuex/dist/logger'
 import createPersistedState from 'vuex-persistedstate'
 
@@ -45,10 +48,12 @@ const VuexPlugins = [
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  actions,
-  getters,
-  state,
-  mutations,
+  modules: {
+    singers,
+    player,
+    rankAlbum,
+    recommendAlbum
+  },
   strict: debug,
   plugins: debug ? VuexPlugins.concat([createLogger()]) : VuexPlugins
 })

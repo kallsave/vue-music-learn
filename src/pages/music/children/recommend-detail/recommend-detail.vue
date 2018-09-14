@@ -29,24 +29,24 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'disc'
+      'recommendAlbum'
     ]),
     title() {
-      return this.disc.dissname
+      return this.recommendAlbum.dissname
     },
     bgImage() {
-      return this.disc.imgurl
+      return this.recommendAlbum.imgurl
     },
   },
   methods: {
     _getSongList() {
       // store失效返回上层
-      if (!this.disc.dissid) {
+      if (!this.recommendAlbum.dissid) {
         this.$router.push('/recommend')
         return
       }
       getSongList({
-        disstid: this.disc.dissid
+        disstid: this.recommendAlbum.dissid
       }).then((res) => {
         setTimeout(() => {
           this.songList = this._normalizeSongList(res.cdlist[0].songlist)
