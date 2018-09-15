@@ -163,7 +163,11 @@ export default {
         this.checkLoaded = true
         this.$emit(EVENT_LOAD_IMAGE)
       }
-    }
+    },
+    destroyed() {
+      this.slide && this.slide.destroy()
+      this.slide = null
+    },
   }
 }
 </script>

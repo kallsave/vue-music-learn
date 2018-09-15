@@ -290,7 +290,7 @@ export default {
         this._calculateStickyTop()
         this.refresh()
       })
-    }
+    },
   }
 }
 </script>

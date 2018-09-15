@@ -122,9 +122,10 @@ export default {
     },
     isFetchSongList(newVal) {
       if (newVal) {
-        this.$refs.songLoading && this.$refs.songLoading.hide()
-        this.$nextTick(() => {
-          this.$refs.sticky.forceCalculateStickyTop()
+        this.$refs.songLoading && this.$refs.songLoading.hide().then(() => {
+          this.$nextTick(() => {
+            this.$refs.sticky.forceCalculateStickyTop()
+          })
         })
       }
     },

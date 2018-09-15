@@ -86,7 +86,6 @@ export default {
     }
   },
   mounted() {
-    this.$refs.allLoading.show()
     this._getData()
   },
   methods: {
@@ -98,12 +97,14 @@ export default {
       this.$refs.scroll.refresh()
     },
     _getData() {
+      this.$refs.allLoading.show()
       Promise.all([this._getRecommend(), this._getDiscList()]).then((res) => {
         // 两个接口都拿到数据的操作
         // promise在组件销毁后还是会执行的
-        this.$refs.allLoading && this.$refs.allLoading.hide()
-        this.$nextTick(() => {
-          this.$refs.scroll.refresh()
+        this.$refs.allLoading && this.$refs.allLoading.hide().then(() => {
+          this.$nextTick(() => {
+            this.$refs.scroll.refresh()
+          })
         })
       })
     },
@@ -147,9 +148,6 @@ export default {
       })
       this.setRecommendAlbum(item)
     }
-  },
-  destroyed() {
-    console.log('destoyed')
   },
 }
 </script>

@@ -7,14 +7,12 @@ export const playListMixin = {
   },
   mounted() {
     if (this.playList.length && !this.hadHandlerPlayList) {
-      console.log('mounted playList')
       this.hadHandlerPlayList = true
       this.handlePlayList()
     }
   },
   activated() {
     if (this.playList.length && !this.hadHandlerPlayList) {
-      console.log('activated playList')
       this.hadHandlerPlayList = true
       this.handlePlayList()
     }

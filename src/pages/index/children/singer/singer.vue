@@ -36,7 +36,6 @@ export default {
     }
   },
   mounted() {
-    this.$refs.singerLoading.show()
     this._getSingerList()
   },
   methods: {
@@ -48,12 +47,17 @@ export default {
       this.$refs.scroll.refresh()
     },
     _getSingerList() {
+      this.$refs.singerLoading.show()
       setTimeout(() => {
         getSingerList().then((res) => {
-          this.$refs.singerLoading && this.$refs.singerLoading.hide()
           this.singerList = this._normalizeSinger(res.data.list)
+          this.$refs.singerLoading && this.$refs.singerLoading.hide().then(() => {
+            this.$nextTick(() => {
+              this.$refs.scroll.refresh()
+            })
+          })
         })
-      }, 1000)
+      }, 500)
     },
     _normalizeSinger(list) {
       let map = {

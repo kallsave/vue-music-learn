@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import ViScroll from '@/vi-components/scroll/scroll.vue'
+import ViScroll from '@/vi-components/components/scroll/scroll.vue'
 import { getData, prefixStyle } from '@/common/helpers/dom.js'
 
 const transform = prefixStyle('transform')

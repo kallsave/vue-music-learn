@@ -14,6 +14,9 @@
 
 <script>
 import visibilityMixin from '@/common/mixins/visibility.js'
+import { prefixStyle } from '@/common/helpers/dom.js'
+
+const transitionEnd = prefixStyle('transitionEnd')
 
 const COMPONENT_NAME = 'vi-loading'
 
@@ -49,7 +52,10 @@ export default {
   data() {
     return {
       balde: 12,
+      isListenedTransitionEnd: false
     }
+  },
+  mounted() {
   },
   computed: {
     style() {
@@ -75,7 +81,29 @@ export default {
         return 'vi-loading-slide-up'
       }
     }
-  }
+  },
+  methods: {
+    hide() {
+      this.promise = new Promise((resolve, reject) => {
+        this.resolve = resolve
+        if (!this.isListenedTransitionEnd) {
+          this.isListenedTransitionEnd = true
+          this.$el.addEventListener(transitionEnd, this.transitionEndCallBack, true)
+        }
+        this.isVisible = false
+      })
+      return this.promise
+    },
+    transitionEndCallBack(e) {
+      this.resolve(e)
+    }
+  },
+  destroyed() {
+    this.$el.removeEventListener(transitionEnd, this.transitionEndCallBack, true)
+    this.promise = null
+    this.resolve = null
+  },
+
 }
 </script>
 

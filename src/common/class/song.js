@@ -37,8 +37,8 @@ export class Song {
 // 从接口处理数据使用这个函数
 export function createSong (musicData) {
   const url = param(`http://dl.stream.qqmusic.qq.com/C400${musicData.strMediaMid}.m4a`, {
-    guid: 7559132,
-    vkey: '9C58118CF92CB49A61AA199FBAED31F5059CC4969CB9BF929D7F2AC9B634A9716E192A50B8BD847AE95B22A943942072B33693CFB6F431A1',
+    guid: 2919755090,
+    vkey: 'D8BBA758C38D163C48FEE450F4CFF5365119CA0B8F029A60D08DE64DC91415650959CBA51BB1BF91136CD0FE77591713D9513BF4534C6AD2',
     uin: 0,
     fromtag: 38
   })

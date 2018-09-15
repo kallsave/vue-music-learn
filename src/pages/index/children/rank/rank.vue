@@ -38,6 +38,7 @@ import { getTopList } from '@/api/rank.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { sticky } from '../../mixins/inject-sticky.js'
+import { formatDate } from '@/common/helpers/formatDate.js'
 
 export default {
   mixins: [sticky, playListMixin],
@@ -47,8 +48,6 @@ export default {
     }
   },
   mounted() {
-    console.log('aaa')
-    // this.$refs.rankListLoading.show()
     this._getTopList()
   },
   methods: {
@@ -60,10 +59,14 @@ export default {
       this.$refs.scroll.refresh()
     },
     _getTopList() {
+      this.$refs.rankListLoading.show()
       getTopList().then((res) => {
-        console.log('rank请求数据')
-        this.$refs.rankListLoading && this.$refs.rankListLoading.hide()
         this.rankList = res.data.topList
+        this.$refs.rankListLoading && this.$refs.rankListLoading.hide().then(() => {
+          this.$nextTick(() => {
+            this.$refs.scroll.refresh()
+          })
+        })
       })
     },
     selectItem(e, item) {

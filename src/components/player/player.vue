@@ -152,7 +152,7 @@ const transform = prefixStyle('transform')
 export default {
   data() {
     return {
-      songReady: false,
+      isSongReady: false,
       currentTime: 0,
       isSongChange: false,
       durationMove: DURATION_MOVE,
@@ -169,7 +169,7 @@ export default {
       playingLyric: ''
     }
   },
-  created() {
+  mounted() {
     // localStorage不能保存class的处理
     if (this.currentSong && !(this.currentSong instanceof Song)) {
       this.addSongClass()
@@ -186,18 +186,18 @@ export default {
       'sequenceList'
     ]),
     playIcon() {
-      return this.playing && this.songReady ? 'icon-pause' : 'icon-play'
+      return this.playing && this.isSongReady ? 'icon-pause' : 'icon-play'
     },
     miniIcon() {
-      return this.playing && this.songReady ? 'icon-pause-mini' : 'icon-play-mini'
+      return this.playing && this.isSongReady ? 'icon-pause-mini' : 'icon-play-mini'
     },
     cdClass() {
       // 用js实现了
-      // return this.playing && this.songReady ? 'play' : 'play pause'
+      // return this.playing && this.isSongReady ? 'play' : 'play pause'
       return ''
     },
     disableClass() {
-      return this.songReady ? '' : 'disable'
+      return this.isSongReady ? '' : 'disable'
     },
     percent() {
       return this.currentTime / this.currentSong.duration
@@ -221,7 +221,7 @@ export default {
       if (newVal.id === oldVal.id) {
         return
       }
-      this.songReady = false
+      this.isSongReady = false
       this.isSongChange = true
       this.oldSong = oldVal
       // 等到isSongChange触发的视图更新完毕再让animatoin无效
@@ -235,34 +235,32 @@ export default {
         })
       })
     },
-    playing(newVal) {
+    playing() {
       this.$nextTick(() => {
-        const audio = this.$refs.audio
-        if (newVal && this.songReady) {
-          audio.play()
-        } else {
-          audio.pause()
-        }
-        if (newVal) {
-          this.bigImgAfterEnter(this.$refs.bigImg, DURATION_START_ROTATE)
-          this.miniImgAfterEnter(this.$refs.miniImg, DURATION_START_ROTATE)
-        } else {
-          if (this.fullScreen) {
-            this.bigImgAngle = getTransformAngle(this.$refs.bigImg)
-            this.$refs.bigImg.style.animation = ''
-            this.$refs.bigImg.style[transform] = `rotate(${this.bigImgAngle}deg)`
-          } else {
-            this.bigImgAngle = getTransformAngle(this.$refs.miniImg)
-            this.$refs.miniImg.style.animation = ''
-            this.$refs.miniImg.style[transform] = `rotate(${this.bigImgAngle}deg)`
-          }
-        }
+        this.playingHandler({
+          durationStartRotate: 0
+        })
       })
     },
     // 歌曲资源能找到并且当前状态是播放就播放
-    songReady(newVal) {
+    isSongReady(newVal) {
       const audio = this.$refs.audio
-      this.playing && newVal ? audio.play() : audio.pause()
+      if (this.playing && newVal) {
+        audio.play()
+        if (this.currentLyric) {
+          // Lyric是个定时器
+          this.currentLyric.stop()
+          this.currentTime = 0
+          this.currentLineNum = 0
+          this.playingLyric = ''
+        }
+        this.playLyric()
+      } else {
+        audio.pause()
+      }
+      this.$nextTick(() => {
+        this.playingHandler()
+      })
     }
   },
   methods: {
@@ -322,10 +320,9 @@ export default {
         done()
       })
     },
-    bigImgAfterEnter(el, startRotateTime) {
-      startRotateTime = startRotateTime || 0
+    bigImgAfterEnter(el, startRotateTime = 0) {
       setTimeout(() => {
-        if (!this.playing || !this.songReady) {
+        if (!this.playing || !this.isSongReady) {
           return
         }
         this.$refs.bigImg.style[transform] = ''
@@ -423,11 +420,10 @@ export default {
       })
       createKeyframe.runAnimation(el, 'mini-img-enter')
     },
-    miniImgAfterEnter(el, startRotateTime) {
-      startRotateTime = startRotateTime || 0
+    miniImgAfterEnter(el, startRotateTime = 0) {
       this.$refs.miniImg.style[transform] = ''
       setTimeout(() => {
-        if (!this.playing || !this.songReady) {
+        if (!this.playing || !this.isSongReady) {
           return
         }
         let frameList = [
@@ -509,24 +505,17 @@ export default {
       this.isSongChange = false
     },
     togglePlaying() {
-      if (!this.songReady) {
+      if (!this.isSongReady) {
         return
       }
       this.setPlayState(!this.playing)
+      // 歌曲暂停和播放用togglePlay方法
       if (this.currentLyric) {
         this.currentLyric.togglePlay()
       }
     },
     ready() {
-      this.songReady = true
-      if (this.currentLyric) {
-        // Lyric是个定时器
-        this.currentLyric.stop()
-        this.currentTime = 0
-        this.currentLineNum = 0
-        this.playingLyric = ''
-      }
-      this.playLyric()
+      this.isSongReady = true
     },
     prev() {
       let index = this.currentIndex - 1
@@ -569,7 +558,7 @@ export default {
       this.$refs.audio.play()
     },
     error() {
-      this.songReady = false
+      this.isSongReady = false
       this.toast = this.$createViToast({
         scale: 0.8,
         mask: true,
@@ -659,6 +648,27 @@ export default {
     slideEnd(slideIndex) {
       this.currentSlideIndex = slideIndex
     },
+    // 处理旋转动画的时机
+    playingHandler({durationStartRotate = DURATION_START_ROTATE} = {}) {
+      console.log(durationStartRotate)
+      const audio = this.$refs.audio
+      if (this.isSongReady && this.playing) {
+        audio.play()
+        this.bigImgAfterEnter(this.$refs.bigImg, durationStartRotate)
+        this.miniImgAfterEnter(this.$refs.miniImg, durationStartRotate)
+      } else {
+        audio.pause()
+        if (this.fullScreen) {
+          this.bigImgAngle = getTransformAngle(this.$refs.bigImg)
+          this.$refs.bigImg.style.animation = ''
+          this.$refs.bigImg.style[transform] = `rotate(${this.bigImgAngle}deg)`
+        } else {
+          this.bigImgAngle = getTransformAngle(this.$refs.miniImg)
+          this.$refs.miniImg.style.animation = ''
+          this.$refs.miniImg.style[transform] = `rotate(${this.bigImgAngle}deg)`
+        }
+      }
+    }
   }
 }
 </script>
