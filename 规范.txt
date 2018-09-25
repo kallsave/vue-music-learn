@@ -11,6 +11,50 @@
 4.components > mixins > provide > inject >  props > data > created > mounted > computed > watch > methods > updated
 5.mounted中避免使用this.$nextTick,
 虽然子组件在mounted使用this.$nextTick可以确保父组件中所有的子组件的dom都挂载完毕
+6.动作命名:
+~can 判断是否可执行某个动作
+~has 判断是否有某个值
+~is 判断是否为某个值
+~get 获取某个值
+~set 设置某个值
+~load 加载某些数据
+
+## 语法建议和规范
+1.Promise的catch语法建议
+采用写法:
+updateImg().then((data) => {
+  // ...
+}).catch((err) => {
+  // ...
+  console.error(err)
+})
+第一个then的Promise.resolve的回调,catch是reject的回调
+
+如果是使用async/await语法,在await函数后使用catch避免阻断
+let imgList = [1, 2, 3]
+function updateImg (img) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (img !== 2) {
+        console.log(`第${img}张图片上传成功`)
+        resolve(img)
+      } else {
+        console.log(`第${img}张图片上传失败`)
+        reject(`第${img}张图片上传失败`)
+      }
+    }, 1000)
+  })
+}
+async function updateAllImg () {
+  for (let i = 0; i < imgList.length; i++) {
+    let item = imgList[i]
+    // 当await中的Promise对象reject被catch处理时,不会阻断下一个await执行
+    await updateImg(item).catch((err) => {
+      // ...
+      // console.error(err)
+    })
+  }
+}
 
 ## Css代码规范
 1.不得使用active,content,left,right等容易被命名使用的全局样式
@@ -25,13 +69,14 @@ vi-components是全局components
 部分提供body挂载,由createAPI或者mount-in-body调用
 样式使用vi-前缀严格开头,不使用scoped,
 // 不使用webpack的alias语法
+// 写readme.md
 需要有component-name
 使用局部图标字体,重写命名规则防止和全局图标字体冲突
 
 2.base-components有待进化成ui-components,没有高度封装化,不带任何的业务逻辑
 
 3.components是业务逻辑组件,带有接口,vuex使用的components
-全局的小零件,样式使用scoped
+全局的小零件,样式使用scoped 3
 
 4.pages是页面级组件,vue-router的components
 子路由应该放在父路由的文件夹的children里面

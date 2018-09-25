@@ -14,10 +14,11 @@
           :icon-color="'#ffcd32'"></vi-loading>
         <div class="slide-wrapper">
           <vi-slide ref="slider"
-            :initPageIndex="currentPageIndex"
+            :init-page-index="currentPageIndex"
             :data="recommends"
-            :loop="false"
-            :showDots="true"
+            :loop="true"
+            :show-dots="true"
+            :auto-play="true"
             @scroll-end="scrollEnd"
             @load-image="loadImage">
             <!-- slide是一个功能型组件 -->

@@ -48,8 +48,10 @@ export default {
   },
   methods: {
     _listenTouchEvents() {
-      this.$el.addEventListener('touchstart', this.touchstartHandler.bind(this))
-      this.$el.addEventListener('touchend', this.touchendHandler.bind(this))
+      this.listenerTouchstartHandler = this.touchstartHandler.bind(this)
+      this.listenerTouchendHandler = this.touchendHandler.bind(this)
+      this.$el.addEventListener('touchstart', this.listenerTouchstartHandler, false)
+      this.$el.addEventListener('touchend', this.listenerTouchendHandler, false)
     },
     touchstartHandler(e) {
       this.startX = e.changedTouches[0].pageX
@@ -83,25 +85,29 @@ export default {
         this.slideDirection = 'slideback'
         this.$router.push({'path': this.routerList[currentIndex - 1].path})
       }
-    }
+    },
+    destroyed() {
+      this.$el.removeEventListener('touchstart', this.listenerTouchstartHandler, false)
+      this.$el.removeEventListener('touchend', this.listenerTouchendHandler, false)
+    },
   }
 }
 </script>
 
 <style lang="stylus">
 .slideforward-enter-active
-  transition: all 0.3s
+  transition: all 0.05s
 .slideforward-leave-active
-  transition: all 0.2s
+  transition: all 0.05s
 .slideforward-enter
   transform:  translate3d(100%, 0px, 0px)
 .slideforward-leave-to
   transform:  translate3d(-100%, 0px, 0px)
 
 .slideback-enter-active
-  transition: all 0.3s
+  transition: all 0.05s
 .slideback-leave-active
-  transition: all 0.2s
+  transition: all 0.05s
 .slideback-enter
   transform:  translate3d(-100%, 0px, 0px)
 .slideback-leave-to

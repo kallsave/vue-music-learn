@@ -24,7 +24,7 @@ export class Song {
         hostUin: 0,
         needNewCode: 0,
         categoryId: 10000000,
-        pcachetime: +new Date(),
+        pcachetime: new Date(),
         format: 'json'
       }).then((res) => {
         this.lyric = Base64.decode(res.lyric)
@@ -37,8 +37,8 @@ export class Song {
 // 从接口处理数据使用这个函数
 export function createSong (musicData) {
   const url = param(`http://dl.stream.qqmusic.qq.com/C400${musicData.strMediaMid}.m4a`, {
-    guid: 2919755090,
-    vkey: 'D8BBA758C38D163C48FEE450F4CFF5365119CA0B8F029A60D08DE64DC91415650959CBA51BB1BF91136CD0FE77591713D9513BF4534C6AD2',
+    guid: 7389346688,
+    vkey: 'EF30EAF9FF9DEB7BB7AE1717199DF342F778C00592C20552FB619575ADB4E877C006E11876C1471125CCF2E3FD6B4754A83D8099EB3CB5EA',
     uin: 0,
     fromtag: 38
   })

@@ -650,7 +650,6 @@ export default {
     },
     // 处理旋转动画的时机
     playingHandler({durationStartRotate = DURATION_START_ROTATE} = {}) {
-      console.log(durationStartRotate)
       const audio = this.$refs.audio
       if (this.isSongReady && this.playing) {
         audio.play()

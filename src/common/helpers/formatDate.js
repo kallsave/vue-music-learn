@@ -17,7 +17,7 @@ export function formatDate (date, fmt) {
   for (let k in o) {
     // es6正则写变量非常方便,用()定位,用RegExp.$1捕获
     if (new RegExp(`(${k})`).test(fmt)) {
-      let str = o[k] + ''
+      let str = o[k]
       fmt = fmt.replace(RegExp.$1, padLeftZero(str))
     }
   }
@@ -26,5 +26,20 @@ export function formatDate (date, fmt) {
 }
 
 function padLeftZero (str) {
+  str = str + ''
   return ('00' + str).substr(str.length)
+}
+
+// 倒计时,最大时间单位:天
+export function getDHMS (interval) {
+  let seconds = interval % 60
+  let minutes = (interval - seconds) % (60 * 60) / 60
+  let hours = (interval - seconds - minutes * 60) % (60 * 60 * 24) / (60 * 60)
+  let days = interval / (60 * 60 * 24) | 0
+  return {
+    days: padLeftZero(days),
+    hours: padLeftZero(hours),
+    minutes: padLeftZero(minutes),
+    seconds: padLeftZero(seconds)
+  }
 }

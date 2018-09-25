@@ -107,7 +107,6 @@ export default {
       'insertSong'
     ]),
     handlePlayList() {
-      this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
       this.$refs.scroll.refresh()
     },
     _getHotKey() {
@@ -292,12 +291,9 @@ export default {
               color: $color-text-d
     .result-scroll-wrapper
       position: relative
-      box-sizing: border-box
-      // sticky带来的padding-bottom
-      padding-bottom: 44px
       .suggest-list
         box-sizing: border-box
-        padding: 0 30px
+        padding: 10px 30px
         .suggest-item
           display: flex
           align-items: center

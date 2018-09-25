@@ -1,7 +1,9 @@
  <!-- slide外围必须有一个父元素,因为slide的高度是由外围父元素决定的 -->
 <template>
-  <div class="vi-slide-wrapper" ref="slide">
-    <div class="vi-slide-group" ref="slideGroup">
+  <div ref="slide" class="vi-slide-wrapper"
+    @touchstart.stop
+    @touch.stop>
+    <div ref="slideGroup" class="vi-slide-group">
       <slot>
         <!-- 默认的场景 -->
         <!-- 进来的数据要对好格式 -->
@@ -19,7 +21,7 @@
           <span class="vi-slide-dot" :key="index"
             v-for="(item, index) in dots"
             :class="{active: currentPageIndex === index }"
-            @click="_slideToPage(index)"></span>
+            @click="slideToPage(index)"></span>
         </div>
       </slot>
     </template>
@@ -63,6 +65,14 @@ export default {
     initPageIndex: {
       type: Number,
       default: 0
+    },
+    speed: {
+      type: Number,
+      default: 400
+    },
+    threshold: {
+      type: Number,
+      default: 0.3
     }
   },
   data() {
@@ -72,22 +82,23 @@ export default {
     }
   },
   mounted() {
-    // 封装vi组件请不要使用setTimeout20,
-    // 这会造成父组件$nextTick拿不到slide滚动条
-    this.$nextTick(() => {
-      this.setSlideWidth()
-      this._initDots()
-      this._initslide()
-      if (this.autoPlay) {
-        this._play()
-      }
-      window.addEventListener('resize', this._resizeHandler)
-    })
+    // 同步数据的情况
+    this.setSlideWidth()
+    this._initDots()
+    this._initSlide()
+    if (this.autoPlay) {
+      this._play()
+    }
+    window.addEventListener('resize', this._resizeHandler, false)
   },
   watch: {
-    data() {
+    data(newVal, oldVal) {
+      // 异步数据的情况
       this.$nextTick(() => {
+        this._destroy()
         this.setSlideWidth()
+        this._initDots()
+        this._initSlide()
       })
     },
   },
@@ -105,25 +116,25 @@ export default {
         width += slideWidth
       })
 
-      if (this.loop && !isResize) {
+      if (this.loop && !isResize && this.children.length > 1) {
         // 如果需要loop无缝滚动功能,还有两个缓冲div
         width += 2 * slideWidth
       }
       this.$refs.slideGroup.style.width = width + 'px'
     },
-    _initslide() {
+    _initSlide() {
       this.slide = new BScroll(this.$refs.slide, {
         scrollX: true,
         scrollY: false,
         momentum: false,
+        stopPropagation: true,
         // slide的设置
         snap: {
           loop: this.loop,
-          threshold: 0.3,
-          speed: 400
+          threshold: this.threshold,
+          speed: this.speed
         },
       })
-
       this.slide.goToPage(this.initPageIndex, 0, 0)
 
       this.slide.on('scrollEnd', () => {
@@ -131,18 +142,15 @@ export default {
         this.currentPageIndex = pageIndex
         this.$emit(EVENT_SCROLL_END, pageIndex)
         if (this.autoPlay) {
-          clearTimeout(this.timer)
           this._play()
         }
       })
     },
     _initDots() {
-      // dots是原始的children.length,如果是loop=true
-      // _initDots方法要在_initslide之前
-      this.dots = new Array(this.children.length)
+      this.dots = new Array(this.$refs.slideGroup.children.length)
     },
     _play() {
-      let pageIndex = this.currentPageIndex + 1
+      clearTimeout(this.timer)
       this.timer = setTimeout(() => {
         this.slide.next(500)
       }, this.interval)
@@ -155,7 +163,7 @@ export default {
       this.setSlideWidth(true)
       this.slide.refresh()
     },
-    _slideToPage(index) {
+    slideToPage(index) {
       this.slide.goToPage(index, 0, 400)
     },
     loadImage() {
@@ -164,9 +172,13 @@ export default {
         this.$emit(EVENT_LOAD_IMAGE)
       }
     },
-    destroyed() {
+    _destroy() {
       this.slide && this.slide.destroy()
       this.slide = null
+    },
+    destroyed() {
+      this._destroy()
+      window.removeEventListener('resize', this._resizeHandler, false)
     },
   }
 }

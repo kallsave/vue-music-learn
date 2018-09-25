@@ -1,21 +1,21 @@
 <!-- scroll需要一个父元素给高度,即scroll-wrapper -->
 <template>
-  <div ref="wrapper" class="vi-scroll-wrapper">
+  <div ref="wrapper" class="vi-scroll-wrapper" @touchmove.prevent>
     <div class="vi-scroll-content">
       <slot></slot>
       <slot name="pullup" :pullUpLoad="pullUpLoad" :isPullUpLoad="isPullUpLoad">
-        <div class="vi-scroll-pullup-wrapper" v-if="pullUpLoad && isPullUpLoad">
-          <div class="vi-scroll-before-trigger">{{pullUpTxt}}</div>
-          <div class="vi-scroll-after-trigger">
-            <loading></loading>
+        <div class="vi-scroll-pullup" v-if="pullUpLoad">
+          <div class="vi-scroll-pullup-wrapper" v-if="isPullUpLoad">
+            <div class="vi-scroll-pullup-before-trigger">{{pullUpTxt}}</div>
+            <div class="vi-scroll-pullup-after-trigger">
+              <loading></loading>
+            </div>
           </div>
-          <div>
-          </div>
+          <div class="vi-scroll-pullup-close-wrapper" v-if="!isPullUpLoad && noMoreTxt">{{noMoreTxt}}</div>
         </div>
-        <div class="vi-scroll-pullup-close-wrapper" v-if="!pullUpLoad && noMoreTxt">{{noMoreTxt}}</div>
       </slot>
     </div>
-    <div ref="pulldown" class="vi-scroll--pulldown" v-if="pullDownRefresh">
+    <div ref="pulldown" class="vi-scroll-pulldown" v-if="pullDownRefresh">
       <slot name="pulldown"
         :pullDownRefresh="pullDownRefresh"
         :pullDownStyle="pullDownStyle"
@@ -23,10 +23,10 @@
         :isPullingDown="isPullingDown"
         :bubbleY="bubbleY">
         <div class="vi-scroll-pulldown-wrapper" :style="pullDownStyle">
-          <div class="vi-scroll-before-trigger" v-show="beforePullDown">
+          <div class="vi-scroll-pulldown-before-trigger" v-show="beforePullDown">
             <bubble class="bubble" :y="bubbleY"></bubble>
           </div>
-          <div class="vi-scroll-after-trigger" v-show="!beforePullDown">
+          <div class="vi-scroll-pulldown-after-trigger" v-show="!beforePullDown">
             <div v-show="isPullingDown" class="vi-scroll-loading">
               <loading></loading>
             </div>
@@ -369,39 +369,41 @@ export default {
   // 开启了下拉更新功能要设置overflow:hidden
   overflow: hidden
   .vi-scroll-content
-    .vi-scroll-pullup-wrapper
+    .vi-scroll-pullup
+      .vi-scroll-pullup-wrapper
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        .vi-scroll-pullup-before-trigger
+          padding: 22px 0
+          min-height: 1em
+          margin-right: 20px
+        .vi-scroll-pullup-after-trigger
+          padding: 19px 0
+      .vi-scroll-pullup-close-wrapper
+        width: 100%
+        text-align: center
+        line-height: 50px
+  .vi-scroll-pulldown
+    .vi-scroll-pulldown-wrapper
+      position: absolute
       width: 100%
+      left: 0
       display: flex
       justify-content: center
       align-items: center
-      .vi-scroll-before-trigger
-        padding: 22px 0
-        min-height: 1em
-        margin-right: 20px
-      .vi-scroll-after-trigger
-        padding: 19px 0
-    .vi-scroll-pullup-close-wrapper
-      width: 100%
-      text-align: center
-      line-height: 50px
-  .vi-scroll-pulldown-wrapper
-    position: absolute
-    width: 100%
-    left: 0
-    display: flex
-    justify-content: center
-    align-items: center
-    transition: all
-    .vi-scroll-before-trigger
-      height: 54px
-      line-height: 0
-      padding-top: 6px
-    .vi-scroll-after-trigger
-      .vi-scroll-loading
-        padding: 8px 0
-      .vi-scroll-pulldown-loaded
-        box-sizing: border-box
-        padding: 12px 0
-        line-height: 40px
+      transition: all
+      .vi-scroll-pulldown-before-trigger
+        height: 54px
+        line-height: 0
+        padding-top: 6px
+      .vi-scroll-pulldown-after-trigger
+        .vi-scroll-loading
+          padding: 8px 0
+        .vi-scroll-pulldown-loaded
+          box-sizing: border-box
+          padding: 12px 0
+          line-height: 40px
 
 </style>

@@ -38,7 +38,6 @@ import { getTopList } from '@/api/rank.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { sticky } from '../../mixins/inject-sticky.js'
-import { formatDate } from '@/common/helpers/formatDate.js'
 
 export default {
   mixins: [sticky, playListMixin],
