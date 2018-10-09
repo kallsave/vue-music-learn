@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <music-list
-      :isFetchSongList="isFetchSongList"
+      :is-fetch-song-list="isFetchSongList"
       :song-list="songList"
       :bg-image="bgImage"
       :title="title"></music-list>

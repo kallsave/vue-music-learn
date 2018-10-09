@@ -75,3 +75,20 @@ function deepAssign (to, from) {
     }
   }
 }
+
+// 获取url参数
+export function getUrlParam(currentUrl = window.location.href) {
+  if (currentUrl.indexOf('?') === -1) {
+    return {}
+  }
+  let result = {}
+  currentUrl = currentUrl.replace(/.*\?/g, '')
+  if (currentUrl.length === 0) {
+    return result
+  }
+  let arr = currentUrl.match(/[^&]+?=[^&]*/g).join('=').split('=')
+  for (let i = 0; i < arr.length; i += 2) {
+    result[arr[i]] = arr[i + 1]
+  }
+  return result
+}

@@ -11,8 +11,8 @@
               <loading></loading>
             </div>
           </div>
-          <div class="vi-scroll-pullup-close-wrapper" v-if="!isPullUpLoad && noMoreTxt">{{noMoreTxt}}</div>
         </div>
+        <div class="vi-scroll-no-more" v-if="!isPullUpLoad && pullUpDirty && data.length && noMoreTxt">{{noMoreTxt}}</div>
       </slot>
     </div>
     <div ref="pulldown" class="vi-scroll-pulldown" v-if="pullDownRefresh">
@@ -115,8 +115,11 @@ export default {
       pullDownStop: 40,
       pullDownHeight: 60,
       pullDownStyle: '',
+      // 是否处于上拉状态
       isPullUpLoad: false,
-      pullUpDirty: true,
+      // 第一次noMore是不展示的,要data的指针发生变化后
+      // 说明触发了接口
+      pullUpDirty: false,
       noMoreTxt: ''
     }
   },
@@ -155,6 +158,7 @@ export default {
     data: {
       handler() {
         console.log('watch scroll data')
+        this.pullUpDirty = true
         this.$nextTick(() => {
           this.forceUpdate(true)
         })
@@ -176,8 +180,9 @@ export default {
       },
       deep: true
     },
-    // 动态关闭下拉加载
-    // 适用于数据加载完毕的情况
+    // 动态关闭下拉加载,有两种交互情形
+    // 一种是没有数据后还是可以下拉
+    // 一种是没有数据后关闭下拉功能,通过父组件this.scrollOptions.pullUpLoad = false
     pullUpLoad: {
       handler(newVal, oldVal) {
         if (newVal) {
@@ -210,12 +215,12 @@ export default {
       this.scroll = new BScroll(this.$refs.wrapper, options)
       this._listenScrollEvents()
 
-      // 开启了下拉更新的功能
+      // 如果开启了下拉更新的功能
       if (this.pullDownRefresh) {
         this._getPullDownEleHeight()
         this._onPullDownRefresh()
       }
-      // 开启了上拉加载
+      // 如果开启了上拉加载
       if (this.pullUpLoad) {
         this._onPullUpLoad()
         this.noMoreTxt = this.pullUpLoad.txt.noMore
@@ -249,13 +254,12 @@ export default {
       this.scroll = null
     },
     _onPullDownRefresh() {
-      this.scroll.on('pullingDown', this._pullDownHandle)
       // better-scroll的事件监听系统可以重复叠加
+      this.scroll.on('pullingDown', this._pullDownHandle)
       this.scroll.on('scroll', this._pullDownScrollHandle)
     },
     _offPullDownRefresh() {
       this.scroll.off('pullingDown', this._pullDownHandle)
-      // better-scroll的事件监听取消机制
       this.scroll.off('scroll', this._pullDownScrollHandle)
     },
     _getPullDownEleHeight() {
@@ -307,7 +311,6 @@ export default {
       } else if (this.pullUpLoad && this.isPullUpLoad) {
         this.isPullUpLoad = false
         this.scroll.finishPullUp()
-        this.pullUpDirty = dirty
         if (dirty) {
           this.$nextTick(() => {
             this.refresh()
@@ -346,7 +349,6 @@ export default {
     _onPullUpLoad() {
       this.scroll.on('pullingUp', this._pullUpHandle)
     },
-    // 达到阀值只会一瞬间触发
     _offPullUpLoad() {
       this.scroll.off('pullingUp', this._pullUpHandle)
     },
@@ -381,10 +383,10 @@ export default {
           margin-right: 20px
         .vi-scroll-pullup-after-trigger
           padding: 19px 0
-      .vi-scroll-pullup-close-wrapper
-        width: 100%
-        text-align: center
-        line-height: 50px
+    .vi-scroll-no-more
+      width: 100%
+      text-align: center
+      line-height: 80px
   .vi-scroll-pulldown
     .vi-scroll-pulldown-wrapper
       position: absolute

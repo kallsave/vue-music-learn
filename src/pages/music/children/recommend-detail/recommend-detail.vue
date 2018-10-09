@@ -1,11 +1,9 @@
 <template>
-  <transition name="router-slide">
-    <music-list
-      :isFetchSongList="isFetchSongList"
-      :song-list="songList"
-      :bg-image="bgImage"
-      :title="title"></music-list>
-  </transition>
+  <music-list
+    :is-fetch-song-list="isFetchSongList"
+    :song-list="songList"
+    :bg-image="bgImage"
+    :title="title"></music-list>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
-  <div class="search">
-    <div class="search-sticky-wrapper">
+  <div ref="search" class="search">
+    <div ref="scrollWrapper" class="search-sticky-wrapper">
       <vi-sticky
         ref="scroll"
         :data="result"
@@ -29,7 +29,7 @@
             </ul>
           </div>
         </div>
-        <div ref="scrollWrapper" class="result-scroll-wrapper" v-show="query">
+        <div class="result-scroll-wrapper" v-show="query">
           <ul class="suggest-list">
             <li class="suggest-item" :key="index"
               v-for="(item, index) in result"
@@ -43,7 +43,7 @@
             </li>
           </ul>
         </div>
-        <div v-show="!result.length && isFetchSearch" class="no-result-wrapper">
+        <div v-show="query && !result.length && isFetchSearch" class="no-result-wrapper">
           <no-result :title="'抱歉，暂无搜索结果'"></no-result>
         </div>
       </vi-sticky>
@@ -53,7 +53,7 @@
 
 <script>
 import { getHotKey, search } from '@/api/search.js'
-import { sticky } from '../../mixins/inject-sticky.js'
+import { sticky, STICKY_TOP_BAR } from '../../mixins/inject-sticky.js'
 import { createSong } from '@/common/class/song.js'
 import { debounce } from '@/common/helpers/util.js'
 import NoResult from './components/no-result/no-result.vue'
@@ -107,7 +107,16 @@ export default {
       'insertSong'
     ]),
     handlePlayList() {
+      this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
       this.$refs.scroll.refresh()
+    },
+    scrollHandler(pos) {
+      if (pos.y >= 0 && pos.y < STICKY_TOP_BAR) {
+        this.Sticky.scroll.enable()
+      } else if (pos.y >= STICKY_TOP_BAR) {
+        // 设置回弹阀值
+        this.$refs.scroll.scroll.scrollTo(0, 0, 0)
+      }
     },
     _getHotKey() {
       getHotKey().then((res) => {
@@ -117,24 +126,22 @@ export default {
     _watchQuery() {
       this.$nextTick(() => {
         if (this.query) {
-          this.Sticky.scroll.enable()
-          this.$refs.scroll.scroll.enable()
+          this.$refs.search.style.height = 'calc(100vh - 44px)'
         } else {
-          this.Sticky.scroll.disable()
-          this.$refs.scroll.scroll.disable()
+          this.$refs.search.style.height = 'calc(100vh - 88px)'
         }
       })
       this.$watch('query', (newVal) => {
         this.isFetchSearch = false
+        if (newVal) {
+          this.$refs.search.style.height = 'calc(100vh - 44px)'
+        } else {
+          this.$refs.search.style.height = 'calc(100vh - 88px)'
+        }
         debounce((newVal) => {
           this.page = 1
           if (newVal) {
-            this.Sticky.scroll.enable()
-            this.$refs.scroll.scroll.enable()
             this.$refs.scroll.scroll.scrollTo(0, 0, 100)
-          } else {
-            this.Sticky.scroll.disable()
-            this.$refs.scroll.scroll.disable()
           }
           this.search().then((res) => {
             this.result = this._genResult(res.data)
@@ -230,7 +237,7 @@ export default {
         // 插入歌曲在当前页播放
         this.insertSong(item)
       }
-    }
+    },
   }
 }
 </script>
@@ -258,7 +265,6 @@ export default {
     .shortcut-scroll-wrapper
       position: relative
       box-sizing: border-box
-      height: 100vh
       .hot-key
         margin: 0 20px 20px 20px
         .title
@@ -293,11 +299,10 @@ export default {
       position: relative
       .suggest-list
         box-sizing: border-box
-        padding: 10px 30px
+        padding: 5px 30px
         .suggest-item
           display: flex
           align-items: center
-          padding-bottom: 20px
         .icon
           flex: 0 0 30px
           width: 30px
@@ -309,6 +314,7 @@ export default {
           font-size: $font-size-medium
           color: $color-text-d
           overflow: hidden
+          line-height: 35px
           .text
             no-wrap()
       .no-result-wrapper

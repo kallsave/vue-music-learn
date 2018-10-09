@@ -1,3 +1,5 @@
+export const STICKY_TOP_BAR = 44
+
 export const sticky = {
   inject: ['Sticky'],
   data() {
@@ -8,14 +10,18 @@ export const sticky = {
       }
     }
   },
+  activated() {
+    this.$nextTick(() => {
+      // this.Sticky.scroll.enable()
+    })
+  },
   methods: {
     scrollHandler(pos) {
-      if (pos.y >= 0) {
+      if (pos.y >= 0 && pos.y < STICKY_TOP_BAR) {
         this.Sticky.scroll.enable()
-      }
-      if (pos.y >= 50) {
+      } else if (pos.y >= STICKY_TOP_BAR) {
         // 设置回弹阀值
-        this.$refs.scroll.scroll.scrollTo(0, 0, 100)
+        this.$refs.scroll.scroll.scrollTo(0, 0, 0)
       }
     },
   }

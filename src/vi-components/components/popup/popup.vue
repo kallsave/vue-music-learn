@@ -26,6 +26,8 @@ import popupMixin from '@/common/mixins/popup.js'
 
 const COMPONENT_NAME = 'vi-popup'
 
+const EVENT_MASK_CLICK = 'mask-click'
+
 export default {
   name: COMPONENT_NAME,
   mixins: [visibilityMixin, popupMixin],
@@ -45,7 +47,7 @@ export default {
   },
   methods: {
     maskClick() {
-      this.$emit('mask-click')
+      this.$emit(EVENT_MASK_CLICK)
     },
   }
 }

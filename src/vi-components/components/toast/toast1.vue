@@ -47,6 +47,8 @@ import ViPopup from '../popup/popup.vue'
 
 const COMPONENT_NAME = 'vi-toast'
 
+const EVENT_MASK_CLICK = 'mask-click'
+
 export default {
   name: COMPONENT_NAME,
   mixins: [visibilityMixin],
@@ -86,7 +88,7 @@ export default {
       this.timer = null
     },
     maskClick() {
-      this.$emit('mask-click')
+      this.$emit(EVENT_MASK_CLICK)
     }
   },
   components: {

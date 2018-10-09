@@ -13,6 +13,7 @@
         <vi-sticky
           ref="sticky"
           :options="scrollOptions"
+          :sticky-data="songList"
           @sticky-change="stickyChange"
           @scroll="scrollHandler"
           @sticky-cancel="stickyCancel">

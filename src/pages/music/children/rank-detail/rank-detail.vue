@@ -1,7 +1,7 @@
 <template>
   <music-list
     :rank="true"
-    :isFetchSongList="isFetchSongList"
+    :is-fetch-song-list="isFetchSongList"
     :song-list="songList"
     :bg-image="bgImage"
     :title="title"></music-list>
@@ -67,6 +67,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-</style>

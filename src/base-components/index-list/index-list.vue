@@ -74,13 +74,6 @@ export default {
     this.touch = {}
     this.listHeight = []
   },
-  mounted() {
-    // 同步数据的情况
-    this._calculateAnchorHeight()
-    this._calculateHeight()
-    this._calculateListTitleHeight()
-    this._findScroll()
-  },
   computed: {
     shortcutList() {
       return this.data.map((group) => {
@@ -95,12 +88,18 @@ export default {
     }
   },
   watch: {
-    data() {
-      this.$nextTick(() => {
-        this._calculateAnchorHeight()
-        this._calculateHeight()
-        this._calculateListTitleHeight()
-      })
+    data: {
+      handler() {
+        this.$nextTick(() => {
+          this._calculateAnchorHeight()
+          this._calculateHeight()
+          this._calculateListTitleHeight()
+          if (!this.scroll) {
+            this._findScroll()
+          }
+        })
+      },
+      immediate: true
     },
     scrollY(newVal) {
       // 当滚动到顶部，newVal是个正数

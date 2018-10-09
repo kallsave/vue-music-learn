@@ -13,7 +13,7 @@
           :title-color="'#ffcd32'"
           :icon-color="'#ffcd32'"></vi-loading>
         <div class="slide-wrapper">
-          <vi-slide ref="slider"
+          <vi-slide ref="slide"
             :init-page-index="currentPageIndex"
             :data="recommends"
             :loop="true"
@@ -116,12 +116,10 @@ export default {
     },
     _getDiscList() {
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          getDiscList().then((res) => {
-            this.discList = res.data.list
-            resolve(res)
-          })
-        }, 500)
+        getDiscList().then((res) => {
+          this.discList = res.data.list
+          resolve(res)
+        })
       })
     },
     loadImage() {

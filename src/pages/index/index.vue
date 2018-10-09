@@ -3,7 +3,7 @@
     <vi-sticky ref="sticky"
       @sticky-change="stickyChange">
       <m-header></m-header>
-      <vi-sticky-ele :ele-key="'1'">
+      <vi-sticky-ele :ele-key="'tab'">
         <tab></tab>
       </vi-sticky-ele>
       <vi-slide-router :router-list="routerList">

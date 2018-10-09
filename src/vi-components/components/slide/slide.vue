@@ -86,20 +86,26 @@ export default {
     this.setSlideWidth()
     this._initDots()
     this._initSlide()
-    if (this.autoPlay) {
-      this._play()
-    }
-    window.addEventListener('resize', this._resizeHandler, false)
   },
   watch: {
-    data(newVal, oldVal) {
-      // 异步数据的情况
-      this.$nextTick(() => {
-        this._destroy()
-        this.setSlideWidth()
-        this._initDots()
-        this._initSlide()
-      })
+    data: {
+      handler() {
+        this.$nextTick(() => {
+          this._destroy()
+          this.setSlideWidth()
+          this._initDots()
+          this._initSlide()
+        })
+        if (this.autoPlay) {
+          this._play()
+        }
+        if (!this.isListenResize) {
+          this.isListenResize = true
+          window.addEventListener('resize', this._resizeHandler, false)
+        }
+      },
+      // 在生成的时候执行
+      immediate: true
     },
   },
   methods: {
