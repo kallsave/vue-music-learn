@@ -87,7 +87,7 @@ export default {
         pullUpLoad: {
           threshold: 100,
           txt: {
-            more: '正在载入更多',
+            // more: '正在载入更多',
             noMore: '没有更多的结果啦'
           }
         },
@@ -254,7 +254,7 @@ export default {
     box-sizing: border-box
     position: fixed
     width: 100%
-    top: 88px
+    top: 87px
     bottom: 0
     font-size: $font-size-medium
     color: peru

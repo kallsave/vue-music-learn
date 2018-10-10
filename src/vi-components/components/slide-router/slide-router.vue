@@ -96,18 +96,18 @@ export default {
 
 <style lang="stylus">
 .slideforward-enter-active
-  transition: all 0.05s
+  transition: all 0.2s
 .slideforward-leave-active
-  transition: all 0.05s
+  transition: all 0.2s
 .slideforward-enter
   transform:  translate3d(100%, 0px, 0px)
 .slideforward-leave-to
   transform:  translate3d(-100%, 0px, 0px)
 
 .slideback-enter-active
-  transition: all 0.05s
+  transition: all 0.2s
 .slideback-leave-active
-  transition: all 0.05s
+  transition: all 0.2s
 .slideback-enter
   transform:  translate3d(-100%, 0px, 0px)
 .slideback-leave-to

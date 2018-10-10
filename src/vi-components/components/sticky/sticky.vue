@@ -32,7 +32,7 @@ const EVENT_SCROLL = 'scroll'
 const EVENT_PULLING_DOWN = 'pulling-down'
 const EVENT_PULLING_UP = 'pulling-up'
 
-// appendChild同时有removeChild的效果,所以要复制一遍node节点
+// appendChild同时有removeChild的效果,所以要复制一遍node节点?
 function deepAppendChild(father, children) {
   // dom转换json的顺序是从里到外递归
   function domToJson (dom) {
@@ -212,7 +212,8 @@ export default {
       }
       this.reset()
       const element = this.currentSticky.$el
-      deepAppendChild(this.fixedElement, element)
+      this.fixedElement.appendChild(element)
+      // deepAppendChild(this.fixedElement, element)
       this.$emit(EVENT_CHANGE, this.currentSticky)
     },
     transformTop(newVal) {
@@ -272,7 +273,8 @@ export default {
       if (this.fixedElement.firstElementChild) {
         const remove = this.fixedElement.removeChild(this.fixedElement.firstElementChild)
         if (remove.eleKey) {
-          deepAppendChild(this.stickyMap[remove.eleKey].eleComponent.$el, remove)
+          this.stickyMap[remove.eleKey].eleComponent.$el.appendChild(remove)
+          // deepAppendChild(this.stickyMap[remove.eleKey].eleComponent.$el, remove)
           this.$emit(EVENT_CANCEL)
         }
       }
@@ -295,9 +297,8 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .vi-sticky
-  top: 0
   position: relative
   height: 100%
 </style>

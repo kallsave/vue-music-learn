@@ -3,7 +3,9 @@
   <div ref="wrapper" class="vi-scroll-wrapper" @touchmove.prevent>
     <div class="vi-scroll-content">
       <slot></slot>
-      <slot name="pullup" :pullUpLoad="pullUpLoad" :isPullUpLoad="isPullUpLoad">
+      <slot name="pullup"
+        :pullUpLoad="pullUpLoad"
+        :isPullUpLoad="isPullUpLoad">
         <div class="vi-scroll-pullup" v-if="pullUpLoad">
           <div class="vi-scroll-pullup-wrapper" v-if="isPullUpLoad">
             <div class="vi-scroll-pullup-before-trigger">{{pullUpTxt}}</div>
