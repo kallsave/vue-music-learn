@@ -68,6 +68,7 @@ import { getRecommend, getDiscList } from '@/api/recommend.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { sticky } from '../../mixins/inject-sticky.js'
+import { setTimeout } from 'timers'
 
 export default {
   // keep-alive用

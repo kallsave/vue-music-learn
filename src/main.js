@@ -11,7 +11,7 @@ import VueLazyLoad from 'vue-lazyload'
 // import fastclick from 'fastclick'
 
 import '@/common/stylus/index.styl'
-import Vi from '@/vi-components/index.js'
+import Vi from '@/vi/index.js'
 
 import BaseIndexList from '@/base-components/index-list/index.js'
 import BaseSearchBox from '@/base-components/search-box/index.js'

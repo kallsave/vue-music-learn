@@ -63,9 +63,9 @@ async function updateAllImg () {
 4.不使用id写样式
 
 ## 组件规范
-1.vi-components是不带任何的业务逻辑和项目样式,高度封装化,全局挂载的ui组件库
-vi-components相当于第三方vi组件库或者是基于第三方ui组件的封装
-vi-components是全局components
+1.vi是不带任何的业务逻辑和项目样式,高度封装化,全局挂载的ui组件库
+vi相当于第三方vi组件库或者是基于第三方ui组件的封装
+vi是全局components
 部分提供body挂载,由createAPI或者mount-in-body调用
 样式使用vi-前缀严格开头,不使用scoped,
 // 不使用webpack的alias语法
@@ -116,6 +116,7 @@ vi-components是全局components
 通过keep-alive的exclude="no-keep-alive" 给详情页的组件加上name:"no-keep-alive"
 详情页操作反馈到列表页的数据改变通过vuex来操作
 
+7.图标使用svgtofont来管理,具体的配置看build/svgtofont
 
 # 其他
 

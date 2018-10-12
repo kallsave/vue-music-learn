@@ -1,10 +1,10 @@
 <!--toast组件一定是居中的,如果需要不居中的loading请使用非编程式占位的的loading-->
 <template>
-  <vi-popup :mask="false"
+  <vi-popup :mask="mask"
     v-show="isVisible"
     touchmove.prevent.native>
     <div class="vi-toast" :style="{'transform': `scale(${scale})`}">
-      <div class="vi-toast-mask" :class="{'vi-toast-mask-active': mask}"></div>
+      <div class="vi-toast-mask" :class="{'vi-toast-mask-active': toastMask}"></div>
       <div class="vi-toast-content">
         <div v-if="icon === 'loading'" class="vi-toast-spinner-contain">
           <i class="vi-toast-spinner" :style="{'background-color': iconColor}"
@@ -16,7 +16,7 @@
           </div>
         </transition>
         <transition name="vi-svg-path">
-          <div v-if="icon === 'svg-correct'" class="vi-toast-svg-correct-contain">
+          <div v-if="icon === 'svg-correct' && isVisible" class="vi-toast-svg-correct-contain">
             <svg>
               <path
                 class="vi-toast-svg-correct"
@@ -54,11 +54,15 @@ export default {
   },
   mixins: [visibilityMixin],
   props: {
+    mask: {
+      type: Boolean,
+      default: false
+    },
     title: {
       type: String,
       default: '正在加载...'
     },
-    mask: {
+    toastMask: {
       type: Boolean,
       default: true
     },
@@ -68,23 +72,19 @@ export default {
     },
     titleColor: {
       type: String,
-      default: ''
+      default: '#fff'
     },
     iconColor: {
       type: String,
-      default: ''
+      default: '#fff'
     },
     icon: {
       type: String,
-      default: ''
+      default: 'loading'
     },
     time: {
       type: Number,
       default: 0
-    },
-    customTransition: {
-      type: String,
-      default: ''
     }
   },
   data() {
@@ -112,13 +112,16 @@ export default {
       clearTimeout(this.timer)
       this.timer = null
     }
+  },
+  destroyed() {
+    this.clearTimer()
   }
 }
 </script>
 
 <style lang="stylus">
 @import "~@/common/stylus/variable.styl"
-@import "./style.styl"
+@import "./fonts/vi-toast-icon.css"
 
 .vi-toast
   box-sizing: border-box

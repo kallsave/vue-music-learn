@@ -559,14 +559,9 @@ export default {
     },
     error() {
       this.isSongReady = false
-      this.toast = this.$createViToast({
-        scale: 0.8,
-        mask: true,
-        titleColor: '#ffcd32',
-        iconColor: '#ffcd32',
-        title: '资源出错啦',
-        icon: 'error',
-        time: 2000,
+      this.toast = this.$createViToastTxt({
+        txt: '资源出错啦',
+        time: 3000,
       }).show()
     },
     updateTime(e) {
