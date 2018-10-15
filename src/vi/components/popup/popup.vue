@@ -10,7 +10,7 @@
         <div class="vi-popup-custom-mask" v-html="customMask"></div>
       </template>
     </div>
-    <div class="vi-popup-content-center" v-if="$slots.default">
+    <div v-if="$slots.default" class="vi-popup-content-center">
       <slot></slot>
     </div>
     <!-- 不是居中的content,自定义样式,或者可以做关闭按钮小组件插槽 -->

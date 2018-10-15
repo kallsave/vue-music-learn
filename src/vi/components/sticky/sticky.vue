@@ -7,6 +7,10 @@
       :options="options"
       @scroll="scrollHandle">
       <slot></slot>
+      <template slot="pullup" slot-scope="pullupScope"
+        v-if="pullupScope.pullUpLoad">
+        <slot name="pullup" :pullupScope="pullupScope"></slot>
+      </template>
     </vi-scroll>
     <div ref="fixed" v-show="fixedVisable" :style="fixedStyle"></div>
   </div>
@@ -31,42 +35,6 @@ const EVENT_CANCEL = 'sticky-cancel'
 const EVENT_SCROLL = 'scroll'
 const EVENT_PULLING_DOWN = 'pulling-down'
 const EVENT_PULLING_UP = 'pulling-up'
-
-// appendChild同时有removeChild的效果,所以要复制一遍node节点?
-function deepAppendChild(father, children) {
-  // dom转换json的顺序是从里到外递归
-  function domToJson (dom) {
-    if (dom.children.length === 0) {
-      return {
-        node: dom,
-        children: []
-      }
-    } else {
-      let json = {
-        node: dom,
-        children: []
-      }
-      for (let i = 0; i < dom.children.length; i++) {
-        json.children.push(domToJson(dom.children[i]))
-      }
-      return json
-    }
-  }
-  // 把children的dom节点信息记录
-  let tree = domToJson(children)
-  appendTree(father, tree)
-  // 插dom的顺序是从外到里
-  function appendTree(father, childrenTree) {
-    if (childrenTree.children && childrenTree.children.length === 0) {
-      father.appendChild(childrenTree.node)
-    } else {
-      father.appendChild(childrenTree.node)
-      for (let i = 0; i < childrenTree.children.length; i++) {
-        appendTree(childrenTree.node, childrenTree.children[i])
-      }
-    }
-  }
-}
 
 export default {
   name: COMPONENT_NAME,

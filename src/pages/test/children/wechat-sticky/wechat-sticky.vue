@@ -4,7 +4,6 @@
       <vi-sticky
         ref="sticky"
         :z-index="50"
-        :fixed-y="fixedY"
         :sticky-data="[items1, items2]"
         @change="stickyChange">
         <ul>
@@ -18,7 +17,7 @@
         <ul>
           <li v-for="(item, index) in items2" :key="index">{{item}}</li>
         </ul>
-        <vi-sticky-ele :ele-key="2">
+        <vi-sticky-ele :ele-key="eleNumber">
           <div class="title2 needsclick" @click="clickHandle">999</div>
         </vi-sticky-ele>
         <ul>
@@ -58,11 +57,11 @@ export default {
       items2: [],
       items3: _data.concat(),
       items4: _data.concat(),
-      first: true
+      first: true,
+      eleNumber: 2
     }
   },
   created() {
-    this.fixedY = 0
     setTimeout(() => {
       this.items1 = _data.concat()
       this.items2 = _data.concat()
@@ -78,6 +77,7 @@ export default {
     stickyChange(key) {
     },
     clickHandle() {
+      this.eleNumber = 1
     }
   }
 }

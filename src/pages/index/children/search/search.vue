@@ -17,7 +17,7 @@
               @focus="focusHandler"></base-search-box>
           </div>
         </vi-sticky-ele>
-        <div class="shortcut-scroll-wrapper" v-show="!query">
+        <div v-show="!query" class="shortcut-scroll-wrapper">
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
             <ul>
@@ -43,9 +43,22 @@
             </li>
           </ul>
         </div>
-        <div v-show="query && !result.length && isFetchSearch" class="no-result-wrapper">
+        <div class="no-result-wrapper" v-show="query && !result.length && isFetchSearch" >
           <no-result :title="'抱歉，暂无搜索结果'"></no-result>
         </div>
+        <!-- <template slot="pullup" slot-scope="pullupScope">
+          <div class="vi-scroll-pullup">
+            <div>{{pullupScope}}</div>
+            <div v-if="pullupScope.isPullUpLoad" class="vi-scroll-pullup-trigger">
+              <div class="vi-scroll-pullup-before-trigger">{{pullupScope.pullUpTxt}}</div>
+              <div class="vi-scroll-pullup-after-trigger">
+                <loading></loading>
+              </div>
+            </div>
+            <div v-if="!pullupScope.isPullUpLoad && pullupScope.pullUpDirty && pullupScope.data.length && pullupScope.noMoreTxt"
+              class="vi-scroll-pullup-no-more">{{pullupScope.noMoreTxt}}</div>
+          </div>
+        </template> -->
       </vi-sticky>
     </div>
   </div>
@@ -56,17 +69,21 @@ import { getHotKey, search } from '@/api/search.js'
 import { sticky, STICKY_TOP_BAR } from '../../mixins/inject-sticky.js'
 import { createSong } from '@/common/class/song.js'
 import { debounce } from '@/common/helpers/util.js'
-import NoResult from './components/no-result/no-result.vue'
 import { playListMixin } from '@/common/mixins/player.js'
-import {mapMutations, mapActions} from 'vuex'
 import Singer from '@/common/class/singer.js'
+import { mapMutations, mapActions } from 'vuex'
+import NoResult from './components/no-result/no-result.vue'
+import Loading from '@/vi/components/scroll/scroll-loading.vue'
 
 const TYPE_SINGER = 'singer'
+const DEBOUNCE_TIME = 400
+
 const perpage = 20
 
 export default {
   components: {
-    NoResult
+    NoResult,
+    Loading
   },
   mixins: [sticky, playListMixin],
   props: {
@@ -110,14 +127,6 @@ export default {
       this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
       this.$refs.scroll.refresh()
     },
-    scrollHandler(pos) {
-      if (pos.y >= 0 && pos.y < STICKY_TOP_BAR) {
-        this.Sticky.scroll.enable()
-      } else if (pos.y >= STICKY_TOP_BAR) {
-        // 设置回弹阀值
-        this.$refs.scroll.scroll.scrollTo(0, 0, 0)
-      }
-    },
     _getHotKey() {
       getHotKey().then((res) => {
         this.hotKey = res.data.hotkey.slice(0, 10)
@@ -138,16 +147,18 @@ export default {
         } else {
           this.$refs.search.style.height = 'calc(100vh - 88px)'
         }
+        let globalTimer
         debounce((newVal) => {
           this.page = 1
           if (newVal) {
+            // 第三个参数如果是晃动,会导致盒子被拖拽
             this.$refs.scroll.scroll.scrollTo(0, 0, 100)
           }
           this.search().then((res) => {
             this.result = this._genResult(res.data)
             this.isFetchSearch = true
           })
-        }, 400)(newVal)
+        }, DEBOUNCE_TIME, globalTimer)(newVal)
       })
     },
     search(res) {
@@ -322,4 +333,21 @@ export default {
         width: 100%
         top: 50%
         transform: translateY(-50%)
+
+.vi-scroll-pullup
+  .vi-scroll-pullup-trigger
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    .vi-scroll-pullup-before-trigger
+      padding: 22px 0
+      min-height: 1em
+      margin-right: 20px
+    .vi-scroll-pullup-after-trigger
+      padding: 19px 0
+  .vi-scroll-pullup-no-more
+    width: 100%
+    text-align: center
+    line-height: 80px
 </style>

@@ -1,23 +1,28 @@
 <!-- scroll需要一个父元素给高度,即scroll-wrapper -->
 <template>
-  <div ref="wrapper" class="vi-scroll-wrapper" @touchmove.prevent>
+  <div ref="wrapper" class="vi-scroll-wrapper">
     <div class="vi-scroll-content">
       <slot></slot>
       <slot name="pullup"
         :pullUpLoad="pullUpLoad"
-        :isPullUpLoad="isPullUpLoad">
-        <div class="vi-scroll-pullup" v-if="pullUpLoad">
-          <div class="vi-scroll-pullup-wrapper" v-if="isPullUpLoad">
+        :isPullUpLoad="isPullUpLoad"
+        :pullUpTxt="pullUpTxt"
+        :pullUpDirty="pullUpDirty"
+        :noMoreTxt="noMoreTxt"
+        :data="data">
+        <div v-if="pullUpLoad" class="vi-scroll-pullup">
+          <div v-if="isPullUpLoad" class="vi-scroll-pullup-trigger">
             <div class="vi-scroll-pullup-before-trigger">{{pullUpTxt}}</div>
             <div class="vi-scroll-pullup-after-trigger">
               <loading></loading>
             </div>
           </div>
+          <div v-if="!isPullUpLoad && pullUpDirty && data.length && noMoreTxt"
+            class="vi-scroll-pullup-no-more">{{noMoreTxt}}</div>
         </div>
-        <div class="vi-scroll-no-more" v-if="!isPullUpLoad && pullUpDirty && data.length && noMoreTxt">{{noMoreTxt}}</div>
       </slot>
     </div>
-    <div ref="pulldown" class="vi-scroll-pulldown" v-if="pullDownRefresh">
+    <div ref="pulldown" v-if="pullDownRefresh" class="vi-scroll-pulldown">
       <slot name="pulldown"
         :pullDownRefresh="pullDownRefresh"
         :pullDownStyle="pullDownStyle"
@@ -25,10 +30,10 @@
         :isPullingDown="isPullingDown"
         :bubbleY="bubbleY">
         <div class="vi-scroll-pulldown-wrapper" :style="pullDownStyle">
-          <div class="vi-scroll-pulldown-before-trigger" v-show="beforePullDown">
+          <div v-show="beforePullDown" class="vi-scroll-pulldown-before-trigger">
             <bubble class="bubble" :y="bubbleY"></bubble>
           </div>
-          <div class="vi-scroll-pulldown-after-trigger" v-show="!beforePullDown">
+          <div v-show="!beforePullDown" class="vi-scroll-pulldown-after-trigger">
             <div v-show="isPullingDown" class="vi-scroll-loading">
               <loading></loading>
             </div>
@@ -43,7 +48,6 @@
 <script>
 import Loading from './scroll-loading.vue'
 import Bubble from './scroll-bubble.vue'
-import ViLoading from '../loading/loading'
 
 import BScroll from 'better-scroll'
 import { camelize } from '@/common/helpers/util.js'
@@ -64,7 +68,7 @@ const DEFAULT_REFRESH_TXT = 'Refresh success'
 
 const DEFAULT_OPTIONS = {
   observeDOM: false,
-  // 多层嵌套会触发多次,所以需要click的时候再自主添加
+  // 多层嵌套会触发多次,所以需要click的场景自主添加
   click: false,
   probeType: 1,
   scrollbar: false,
@@ -79,8 +83,7 @@ export default {
   name: COMPONENT_NAME,
   components: {
     Loading,
-    Bubble,
-    ViLoading
+    Bubble
   },
   props: {
     options: {
@@ -120,7 +123,6 @@ export default {
       // 是否处于上拉状态
       isPullUpLoad: false,
       // 第一次noMore是不展示的,要data的指针发生变化后
-      // 说明触发了接口
       pullUpDirty: false,
       noMoreTxt: ''
     }
@@ -358,11 +360,12 @@ export default {
       // 处于上拉状态
       this.isPullUpLoad = true
       this.$emit(EVENT_PULLING_UP)
-    },
+    }
   },
   beforeDestroy() {
     this.destroy()
-  },
+  }
+
 }
 </script>
 
@@ -374,7 +377,7 @@ export default {
   overflow: hidden
   .vi-scroll-content
     .vi-scroll-pullup
-      .vi-scroll-pullup-wrapper
+      .vi-scroll-pullup-trigger
         width: 100%
         display: flex
         justify-content: center
@@ -385,10 +388,10 @@ export default {
           margin-right: 20px
         .vi-scroll-pullup-after-trigger
           padding: 19px 0
-    .vi-scroll-no-more
-      width: 100%
-      text-align: center
-      line-height: 80px
+      .vi-scroll-pullup-no-more
+        width: 100%
+        text-align: center
+        line-height: 80px
   .vi-scroll-pulldown
     .vi-scroll-pulldown-wrapper
       position: absolute

@@ -12,13 +12,8 @@ export default {
   inject: ['Sticky'],
   props: {
     eleKey: {
-      type: [Number, String],
+      type: String,
       require: true
-    }
-  },
-  data() {
-    return {
-      stickyTop: 0
     }
   },
   mounted() {

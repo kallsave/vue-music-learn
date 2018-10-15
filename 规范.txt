@@ -2,7 +2,7 @@
 1.class使用-分割单词
 2.减少html中的class,一个dom尽量只有一个class
 3.一行代码的长度不得超过编辑器的长度,子元素尽量都换行
-4.ref > v-if = v-show > class > for = key > : > @
+4.ref > v-if = v-show > class >  for = key > : > @
 
 ## JS代码规范
 1.遵循eslint代码规范

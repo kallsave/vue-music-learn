@@ -4,7 +4,7 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 // cube-ui的使用的插件
-const TransformModulesPlugin = require('webpack-transform-modules-plugin')
+// const TransformModulesPlugin = require('webpack-transform-modules-plugin')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -38,7 +38,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      'cube-ui': 'cube-ui/lib'
+      // 'cube-ui': 'cube-ui/lib'
     }
   },
   module: {
@@ -85,7 +85,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new TransformModulesPlugin()
+    // new TransformModulesPlugin()
   ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
