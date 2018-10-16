@@ -21,7 +21,7 @@ const components = [
   SlideRouter,
   Sticky,
   Toast,
-  ToastTxt
+  ToastTxt,
 ]
 
 function install(Vue) {

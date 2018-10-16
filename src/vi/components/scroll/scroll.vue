@@ -211,10 +211,6 @@ export default {
   },
   methods: {
     _initScroll() {
-      if (!this.$refs.wrapper) {
-        return
-      }
-
       let options = Object.assign({}, DEFAULT_OPTIONS, this.options)
       this.scroll = new BScroll(this.$refs.wrapper, options)
       this._listenScrollEvents()

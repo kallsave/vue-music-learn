@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import router from './pages/router.js'
 import store from './store'
 import VueLazyLoad from 'vue-lazyload'
 

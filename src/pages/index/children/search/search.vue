@@ -46,19 +46,18 @@
         <div class="no-result-wrapper" v-show="query && !result.length && isFetchSearch" >
           <no-result :title="'抱歉，暂无搜索结果'"></no-result>
         </div>
-        <!-- <template slot="pullup" slot-scope="pullupScope">
+        <template slot="pullup" slot-scope="scope">
           <div class="vi-scroll-pullup">
-            <div>{{pullupScope}}</div>
-            <div v-if="pullupScope.isPullUpLoad" class="vi-scroll-pullup-trigger">
-              <div class="vi-scroll-pullup-before-trigger">{{pullupScope.pullUpTxt}}</div>
+            <div v-if="scope.pullupScope.isPullUpLoad" class="vi-scroll-pullup-trigger">
+              <div class="vi-scroll-pullup-before-trigger">{{scope.pullupScope.pullUpTxt}}</div>
               <div class="vi-scroll-pullup-after-trigger">
                 <loading></loading>
               </div>
             </div>
-            <div v-if="!pullupScope.isPullUpLoad && pullupScope.pullUpDirty && pullupScope.data.length && pullupScope.noMoreTxt"
-              class="vi-scroll-pullup-no-more">{{pullupScope.noMoreTxt}}</div>
+            <div v-if="!scope.pullupScope.isPullUpLoad && scope.pullupScope.pullUpDirty && scope.pullupScope.data.length && scope.pullupScope.noMoreTxt"
+              class="vi-scroll-pullup-no-more">{{scope.pullupScope.noMoreTxt}}</div>
           </div>
-        </template> -->
+        </template>
       </vi-sticky>
     </div>
   </div>
@@ -151,8 +150,8 @@ export default {
         debounce((newVal) => {
           this.page = 1
           if (newVal) {
-            // 第三个参数如果是晃动,会导致盒子被拖拽
-            this.$refs.scroll.scroll.scrollTo(0, 0, 100)
+            // 第三个参数如果是缓动,会导致盒子被拖拽
+            this.$refs.scroll.scroll.scrollTo(0, 0, 0)
           }
           this.search().then((res) => {
             this.result = this._genResult(res.data)
