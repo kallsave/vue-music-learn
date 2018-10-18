@@ -9,7 +9,7 @@ import VueLazyLoad from 'vue-lazyload'
 // import Navigation from 'vue-navigation'
 
 import '@/common/stylus/index.styl'
-import Vi from '@/vi/index.js'
+import Vi from '@/uikit/index.js'
 
 import BaseIndexList from '@/base-components/index-list/index.js'
 import BaseSearchBox from '@/base-components/search-box/index.js'

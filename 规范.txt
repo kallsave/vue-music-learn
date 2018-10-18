@@ -63,9 +63,9 @@ async function updateAllImg () {
 4.不使用id写样式
 
 ## 组件规范
-1.vi是不带任何的业务逻辑和项目样式,高度封装化,全局挂载的ui组件库
-vi相当于第三方vi组件库或者是基于第三方ui组件的封装
-vi是全局components
+1.uikit是不带任何的业务逻辑和项目样式,高度封装化,全局挂载的ui组件库
+uikit相当于第三方vi组件库或者是基于第三方ui组件的封装
+uikit是全局components
 部分提供body挂载,由createAPI或者mount-in-body调用
 样式使用vi-前缀严格开头,不使用scoped,
 // 不使用webpack的alias语法
@@ -119,6 +119,9 @@ vi是全局components
 7.图标使用svgtofont来管理,具体的配置看build/svgtofont
 
 # 其他
+使用TODO和FIXME标识代码
+// TODO: 如果代码中有该标识,说明有功能待编写或者去除
+// FIXME: 如果代码中有该标识,说明代码有bug或者需要优化
 
 
 

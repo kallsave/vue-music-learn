@@ -137,7 +137,7 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import createKeyframe from 'create-keyframe-animation'
 import { prefixStyle, getTransformAngle } from '@/common/helpers/dom.js'
-import { padZero, shuffle } from '@/common/helpers/util.js'
+import { padZero, shuffle } from '@/common/helpers/utils.js'
 import { playMode } from '@/store/modules/player/config.js'
 import Lyric from 'lyric-parser'
 import { createSong, Song } from '@/common/class/song.js'

@@ -2,13 +2,13 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:04:13
  * @Last Modified by: kallsave
- * @Last Modified time: 2018-10-15 11:07:22
+ * @Last Modified time: 2018-10-18 11:25:02
  * 这个文件是一些去除的或者待测试的功能
  */
 
 /**
  *
- * sticky.vue组件的
+ * FIXME: sticky.vue组件的
  * appendChild同时有removeChild的效果,所以要复制一遍node节点?
  * @param {element} father 被插入的dom节点
  * @param {element} children 插入的dom节点

@@ -67,12 +67,12 @@
 import { getHotKey, search } from '@/api/search.js'
 import { sticky, STICKY_TOP_BAR } from '../../mixins/inject-sticky.js'
 import { createSong } from '@/common/class/song.js'
-import { debounce } from '@/common/helpers/util.js'
+import { debounce } from '@/common/helpers/utils.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import Singer from '@/common/class/singer.js'
 import { mapMutations, mapActions } from 'vuex'
 import NoResult from './components/no-result/no-result.vue'
-import Loading from '@/vi/components/scroll/scroll-loading.vue'
+import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
 
 const TYPE_SINGER = 'singer'
 const DEBOUNCE_TIME = 400

@@ -1,5 +1,5 @@
 import { playMode } from './config.js'
-import { shuffle } from '@/common/helpers/util.js'
+import { shuffle } from '@/common/helpers/utils.js'
 import { Song } from '@/common/class/song.js'
 
 function findIndex(list, song) {
