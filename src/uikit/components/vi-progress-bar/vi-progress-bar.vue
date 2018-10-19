@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import { prefixStyle } from '@/common/helpers/dom.js'
+import { prefixStyle } from '../../common/helpers/dom.js'
 
 const transform = prefixStyle('transform')
 
-const progressBtnWidth = 16
+const PROGRESS_BTN_WIDTH = 16
 
 const COMPONENT_NAME = 'vi-progress-bar'
 
@@ -33,9 +33,6 @@ export default {
   },
   created() {
     this.touch = {}
-  },
-  mounted() {
-
   },
   watch: {
     percent(newVal) {
@@ -63,7 +60,7 @@ export default {
       // e.touches[0].pageX是相对于目标元素左上角和鼠标之间的距离
       const deltaX = e.touches[0].pageX - this.touch.startX
       const offsetWidth = Math.min(
-        this.$refs.progressBar.clientWidth - progressBtnWidth,
+        this.$refs.progressBar.clientWidth - PROGRESS_BTN_WIDTH,
         Math.max(0, this.touch.left + deltaX)
       )
       this._offset(offsetWidth)
@@ -73,7 +70,7 @@ export default {
       this._triggerPercent()
     },
     _triggerPercent() {
-      const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
+      const barWidth = this.$refs.progressBar.clientWidth - PROGRESS_BTN_WIDTH
       const percent = this.$refs.progress.clientWidth / barWidth
       this.$emit(EVENT_PERCENT_CHANGE, percent)
     },
@@ -106,6 +103,7 @@ export default {
       position: absolute
       height: 100%
       background: $color-theme
+      border-radius: 4px
     .vi-progress-btn-wrapper
       position: absolute
       left: -8px

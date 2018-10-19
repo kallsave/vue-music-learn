@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { addClass } from '../../common/helpers/dom'
+import { addClass } from '../../common/helpers/dom.js'
 import BScroll from 'better-scroll'
 
 const COMPONENT_NAME = 'vi-slide'
@@ -192,7 +192,7 @@ export default {
 
 <style lang="stylus">
 // TODO: 去掉variable.styl依赖,可以自定义样式
-@import "../../common/stylus/variable"
+@import "../../common/stylus/variable.styl"
 // 考虑到vi-slide-wrapper不仅仅是做轮播图那么简单的功能
 // 还有整个页面的slide动作,height是100%外围父元素
 .vi-slide-wrapper

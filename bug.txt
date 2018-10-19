@@ -1,4 +1,1 @@
-#关于better-scroll
-1.因为大量使用了better-scroll,
-为避免多层scroll嵌套带来的层级问题,使用vue-router时不需要外层scroll的页面尽量新开路由
-2.内嵌的scroll-wrapper用fixed比较少bug
+

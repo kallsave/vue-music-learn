@@ -3,45 +3,46 @@
   <div ref="wrapper" class="vi-scroll-wrapper">
     <div class="vi-scroll-content">
       <slot></slot>
-      <slot name="pullup"
-        :pullUpLoad="pullUpLoad"
-        :isPullUpLoad="isPullUpLoad"
-        :pullUpTxt="pullUpTxt"
-        :pullUpDirty="pullUpDirty"
-        :noMoreTxt="noMoreTxt"
-        :data="data">
-        <div v-if="pullUpLoad" class="vi-scroll-pullup">
-          <div v-if="isPullUpLoad" class="vi-scroll-pullup-trigger">
-            <div class="vi-scroll-pullup-before-trigger">{{pullUpTxt}}</div>
-            <div class="vi-scroll-pullup-after-trigger">
-              <loading></loading>
+      <div v-if="pullUpLoad" class="vi-scroll-pullup">
+        <slot name="pullup"
+          :pullUpLoad="pullUpLoad"
+          :isPullUpLoad="isPullUpLoad"
+          :pullUpTxt="pullUpTxt"
+          :pullUpDirty="pullUpDirty"
+          :noMoreTxt="noMoreTxt"
+          :data="data">
+            <div v-if="isPullUpLoad" class="vi-scroll-pullup-trigger">
+              <div class="vi-scroll-pullup-before-trigger">{{pullUpTxt}}</div>
+              <div class="vi-scroll-pullup-after-trigger">
+                <loading></loading>
+              </div>
             </div>
-          </div>
-          <div v-if="!isPullUpLoad && pullUpDirty && data.length && noMoreTxt"
-            class="vi-scroll-pullup-no-more">{{noMoreTxt}}</div>
-        </div>
-      </slot>
+            <div v-if="!isPullUpLoad && pullUpDirty && data.length && noMoreTxt"
+              class="vi-scroll-pullup-no-more">{{noMoreTxt}}</div>
+        </slot>
+      </div>
     </div>
     <div ref="pulldown" v-if="pullDownRefresh" class="vi-scroll-pulldown">
-      <slot name="pulldown"
-        :pullDownRefresh="pullDownRefresh"
-        :pullDownStyle="pullDownStyle"
-        :beforePullDown="beforePullDown"
-        :isPullingDown="isPullingDown"
-        :bubbleY="bubbleY">
-        <div class="vi-scroll-pulldown-wrapper" :style="pullDownStyle">
-          <div v-show="beforePullDown" class="vi-scroll-pulldown-before-trigger">
-            <bubble class="bubble" :y="bubbleY"></bubble>
-          </div>
-          <div v-show="!beforePullDown" class="vi-scroll-pulldown-after-trigger">
-            <div v-show="isPullingDown" class="vi-scroll-loading">
-              <loading></loading>
+        <slot name="pulldown"
+          :pullDownRefresh="pullDownRefresh"
+          :pullDownStyle="pullDownStyle"
+          :beforePullDown="beforePullDown"
+          :isPullingDown="isPullingDown"
+          :afterPullDown="afterPullDown"
+          :bubbleY="bubbleY">
+          <div class="vi-scroll-pulldown-wrapper" :style="pullDownStyle">
+            <div v-show="beforePullDown && !afterPullDown" class="vi-scroll-pulldown-before-trigger">
+              <bubble class="bubble" :y="bubbleY"></bubble>
             </div>
-            <div v-show="!isPullingDown" class="vi-scroll-pulldown-loaded">{{refreshTxt}}</div>
+            <div v-show="!beforePullDown" class="vi-scroll-pulldown-after-trigger">
+              <div v-show="isPullingDown && !afterPullDown" class="vi-scroll-loading">
+                <loading></loading>
+              </div>
+              <div v-show="isPullingDown && afterPullDown" class="vi-scroll-pulldown-loaded">{{refreshTxt}}</div>
+            </div>
           </div>
-        </div>
-      </slot>
-    </div>
+        </slot>
+      </div>
   </div>
 </template>
 
@@ -55,12 +56,11 @@ import { getRect } from '@/common/helpers/dom.js'
 
 const COMPONENT_NAME = 'vi-scroll'
 
-const EVENT_PULLING_DOWN = 'pulling-down'
-const EVENT_PULLING_UP = 'pulling-up'
-
 const EVENT_SCROLL = 'scroll'
 const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
 const EVENT_SCROLL_END = 'scroll-end'
+const EVENT_PULLING_DOWN = 'pulling-down'
+const EVENT_PULLING_UP = 'pulling-up'
 
 const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_BEFORE_SCROLL_START, EVENT_SCROLL_END]
 
@@ -77,7 +77,8 @@ const DEFAULT_OPTIONS = {
   preventDefault: false
 }
 
-const DEFAULT_STOP_TIME = 600
+// finishPullDown后恢复原来状态的延迟时间
+const FINISH_PULLDOWN_STOP_TIME = 600
 
 export default {
   name: COMPONENT_NAME,
@@ -112,11 +113,15 @@ export default {
   },
   data() {
     return {
+      // 是否没有达到下拉的阀值
       beforePullDown: true,
+      // 是否是处于下拉的恢复状态
+      afterPullDown: false,
+      // 是否处于下来卡死状态
       isPullingDown: false,
+      bubbleY: 0,
       // 如果传入pullDownRefresh是true,启用这个stop
       // 但是最终pullDownStop的值是由pulldown的dom的高度决定的
-      bubbleY: 0,
       pullDownStop: 40,
       pullDownHeight: 60,
       pullDownStyle: '',
@@ -262,16 +267,12 @@ export default {
       this.scroll.off('pullingDown', this._pullDownHandle)
       this.scroll.off('scroll', this._pullDownScrollHandle)
     },
+    // 计算默认的停滞位置
     _getPullDownEleHeight() {
       const pulldown = this.$refs.pulldown.firstChild
       this.pullDownHeight = getRect(pulldown).height
-
-      this.beforePullDown = false
-      this.isPullingDown = true
       this.$nextTick(() => {
         this.pullDownStop = getRect(pulldown).height
-        this.beforePullDown = true
-        this.isPullingDown = false
       })
     },
     // 达到阀值只会一瞬间触发
@@ -285,12 +286,9 @@ export default {
     // 下拉时,scroll会一直卡在pullDownStop高度的位置
     // 只要没回到正常的位置,这个scrollHandler一直在触发
     _pullDownScrollHandle(pos) {
-      if (this.resetPullDownTimer) {
-        clearTimeout(this.resetPullDownTimer)
-      }
-      if (this.beforePullDown) {
+      // 没有达到阀值的未触发pullDown
+      if (this.beforePullDown && !this.afterPullDown) {
         this.bubbleY = Math.max(0, pos.y - this.pullDownHeight)
-        // 没有达到pulldown阀值的scroll
         this.pullDownStyle = `top:${Math.min(pos.y - this.pullDownHeight, 0)}px`
       } else {
         // 达到pulldown阀值得scroll
@@ -304,7 +302,6 @@ export default {
     forceUpdate(dirty = false) {
       // 上拉没有finish的状态
       if (this.pullDownRefresh && this.isPullingDown) {
-        this.isPullingDown = false
         this._reboundPullDown(() => {
           this._afterPullDown(dirty)
         })
@@ -325,19 +322,23 @@ export default {
         }
       }
     },
-    // finishPullDown回弹
+    // finishPullDown回弹,数据已经变更
     _reboundPullDown(next) {
-      // 如果pullDownRefresh没有设置stopTime,stop = DEFAULT_STOP_TIME
-      const {stopTime = DEFAULT_STOP_TIME} = this.pullDownRefresh
+      this.afterPullDown = true
+      // 如果pullDownRefresh没有设置stopTime,stopTime = FINISH_PULLDOWN_STOP_TIME
+      const { stopTime = FINISH_PULLDOWN_STOP_TIME } = this.pullDownRefresh
       setTimeout(() => {
         this.scroll.finishPullDown()
+        this.isPullingDown = false
         next()
       }, stopTime)
     },
-    // 在finishPullDown后调用,调回pulldown位置和beforePullDown
+    // 在finishPullDown调用后,调回pulldown位置和beforePullDown
     _afterPullDown(dirty) {
+      // this.scroll.options.bounceTime(默认800ms)后大概就是finishPullDown恢复到原点的时间
       this.resetPullDownTimer = setTimeout(() => {
         this.pullDownStyle = `top: -${this.pullDownHeight}px`
+        this.afterPullDown = false
         this.beforePullDown = true
         if (dirty) {
           this.$nextTick(() => {

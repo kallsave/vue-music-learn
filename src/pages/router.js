@@ -18,6 +18,7 @@ const RankDetail = () => import(/* webpackChunkName: "RankDetail" */ './music/ch
 Vue.use(Router)
 
 export default new Router({
+  mode: 'hash',
   routes: [
     TestRouter,
     {

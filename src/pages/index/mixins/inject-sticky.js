@@ -21,7 +21,7 @@ export const sticky = {
         this.Sticky.scroll.enable()
       } else if (pos.y >= STICKY_TOP_BAR) {
         // 设置回弹阀值
-        this.$refs.scroll.scroll.scrollTo(0, 0, 0)
+        // this.$refs.scroll.scroll.scrollTo(0, 0, 0)
       }
     },
   }

@@ -6,7 +6,8 @@
         :scroll-events="['scroll']"
         :options="scrollOptions"
         :data="discList"
-        @scroll="scrollHandler">
+        @scroll="scrollHandler"
+        @pulling-down="onPullingDown">
         <vi-loading
           ref="allLoading"
           :scale="0.8"
@@ -21,10 +22,8 @@
             :auto-play="true"
             @scroll-end="scrollEnd"
             @load-image="loadImage">
-            <!-- slide是一个功能型组件 -->
-            <!-- 最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
+            <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->
-            <!-- 使用slot,样式写在当前组件 -->
             <template slot="dots">
               <div class="slide-dots">
                 <span class="slide-dot" :key="index"
@@ -68,22 +67,39 @@ import { getRecommend, getDiscList } from '@/api/recommend.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { sticky } from '../../mixins/inject-sticky.js'
-import { setTimeout } from 'timers'
+
+// store.js
+const engine = require('store/src/store-engine')
+const storages = [
+  require('store/storages/localStorage')
+]
+const storePlugins = [
+  require('store/plugins/defaults'),
+]
+const store = engine.createStore(storages, storePlugins)
 
 export default {
-  // keep-alive用
-  // keep-alive可以是暂时的,用vuex设置时间点,让exclude改变,然后马上有生效
-  name: 'no-keep-alive',
+  // 路由级别的组件,name为no-keep-alive的不做缓存
+  // name: 'no-keep-alive',
+  name: 'keep-alive',
   mixins: [sticky, playListMixin],
   data() {
     return {
       recommends: [],
       currentPageIndex: 2,
       discList: [],
-      loadingPic: require('@/assets/images/loading.png'),
       scrollOptions: {
         probeType: 3,
-        click: true
+        click: true,
+        pullDownRefresh: {
+          // 阀值
+          threshold: 80,
+          // 滞留的位置
+          stop: 50,
+          txt: '更新成功',
+          // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
+          stopTime: 1000
+        }
       }
     }
   },
@@ -98,28 +114,37 @@ export default {
       this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
       this.$refs.scroll.refresh()
     },
-    _getData() {
-      this.$refs.allLoading.show()
-      Promise.all([this._getRecommend(), this._getDiscList()]).then((res) => {
+    _getData(forceUpdate) {
+      Promise.all([this._getRecommend(forceUpdate), this._getDiscList(forceUpdate)]).then((res) => {
         // 两个接口都拿到数据的操作
         // promise在组件销毁后还是会执行的
-        this.$refs.allLoading && this.$refs.allLoading.hide().then(() => {
-          this.$nextTick(() => {
-            this.$refs.scroll.refresh()
-          })
+      })
+    },
+    _getRecommend(forceUpdate) {
+      let recommends = store.get('music-recommends')
+      if (recommends && !forceUpdate) {
+        this.recommends = recommends
+        return Promise.resolve()
+      } else {
+        return getRecommend().then((res) => {
+          this.recommends = res.data.slider
+          store.set('music-recommends', res.data.slider)
         })
-      })
+      }
     },
-    _getRecommend() {
-      return getRecommend().then((res) => {
-        this.recommends = res.data.slider
-      })
-    },
-    _getDiscList() {
+    _getDiscList(forceUpdate) {
+      let discList = store.get('music-discList')
+      if (discList && !forceUpdate) {
+        this.discList = discList
+        return Promise.resolve()
+      }
       return new Promise((resolve, reject) => {
         getDiscList().then((res) => {
-          this.discList = res.data.list
-          resolve(res)
+          setTimeout(() => {
+            this.discList = res.data.list
+            store.set('music-discList', res.data.list)
+            resolve(res)
+          }, 1000)
         })
       })
     },
@@ -147,6 +172,9 @@ export default {
         path: `/music/recommend-detail/${item.dissid}`
       })
       this.setRecommendAlbum(item)
+    },
+    onPullingDown() {
+      this._getData(true)
     }
   },
 }
