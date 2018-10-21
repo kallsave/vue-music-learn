@@ -74,7 +74,10 @@ const DEFAULT_OPTIONS = {
   scrollbar: false,
   pullDownRefresh: false,
   pullUpLoad: false,
-  preventDefault: false
+  // 阻止原生的滚动,原生存在的问题有ios的fixed,
+  // 同时也会阻止原生的其他事件的事件冒泡,在最子代的元素添加class
+  // class有better-scroll的元素不会阻止
+  preventDefaultException: {className: /^(.+\s)?better-scroll(\s.+)?$/}
 }
 
 // finishPullDown后恢复原来状态的延迟时间

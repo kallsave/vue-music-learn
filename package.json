@@ -24,6 +24,7 @@
     }
   },
   "dependencies": {
+    "assign-deep": "^1.0.0",
     "auto-compute-first-screen-time": "^5.7.1",
     "axios": "^0.18.0",
     "better-scroll": "^1.12.6",

@@ -3,6 +3,7 @@
     <div ref="scrollWrapper" class="scroll-wrapper">
       <vi-scroll
         ref="scroll"
+        style="color: #ffcd32"
         :scroll-events="['scroll']"
         :options="scrollOptions"
         :data="discList"
@@ -95,7 +96,7 @@ export default {
           // 阀值
           threshold: 80,
           // 滞留的位置
-          stop: 50,
+          stop: 60,
           txt: '更新成功',
           // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
           stopTime: 1000

@@ -38,28 +38,27 @@ export default {
 }
 </script>
 <style lang="stylus">
-
 .vi-scroll-loading
   font-size: 30px
-.vi-scroll-loading-spinners
-  position: relative
-  display: block
-  width: 1em
-  height: 1em
-.vi-scroll-loading-spinner
-  position: absolute
-  left: 44.5%
-  top: 37%
-  width: 2PX // for rem
-  height: 25%
-  border-radius: 50%/20%
-  opacity: .25
-  background-color: currentColor
-  animation: spinner-fade 1s linear infinite
-  for num in (1..12)
-    &:nth-child({num})
-      animation-delay: ((num - 1) / 12)s
-      transform: rotate(30deg * (num - 6)) translateY(-150%)
+  .vi-scroll-loading-spinners
+    position: relative
+    display: block
+    width: 1em
+    height: 1em
+  .vi-scroll-loading-spinner
+    position: absolute
+    left: 44.5%
+    top: 37%
+    width: 2PX // for rem
+    height: 25%
+    border-radius: 50%/20%
+    opacity: .25
+    background-color: currentColor
+    animation: spinner-fade 1s linear infinite
+    for num in (1..12)
+      &:nth-child({num})
+        animation-delay: ((num - 1) / 12)s
+        transform: rotate(30deg * (num - 6)) translateY(-150%)
 @keyframes spinner-fade
   0%
     opacity: .85

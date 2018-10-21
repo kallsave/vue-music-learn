@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './pages/router.js'
 import store from './store'
-import VueLazyLoad from 'vue-lazyload'
+import VueLazyLoad from '../lib/src/index.js'
 
 // vue-navigation貌似不是那么好用
 // 需不需要keep-alive可以在vue的组件中具体设置
@@ -23,7 +23,7 @@ Vue.use(BaseIndexList)
 Vue.use(VueLazyLoad, {
   lazyComponent: true,
   // 预加载,默认1.3
-  preLoad: 1.3,
+  preLoad: 1.5,
   error: require('@/assets/images/loading.png'),
   loading: require('@/assets/images/loading.png'),
   // 尝试次数

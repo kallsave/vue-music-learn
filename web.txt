@@ -1,5 +1,0 @@
-https://codesandbox.io/s/vue
-https://github.com/vuejs/awesome-vue
-https://icomoon.io/
-http://cubic-bezier.com/#.17,.67,.83,.67
-http://svgtrick.com/
