@@ -14,6 +14,11 @@ import Vi from '@/uikit/index.js'
 import BaseIndexList from '@/base-components/index-list/index.js'
 import BaseSearchBox from '@/base-components/search-box/index.js'
 
+if (process.env.NODE_ENV !== 'production') {
+  const Vconsole = require('vconsole')
+  const vConsole = new Vconsole()
+}
+
 Vue.use(Vi)
 Vue.use(BaseSearchBox)
 Vue.use(BaseIndexList)

@@ -6,7 +6,11 @@
       <vi-sticky-ele :ele-key="'tab'">
         <tab></tab>
       </vi-sticky-ele>
-      <vi-slide-router :router-list="routerList">
+      <vi-slide-router
+        :router-list="routerList"
+        :routerStyle="{
+          color: '#222',
+        }">
         <keep-alive exclude="no-keep-alive">
           <router-view></router-view>
         </keep-alive>
@@ -39,8 +43,19 @@ export default {
         {
           path: '/search',
         }
-      ]
+      ],
+      keepAliveInclude: []
     }
+  },
+  created() {
+    // this.$router.options.routes[1].children.forEach((item) => {
+    //   console.log(item.meta.keepAlive)
+    //   if (item.meta.keepAlive) {
+    //     console.log(item)
+    //     this.keepAliveInclude.push(1)
+    //   }
+    // })
+    // console.log(this.keepAliveInclude)
   },
   methods: {
     stickyChange() {

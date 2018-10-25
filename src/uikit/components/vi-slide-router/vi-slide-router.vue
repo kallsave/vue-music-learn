@@ -1,5 +1,5 @@
 <template>
-  <div class="slide-router">
+  <div class="slide-router" :style="routerStyle">
     <transition :name="slideDirection">
       <slot></slot>
     </transition>
@@ -30,6 +30,12 @@ export default {
     directionLockThreshold: {
       type: Number,
       default: 0.2
+    },
+    routerStyle: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {
@@ -79,10 +85,10 @@ export default {
       }
 
       if (direction >= 0 && currentIndex < this.routerList.length - 1) {
-        this.slideDirection = 'slideforward'
+        this.slideDirection = 'slide-right'
         this.$router.push({'path': this.routerList[currentIndex + 1].path})
       } else if (direction < 0 && currentIndex > 0) {
-        this.slideDirection = 'slideback'
+        this.slideDirection = 'slide-left'
         this.$router.push({'path': this.routerList[currentIndex - 1].path})
       }
     },
@@ -95,21 +101,72 @@ export default {
 </script>
 
 <style lang="stylus">
-.slideforward-enter-active
-  transition: all 0.2s
-.slideforward-leave-active
-  transition: all 0.2s
-.slideforward-enter
-  transform:  translate3d(100%, 0px, 0px)
-.slideforward-leave-to
-  transform:  translate3d(-100%, 0px, 0px)
+// .slideforward-enter-active
+//   transition: transform 0.2s
+// .slideforward-leave-active
+//   transition: transform 0.2s
+// .slideforward-enter
+//   transform:  translate3d(100%, 0px, 0px)
+// .slideforward-leave-to
+//   transform:  translate3d(-100%, 0px, 0px)
 
-.slideback-enter-active
-  transition: all 0.2s
-.slideback-leave-active
-  transition: all 0.2s
-.slideback-enter
-  transform:  translate3d(-100%, 0px, 0px)
-.slideback-leave-to
-  transform:  translate3d(100%, 0px, 0px)
+// .slideback-enter-active
+//   transition: transform 0.2s
+// .slideback-leave-active
+//   transition: transform 0.2s
+// .slideback-enter
+//   transform:  translate3d(-100%, 0px, 0px)
+// .slideback-leave-to
+//   transform:  translate3d(100%, 0px, 0px)
+// TODO: 动画用js动画,background支持props传
+// 兼容更多场景,比如全屏高度
+.slide-right-enter {
+  transform:  translate3d(100%, 0px, 0px);
+}
+
+.slide-right-enter-active {
+  will-change: transform;
+  transition: transform 0.2s;
+  background: currentColor;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.slide-right-leave-active {
+  will-change: transform;
+  transition: transform 0.2s;
+  background: currentColor;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.slide-right-leave-to {
+  transform:  translate3d(-100%, 0px, 0px);
+}
+
+.slide-left-enter {
+  transform:  translate3d(-100%, 0px, 0px);
+}
+
+.slide-left-enter-active {
+  transition: transform 0.2s;
+}
+
+.slide-left-enter-to {
+  transform:  translate3d(0px, 0px, 0px);
+}
+
+.slide-left-leave {
+  transform:  translate3d(0px, 0px, 0px);
+}
+
+.slide-left-leave-active {
+  transition: transform 0.2s;
+}
+
+.slide-left-leave-to {
+  transform:  translate3d(100%, 0px, 0px);
+}
 </style>

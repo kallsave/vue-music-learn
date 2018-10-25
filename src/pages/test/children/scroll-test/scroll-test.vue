@@ -3,6 +3,9 @@
     <div class="header">
       <div class="title">scroll</div>
     </div>
+    <http>
+      <div>ssdwww.baidu.comjj</div>
+    </http>
     <div class="match-list">
       <vi-sticky
         ref="scroll"
@@ -36,6 +39,7 @@
 
 <script>
 import matchList from '@/common/data/match-list'
+import Http from '@/uikit/components/vi-href/vi-href.vue'
 
 const SOURCE = 'soccer'
 
@@ -55,6 +59,9 @@ const getMatchList = (list, source, type) => {
 }
 
 export default {
+  components: {
+    Http,
+  },
   data() {
     return {
       matchList: getMatchList(matchList, SOURCE, TYPE),

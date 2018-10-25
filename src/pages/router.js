@@ -29,18 +29,30 @@ export default new Router({
         {
           path: '/recommend',
           component: Recommend,
+          // meta: {
+          //   keepAlive: false
+          // }
         },
         {
           path: '/singer',
           component: Singer,
+          // meta: {
+          //   keepAlive: true,
+          // }
         },
         {
           path: '/search',
           component: Search,
+          // meta: {
+          //   keepAlive: true,
+          // }
         },
         {
           path: '/rank',
           component: Rank,
+          // meta: {
+          //   keepAlive: true,
+          // }
         },
       ]
     },
