@@ -24,7 +24,7 @@ export default new Router({
     {
       path: '/',
       component: Index,
-      redirect: '/recommend',
+      // redirect: '/recommend',
       children: [
         {
           path: '/recommend',
@@ -41,15 +41,15 @@ export default new Router({
           // }
         },
         {
-          path: '/search',
-          component: Search,
+          path: '/rank',
+          component: Rank,
           // meta: {
           //   keepAlive: true,
           // }
         },
         {
-          path: '/rank',
-          component: Rank,
+          path: '/search',
+          component: Search,
           // meta: {
           //   keepAlive: true,
           // }

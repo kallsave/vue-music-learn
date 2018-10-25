@@ -260,6 +260,7 @@ export default {
   width: 100%
   height: calc(100vh - 44px)
   overflow: hidden
+  background: #222
   .search-sticky-wrapper
     box-sizing: border-box
     position: fixed

@@ -136,7 +136,9 @@ async function updateAllImg () {
 
   同时也阻止了一些其他默认事件,需要做exception处理
 
-  better-scroll的preventDefaultException主要是在冒泡阶段阻止,所以对不需要进行阻止原生行为的元素的最小子代元元素添加class
+  better-scroll的preventDefaultException主要是在冒泡阶段阻止,所以对不需要进行阻止原生行为的元素的最小子代元素添加class
+
+  对于click事件来说,从最小的元素冒泡到外围,所以没有点击到最小的元素是无法传递下去的,如果想扩大点击范围,范围内的元素都要添加class
 
   本项目设置preventDefaultException的class为better-scroll,具体在vi-scroll组件中
 

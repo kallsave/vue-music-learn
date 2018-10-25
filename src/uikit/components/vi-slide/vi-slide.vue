@@ -36,6 +36,7 @@ const COMPONENT_NAME = 'vi-slide'
 
 const EVENT_SCROLL_END = 'scroll-end'
 const EVENT_LOAD_IMAGE = 'load-image'
+const EVENT_CHANGE = 'change'
 
 export default {
   name: COMPONENT_NAME,
@@ -145,8 +146,11 @@ export default {
 
       this.slide.on('scrollEnd', () => {
         let pageIndex = this.slide.getCurrentPage().pageX
-        this.currentPageIndex = pageIndex
         this.$emit(EVENT_SCROLL_END, pageIndex)
+        if (this.currentPageIndex !== pageIndex) {
+          this.currentPageIndex = pageIndex
+          this.$emit(EVENT_CHANGE, pageIndex)
+        }
         if (this.autoPlay) {
           this._play()
         }
