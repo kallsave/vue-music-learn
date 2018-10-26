@@ -7,11 +7,6 @@
         :options="scrollOptions"
         :data="[rankList]"
         @scroll="scrollHandler">
-        <vi-loading
-          ref="rankListLoading"
-          :scale="0.8"
-          :title-color="'#ffcd32'"
-          :icon-color="'#ffcd32'"></vi-loading>
         <ul class="rank-list">
           <li class="item" :key="index"
             v-for="(item, index) in rankList"
@@ -44,6 +39,11 @@ export default {
   data() {
     return {
       rankList: [],
+      scrollOptions: {
+        probeType: 3,
+        click: true,
+        directionLockThreshold: 1
+      },
     }
   },
   mounted() {
@@ -58,14 +58,20 @@ export default {
       this.$refs.scroll.refresh()
     },
     _getTopList() {
-      this.$refs.rankListLoading.show()
+      this.$createViToast({
+        icon: 'loading',
+        titleColor: '#ffcd32',
+        iconColor: '#ffcd32',
+        scalc: 0.8,
+      }).show()
       getTopList().then((res) => {
         this.rankList = res.data.topList
-        this.$refs.rankListLoading && this.$refs.rankListLoading.hide().then(() => {
-          this.$nextTick(() => {
-            this.$refs.scroll.refresh()
-          })
-        })
+        this.$createViToast({
+          icon: 'loading',
+          titleColor: '#ffcd32',
+          iconColor: '#ffcd32',
+          scalc: 0.8,
+        }).hide()
       })
     },
     selectItem(e, item) {
@@ -90,12 +96,16 @@ export default {
   width: 100%
   height: calc(100vh - 44px)
   overflow: hidden
+  background: #222
+  // position: relative
   .scroll-wrapper
     box-sizing: border-box
-    position: fixed
     width: 100%
-    top: 88px
-    bottom: 0
+    height: calc(100vh - 44px)
+    // position: fixed
+    // position: absolute
+    // top: 88px
+    // bottom: 0
     .rank-list
       .item
         display: flex

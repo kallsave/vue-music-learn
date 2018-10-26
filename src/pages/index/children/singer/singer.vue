@@ -1,15 +1,10 @@
 <template>
   <div class="singer">
     <div ref="scrollWrapper" class="index-list-scroll-wrapper">
-      <vi-loading
-        ref="singerLoading"
-        :center="false"
-        :scale="0.8"
-        :title-color="'#ffcd32'"
-        :icon-color="'#ffcd32'"></vi-loading>
       <vi-index-list
         ref="scroll"
         :data="singerList"
+        :options="scrollOptions"
         @select="selectSinger"
         @scroll="scrollHandler">
       </vi-index-list>
@@ -32,7 +27,12 @@ export default {
   mixins: [sticky, playListMixin],
   data() {
     return {
-      singerList: []
+      singerList: [],
+      scrollOptions: {
+        probeType: 3,
+        click: true,
+        directionLockThreshold: 1
+      },
     }
   },
   mounted() {
@@ -47,15 +47,21 @@ export default {
       this.$refs.scroll.refresh()
     },
     _getSingerList() {
-      this.$refs.singerLoading.show()
+      this.$createViToast({
+        icon: 'loading',
+        titleColor: '#ffcd32',
+        iconColor: '#ffcd32',
+        scalc: 0.8,
+      }).show()
       setTimeout(() => {
         getSingerList().then((res) => {
           this.singerList = this._normalizeSinger(res.data.list)
-          this.$refs.singerLoading && this.$refs.singerLoading.hide().then(() => {
-            this.$nextTick(() => {
-              this.$refs.scroll.refresh()
-            })
-          })
+          this.$createViToast({
+            icon: 'loading',
+            titleColor: '#ffcd32',
+            iconColor: '#ffcd32',
+            scalc: 0.8
+          }).hide()
         })
       }, 500)
     },
@@ -119,10 +125,14 @@ export default {
   width: 100%
   height: calc(100vh - 44px)
   overflow: hidden
+  background: #222
+  // position: relative
   .index-list-scroll-wrapper
     box-sizing: border-box
-    position: fixed
     width: 100%
-    top: 88px
-    bottom: 0
+    height: calc(100vh - 44px)
+    // position: fixed
+    // position: absolute
+    // top: 88px
+    // bottom: 0
 </style>

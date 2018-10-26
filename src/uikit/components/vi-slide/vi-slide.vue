@@ -1,6 +1,7 @@
  <!-- slide外围必须有一个父元素,因为slide的高度是由外围父元素决定的 -->
 <template>
   <div ref="slide" class="vi-slide-wrapper"
+    :style="setStyle"
     @touchstart.stop
     @touch.stop>
     <div ref="slideGroup" class="vi-slide-group">
@@ -29,6 +30,8 @@
 </template>
 
 <script>
+import assignDeep from 'assign-deep'
+
 import { addClass } from '../../common/helpers/dom.js'
 import BScroll from 'better-scroll'
 
@@ -37,6 +40,21 @@ const COMPONENT_NAME = 'vi-slide'
 const EVENT_SCROLL_END = 'scroll-end'
 const EVENT_LOAD_IMAGE = 'load-image'
 const EVENT_CHANGE = 'change'
+
+const DEFAULT_OPTIONS = {
+  // 多层嵌套会触发多次,所以需要click的场景自主添加
+  probeType: 3,
+  scrollbar: false,
+  scrollX: true,
+  scrollY: true,
+  momentum: false,
+  // slide的设置
+  snap: {
+    loop: false,
+    threshold: 0.3,
+    speed: 400
+  }
+}
 
 export default {
   name: COMPONENT_NAME,
@@ -47,9 +65,17 @@ export default {
         return []
       }
     },
-    loop: {
-      type: Boolean,
-      default: false
+    options: {
+      type: Object,
+      default() {
+        return {
+          snap: {
+            loop: false,
+            threshold: 0.3,
+            speed: 400
+          }
+        }
+      }
     },
     autoPlay: {
       type: Boolean,
@@ -67,13 +93,11 @@ export default {
       type: Number,
       default: 0
     },
-    speed: {
-      type: Number,
-      default: 400
-    },
-    threshold: {
-      type: Number,
-      default: 0.3
+    setStyle: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {
@@ -82,11 +106,12 @@ export default {
       currentPageIndex: this.initPageIndex
     }
   },
-  mounted() {
-    // 同步数据的情况
-    this.setSlideWidth()
-    this._initDots()
-    this._initSlide()
+  computed: {
+    loop() {
+      // let options = Object.assign({}, DEFAULT_OPTIONS, this.options)
+      // return options.snap.loop
+      return true
+    }
   },
   watch: {
     data: {
@@ -105,7 +130,6 @@ export default {
           window.addEventListener('resize', this._resizeHandler, false)
         }
       },
-      // 在生成的时候执行
       immediate: true
     },
   },
@@ -130,18 +154,9 @@ export default {
       this.$refs.slideGroup.style.width = width + 'px'
     },
     _initSlide() {
-      this.slide = new BScroll(this.$refs.slide, {
-        scrollX: true,
-        scrollY: false,
-        momentum: false,
-        stopPropagation: true,
-        // slide的设置
-        snap: {
-          loop: this.loop,
-          threshold: this.threshold,
-          speed: this.speed
-        },
-      })
+      let a = Object.assign({}, DEFAULT_OPTIONS, this.options)
+      let options = Object.assign({}, DEFAULT_OPTIONS, this.options)
+      this.slide = new BScroll(this.$refs.slide, options)
       this.slide.goToPage(this.initPageIndex, 0, 0)
 
       this.slide.on('scrollEnd', () => {
@@ -207,6 +222,7 @@ export default {
     position: relative
     overflow: hidden
     height: 100%
+    white-space: nowrap
     // white-space: nowrap
     .vi-slide-item
       float: left

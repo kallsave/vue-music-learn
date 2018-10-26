@@ -47,6 +47,7 @@
 </template>
 
 <script>
+
 import Loading from './vi-scroll-loading.vue'
 import Bubble from './vi-scroll-bubble.vue'
 
@@ -77,7 +78,7 @@ const DEFAULT_OPTIONS = {
   // 阻止原生的滚动,原生存在的问题有ios的fixed,
   // 同时也会阻止原生的其他事件的事件冒泡,在最子代的元素添加class
   // class有better-scroll的元素不会阻止
-  preventDefaultException: {className: /^(.+\s)?better-scroll(\s.+)?$/}
+  // preventDefaultException: {className: /^(.+\s)?better-scroll(\s.+)?$/}
 }
 
 // finishPullDown后恢复原来状态的延迟时间

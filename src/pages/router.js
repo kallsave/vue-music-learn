@@ -29,30 +29,34 @@ export default new Router({
         {
           path: '/recommend',
           component: Recommend,
-          // meta: {
-          //   keepAlive: false
-          // }
+          meta: {
+            keepAlive: false,
+            title: '推荐'
+          },
         },
         {
           path: '/singer',
           component: Singer,
-          // meta: {
-          //   keepAlive: true,
-          // }
+          meta: {
+            keepAlive: true,
+            title: '歌手'
+          },
         },
         {
           path: '/rank',
           component: Rank,
-          // meta: {
-          //   keepAlive: true,
-          // }
+          meta: {
+            keepAlive: true,
+            title: '排行'
+          },
         },
         {
           path: '/search',
           component: Search,
-          // meta: {
-          //   keepAlive: true,
-          // }
+          meta: {
+            keepAlive: true,
+            title: '搜索'
+          },
         },
       ]
     },

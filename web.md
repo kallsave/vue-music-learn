@@ -25,5 +25,7 @@ better-scroll文档
 ------------
 [better-scroll](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#preventdefaultexception)
 
+[better-scroll各种demo](https://ustbhuangyi.github.io/better-scroll/#/examples/full-page-vertical-slide/en)
+
 可以阻止原生浏览器的各种事件,很强大。可以看下源码
 

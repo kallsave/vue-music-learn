@@ -20,7 +20,7 @@
         <div v-show="!query" class="shortcut-scroll-wrapper">
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
-            <ul>
+            <ul class="hot-key-list clear">
               <li class="item" :key="index"
                 v-for="(item, index) in hotKey"
                 @click="query = item.k">
@@ -99,6 +99,7 @@ export default {
       result: [],
       scrollOptions: {
         probeType: 3,
+        click: true,
         // 下拉加载
         pullUpLoad: {
           threshold: 100,
@@ -260,13 +261,16 @@ export default {
   width: 100%
   height: calc(100vh - 44px)
   overflow: hidden
-  background: #222
+  background: $color-background
+  // position: relative
   .search-sticky-wrapper
     box-sizing: border-box
-    position: fixed
     width: 100%
-    top: 87px
-    bottom: 0
+    height: calc(100vh - 44px)
+    // position: fixed
+    // position: absolute
+    // top: 88px
+    // bottom: 0
     font-size: $font-size-medium
     color: peru
     .search-box-wrapper
@@ -282,14 +286,15 @@ export default {
           line-height: 43px
           font-size: $font-size-medium
           color: $color-text-l
-        .item
-          display: inline-block
-          padding: 5px 10px
-          margin: 0 20px 10px 0
-          border-radius: 6px
-          background: $color-highlight-background
-          font-size: $font-size-medium
-          color: $color-text-d
+        .hot-key-list
+          .item
+            float: left
+            padding: 5px 10px
+            margin: 0 10px 10px 0
+            border-radius: 6px
+            background: $color-highlight-background
+            font-size: $font-size-medium
+            color: $color-text-d
       .search-history
         position: relative
         margin: 0 20px

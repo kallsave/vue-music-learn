@@ -128,18 +128,20 @@ export default {
   will-change: transform;
   transition: transform 0.2s;
   background: currentColor;
-  height: 100%;
-  position: absolute;
-  top: 0;
+  height: 100vh;
+  // height: 100%;
+  // position: absolute;
+  // top: 0;
 }
 
 .slide-right-leave-active {
   will-change: transform;
   transition: transform 0.2s;
   background: currentColor;
-  height: 100%;
-  position: absolute;
-  top: 0;
+  height: 100vh;
+  // height: 100%;
+  // position: absolute;
+  /// top: 0;
 }
 
 .slide-right-leave-to {

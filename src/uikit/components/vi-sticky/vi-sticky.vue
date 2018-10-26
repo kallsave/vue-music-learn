@@ -73,7 +73,8 @@ export default {
       type: Object,
       default() {
         return {
-          probeType: 3
+          probeType: 3,
+          click: true
         }
       }
     },

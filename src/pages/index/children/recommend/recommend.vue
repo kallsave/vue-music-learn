@@ -18,7 +18,7 @@
           <vi-slide ref="slide"
             :init-page-index="currentPageIndex"
             :data="recommends"
-            :loop="true"
+            :options="slideOptions"
             :show-dots="true"
             :auto-play="true"
             @scroll-end="scrollEnd"
@@ -100,7 +100,13 @@ export default {
           txt: '更新成功',
           // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
           stopTime: 1000
-        }
+        },
+        directionLockThreshold: 1
+      },
+      slideOptions: {
+        snap: {
+          loop: true,
+        },
       }
     }
   },
@@ -188,12 +194,15 @@ export default {
   width: 100%
   height: calc(100vh - 44px)
   overflow: hidden
+  background: #222
+  // position: relative
   .scroll-wrapper
     box-sizing: border-box
-    position: fixed
     width: 100%
-    top: 88px
-    bottom: 0
+    height: calc(100vh - 44px)
+    // position: absolute
+    // top: 88px
+    // bottom: 0
     .slide-wrapper
       overflow: hidden
       .slide-item

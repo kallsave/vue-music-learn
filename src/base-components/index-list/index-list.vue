@@ -4,7 +4,7 @@
       ref="scroll"
       :data="data"
       :scroll-events="['scroll']"
-      :options="scrollOptions"
+      :options="options"
       @scroll="scrollHandler">
       <ul class="vi-index-list-ul">
         <li ref="listGroup" class="vi-index-list-group"
@@ -44,6 +44,11 @@ import { getData, prefixStyle } from '@/common/helpers/dom.js'
 
 const transform = prefixStyle('transform')
 
+const DEFAULT_OPTIONS = {
+  probeType: 3,
+  click: true
+}
+
 const COMPONENT_NAME = 'vi-index-list'
 
 const EVENT_SCROLL = 'scroll'
@@ -57,14 +62,16 @@ export default {
       default() {
         return []
       }
+    },
+    options: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {
     return {
-      scrollOptions: {
-        probeType: 3,
-        click: true
-      },
       currentIndex: 0,
       scrollY: 0,
       diff: 0
