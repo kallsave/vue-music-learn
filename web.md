@@ -23,7 +23,7 @@ svg学习
 
 better-scroll文档
 ------------
-[better-scroll](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#preventdefaultexception)
+[better-scroll完整中文文档](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#preventdefaultexception)
 
 [better-scroll各种demo](https://ustbhuangyi.github.io/better-scroll/#/examples/full-page-vertical-slide/en)
 

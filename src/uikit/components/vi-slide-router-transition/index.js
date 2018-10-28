@@ -1,4 +1,4 @@
-import Component from './vi-slide-router.vue'
+import Component from './vi-slide-router-transition.vue'
 
 Component.install = function (Vue) {
   Vue.component(Component.name, Component)

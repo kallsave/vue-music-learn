@@ -52,14 +52,15 @@ import Loading from './vi-scroll-loading.vue'
 import Bubble from './vi-scroll-bubble.vue'
 
 import BScroll from 'better-scroll'
-import { camelize } from '@/common/helpers/utils.js'
-import { getRect } from '@/common/helpers/dom.js'
+import { camelize } from '../../common/helpers/utils.js'
+import { getRect } from '../../common/helpers/dom.js'
 
 const COMPONENT_NAME = 'vi-scroll'
 
 const EVENT_SCROLL = 'scroll'
 const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
 const EVENT_SCROLL_END = 'scroll-end'
+
 const EVENT_PULLING_DOWN = 'pulling-down'
 const EVENT_PULLING_UP = 'pulling-up'
 
@@ -75,10 +76,11 @@ const DEFAULT_OPTIONS = {
   scrollbar: false,
   pullDownRefresh: false,
   pullUpLoad: false,
-  // 阻止原生的滚动,原生存在的问题有ios的fixed,
-  // 同时也会阻止原生的其他事件的事件冒泡,在最子代的元素添加class
-  // class有better-scroll的元素不会阻止
-  // preventDefaultException: {className: /^(.+\s)?better-scroll(\s.+)?$/}
+  // 会阻止原生的其他事件的事件冒泡,开启需要巨大的代价
+  // 配置class有better-scroll的元素不会阻止,在最子代的元素添加class
+  // preventDefaultException: {
+  //   className: /^(.+\s)?better-scroll(\s.+)?$/
+  // }
 }
 
 // finishPullDown后恢复原来状态的延迟时间
@@ -167,7 +169,6 @@ export default {
   watch: {
     // 父组件数据更新===子组件传递的props更新
     // watch也是基于promiseA+的异步,watch执行,但是是优先于DOM更新执行的
-    // 不写deep也行,因为vue的props和data的数组的部分方法是变异的,是改变指针的
     data: {
       handler() {
         console.log('watch scroll data')
@@ -175,7 +176,8 @@ export default {
         this.$nextTick(() => {
           this.forceUpdate(true)
         })
-      }
+      },
+      deep: true
     },
     pullDownRefresh: {
       handler(newVal, oldVal) {

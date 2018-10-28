@@ -1,28 +1,30 @@
 <template>
   <div class="index">
-    <vi-sticky ref="sticky"
-      @sticky-change="stickyChange">
+    <vi-sticky ref="sticky">
       <m-header></m-header>
       <vi-sticky-ele :ele-key="'tab'">
-        <tab></tab>
-        <!-- <slide-tab
+        <!-- <tab></tab> -->
+        <slide-tab
           :data="titleList"
           :initIndex="currentIndex"
-         @click-index="clickIndex"></slide-tab> -->
+         @click-index="clickIndex"></slide-tab>
       </vi-sticky-ele>
-      <!-- <vi-slide-router
-        :router-list="siblingsRoute"
-        :routerStyle="{color: '#222'}">
+      <!-- <vi-slide-router-transition
+        slide-right-class="scroll-right"
+        slide-left-class="scroll-left"
+        mode="in-out"
+        :router-list="siblingsRoute">
         <keep-alive exclude="no-keep-alive">
           <router-view></router-view>
         </keep-alive>
-      </vi-slide-router> -->
+      </vi-slide-router-transition> -->
 
       <vi-slide ref="slide"
         :options="slideOptions"
         :initPageIndex="currentIndex"
-        :set-style="{height: '1000px'}"
-        @change="changeTab">
+        :scroll-events="['scroll']"
+        @change="changeTab"
+        @scroll="scroll">
         <div class="slide-item" v-for="(item, index) in siblingsRoute" :key="index">
           <template v-if="$route.matched[1].regex.test(item.path)">
             <component :is="item.component "></component>
@@ -71,13 +73,23 @@ export default {
         probeType: 3,
         directionLockThreshold: 1,
         scrollY: true,
-        scrollX: true
+        scrollX: true,
+        snap: {
+          loop: false,
+          threshold: 0.4,
+        },
+        bounce: {
+          top: true,
+          bottom: true,
+          left: false,
+          right: false
+        }
       }
     }
   },
   computed: {
     titleList() {
-      return this.routerList.map((item) => {
+      return this.siblingsRoute.map((item) => {
         return item.meta.title
       })
     },
@@ -97,16 +109,10 @@ export default {
       }
     }
   },
-  created() {
-
-  },
   mounted() {
     this.hadShowPageList.push(this.currentIndex)
   },
   methods: {
-    stickyChange() {
-      this.$refs.sticky.scroll.disable()
-    },
     clickIndex(index) {
       this.pushHadShowPageListPageList(index)
     },
@@ -124,6 +130,9 @@ export default {
       if (this.hadShowPageList.indexOf(index) === -1) {
         this.hadShowPageList.push(index)
       }
+    },
+    scroll(pos) {
+      console.log(pos)
     }
   },
 }
@@ -133,4 +142,66 @@ export default {
 .index
   height: 100vh
   position: relative
+
+.scroll-right-enter
+  transform:  translate3d(100%, 0px, 0px)
+
+.scroll-right-enter-active
+  will-change: transform
+  transition: transform 0.2s
+  z-index: 100
+  width: 100%
+  height: calc(100vh - 44px)
+  top: 88px
+  position: absolute
+
+.scroll-right-enter-to
+  z-index: 100
+  width: 100%
+  height: calc(100vh - 44px)
+  top: 88px
+  position: absolute
+
+.scroll-right-leave-active
+  will-change: transform
+  transition: transform 0.2s
+  display: none
+
+.scroll-right-leave-to
+  transform:  translate3d(-100%, 0px, 0px)
+  display: none
+
+.scroll-left-enter
+  transform:  translate3d(-100%, 0px, 0px)
+
+.scroll-left-enter-active
+  will-change: transform
+  transition: transform 0.2s
+  z-index: 100
+  width: 100%
+  height: calc(100vh - 44px)
+  top: 88px
+  position: absolute
+
+.scroll-left-enter-to
+  z-index: 100
+  width: 100%
+  height: calc(100vh - 44px)
+  top: 88px
+  position: absolute
+
+.scroll-left-enter-to
+  transform:  translate3d(0px, 0px, 0px)
+  will-change: transform
+  transition: transform 0.2s
+
+.scroll-left-leave-active
+  will-change: transform
+  transition: transform 0.2s
+  display: none
+
+.scroll-left-leave-to
+  transform:  translate3d(100%, 0px, 0px)
+  display: none
+
 </style>

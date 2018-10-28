@@ -13,4 +13,5 @@
 - 给各组件写README.md文档
 - 测试router更多传参用法
 - vi-scroll重写监听机制listenEvent
+-- scroll的没有更多
 

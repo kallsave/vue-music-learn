@@ -42,7 +42,7 @@ export default {
       scrollOptions: {
         probeType: 3,
         click: true,
-        directionLockThreshold: 1
+        directionLockThreshold: 1,
       },
     }
   },
@@ -96,7 +96,7 @@ export default {
   width: 100%
   height: calc(100vh - 44px)
   overflow: hidden
-  background: #222
+  background: $color-background
   // position: relative
   .scroll-wrapper
     box-sizing: border-box

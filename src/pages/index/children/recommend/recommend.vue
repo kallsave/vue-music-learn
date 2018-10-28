@@ -22,7 +22,9 @@
             :show-dots="true"
             :auto-play="true"
             @scroll-end="scrollEnd"
-            @load-image="loadImage">
+            @load-image="loadImage"
+            @touchstart.native.stop
+            @touch.native.stop>
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->
             <template slot="dots">
@@ -101,7 +103,7 @@ export default {
           // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
           stopTime: 1000
         },
-        directionLockThreshold: 1
+        directionLockThreshold: 1,
       },
       slideOptions: {
         snap: {
@@ -194,7 +196,7 @@ export default {
   width: 100%
   height: calc(100vh - 44px)
   overflow: hidden
-  background: #222
+  background: $color-background
   // position: relative
   .scroll-wrapper
     box-sizing: border-box

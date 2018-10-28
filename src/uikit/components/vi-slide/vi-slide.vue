@@ -1,9 +1,7 @@
  <!-- slide外围必须有一个父元素,因为slide的高度是由外围父元素决定的 -->
 <template>
   <div ref="slide" class="vi-slide-wrapper"
-    :style="setStyle"
-    @touchstart.stop
-    @touch.stop>
+    :style="setStyle">
     <div ref="slideGroup" class="vi-slide-group">
       <slot>
         <!-- 默认的场景 -->
@@ -30,16 +28,21 @@
 </template>
 
 <script>
-import assignDeep from 'assign-deep'
-
 import { addClass } from '../../common/helpers/dom.js'
+import { camelize, assignArray, spliceArray } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'
 
 const COMPONENT_NAME = 'vi-slide'
 
+const EVENT_SCROLL = 'scroll'
 const EVENT_SCROLL_END = 'scroll-end'
-const EVENT_LOAD_IMAGE = 'load-image'
+
 const EVENT_CHANGE = 'change'
+const EVENT_LOAD_IMAGE = 'load-image'
+
+const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_SCROLL_END]
+
+const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END]
 
 const DEFAULT_OPTIONS = {
   // 多层嵌套会触发多次,所以需要click的场景自主添加
@@ -71,8 +74,6 @@ export default {
         return {
           snap: {
             loop: false,
-            threshold: 0.3,
-            speed: 400
           }
         }
       }
@@ -98,7 +99,18 @@ export default {
       default() {
         return {}
       }
-    }
+    },
+    scrollEvents: {
+      type: Array,
+      default() {
+        return []
+      },
+      validator(arr) {
+        return arr.every((item) => {
+          return SCROLL_EVENTS.indexOf(item) !== -1
+        })
+      }
+    },
   },
   data() {
     return {
@@ -108,9 +120,8 @@ export default {
   },
   computed: {
     loop() {
-      // let options = Object.assign({}, DEFAULT_OPTIONS, this.options)
-      // return options.snap.loop
-      return true
+      let options = Object.assign({}, DEFAULT_OPTIONS, this.options)
+      return options.snap.loop
     }
   },
   watch: {
@@ -130,11 +141,14 @@ export default {
           window.addEventListener('resize', this._resizeHandler, false)
         }
       },
+      deep: true,
       immediate: true
     },
   },
+  created() {
+  },
   methods: {
-    // slide的content盒子的宽度是要用js计算的,和scroll不一样
+    // slide的content盒子的宽度是要用js计算
     // 并且如果loop了,那么会创建两个缓冲div
     setSlideWidth(isResize) {
       let width = 0
@@ -153,13 +167,21 @@ export default {
       }
       this.$refs.slideGroup.style.width = width + 'px'
     },
+    _listenScrollEvents() {
+      const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
+      console.log(finalScrollEvents)
+      finalScrollEvents.forEach((event) => {
+        this.slide.on(camelize(event), (...args) => {
+          this.$emit(event, ...args, this.slide)
+        })
+      })
+    },
     _initSlide() {
-      let a = Object.assign({}, DEFAULT_OPTIONS, this.options)
       let options = Object.assign({}, DEFAULT_OPTIONS, this.options)
       this.slide = new BScroll(this.$refs.slide, options)
       this.slide.goToPage(this.initPageIndex, 0, 0)
 
-      this.slide.on('scrollEnd', () => {
+      this.slide.on(camelize(EVENT_SCROLL_END), () => {
         let pageIndex = this.slide.getCurrentPage().pageX
         this.$emit(EVENT_SCROLL_END, pageIndex)
         if (this.currentPageIndex !== pageIndex) {
@@ -170,6 +192,8 @@ export default {
           this._play()
         }
       })
+
+      this._listenScrollEvents()
     },
     _initDots() {
       this.dots = new Array(this.$refs.slideGroup.children.length)
@@ -210,12 +234,10 @@ export default {
 </script>
 
 <style lang="stylus">
-// TODO: 去掉variable.styl依赖,可以自定义样式
 @import "../../common/stylus/variable.styl"
 // 考虑到vi-slide-wrapper不仅仅是做轮播图那么简单的功能
 // 还有整个页面的slide动作,height是100%外围父元素
 .vi-slide-wrapper
-  min-height: 1px
   position: relative
   height: 100%
   .vi-slide-group

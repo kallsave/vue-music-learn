@@ -24,7 +24,7 @@ export default new Router({
     {
       path: '/',
       component: Index,
-      // redirect: '/recommend',
+      redirect: '/recommend',
       children: [
         {
           path: '/recommend',

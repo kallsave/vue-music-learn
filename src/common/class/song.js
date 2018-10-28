@@ -1,6 +1,7 @@
 import { getLyric } from '@/api/song.js'
 import { Base64 } from 'js-base64'
 import { param } from '@/api/config.js'
+const musicKey = require('../../../music-key.json')
 
 // 给localStorage的缓存添加类使用这个函数
 export class Song {
@@ -36,12 +37,7 @@ export class Song {
 
 // 从接口处理数据使用这个函数
 export function createSong (musicData) {
-  const url = param(`http://dl.stream.qqmusic.qq.com/C400${musicData.strMediaMid}.m4a`, {
-    guid: '7211746940',
-    vkey: '928BE633ADACF861DA44C1F9591BB71B6D2487CD5F798D4E3E9EB21CD43AA17C39E8336375B81816ED709E911F273E72887C8BF326FEE42C',
-    uin: 0,
-    fromtag: 38
-  })
+  const url = param(`http://dl.stream.qqmusic.qq.com/C400${musicData.strMediaMid}.m4a`, musicKey)
 
   return new Song({
     id: musicData.songid,

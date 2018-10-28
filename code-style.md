@@ -8,7 +8,7 @@
 - 遵循eslint代码规范
 - 常量需要使用const大写申明,单词区分用下滑线标识
 - 内部函数用_开头
-- components > mixins > provide > inject >  props > data > created > mounted > computed > watch > methods > updated
+- components > beforeCreate> mixins > provide > inject >  props > data > computed > watch > created > mounted > methods > updated
 - mounted中避免使用this.$nextTick,这种场景用于确保父组件中所有的子组件的dom都挂载完毕。其它场景慎用
 - 动作命名:
   can 判断是否可执行某个动作
@@ -21,19 +21,19 @@
 
   set 设置某个值
 
-  load 加载某些数据
+  onXXX XXX事件的回调函数
 
 ## 语法建议
 - Promise的catch语法建议
 
 ```javascript
-  // 第一个then的Promise.resolve的回调,catch是reject的回调
-  updateImg().then((data) => {
-    // ...
-  }).catch((err) => {
-    // ...
-    console.error(err)
-  })
+// 第一个then的Promise.resolve的回调,catch是reject的回调
+updateImg().then((data) => {
+  // ...
+}).catch((err) => {
+  // ...
+  console.error(err)
+})
 ```
 
 - 如果是使用async/await语法,在await函数后使用catch避免阻断
@@ -130,24 +130,28 @@ async function updateAllImg () {
 ## 关于better-scroll
 - 本项目大量使用了[better-scroll](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#preventdefaultexception)
 
-- 使用了better-scroll的preventDefaultException规则,阻止浏览器的原生行为
+- 使用better-scroll的preventDefaultException规则,阻止浏览器的原生行为
 
-  特别是ios上fixed元素在滚动时消失,meta设置禁止缩小放大失效还有一系列原生浏览器带来的bug
+  ios上fixed元素在滚动时消失,meta设置禁止缩小放大失效还有一系列原生浏览器带来的bug?
 
-  同时也阻止了一些其他默认事件,需要做exception处理
+  同时也阻止了一些其他默认事件,开启需要preventDefaultException是非常麻烦的的,需要做exception处理
 
-  better-scroll的preventDefaultException主要是在冒泡阶段阻止,所以对不需要进行阻止原生行为的元素的最小子代元素添加class
+  better-scroll的preventDefaultException主要是在冒泡阶段阻止,所以对不需要进行阻止原生行为的元素的最小子代元素添加class,在需要点击,跳转,获得焦点等等都要加...建议不要开启
 
   对于click事件来说,从最小的元素冒泡到外围,所以没有点击到最小的元素是无法传递下去的,如果想扩大点击范围,范围内的元素都要添加class
 
-  本项目设置preventDefaultException的class为better-scroll,具体在vi-scroll组件中
+  多次scroll嵌套的场景,使用[stoppropagation](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#stoppropagationv190)隔断,通过监听scroll,,如果不使用stoppropagation,外层scroll的scroll-content上拉导致出现空白,复杂的场景通过监听scroll的位置,在一定范围手动让外层scroll滚动,对scroll进行enable,disable,scrollTo处理
+
+  stoppropagation已知问题不仅仅是对better-scroll的touch事件阻断,对原生的touch事件都会有阻断
+
 
 ## 其他
-- 使用TODO和FIXME标识代码
+- 使用TODO,FIXME,FORK标识代码,vscode下载TODO Highlight
 
 ```javascript
-  // TODO: 如果代码中有该标识,说明有功能待编写或者去除
-  // FIXME: 如果代码中有该标识,说明代码有bug或者需要优化
+// TODO: 如果代码中有该标识,说明有功能待编写或者去除
+// FIXME: 如果代码中有该标识,说明代码有bug或者需要优化
+// FORK: 如果代码中有该标识,说明是修改的第三方库源码
 ```
 
 

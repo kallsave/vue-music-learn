@@ -5,7 +5,7 @@ import ViProgressBar from './components/vi-progress-bar/index.js'
 import ViProgressCircle from './components/vi-progress-circle/index.js'
 import ViScroll from './components/vi-scroll/index.js'
 import ViSlide from './components/vi-slide/index.js'
-import ViSlideRouter from './components/vi-slide-router/index.js'
+import ViSlideRouterTransition from './components/vi-slide-router-transition/index.js'
 import ViSticky from './components/vi-sticky/index.js'
 import ViToast from './components/vi-toast/index.js'
 import ViToastTxt from './components/vi-toast-txt/index.js'
@@ -18,7 +18,7 @@ const components = [
   ViProgressCircle,
   ViScroll,
   ViSlide,
-  ViSlideRouter,
+  ViSlideRouterTransition,
   ViSticky,
   ViToast,
   ViToastTxt,

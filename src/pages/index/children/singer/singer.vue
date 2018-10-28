@@ -31,7 +31,7 @@ export default {
       scrollOptions: {
         probeType: 3,
         click: true,
-        directionLockThreshold: 1
+        directionLockThreshold: 1,
       },
     }
   },
@@ -121,11 +121,10 @@ export default {
 @import "~@/common/stylus/variable"
 
 .singer
-  position: relative
   width: 100%
   height: calc(100vh - 44px)
+  background: $color-background
   overflow: hidden
-  background: #222
   // position: relative
   .index-list-scroll-wrapper
     box-sizing: border-box
