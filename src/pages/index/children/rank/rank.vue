@@ -42,7 +42,7 @@ export default {
       scrollOptions: {
         probeType: 3,
         click: true,
-        directionLockThreshold: 1,
+        directionLockThreshold: 0.2,
       },
     }
   },

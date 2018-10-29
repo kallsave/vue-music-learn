@@ -29,25 +29,34 @@
 
 <script>
 import { addClass } from '../../common/helpers/dom.js'
-import { camelize, assignArray, spliceArray } from '../../common/helpers/utils.js'
+import { camelize, spliceArray } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'
 
 const COMPONENT_NAME = 'vi-slide'
 
 const EVENT_SCROLL = 'scroll'
 const EVENT_SCROLL_END = 'scroll-end'
+const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
 
 const EVENT_CHANGE = 'change'
 const EVENT_LOAD_IMAGE = 'load-image'
 
-const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_SCROLL_END]
+const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_SCROLL_END, EVENT_BEFORE_SCROLL_START]
 
-const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END]
+// scroll-end事件是必须监听的
+// 因为基于scroll-end产生新的change事件判断处于哪一页
+// before-scroll-start也是必须的
+// 考虑到slide如果外围有slide,
+// 需要before-scroll-start时disable外围所有的slide
+// 在scroll-end时enable外围所有的slide
+const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END, EVENT_BEFORE_SCROLL_START]
 
 const DEFAULT_OPTIONS = {
+  // 标识
+  name: COMPONENT_NAME,
   // 多层嵌套会触发多次,所以需要click的场景自主添加
-  probeType: 3,
-  scrollbar: false,
+  click: false,
+  probeType: 1,
   scrollX: true,
   scrollY: true,
   momentum: false,
@@ -56,7 +65,7 @@ const DEFAULT_OPTIONS = {
     loop: false,
     threshold: 0.3,
     speed: 400
-  }
+  },
 }
 
 export default {
@@ -145,8 +154,6 @@ export default {
       immediate: true
     },
   },
-  created() {
-  },
   methods: {
     // slide的content盒子的宽度是要用js计算
     // 并且如果loop了,那么会创建两个缓冲div
@@ -169,7 +176,6 @@ export default {
     },
     _listenScrollEvents() {
       const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
-      console.log(finalScrollEvents)
       finalScrollEvents.forEach((event) => {
         this.slide.on(camelize(event), (...args) => {
           this.$emit(event, ...args, this.slide)
@@ -181,6 +187,7 @@ export default {
       this.slide = new BScroll(this.$refs.slide, options)
       this.slide.goToPage(this.initPageIndex, 0, 0)
 
+      // scroll-end
       this.slide.on(camelize(EVENT_SCROLL_END), () => {
         let pageIndex = this.slide.getCurrentPage().pageX
         this.$emit(EVENT_SCROLL_END, pageIndex)
@@ -191,6 +198,14 @@ export default {
         if (this.autoPlay) {
           this._play()
         }
+
+        this.toggleAbleParentSlide(this.$parent, true)
+      })
+
+      // before-scroll-start
+      this.slide.on(camelize(EVENT_BEFORE_SCROLL_START), () => {
+        this.$emit(EVENT_BEFORE_SCROLL_START)
+        this.toggleAbleParentSlide(this.$parent, false)
       })
 
       this._listenScrollEvents()
@@ -228,6 +243,19 @@ export default {
     destroyed() {
       this._destroy()
       window.removeEventListener('resize', this._resizeHandler, false)
+    },
+    toggleAbleParentSlide(vNode, toggle) {
+      if (vNode && vNode.slide && vNode.slide.options.name === COMPONENT_NAME) {
+        if (toggle) {
+          vNode.slide.enable()
+        } else {
+          vNode.slide.disable()
+        }
+      } else if (vNode && vNode.$parent) {
+        this.toggleAbleParentSlide(vNode.$parent, toggle)
+      } else {
+        return void 0
+      }
     },
   }
 }

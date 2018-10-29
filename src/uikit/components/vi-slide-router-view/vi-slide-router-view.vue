@@ -3,13 +3,15 @@
     :options="slideOptions"
     :initPageIndex="currentIndex"
     :scroll-events="scrollEvents"
-    @change="change">
+    @scroll-end="scrollEnd"
+    @change="change"
+    @scroll="scroll">
     <div class="slide-item" v-for="(item, index) in siblingsRoute" :key="index">
       <template v-if="$route.matched[1].regex.test(item.path)">
         <component :is="item.component "></component>
       </template>
       <template v-else>
-        <component :is=" hadShowPageList.indexOf(index) !== -1 ? item.component : Background"></component>
+        <component :is="hadShowPageList.indexOf(index) !== -1 ? item.component : backgroundComponent"></component>
       </template>
     </div>
   </vi-slide>
@@ -19,6 +21,10 @@
 import ViSlide from '../vi-slide/vi-slide.vue'
 import Background from './vi-slide-router-view-background.vue'
 
+import { camelize, spliceArray } from '../../common/helpers/utils.js'
+
+const COMPONENT_NAME = 'vi-slide-router-view'
+
 const EVENT_SCROLL = 'scroll'
 const EVENT_SCROLL_END = 'scroll-end'
 
@@ -26,9 +32,13 @@ const EVENT_CHANGE = 'change'
 
 const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_SCROLL_END]
 
+// scroll-end事件是必须监听的
+// 因为基于scroll-end产生新的change事件判断处于哪一页
+const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END]
+
 const DEFAULT_OPTIONS = {
   probeType: 3,
-  directionLockThreshold: 1,
+  directionLockThreshold: 0.5,
   scrollY: true,
   scrollX: true,
   snap: {
@@ -44,6 +54,7 @@ const DEFAULT_OPTIONS = {
 }
 
 export default {
+  name: COMPONENT_NAME,
   components: {
     ViSlide
   },
@@ -53,15 +64,13 @@ export default {
         let item = routeList[i]
         if (this.$route.matched[this.$route.matched.length - 1].regex.test(item.path)) {
           this.siblingsRoute = routeList
+          return
         } else if (item.children) {
           findSiblingsRoute(item.children)
         }
       }
     }
     findSiblingsRoute(this.$router.options.routes)
-  },
-  created() {
-    this.slideOptions = Object.assign({}, DEFAULT_OPTIONS, this.options)
   },
   props: {
     options: {
@@ -73,7 +82,7 @@ export default {
     scrollEvents: {
       type: Array,
       default() {
-        return ['scroll-end']
+        return []
       },
       validator(arr) {
         return arr.every((item) => {
@@ -81,13 +90,14 @@ export default {
         })
       }
     },
+    backgroundComponent: {
+      type: Object,
+      default() {
+        return Background
+      }
+    }
   },
   computed: {
-    titleList() {
-      return this.routerList.map((item) => {
-        return item.meta.title
-      })
-    },
     currentIndex() {
       return this.siblingsRoute.findIndex((item) => {
         return this.$route.matched[this.$route.matched.length - 1].regex.test(item.path)
@@ -106,23 +116,27 @@ export default {
   },
   data() {
     return {
-      Background: Background,
-      keepAliveInclude: [],
       hadShowPageList: [],
     }
   },
+  created() {
+    // created => children.props => children.data => children.created
+    this.slideOptions = Object.assign({}, DEFAULT_OPTIONS, this.options)
+  },
   mounted() {
     this.hadShowPageList.push(this.currentIndex)
+    this.slide = this.$refs.slide
   },
   methods: {
-    change() {
-      this.$emit(EVENT_CHANAGE, ...arguments)
+    scrollEnd() {
+      this.$emit(EVENT_SCROLL_END, ...arguments, this.slide)
     },
-    clickIndex(index) {
-      this._pushHadShowPageListPageList(index)
+    scroll() {
+      this.$emit(EVENT_SCROLL, ...arguments, this.slide)
     },
-    changeTab(index) {
-      this._pushHadShowPageListPageList(index)
+    change(index) {
+      this.$emit(EVENT_CHANGE, ...arguments)
+      this.pushHadShowPageList(index)
       let route = {}
       this.siblingsRoute.forEach((item, n) => {
         if (index === n) {
@@ -131,11 +145,11 @@ export default {
       })
       this.$router.push(route)
     },
-    _pushHadShowPageListPageList(index) {
+    pushHadShowPageList(index) {
       if (this.hadShowPageList.indexOf(index) === -1) {
         this.hadShowPageList.push(index)
       }
-    }
+    },
   }
 }
 </script>

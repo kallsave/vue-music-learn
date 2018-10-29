@@ -97,11 +97,9 @@ export default {
 
       if (direction >= 0 && currentIndex < this.routerList.length - 1) {
         this.slideDirection = this.slideRightClass
-        console.log(this.slideDirection)
         this.$router.push({'path': this.routerList[currentIndex + 1].path})
       } else if (direction < 0 && currentIndex > 0) {
         this.slideDirection = this.slideLeftClass
-        console.log(this.slideDirection)
         this.$router.push({'path': this.routerList[currentIndex - 1].path})
       }
     },

@@ -9,11 +9,6 @@
         :data="discList"
         @scroll="scrollHandler"
         @pulling-down="onPullingDown">
-        <vi-loading
-          ref="allLoading"
-          :scale="0.8"
-          :title-color="'#ffcd32'"
-          :icon-color="'#ffcd32'"></vi-loading>
         <div class="slide-wrapper">
           <vi-slide ref="slide"
             :init-page-index="currentPageIndex"
@@ -21,10 +16,8 @@
             :options="slideOptions"
             :show-dots="true"
             :auto-play="true"
-            @scroll-end="scrollEnd"
-            @load-image="loadImage"
-            @touchstart.native.stop
-            @touch.native.stop>
+            @scroll-end="slideEnd"
+            @load-image="loadImage">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->
             <template slot="dots">
@@ -103,12 +96,17 @@ export default {
           // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
           stopTime: 1000
         },
-        directionLockThreshold: 1,
+        directionLockThreshold: 0.2,
       },
       slideOptions: {
+        probeType: 1,
+        click: true,
+        scrollX: true,
+        scrollY: true,
         snap: {
           loop: true,
         },
+        eventPassthrough: 'vertical',
       }
     }
   },
@@ -166,7 +164,7 @@ export default {
         })
       }
     },
-    scrollEnd(pageIndex) {
+    slideEnd(pageIndex) {
       this.currentPageIndex = pageIndex
     },
     lazyComponentShow() {
