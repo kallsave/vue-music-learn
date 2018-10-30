@@ -257,7 +257,7 @@ export default {
       const finalScrollEvents = this.scrollEvents.slice()
       finalScrollEvents.forEach((event) => {
         this.scroll.on(camelize(event), (...args) => {
-          this.$emit(event, ...args, this.scroll)
+          this.$emit(event, ...args)
         })
       })
     },

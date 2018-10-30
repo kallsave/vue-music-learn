@@ -178,7 +178,7 @@ export default {
       const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
       finalScrollEvents.forEach((event) => {
         this.slide.on(camelize(event), (...args) => {
-          this.$emit(event, ...args, this.slide)
+          this.$emit(event, ...args)
         })
       })
     },

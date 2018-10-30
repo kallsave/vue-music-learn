@@ -7,19 +7,32 @@
 </template>
 
 <script>
-const COMPONENT_NAME = 'vi-slide-router-transtion'
+const COMPONENT_NAME = 'vi-slide-router-transition'
 
 const MODE_LIST = ['', 'out-in', 'in-out']
 
 export default {
   name: COMPONENT_NAME,
+  beforeCreate() {
+    const findSiblingsRoute = (routeList) => {
+      for (let i = 0; i < routeList.length; i++) {
+        let item = routeList[i]
+        if (this.$route.matched[this.$route.matched.length - 1].regex.test(item.path)) {
+          this.siblingsRoute = routeList
+          return
+        } else if (item.children) {
+          findSiblingsRoute(item.children)
+        }
+      }
+    }
+    findSiblingsRoute(this.$router.options.routes)
+  },
   props: {
     routerList: {
       type: Array,
       default() {
-        return []
+        return this.siblingsRoute
       },
-      require: true,
     },
     // 阀值
     threshold: {
@@ -59,16 +72,16 @@ export default {
       this.currentPath = to.path
     }
   },
+  created() {
+    this.identification = COMPONENT_NAME
+  },
   mounted() {
-    this.currentPath = this.$route.path
-    this._listenTouchEvents()
+    this._initSlideRouter()
   },
   methods: {
-    _listenTouchEvents() {
-      this.listenerTouchstartHandler = this.touchstartHandler.bind(this)
-      this.listenerTouchendHandler = this.touchendHandler.bind(this)
-      this.$el.addEventListener('touchstart', this.listenerTouchstartHandler, false)
-      this.$el.addEventListener('touchend', this.listenerTouchendHandler, false)
+    _initSlideRouter () {
+      this.currentPath = this.$route.path
+      this.enable()
     },
     touchstartHandler(e) {
       this.startX = e.changedTouches[0].pageX
@@ -81,20 +94,16 @@ export default {
       const diffY = Math.abs(moveY)
       const directionLockThreshold = Math.abs(diffY / diffX)
 
-      if (diffX < this.threshold) {
+      if (diffX < this.threshold || directionLockThreshold > this.directionLockThreshold) {
         return
       }
-      if (directionLockThreshold > this.directionLockThreshold) {
-        return
-      }
+      // TODO: 兼容路由参数
       let currentIndex = this.routerList.findIndex((item) => {
         return item.path === this.currentPath
       })
-
       if (currentIndex === -1) {
         return
       }
-
       if (direction >= 0 && currentIndex < this.routerList.length - 1) {
         this.slideDirection = this.slideRightClass
         this.$router.push({'path': this.routerList[currentIndex + 1].path})
@@ -103,9 +112,18 @@ export default {
         this.$router.push({'path': this.routerList[currentIndex - 1].path})
       }
     },
-    destroyed() {
+    enable() {
+      this.listenerTouchstartHandler = this.touchstartHandler.bind(this)
+      this.listenerTouchendHandler = this.touchendHandler.bind(this)
+      this.$el.addEventListener('touchstart', this.listenerTouchstartHandler, false)
+      this.$el.addEventListener('touchend', this.listenerTouchendHandler, false)
+    },
+    disable() {
       this.$el.removeEventListener('touchstart', this.listenerTouchstartHandler, false)
       this.$el.removeEventListener('touchend', this.listenerTouchendHandler, false)
+    },
+    destroyed() {
+      this.disable()
     },
   }
 }

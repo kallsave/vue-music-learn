@@ -1,5 +1,7 @@
 # 计划列表
 
+## 已完成
+  vi-slide-router-view支持各种场景的$route参数(params完成)
 ## 未完成
 - scroll组件支持自定义pulldown并实现网易严选的下拉效果
 - index-list支持slot
@@ -8,18 +10,21 @@
 - confirm组件开发
 - 手机播放不了音乐
 - 检查keep-alive带来的refresh问题
-- 封装vi-slide-router-view
 - 给各组件写README.md文档
 - 测试router更多传参用法
 - scroll的没有更多的样式bug
 - store提供同步异步操作
-- 轮播图支持下拉
-- router-tab组件
-- vi-slide-router-view支持各种场景的$route参数
+- vi-slide-router-view像router-view一样可以带props
+- vi-slide-router-view支持各种场景的$route参数(query参数未完成)
+- vi-slide-router-view提供默认tab组件,同时给外部提供可自定义的tab组建
+- vi-slide-router-transition支持各种场景的$route参数
 - 网易严选nav组件
 - 抓包工具
 - scroll组件暴露自动开启关闭上下拉功能的方法
 - native-sticky
 - sticky-ele的key可以去掉
+- 考虑把slide,scroll的$emit的slide,scroll参数去掉
+- 阅读createAPI源码
+- 更深入vue源码,阅读vue源码
 
 

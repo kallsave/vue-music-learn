@@ -7,7 +7,7 @@
     @change="change"
     @scroll="scroll">
     <div class="slide-item" v-for="(item, index) in siblingsRoute" :key="index">
-      <template v-if="$route.matched[1].regex.test(item.path)">
+      <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
         <component :is="item.component "></component>
       </template>
       <template v-else>
@@ -71,6 +71,7 @@ export default {
       }
     }
     findSiblingsRoute(this.$router.options.routes)
+    console.log(this.siblingsRoute)
   },
   props: {
     options: {
@@ -129,21 +130,33 @@ export default {
   },
   methods: {
     scrollEnd() {
-      this.$emit(EVENT_SCROLL_END, ...arguments, this.slide)
+      this.$emit(EVENT_SCROLL_END, ...arguments)
     },
     scroll() {
-      this.$emit(EVENT_SCROLL, ...arguments, this.slide)
+      this.$emit(EVENT_SCROLL, ...arguments)
     },
     change(index) {
       this.$emit(EVENT_CHANGE, ...arguments)
       this.pushHadShowPageList(index)
-      let route = {}
+      let siblingsRouteMatchedPath = ''
+
       this.siblingsRoute.forEach((item, n) => {
         if (index === n) {
-          route.path = item.path
+          siblingsRouteMatchedPath = item.path
         }
       })
-      this.$router.push(route)
+
+      // 补全路由params参数
+      for (let k in this.$route.params) {
+        if (new RegExp(`(:${k})`).test(siblingsRouteMatchedPath)) {
+          let str = this.$route.params[k]
+          siblingsRouteMatchedPath = siblingsRouteMatchedPath.replace(RegExp.$1, str)
+        }
+      }
+
+      this.$router.push({
+        path: siblingsRouteMatchedPath
+      })
     },
     pushHadShowPageList(index) {
       if (this.hadShowPageList.indexOf(index) === -1) {

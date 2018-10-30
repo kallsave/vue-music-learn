@@ -5,21 +5,20 @@
       <vi-sticky-ele :ele-key="'tab'">
         <tab></tab>
       </vi-sticky-ele>
-      <!-- <vi-slide-router-transition
+      <vi-slide-router-transition
         slide-right-class="scroll-right"
         slide-left-class="scroll-left"
-        mode="in-out"
-        :router-list="siblingsRoute">
+        mode="in-out">
         <keep-alive exclude="no-keep-alive">
           <router-view></router-view>
         </keep-alive>
-      </vi-slide-router-transition> -->
+      </vi-slide-router-transition>
 
-      <vi-slide-router-view
+      <!-- <vi-slide-router-view
         :scroll-events="['scroll']"
         @scroll="scroll"
         @change="change"
-      ></vi-slide-router-view>
+      ></vi-slide-router-view> -->
     </vi-sticky>
   </div>
 </template>

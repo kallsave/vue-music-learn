@@ -10,6 +10,7 @@
 - 内部函数用_开头
 - components > beforeCreate> mixins > provide > inject >  props > data > computed > watch > created > mounted > methods > updated
 - mounted中避免使用this.$nextTick,这种场景用于确保父组件中所有的子组件的dom都挂载完毕。其它场景慎用
+
 - 动作命名:
   can 判断是否可执行某个动作
 
