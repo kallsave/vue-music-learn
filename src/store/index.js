@@ -7,6 +7,9 @@ import player from './modules/player/index.js'
 import rankAlbum from './modules/rank-album/index.js'
 import recommendAlbum from './modules/recommend-album/index.js'
 
+// modules page-refresh 大部分页面都是keep-alive的,这个模块是负责控制页面的重刷
+import recommendRefresh from './modules/page-refresh/recommend-refresh.js'
+
 import createLogger from 'vuex/dist/logger'
 import createPersistedState from 'vuex-persistedstate'
 
@@ -52,7 +55,8 @@ export default new Vuex.Store({
     singers,
     player,
     rankAlbum,
-    recommendAlbum
+    recommendAlbum,
+    recommendRefresh
   },
   strict: debug,
   plugins: debug ? VuexPlugins.concat([createLogger()]) : VuexPlugins

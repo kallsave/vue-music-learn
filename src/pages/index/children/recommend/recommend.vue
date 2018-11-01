@@ -61,7 +61,7 @@
 <script>
 import { getRecommend, getDiscList } from '@/api/recommend.js'
 import { playListMixin } from '@/common/mixins/player.js'
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { sticky } from '../../mixins/inject-sticky.js'
 
 // store.js
@@ -76,7 +76,7 @@ const store = engine.createStore(storages, storePlugins)
 
 export default {
   // 路由级别的组件,name为no-keep-alive的不做缓存
-  // name: 'no-keep-alive',
+  // name: 'keep-alive',
   name: 'keep-alive',
   mixins: [sticky, playListMixin],
   data() {
@@ -110,12 +110,24 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'recommendRefresh'
+    ])
+  },
   mounted() {
     this._getData()
   },
+  activated() {
+    if (this.recommendRefresh) {
+      this._getData()
+      this.setRecommendRefresh(false)
+    }
+  },
   methods: {
     ...mapMutations({
-      setRecommendAlbum: 'SET_RECOMMEND_ALBUM'
+      setRecommendAlbum: 'SET_RECOMMEND_ALBUM',
+      setRecommendRefresh: 'SET_RECOMMEND_REFRESH'
     }),
     handlePlayList() {
       this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
