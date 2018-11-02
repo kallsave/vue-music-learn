@@ -1,7 +1,7 @@
 # 计划列表
 
 ## 已完成
-  vi-slide-router-view支持各种场景的$route参数(params完成)
+  vi-slide-router-view支持各种场景的$route参数(params参数完成)
 ## 未完成
 - scroll组件支持自定义pulldown并实现网易严选的下拉效果
 - index-list支持slot
@@ -26,5 +26,8 @@
 - 考虑把slide,scroll的$emit的slide,scroll参数去掉
 - 阅读createAPI源码
 - 更深入vue源码,阅读vue源码
-
+- go语言开发后台系统
+- 音量播放器组建开发
+- 更加齐全的工具库(timer)
+- vue函数式组件
 

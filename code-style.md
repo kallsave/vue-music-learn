@@ -8,7 +8,7 @@
 - 遵循eslint代码规范
 - 常量需要使用const大写申明,单词区分用下滑线标识
 - 内部函数用_开头
-- components > beforeCreate> mixins > provide > inject >  props > data > computed > watch > created > mounted > methods > updated
+- components > beforeCreate> mixins > provide > inject >  props > data > computed > watch > created > mounted > activated > methods > updated
 - mounted中避免使用this.$nextTick,这种场景用于确保父组件中所有的子组件的dom都挂载完毕。其它场景慎用
 
 - 动作命名:
