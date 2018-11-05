@@ -125,9 +125,12 @@ async function updateAllImg () {
 
   详情页操作反馈到列表页的数据改变通过vuex来操作,为了让页面更好维护,每个页面有自己的refresh的vuex模块来控制,如果想在其他页面控制这个页面的refresh行为,其他页面操作这个页面的vuex的refresh,在本页面中activated钩子中判断是否该页面的refresh状态.
 
-  如果是在本页面中想控制本页面的keep-alive行为,调用this.$destory()
+  如果是在本页面中想控制本页面的keep-alive行为
 
-  当然所有的页面都可以设置为keep-alive,不希望keep-alive的页面在deactivated钩子中调用this.$destory()
+  $destory这个功能有缺陷,一旦一个组件调用这个方法,后面都不会再被keep-alive
+  如果要做keep-alive的动态控制,应该使用:include="keepAliveName"这种方式
+  在不想做keep-alive的场景,在跳转页面之前改变keepAliveName为一个临时的名字,然后延迟1秒重新改回来,这样下个页面就不缓存了,非常好管理
+
 
 ## 图标
 - 图标使用svgtofont来管理,具体的配置看build/svgtofont
