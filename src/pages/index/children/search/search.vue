@@ -80,6 +80,7 @@ const DEBOUNCE_TIME = 400
 const perpage = 20
 
 export default {
+  name: 'immutable-keep-alive',
   components: {
     NoResult,
     Loading

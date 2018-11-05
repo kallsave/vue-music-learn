@@ -47,7 +47,7 @@
 import SongList from '@/components/song-list/song-list.vue'
 import { playListMixin } from '@/common/mixins/player.js'
 import { prefixStyle } from '@/common/helpers/dom.js'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 const transform = prefixStyle('transform')
 const backdrop = prefixStyle('backdrop-filter')
@@ -103,7 +103,6 @@ export default {
   computed: {
     ...mapGetters([
       'fullScreen',
-      'recommendRefresh'
     ]),
     bgStyle() {
       return `background-image:url(${this.bgImage})`
@@ -137,9 +136,6 @@ export default {
       'selectPlay',
       'randomPlay',
     ]),
-    ...mapMutations({
-      setRecommendRefresh: 'SET_RECOMMEND_REFRESH'
-    }),
     handlePlayList() {
       this.$refs.stickyWrapper.style.paddingBottom = `${60}px`
       this.$refs.sticky.refresh()
@@ -174,7 +170,6 @@ export default {
       this.randomPlay({
         list: this.songList
       })
-      this.setRecommendRefresh(true)
     }
   },
   components: {

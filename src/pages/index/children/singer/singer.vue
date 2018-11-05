@@ -24,6 +24,7 @@ const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'
 
 export default {
+  name: 'immutable-keep-alive',
   mixins: [sticky, playListMixin],
   data() {
     return {

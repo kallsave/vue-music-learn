@@ -7,8 +7,10 @@ import player from './modules/player/index.js'
 import rankAlbum from './modules/rank-album/index.js'
 import recommendAlbum from './modules/recommend-album/index.js'
 
-// modules page-refresh 大部分页面都是keep-alive的,这里的模块是负责控制页面的重刷
-import recommendRefresh from './modules/page-refresh/recommend-refresh.js'
+// 为了更好的性能和交互效果,只对个别页面做keep-alive,
+// 常见场景是1.列表 => 详情(列表keep-alive);2.router-tab切换
+// modules 始终keep-alive
+import mutableKeepAlive from './modules/mutable-keep-alive/mutable-keep-alive.js'
 
 import createLogger from 'vuex/dist/logger'
 import createPersistedState from 'vuex-persistedstate'
@@ -56,7 +58,7 @@ export default new Vuex.Store({
     player,
     rankAlbum,
     recommendAlbum,
-    recommendRefresh
+    mutableKeepAlive
   },
   strict: debug,
   plugins: debug ? VuexPlugins.concat([createLogger()]) : VuexPlugins

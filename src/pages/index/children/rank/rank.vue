@@ -35,6 +35,7 @@ import { mapMutations } from 'vuex'
 import { sticky } from '../../mixins/inject-sticky.js'
 
 export default {
+  name: 'immutable-keep-alive',
   mixins: [sticky, playListMixin],
   data() {
     return {

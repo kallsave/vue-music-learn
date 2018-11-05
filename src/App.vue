@@ -1,7 +1,6 @@
 <template>
   <div id="app" class="app">
-    <!-- 它的所有后代子路由除了名字为no-keep-alive的组件都有activated钩子 -->
-    <keep-alive exclude="no-keep-alive">
+    <keep-alive :include="['immutable-keep-alive', mutableKeepAlive]">
       <router-view></router-view>
     </keep-alive>
     <player></player>
@@ -9,12 +8,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Player from '@/components/player/player.vue'
 
 export default {
   name: 'App',
   components: {
     Player
+  },
+  computed: {
+    ...mapGetters([
+      'mutableKeepAlive'
+    ])
   }
 }
 </script>

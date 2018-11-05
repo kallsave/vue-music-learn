@@ -119,17 +119,59 @@ async function updateAllImg () {
 - lib是没有提供npm下载的第三方库或者改过源码的第三方库
 
 - 关于keep-alive
-  列表页 => 详情页最经典的方式是列表页keep-alive,详情页不做keep-alive处理
+  keep-alive是实现原生交互效果的很强大的组件,但是过多页面keep-alive也会造成页面卡顿
 
-  通过keep-alive的exclude="no-keep-alive" 给详情页的组件加上name:"no-keep-alive"
+  keep-alive场景:
 
-  详情页操作反馈到列表页的数据改变通过vuex来操作,为了让页面更好维护,每个页面有自己的refresh的vuex模块来控制,如果想在其他页面控制这个页面的refresh行为,其他页面操作这个页面的vuex的refresh,在本页面中activated钩子中判断是否该页面的refresh状态.
+  1.列表页 => 详情页最经典的方式是列表页keep-alive,详情页不做keep-alive处理
 
-  如果是在本页面中想控制本页面的keep-alive行为
+  2.router-tab => 各个页面类似slide做keep-alive
+
+  3.表单页跳转到其他页面,返回表单页填写的信息需要保存
+
+  keep-alive还有更复杂的场景,有的页面既需要keep-alive又需要不keep-alive,即keep-alive是动态的,比如表单既需要跳到个别页面(选择信息之类的页面)保持keep-alive,又需要在提交后不keep-alive,重新进来时不keep-alive
+
+  考虑到一个项目可能就几个页面有动态的keep-alive需求,本项目把keep-alive分为始终不变的keep-alive和动态需求的keep-alive(通过vuex控制)
+
+  ```javascript
+  <keep-alive :include="['immutable-keep-alive', mutableKeepAlive]">
+    <router-view></router-view>
+  </keep-alive>
+  ...
+  <script>
+  import { mapGetters } from 'vuex'
+  export default {
+    ...
+    computed: {
+      ...mapGetters([
+        'mutableKeepAlive'
+      ])
+    }
+  }
+  </script>
+  ```
+
+  在一般场景下,这个组件是keep-alive的,当不需要keep-alive时,跳转到这个页面时让keep-alive暂时失效,从而达到不做keep-alive的目的
+  ```javascript
+  import { mapActions } from 'vuex'
+  ...
+  methods: {
+    ...mapActions([
+      'addSongClass',
+      'tempDisableMutableKeepAlive'
+    ]),
+    redirectToRecommend() {
+      this.tempDisableMutableKeepAlive()
+      this.$router.push({
+        path: '/recommend'
+      })
+    },
+    ...
+  }
+  ```
 
   $destory这个功能有缺陷,一旦一个组件调用这个方法,后面都不会再被keep-alive
-  如果要做keep-alive的动态控制,应该使用:include="keepAliveName"这种方式
-  在不想做keep-alive的场景,在跳转页面之前改变keepAliveName为一个临时的名字,然后延迟1秒重新改回来,这样下个页面就不缓存了,非常好管理
+  如果要做keep-alive的动态控制,应该使用上面这种动态的方式
 
 
 ## 图标

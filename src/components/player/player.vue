@@ -119,7 +119,7 @@
               @click.stop="togglePlaying" ></i>
           </vi-progress-circle>
         </div>
-        <div class="control">
+        <div class="control" @click.stop="redirectToRecommend">
           <i class="icon-playlist"></i>
         </div>
       </div>
@@ -272,8 +272,15 @@ export default {
       setPlayList: 'SET_PLAY_LIST'
     }),
     ...mapActions([
-      'addSongClass'
+      'addSongClass',
+      'tempDisableMutableKeepAlive'
     ]),
+    redirectToRecommend() {
+      this.tempDisableMutableKeepAlive()
+      this.$router.push({
+        path: '/recommend'
+      })
+    },
     close() {
       this.setFullScreen(false)
     },

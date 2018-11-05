@@ -9,7 +9,7 @@
         slide-right-class="scroll-right"
         slide-left-class="scroll-left"
         mode="in-out">
-        <keep-alive exclude="no-keep-alive">
+        <keep-alive :include="['immutable-keep-alive', mutableKeepAlive]">
           <router-view></router-view>
         </keep-alive>
       </vi-slide-router-transition>
@@ -24,12 +24,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import MHeader from './components/m-header/m-header.vue'
 import Tab from './components/tab/tab.vue'
 import SlideTab from './components/slide-tab/slide-tab.vue'
 import Background from './components/background/background.vue'
 
 export default {
+  name: 'no-keep-alive',
   components: {
     MHeader,
     Tab,
@@ -38,6 +40,11 @@ export default {
   data() {
     return {
     }
+  },
+  computed: {
+    ...mapGetters([
+      'mutableKeepAlive'
+    ])
   },
   methods: {
     change(index) {
