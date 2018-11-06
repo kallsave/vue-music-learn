@@ -273,10 +273,10 @@ export default {
     }),
     ...mapActions([
       'addSongClass',
-      'tempDisableMutableKeepAlive'
+      'tempDisableMutableKeepAliveName'
     ]),
     redirectToRecommend() {
-      this.tempDisableMutableKeepAlive()
+      this.tempDisableMutableKeepAliveName()
       this.$router.push({
         path: '/recommend'
       })

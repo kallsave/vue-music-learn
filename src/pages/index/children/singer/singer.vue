@@ -13,7 +13,7 @@
 </template>
 
 <script>
-
+import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import Singer from '@/common/class/singer.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { getSingerList } from '@/api/singer.js'
@@ -24,7 +24,7 @@ const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'
 
 export default {
-  name: 'immutable-keep-alive',
+  name: IMMUTABLE_KEEP_ALIVE_NAME,
   mixins: [sticky, playListMixin],
   data() {
     return {

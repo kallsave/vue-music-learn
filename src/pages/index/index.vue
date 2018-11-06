@@ -9,7 +9,7 @@
         slide-right-class="scroll-right"
         slide-left-class="scroll-left"
         mode="in-out">
-        <keep-alive :include="['immutable-keep-alive', mutableKeepAlive]">
+        <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
           <router-view></router-view>
         </keep-alive>
       </vi-slide-router-transition>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { mapGetters } from 'vuex'
 import MHeader from './components/m-header/m-header.vue'
 import Tab from './components/tab/tab.vue'
@@ -31,7 +32,8 @@ import SlideTab from './components/slide-tab/slide-tab.vue'
 import Background from './components/background/background.vue'
 
 export default {
-  name: 'no-keep-alive',
+  // 从其他页面转这个页面,不会keep-alive,子路由之间跳转可以keep-alive
+  name: NO_KEEP_ALIVE_NAME,
   components: {
     MHeader,
     Tab,
@@ -39,11 +41,12 @@ export default {
   },
   data() {
     return {
+      IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME
     }
   },
   computed: {
     ...mapGetters([
-      'mutableKeepAlive'
+      'mutableKeepAliveName'
     ])
   },
   methods: {

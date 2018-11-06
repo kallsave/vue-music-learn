@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="app">
-    <keep-alive :include="['immutable-keep-alive', mutableKeepAlive]">
+    <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
       <router-view></router-view>
     </keep-alive>
     <player></player>
@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { mapGetters } from 'vuex'
 import Player from '@/components/player/player.vue'
 
@@ -16,9 +17,14 @@ export default {
   components: {
     Player
   },
+  data() {
+    return {
+      IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME
+    }
+  },
   computed: {
     ...mapGetters([
-      'mutableKeepAlive'
+      'mutableKeepAliveName'
     ])
   }
 }

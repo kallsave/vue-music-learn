@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { getHotKey, search } from '@/api/search.js'
 import { sticky, STICKY_TOP_BAR } from '../../mixins/inject-sticky.js'
 import { createSong } from '@/common/class/song.js'
@@ -80,7 +81,7 @@ const DEBOUNCE_TIME = 400
 const perpage = 20
 
 export default {
-  name: 'immutable-keep-alive',
+  name: IMMUTABLE_KEEP_ALIVE_NAME,
   components: {
     NoResult,
     Loading

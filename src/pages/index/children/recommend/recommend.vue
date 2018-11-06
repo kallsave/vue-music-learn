@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { MUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { getRecommend, getDiscList } from '@/api/recommend.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
@@ -76,7 +77,7 @@ const store = engine.createStore(storages, storePlugins)
 
 export default {
   // 可变keep-alive
-  name: 'mutable-keep-alive',
+  name: MUTABLE_KEEP_ALIVE_NAME,
   mixins: [sticky, playListMixin],
   data() {
     return {

@@ -29,13 +29,14 @@
 </template>
 
 <script>
+import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { getTopList } from '@/api/rank.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { sticky } from '../../mixins/inject-sticky.js'
 
 export default {
-  name: 'immutable-keep-alive',
+  name: IMMUTABLE_KEEP_ALIVE_NAME,
   mixins: [sticky, playListMixin],
   data() {
     return {

@@ -10,7 +10,7 @@ import recommendAlbum from './modules/recommend-album/index.js'
 // 为了更好的性能和交互效果,只对个别页面做keep-alive,
 // 常见场景是1.列表 => 详情(列表keep-alive);2.router-tab切换
 // modules 始终keep-alive
-import mutableKeepAlive from './modules/mutable-keep-alive/mutable-keep-alive.js'
+import mutableKeepAliveName from './modules/keep-alive/mutable-keep-alive-name.js'
 
 import createLogger from 'vuex/dist/logger'
 import createPersistedState from 'vuex-persistedstate'
@@ -58,7 +58,7 @@ export default new Vuex.Store({
     player,
     rankAlbum,
     recommendAlbum,
-    mutableKeepAlive
+    mutableKeepAliveName
   },
   strict: debug,
   plugins: debug ? VuexPlugins.concat([createLogger()]) : VuexPlugins
