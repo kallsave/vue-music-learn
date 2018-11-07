@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { MUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
+import { MUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { getRecommend, getDiscList } from '@/api/recommend.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
@@ -77,7 +77,7 @@ const store = engine.createStore(storages, storePlugins)
 
 export default {
   // 可变keep-alive
-  name: MUTABLE_KEEP_ALIVE_NAME,
+  name: NO_KEEP_ALIVE_NAME,
   mixins: [sticky, playListMixin],
   data() {
     return {
@@ -135,7 +135,7 @@ export default {
       } else {
         return getRecommend().then((res) => {
           this.recommends = res.data.slider
-          store.set('music-recommends', res.data.slider)
+          // store.set('music-recommends', res.data.slider)
         })
       }
     },
@@ -149,7 +149,7 @@ export default {
         getDiscList().then((res) => {
           setTimeout(() => {
             this.discList = res.data.list
-            store.set('music-discList', res.data.list)
+            // store.set('music-discList', res.data.list)
             resolve(res)
           }, 1000)
         })

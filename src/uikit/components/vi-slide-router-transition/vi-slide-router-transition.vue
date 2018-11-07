@@ -81,7 +81,7 @@ export default {
   methods: {
     _initSlideRouter () {
       this.currentPath = this.$route.path
-      this.enable()
+      this.enableSlide()
     },
     touchstartHandler(e) {
       this.startX = e.changedTouches[0].pageX
@@ -112,18 +112,18 @@ export default {
         this.$router.push({'path': this.routerList[currentIndex - 1].path})
       }
     },
-    enable() {
+    enableSlide() {
       this.listenerTouchstartHandler = this.touchstartHandler.bind(this)
       this.listenerTouchendHandler = this.touchendHandler.bind(this)
       this.$el.addEventListener('touchstart', this.listenerTouchstartHandler, false)
       this.$el.addEventListener('touchend', this.listenerTouchendHandler, false)
     },
-    disable() {
+    disableSlide() {
       this.$el.removeEventListener('touchstart', this.listenerTouchstartHandler, false)
       this.$el.removeEventListener('touchend', this.listenerTouchendHandler, false)
     },
     destroyed() {
-      this.disable()
+      this.disableSlide()
     },
   }
 }

@@ -28,9 +28,11 @@
 </template>
 
 <script>
+// TODO: timer,setTimeout
 import { addClass } from '../../common/helpers/dom.js'
 import { camelize, spliceArray } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'
+import assign from 'assign-deep'
 
 const COMPONENT_NAME = 'vi-slide'
 
@@ -43,17 +45,14 @@ const EVENT_LOAD_IMAGE = 'load-image'
 
 const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_SCROLL_END, EVENT_BEFORE_SCROLL_START]
 
-// scroll-end事件是必须监听的
+// scroll-end,before-scroll-start事件是必须监听的
 // 因为基于scroll-end产生新的change事件判断处于哪一页
-// before-scroll-start也是必须的
-// 考虑到slide如果外围有slide,
+// 考虑到slide如果外围有slide
 // 需要before-scroll-start时disable外围所有的slide
 // 在scroll-end时enable外围所有的slide
 const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END, EVENT_BEFORE_SCROLL_START]
 
 const DEFAULT_OPTIONS = {
-  // 标识
-  name: COMPONENT_NAME,
   // 多层嵌套会触发多次,所以需要click的场景自主添加
   click: false,
   probeType: 1,
@@ -81,9 +80,7 @@ export default {
       type: Object,
       default() {
         return {
-          snap: {
-            loop: false,
-          }
+          snap: {}
         }
       }
     },
@@ -129,7 +126,7 @@ export default {
   },
   computed: {
     loop() {
-      let options = Object.assign({}, DEFAULT_OPTIONS, this.options)
+      let options = assign({}, DEFAULT_OPTIONS, this.options)
       return options.snap.loop
     }
   },
@@ -137,10 +134,13 @@ export default {
     data: {
       handler() {
         this.$nextTick(() => {
-          this._destroy()
-          this.setSlideWidth()
-          this._initDots()
-          this._initSlide()
+          console.log(this.loop, this.$refs.slideGroup.children.length)
+          setTimeout(() => {
+            this._destroySlide()
+            this.setSlideWidth()
+            this._initDots()
+            this._initSlide()
+          }, 200)
         })
         if (this.autoPlay) {
           this._play()
@@ -150,9 +150,20 @@ export default {
           window.addEventListener('resize', this._resizeHandler, false)
         }
       },
-      deep: true,
-      immediate: true
+      deep: true
     },
+  },
+  mounted() {
+    this.setSlideWidth()
+    this._initDots()
+    this._initSlide()
+    if (this.autoPlay) {
+      this._play()
+    }
+    if (!this.isListenResize) {
+      this.isListenResize = true
+      window.addEventListener('resize', this._resizeHandler, false)
+    }
   },
   methods: {
     // slide的content盒子的宽度是要用js计算
@@ -183,10 +194,12 @@ export default {
       })
     },
     _initSlide() {
-      let options = Object.assign({}, DEFAULT_OPTIONS, this.options)
+      this.name = COMPONENT_NAME
+      let options = assign({}, DEFAULT_OPTIONS, this.options)
+      // better-scroll会改变options的值(浅引用)
       this.slide = new BScroll(this.$refs.slide, options)
+      console.log(this.slide)
       this.slide.goToPage(this.initPageIndex, 0, 0)
-
       // scroll-end
       this.slide.on(camelize(EVENT_SCROLL_END), () => {
         let pageIndex = this.slide.getCurrentPage().pageX
@@ -198,7 +211,6 @@ export default {
         if (this.autoPlay) {
           this._play()
         }
-
         this.toggleAbleParentSlide(this.$parent, true)
       })
 
@@ -209,13 +221,14 @@ export default {
       })
 
       this._listenScrollEvents()
+      this.slide.refresh()
     },
     _initDots() {
       this.dots = new Array(this.$refs.slideGroup.children.length)
     },
     _play() {
-      clearTimeout(this.timer)
       this.timer = setTimeout(() => {
+        clearTimeout(this.timer)
         this.slide.next(500)
       }, this.interval)
     },
@@ -236,20 +249,27 @@ export default {
         this.$emit(EVENT_LOAD_IMAGE)
       }
     },
-    _destroy() {
+    _destroySlide() {
       this.slide && this.slide.destroy()
       this.slide = null
     },
     destroyed() {
-      this._destroy()
+      this._destroySlide()
       window.removeEventListener('resize', this._resizeHandler, false)
     },
+    enableSlide() {
+      this.slide && this.slide.enable()
+    },
+    disableSlide() {
+      this.slide && this.slide.disable()
+    },
     toggleAbleParentSlide(vNode, toggle) {
-      if (vNode && vNode.slide && vNode.slide.options.name === COMPONENT_NAME) {
+      if (vNode && vNode.enableSlide && vNode.disableSlide) {
+        console.log('找到了', vNode)
         if (toggle) {
-          vNode.slide.enable()
+          vNode.enableSlide()
         } else {
-          vNode.slide.disable()
+          vNode.disableSlide()
         }
       } else if (vNode && vNode.$parent) {
         this.toggleAbleParentSlide(vNode.$parent, toggle)

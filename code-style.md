@@ -116,18 +116,16 @@ async function updateAllImg () {
 
 - lib是没有提供npm下载的第三方库或者改过源码的第三方库
 
-- 关于keep-alive
+## 图标管理
+- 图标使用svgtofont来管理,具体的配置看build/svgtofont
+
+## 关于keep-alive
   keep-alive是实现原生交互效果(缓存页面)的很强大的组件,但是过多页面keep-alive也会造成页面卡顿
-
-  keep-alive场景:
-
-  1.列表页 => 详情页最经典的方式是列表页keep-alive,详情页不做keep-alive处理
-
-  2.router-tab => 各个页面类似slide做keep-alive
-
-  3.表单页跳转到其他页面,返回表单页填写的信息还保留在页面上
-
-  keep-alive还有更复杂的场景,有的页面既需要keep-alive又需要不keep-alive,即keep-alive的规则是动态的,比如表单既需要跳到个别页面(选择卡之类的页面)保持keep-alive,又需要在提交后不keep-alive,重新进来时不keep-alive
+  >keep-alive场景:
+  >1. 列表页 => 详情页最经典的方式是列表页keep-alive,详情页不做keep-alive处理
+  >2. router-tab => 各个页面类似slide做keep-alive
+  >3. 表单页跳转到其他页面,返回表单页填写的信息还保留在页面上
+  >4. keep-alive还有更复杂的场景,有的页面既需要keep-alive又需要不keep-alive,即keep-alive的规则是动态的,比如表单既需要跳到个别页面(选择卡之类的页面)保持keep-alive,又需要在提交后不keep-alive,重新进来时不keep-alive
 
   考虑到一个项目可能就几个页面有动态的keep-alive需求,本项目把keep-alive分为始终不变的keep-alive和动态变更的keep-alive(通过vuex控制)
 
@@ -151,7 +149,7 @@ async function updateAllImg () {
   </script>
   ```
 
-  在一般场景下,这个组件是keep-alive的,当不需要keep-alive时,跳转到这个页面时让keep-alive暂时失效,从而达到不做keep-alive的目的
+  在一般场景下,这个组件是keep-alive的,当不需要keep-alive时,跳转到这个页面之前让keep-alive暂时失效,从而达到不做keep-alive的目的
   ```javascript
   import { mapActions } from 'vuex'
   ...
@@ -169,15 +167,27 @@ async function updateAllImg () {
     ...
   }
   ```
-
+  不用$destory的原因是
   $destory这个功能有缺陷,一旦一个组件调用这个方法,后面都不会再被keep-alive
   如果要做keep-alive的动态控制,应该使用上面这种动态的方式
 
-  清除keep-alive: keep-alive是会占用内存的,所以提供临时清除所有keep-alive的功能,包括immutable-keep-alive,mutable-keep-alive
+ keep-alive是会占用内存的,所以提供临时清除所有keep-alive的功能
 
+## 关于vue-router的参数
+- name:
+>如果一个表单页面有新建和查看或者编辑的功能,那么可以配置多个路由同一个组件文件,用name来标识,跳转是通过
+this.$route.push({
+  name: 'xxx'
+}),通过this.$route.name来判断是那个路由
 
-## 图标
-- 图标使用svgtofont来管理,具体的配置看build/svgtofont
+- query和params
+>query和params两者都可以传参
+query是经典的url参数,但是必须通过vue-router的使用方式才能获取到$route.query,拼接url是不能获取query的
+params如果匹配上路由表的:key规则的会暴露在url中,不匹配上不会暴露在url上。
+
+常见场景：
+- 列表页传参给详情页(简单场景不需要用全局的vuex或者污染localStorage),如果需要刷新详情页仍能正常使用,参数要保留在url上,如果参数过多可能导致url过长,考虑用params,把数据挂载在params.data上,这种方式是的好处是不污染localStorage和别的页面,弊端是刷新详情页不能正常使用
+
 
 ## 关于better-scroll
 - 本项目大量使用了[better-scroll](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#preventdefaultexception)

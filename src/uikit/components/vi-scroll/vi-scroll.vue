@@ -54,6 +54,7 @@ import Bubble from './vi-scroll-bubble.vue'
 import BScroll from 'better-scroll'
 import { camelize } from '../../common/helpers/utils.js'
 import { getRect } from '../../common/helpers/dom.js'
+import assign from 'assign-deep'
 
 const COMPONENT_NAME = 'vi-scroll'
 
@@ -151,7 +152,7 @@ export default {
       if (pullDownRefresh === true) {
         pullDownRefresh = {}
       }
-      return Object.assign({stop: this.pullDownStop}, pullDownRefresh)
+      return assign({stop: this.pullDownStop}, pullDownRefresh)
     },
     refreshTxt() {
       const pullDownRefresh = this.pullDownRefresh
@@ -223,7 +224,8 @@ export default {
   },
   methods: {
     _initScroll() {
-      let options = Object.assign({}, DEFAULT_OPTIONS, this.options)
+      this.name = COMPONENT_NAME
+      let options = assign({}, DEFAULT_OPTIONS, this.options)
       this.scroll = new BScroll(this.$refs.wrapper, options)
       this._listenScrollEvents()
 
