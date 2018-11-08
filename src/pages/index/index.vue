@@ -46,7 +46,7 @@ export default {
       slideRouterOptions: {
         name: 'a',
         snap: {
-          loop: true,
+          loop: false,
           a: 1
         }
       }

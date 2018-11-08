@@ -126,7 +126,8 @@ export default {
   },
   computed: {
     loop() {
-      let options = assign({}, DEFAULT_OPTIONS, this.options)
+      let defaultOptions = assign({}, DEFAULT_OPTIONS)
+      let options = assign(defaultOptions, this.options)
       return options.snap.loop
     }
   },
@@ -185,7 +186,8 @@ export default {
       // })
     },
     _initSlide() {
-      let options = assign({}, DEFAULT_OPTIONS, this.options)
+      let defaultOptions = assign({}, DEFAULT_OPTIONS)
+      let options = assign(defaultOptions, this.options)
       // better-scroll会改变options的值(浅引用)
       this.slide = new BScroll(this.$refs.slide, options)
 
