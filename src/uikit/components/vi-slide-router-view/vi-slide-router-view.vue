@@ -8,7 +8,7 @@
     @scroll="scroll">
     <div class="slide-item" v-for="(item, index) in siblingsRoute" :key="index">
       <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
-        <component :is="item.component "></component>
+        <component :is="item.component"></component>
       </template>
       <template v-else>
         <component :is="hadShowPageList.indexOf(index) !== -1 ? item.component : backgroundComponent"></component>
@@ -22,6 +22,7 @@ import ViSlide from '../vi-slide/vi-slide.vue'
 import Background from './vi-slide-router-view-background.vue'
 
 import { camelize, spliceArray } from '../../common/helpers/utils.js'
+import assign from 'assign-deep'
 
 const COMPONENT_NAME = 'vi-slide-router-view'
 
@@ -39,11 +40,12 @@ const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END]
 const DEFAULT_OPTIONS = {
   probeType: 3,
   directionLockThreshold: 0.5,
-  scrollY: true,
+  scrollY: false,
   scrollX: true,
   snap: {
     loop: false,
     threshold: 0.4,
+    tt: 66
   },
   bounce: {
     top: true,
@@ -113,7 +115,7 @@ export default {
       if (index !== -1) {
         this.$refs.slide && this.$refs.slide.slideToPage(index)
       }
-    }
+    },
   },
   data() {
     return {
@@ -121,12 +123,10 @@ export default {
     }
   },
   created() {
+    console.log(this.currentIndex)
     // created => children.props => children.data => children.created
-    this.slideOptions = Object.assign({}, DEFAULT_OPTIONS, this.options)
-  },
-  mounted() {
-    this.hadShowPageList.push(this.currentIndex)
-    this.slide = this.$refs.slide
+    this.slideOptions = assign({}, DEFAULT_OPTIONS, this.options)
+    this.pushHadShowPageList(this.currentIndex)
   },
   methods: {
     scrollEnd() {
@@ -153,7 +153,6 @@ export default {
           siblingsRouteMatchedPath = siblingsRouteMatchedPath.replace(RegExp.$1, str)
         }
       }
-
       this.$router.push({
         path: siblingsRouteMatchedPath
       })

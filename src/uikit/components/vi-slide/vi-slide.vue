@@ -28,7 +28,7 @@
 </template>
 
 <script>
-// TODO: timer,setTimeout
+// TODO: slot支持slideToPage
 import { addClass } from '../../common/helpers/dom.js'
 import { camelize, spliceArray } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'
@@ -57,7 +57,7 @@ const DEFAULT_OPTIONS = {
   click: false,
   probeType: 1,
   scrollX: true,
-  scrollY: true,
+  scrollY: false,
   momentum: false,
   // slide的设置
   snap: {
@@ -134,26 +134,17 @@ export default {
     data: {
       handler() {
         this.$nextTick(() => {
-          console.log(this.loop, this.$refs.slideGroup.children.length)
-          setTimeout(() => {
-            this._destroySlide()
-            this.setSlideWidth()
-            this._initDots()
-            this._initSlide()
-          }, 200)
+          this._destroySlide()
+          this.setSlideWidth()
+          this._initDots()
+          this._initSlide()
         })
-        if (this.autoPlay) {
-          this._play()
-        }
-        if (!this.isListenResize) {
-          this.isListenResize = true
-          window.addEventListener('resize', this._resizeHandler, false)
-        }
       },
       deep: true
     },
   },
   mounted() {
+    this.name = COMPONENT_NAME
     this.setSlideWidth()
     this._initDots()
     this._initSlide()
@@ -186,22 +177,21 @@ export default {
       this.$refs.slideGroup.style.width = width + 'px'
     },
     _listenScrollEvents() {
-      const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
-      finalScrollEvents.forEach((event) => {
-        this.slide.on(camelize(event), (...args) => {
-          this.$emit(event, ...args)
-        })
-      })
+      // const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
+      // finalScrollEvents.forEach((event) => {
+      //   this.slide.on(camelize(event), (...args) => {
+      //     this.$emit(event, ...args)
+      //   })
+      // })
     },
     _initSlide() {
-      this.name = COMPONENT_NAME
       let options = assign({}, DEFAULT_OPTIONS, this.options)
       // better-scroll会改变options的值(浅引用)
       this.slide = new BScroll(this.$refs.slide, options)
-      console.log(this.slide)
-      this.slide.goToPage(this.initPageIndex, 0, 0)
+
       // scroll-end
       this.slide.on(camelize(EVENT_SCROLL_END), () => {
+        this.toggleAbleParentSlide(this.$parent, true)
         let pageIndex = this.slide.getCurrentPage().pageX
         this.$emit(EVENT_SCROLL_END, pageIndex)
         if (this.currentPageIndex !== pageIndex) {
@@ -211,24 +201,26 @@ export default {
         if (this.autoPlay) {
           this._play()
         }
-        this.toggleAbleParentSlide(this.$parent, true)
       })
 
-      // before-scroll-start
+      setTimeout(() => {
+        this.slide.goToPage(this.initPageIndex, 0, 0)
+      }, 200)
+
+      // before-scroll-start其实是
       this.slide.on(camelize(EVENT_BEFORE_SCROLL_START), () => {
         this.$emit(EVENT_BEFORE_SCROLL_START)
         this.toggleAbleParentSlide(this.$parent, false)
       })
 
       this._listenScrollEvents()
-      this.slide.refresh()
     },
     _initDots() {
       this.dots = new Array(this.$refs.slideGroup.children.length)
     },
     _play() {
+      clearTimeout(this.timer)
       this.timer = setTimeout(() => {
-        clearTimeout(this.timer)
         this.slide.next(500)
       }, this.interval)
     },
@@ -250,12 +242,8 @@ export default {
       }
     },
     _destroySlide() {
-      this.slide && this.slide.destroy()
+      this.slide.destroy()
       this.slide = null
-    },
-    destroyed() {
-      this._destroySlide()
-      window.removeEventListener('resize', this._resizeHandler, false)
     },
     enableSlide() {
       this.slide && this.slide.enable()
@@ -265,7 +253,6 @@ export default {
     },
     toggleAbleParentSlide(vNode, toggle) {
       if (vNode && vNode.enableSlide && vNode.disableSlide) {
-        console.log('找到了', vNode)
         if (toggle) {
           vNode.enableSlide()
         } else {
@@ -273,11 +260,14 @@ export default {
         }
       } else if (vNode && vNode.$parent) {
         this.toggleAbleParentSlide(vNode.$parent, toggle)
-      } else {
-        return void 0
       }
     },
-  }
+  },
+  destroyed() {
+    this.timer = null
+    this._destroySlide()
+    window.removeEventListener('resize', this._resizeHandler, false)
+  },
 }
 </script>
 
@@ -288,12 +278,13 @@ export default {
 .vi-slide-wrapper
   position: relative
   height: 100%
+  // 这个很重要,better-scroll会根据wrapper的高宽做判断
+  min-height: 1px;
   .vi-slide-group
     position: relative
     overflow: hidden
     height: 100%
     white-space: nowrap
-    // white-space: nowrap
     .vi-slide-item
       float: left
       // box-sizing: border-box

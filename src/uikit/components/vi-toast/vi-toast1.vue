@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import visibilityMixin from '@/common/mixins/visibility.js'
+import visibilityMixin from '../../common/mixins/visibility.js'
 import ViPopup from '../popup/popup.vue'
 
 const COMPONENT_NAME = 'vi-toast'

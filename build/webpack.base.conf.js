@@ -37,6 +37,8 @@ module.exports = {
     extensions: ['.js', '.vue', '.json', ' '],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
+      // 'better-scroll$': 'better-scroll/src/index.js',
+      'better-scroll$': resolve('lib/better-scroll/src/index.js'),
       '@': resolve('src'),
       // 'cube-ui': 'cube-ui/lib'
     }

@@ -5,20 +5,21 @@
       <vi-sticky-ele :ele-key="'tab'">
         <tab></tab>
       </vi-sticky-ele>
-      <vi-slide-router-transition
+      <!-- <vi-slide-router-transition
         slide-right-class="scroll-right"
         slide-left-class="scroll-left"
         mode="in-out">
         <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
           <router-view></router-view>
         </keep-alive>
-      </vi-slide-router-transition>
+      </vi-slide-router-transition> -->
 
-      <!-- <vi-slide-router-view
+      <vi-slide-router-view
         :scroll-events="['scroll']"
+        :options="slideRouterOptions"
         @scroll="scroll"
         @change="change"
-      ></vi-slide-router-view> -->
+      ></vi-slide-router-view>
     </vi-sticky>
   </div>
 </template>
@@ -41,7 +42,14 @@ export default {
   },
   data() {
     return {
-      IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME
+      IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME,
+      slideRouterOptions: {
+        name: 'a',
+        snap: {
+          loop: true,
+          a: 1
+        }
+      }
     }
   },
   computed: {

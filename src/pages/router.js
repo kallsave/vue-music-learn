@@ -9,7 +9,6 @@ const Singer = () => import(/* webpackChunkName: "Singer" */ './index/children/s
 const Search = () => import(/* webpackChunkName: "Search" */ './index/children/search/search.vue')
 const Rank = () => import(/* webpackChunkName: "Rank" */ './index/children/rank/rank.vue')
 
-// music路由
 const MusicList = () => import(/* webpackChunkName: "MusicList" */ './music/index.vue')
 const SingerDetail = () => import(/* webpackChunkName: "SingerDetail" */ './music/children/singer-detail/singer-detail.vue')
 const RecommendDetail = () => import(/* webpackChunkName: "RecommendDetail" */ './music/children/recommend-detail/recommend-detail.vue')
@@ -30,7 +29,6 @@ export default new Router({
           path: '/recommend',
           component: Recommend,
           meta: {
-            keepAlive: false,
             title: '推荐'
           },
         },
@@ -38,7 +36,6 @@ export default new Router({
           path: '/singer',
           component: Singer,
           meta: {
-            keepAlive: true,
             title: '歌手'
           },
         },
@@ -46,7 +43,6 @@ export default new Router({
           path: '/rank',
           component: Rank,
           meta: {
-            keepAlive: true,
             title: '排行'
           },
         },
@@ -54,7 +50,6 @@ export default new Router({
           path: '/search',
           component: Search,
           meta: {
-            keepAlive: true,
             title: '搜索'
           },
         },

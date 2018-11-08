@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './pages/router.js'
 import store from './store'
-import VueLazyLoad from '../lib/src/index.js'
+import VueLazyLoad from '../lib/vue-lazyload/src/index.js'
 
 // vue-navigation貌似不是那么好用
 // 需不需要keep-alive可以在vue的组件中具体设置

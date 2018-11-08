@@ -27,7 +27,7 @@
     "assign-deep": "^1.0.0",
     "auto-compute-first-screen-time": "^5.7.1",
     "axios": "^0.18.0",
-    "better-scroll": "^1.13.2",
+    "better-scroll": "1.12.3",
     "create-keyframe-animation": "^0.1.0",
     "cube-ui": "^1.10.14",
     "fastclick": "^1.0.6",

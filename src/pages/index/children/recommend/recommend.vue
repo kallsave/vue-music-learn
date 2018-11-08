@@ -11,6 +11,7 @@
         @pulling-down="onPullingDown">
         <div class="slide-wrapper">
           <vi-slide ref="slide"
+            v-if="recommends.length"
             :init-page-index="currentPageIndex"
             :data="recommends"
             :options="slideOptions"
@@ -20,13 +21,13 @@
             @load-image="loadImage">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->
-            <template slot="dots">
+            <!-- <template slot="dots">
               <div class="slide-dots">
                 <span class="slide-dot" :key="index"
                   v-for="(item, index) in recommends"
                   :class="{active: currentPageIndex === index }"></span>
               </div>
-            </template>
+            </template> -->
           </vi-slide>
         </div>
         <div class="recommend-list">
@@ -99,12 +100,12 @@ export default {
         directionLockThreshold: 0.2,
       },
       slideOptions: {
+        name: 'b',
         probeType: 1,
         click: true,
-        scrollX: true,
-        scrollY: true,
         snap: {
           loop: true,
+          b: 2
         },
         eventPassthrough: 'vertical',
       }

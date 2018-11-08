@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       slideDirection: '',
+      enabled: true
     }
   },
   watch: {
@@ -81,13 +82,22 @@ export default {
   methods: {
     _initSlideRouter () {
       this.currentPath = this.$route.path
-      this.enableSlide()
+      this.listenerTouchstartHandler = this.touchstartHandler.bind(this)
+      this.listenerTouchendHandler = this.touchendHandler.bind(this)
+      this.$el.addEventListener('touchstart', this.listenerTouchstartHandler, false)
+      this.$el.addEventListener('touchend', this.listenerTouchendHandler, false)
     },
     touchstartHandler(e) {
+      if (!this.enabled) {
+        return
+      }
       this.startX = e.changedTouches[0].pageX
       this.startY = e.changedTouches[0].pageY
     },
     touchendHandler(e) {
+      if (!this.enabled) {
+        return
+      }
       const direction = this.startX - e.changedTouches[0].pageX
       const moveY = this.startY - e.changedTouches[0].pageY
       const diffX = Math.abs(direction)
@@ -113,19 +123,16 @@ export default {
       }
     },
     enableSlide() {
-      this.listenerTouchstartHandler = this.touchstartHandler.bind(this)
-      this.listenerTouchendHandler = this.touchendHandler.bind(this)
-      this.$el.addEventListener('touchstart', this.listenerTouchstartHandler, false)
-      this.$el.addEventListener('touchend', this.listenerTouchendHandler, false)
+      this.enabled = true
     },
     disableSlide() {
-      this.$el.removeEventListener('touchstart', this.listenerTouchstartHandler, false)
-      this.$el.removeEventListener('touchend', this.listenerTouchendHandler, false)
+      this.enabled = false
     },
-    destroyed() {
-      this.disableSlide()
-    },
-  }
+  },
+  destroyed() {
+    this.$el.removeEventListener('touchstart', this.listenerTouchstartHandler, false)
+    this.$el.removeEventListener('touchend', this.listenerTouchendHandler, false)
+  },
 }
 </script>
 

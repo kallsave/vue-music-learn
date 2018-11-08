@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import visibilityMixin from '@/common/mixins/visibility.js'
-import popupMixin from '@/common/mixins/popup.js'
+import visibilityMixin from '../../common/mixins/visibility.js'
+import popupMixin from '../../common/mixins/popup.js'
 
 const COMPONENT_NAME = 'vi-popup'
 
