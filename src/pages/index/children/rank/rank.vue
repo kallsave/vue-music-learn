@@ -56,7 +56,7 @@ export default {
       setRankAlbum: 'SET_RANK_ALBUM'
     }),
     handlePlayList() {
-      this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
+      this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
       this.$refs.scroll.refresh()
     },
     _getTopList() {

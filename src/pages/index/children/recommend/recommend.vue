@@ -100,12 +100,10 @@ export default {
         directionLockThreshold: 0.2,
       },
       slideOptions: {
-        name: 'b',
         probeType: 1,
         click: true,
         snap: {
           loop: true,
-          b: 2
         },
         eventPassthrough: 'vertical',
       }
@@ -119,7 +117,7 @@ export default {
       setRecommendAlbum: 'SET_RECOMMEND_ALBUM',
     }),
     handlePlayList() {
-      this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
+      this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
       this.$refs.scroll.refresh()
     },
     _getData(forceUpdate) {

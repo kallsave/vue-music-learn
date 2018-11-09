@@ -127,7 +127,7 @@ export default {
       'insertSong'
     ]),
     handlePlayList() {
-      this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
+      this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
       this.$refs.scroll.refresh()
     },
     _getHotKey() {
@@ -143,6 +143,7 @@ export default {
           this.$refs.search.style.height = 'calc(100vh - 88px)'
         }
       })
+      let globalTimer
       this.$watch('query', (newVal) => {
         this.isFetchSearch = false
         if (newVal) {
@@ -150,7 +151,6 @@ export default {
         } else {
           this.$refs.search.style.height = 'calc(100vh - 88px)'
         }
-        let globalTimer
         debounce((newVal) => {
           this.page = 1
           if (newVal) {
@@ -161,7 +161,7 @@ export default {
             this.result = this._genResult(res.data)
             this.isFetchSearch = true
           })
-        }, DEBOUNCE_TIME, globalTimer)(newVal)
+        }, DEBOUNCE_TIME)(newVal)
       })
     },
     search(res) {

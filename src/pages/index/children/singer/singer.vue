@@ -44,7 +44,7 @@ export default {
       setSinger: 'SET_SINGER',
     }),
     handlePlayList() {
-      this.$refs.scrollWrapper.style.paddingBottom = `${60}px`
+      this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
       this.$refs.scroll.refresh()
     },
     _getSingerList() {

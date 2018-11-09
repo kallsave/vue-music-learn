@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2018-10-15 19:34:21
+ * @Last Modified time: 2018-11-09 19:49:59
  */
 
 /**
@@ -17,35 +17,6 @@ export function camelize(str) {
   return str.replace(/-(\w)/g, function (m, c) {
     return c ? c.toUpperCase() : ''
   })
-}
-
-// setTimeout节流高阶函数,被节流函数和一个节流时间
-let globalTimer
-export function debounce(func, delay) {
-  return function (...args) {
-    if (globalTimer) {
-      clearTimeout(globalTimer)
-    }
-    globalTimer = setTimeout(() => {
-      func.apply(this, args)
-    }, delay)
-  }
-}
-
-/**
- * 深度合并,不是深度克隆
- *
- * @param {Object} to
- * @param {Object} from
- */
-export function deepAssign(to, from) {
-  for (let key in from) {
-    if (!to[key] || typeof to[key] !== 'object') {
-      to[key] = from[key]
-    } else {
-      deepAssign(to[key], from[key])
-    }
-  }
 }
 
 /**
@@ -79,4 +50,65 @@ export function spliceArray() {
   return arr.filter((item) => {
     return spliceList.indexOf(item) === -1
   })
+}
+
+export function checkClass (o) {
+  return Object.prototype.toString.call(o).slice(8, -1)
+}
+
+export function deepClone (o) {
+  let ret
+  let instance = checkClass(o)
+  if (instance === 'Array') {
+    ret = []
+  } else if (instance === 'Object') {
+    ret = {}
+  } else {
+    return o
+  }
+
+  for (let key in o) {
+    let copy = o[key]
+    let instance = checkClass(copy)
+    if (instance === 'Object') {
+      ret[key] = deepClone(copy)
+    } else if (instance === 'Array') {
+      ret[key] = deepClone(copy)
+    } else {
+      ret[key] = copy
+    }
+  }
+
+  return ret
+}
+
+/**
+ *
+ * 给target合并key(深度)
+ * @export
+ * @param {Object} target
+ * @param {Object} rest
+ * @returns
+ */
+export function extend(target, ...rest) {
+  for (let i = 0; i < rest.length; i++) {
+    let source = deepClone(rest[i])
+    for (let key in source) {
+      target[key] = source[key]
+    }
+  }
+  return target
+}
+
+/**
+ * 支持多参数的深度克隆
+ *
+ * @export
+ * @param {Object} target
+ * @param {Object} rest
+ * @returns
+ */
+export function mulitDeepClone(target, ...rest) {
+  let ret = extend(target, ...rest)
+  return deepClone(ret)
 }

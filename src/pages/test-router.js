@@ -2,6 +2,7 @@
 const Test = () => import(/* webpackChunkName: "Test" */ './test/index.vue')
 const WechatSticky = () => import(/* webpackChunkName: "WechatSticky" */ './test/children/wechat-sticky/wechat-sticky.vue')
 const ScrollTest = () => import(/* webpackChunkName: "ScrollTest" */ './test/children/scroll-test/scroll-test.vue')
+const Functional = () => import(/* webpackChunkName: "Funcitonal" */ './test/children/functional/functional.vue')
 
 export default {
   path: '/test',
@@ -15,5 +16,9 @@ export default {
       path: '/test/scroll-test',
       component: ScrollTest
     },
+    {
+      path: '/test/functional',
+      component: Functional
+    }
   ]
 }

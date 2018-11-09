@@ -2,7 +2,8 @@ import { mapGetters } from 'vuex'
 export const playListMixin = {
   data() {
     return {
-      hadHandlerPlayList: false
+      hadHandlerPlayList: false,
+      playerHeight: '60'
     }
   },
   mounted() {

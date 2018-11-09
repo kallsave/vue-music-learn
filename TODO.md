@@ -23,7 +23,6 @@
 - scroll组件暴露自动开启关闭上下拉功能的方法
 - native-sticky
 - sticky-ele的key可以去掉
-- 考虑把slide,scroll的$emit的slide,scroll参数去掉
 - 阅读createAPI源码
 - 更深入vue源码,阅读vue源码
 - go语言开发后台系统

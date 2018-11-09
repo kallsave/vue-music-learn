@@ -30,9 +30,8 @@
 <script>
 // TODO: slot支持slideToPage
 import { addClass } from '../../common/helpers/dom.js'
-import { camelize, spliceArray } from '../../common/helpers/utils.js'
+import { camelize, spliceArray, mulitDeepClone } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'
-import assign from 'assign-deep'
 
 const COMPONENT_NAME = 'vi-slide'
 
@@ -126,8 +125,8 @@ export default {
   },
   computed: {
     loop() {
-      let defaultOptions = assign({}, DEFAULT_OPTIONS)
-      let options = assign(defaultOptions, this.options)
+      let defaultOptions = mulitDeepClone({}, DEFAULT_OPTIONS)
+      let options = mulitDeepClone(defaultOptions, this.options)
       return options.snap.loop
     }
   },
@@ -178,16 +177,15 @@ export default {
       this.$refs.slideGroup.style.width = width + 'px'
     },
     _listenScrollEvents() {
-      // const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
-      // finalScrollEvents.forEach((event) => {
-      //   this.slide.on(camelize(event), (...args) => {
-      //     this.$emit(event, ...args)
-      //   })
-      // })
+      const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
+      finalScrollEvents.forEach((event) => {
+        this.slide.on(camelize(event), (...args) => {
+          this.$emit(event, ...args)
+        })
+      })
     },
     _initSlide() {
-      let defaultOptions = assign({}, DEFAULT_OPTIONS)
-      let options = assign(defaultOptions, this.options)
+      let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
       // better-scroll会改变options的值(浅引用)
       this.slide = new BScroll(this.$refs.slide, options)
 
@@ -205,11 +203,9 @@ export default {
         }
       })
 
-      setTimeout(() => {
-        this.slide.goToPage(this.initPageIndex, 0, 0)
-      }, 200)
+      this.slide.goToPage(this.initPageIndex, 0, 0)
 
-      // before-scroll-start其实是
+      // before-scroll-start其实是touch-start
       this.slide.on(camelize(EVENT_BEFORE_SCROLL_START), () => {
         this.$emit(EVENT_BEFORE_SCROLL_START)
         this.toggleAbleParentSlide(this.$parent, false)

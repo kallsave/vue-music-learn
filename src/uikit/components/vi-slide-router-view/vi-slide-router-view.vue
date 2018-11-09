@@ -19,23 +19,23 @@
 
 <script>
 import ViSlide from '../vi-slide/vi-slide.vue'
+import ViView from '../vi-view/vi-view.js'
 import Background from './vi-slide-router-view-background.vue'
 
-import { camelize, spliceArray } from '../../common/helpers/utils.js'
-import assign from 'assign-deep'
+import { camelize, spliceArray, mulitDeepClone } from '../../common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-slide-router-view'
 
 const EVENT_SCROLL = 'scroll'
 const EVENT_SCROLL_END = 'scroll-end'
+const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
 
 const EVENT_CHANGE = 'change'
 
 const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_SCROLL_END]
 
-// scroll-end事件是必须监听的
-// 因为基于scroll-end产生新的change事件判断处于哪一页
-const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END]
+// scroll-end和before-scroll-start事件是必须监听的
+const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END, EVENT_BEFORE_SCROLL_START]
 
 const DEFAULT_OPTIONS = {
   probeType: 3,
@@ -45,7 +45,6 @@ const DEFAULT_OPTIONS = {
   snap: {
     loop: false,
     threshold: 0.4,
-    tt: 66
   },
   bounce: {
     top: true,
@@ -58,7 +57,8 @@ const DEFAULT_OPTIONS = {
 export default {
   name: COMPONENT_NAME,
   components: {
-    ViSlide
+    ViSlide,
+    ViView
   },
   beforeCreate() {
     const findSiblingsRoute = (routeList) => {
@@ -73,7 +73,6 @@ export default {
       }
     }
     findSiblingsRoute(this.$router.options.routes)
-    console.log(this.siblingsRoute)
   },
   props: {
     options: {
@@ -100,6 +99,11 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      hadShowPageList: [],
+    }
+  },
   computed: {
     currentIndex() {
       return this.siblingsRoute.findIndex((item) => {
@@ -117,18 +121,23 @@ export default {
       }
     },
   },
-  data() {
-    return {
-      hadShowPageList: [],
-    }
-  },
   created() {
-    console.log(this.currentIndex)
     // created => children.props => children.data => children.created
-    this.slideOptions = assign({}, DEFAULT_OPTIONS, this.options)
+    this.slideOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
     this.pushHadShowPageList(this.currentIndex)
   },
+  mounted() {
+    console.log('this.$children', this.$children)
+  },
   methods: {
+    _listenScrollEvents() {
+      const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
+      finalScrollEvents.forEach((event) => {
+        this.slide.on(camelize(event), (...args) => {
+          this.$emit(event, ...args)
+        })
+      })
+    },
     scrollEnd() {
       this.$emit(EVENT_SCROLL_END, ...arguments)
     },

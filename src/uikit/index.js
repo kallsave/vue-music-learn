@@ -10,6 +10,7 @@ import ViSticky from './components/vi-sticky/index.js'
 import ViToast from './components/vi-toast/index.js'
 import ViToastTxt from './components/vi-toast-txt/index.js'
 import ViSlideRouterView from './components/vi-slide-router-view/index.js'
+import ViView from './components/vi-view/index.js'
 
 const components = [
   ViLoadListCon,
@@ -23,7 +24,8 @@ const components = [
   ViSticky,
   ViToast,
   ViToastTxt,
-  ViSlideRouterView
+  ViSlideRouterView,
+  ViView
 ]
 
 function install(Vue) {

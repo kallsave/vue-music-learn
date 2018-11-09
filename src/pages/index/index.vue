@@ -5,21 +5,24 @@
       <vi-sticky-ele :ele-key="'tab'">
         <tab></tab>
       </vi-sticky-ele>
-      <!-- <vi-slide-router-transition
-        slide-right-class="scroll-right"
-        slide-left-class="scroll-left"
-        mode="in-out">
-        <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
-          <router-view></router-view>
-        </keep-alive>
-      </vi-slide-router-transition> -->
-
-      <vi-slide-router-view
-        :scroll-events="['scroll']"
-        :options="slideRouterOptions"
-        @scroll="scroll"
-        @change="change"
-      ></vi-slide-router-view>
+      <template v-if="slideRouterMode === slideRouterModeList[0]">
+        <vi-slide-router-transition
+          slide-right-class="scroll-right"
+          slide-left-class="scroll-left"
+          mode="in-out">
+          <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
+            <router-view></router-view>
+          </keep-alive>
+        </vi-slide-router-transition>
+      </template>
+      <template v-else>
+        <vi-slide-router-view
+          :scroll-events="['scroll']"
+          :options="slideRouterOptions"
+          @scroll="scroll"
+          @change="change"
+        ></vi-slide-router-view>
+      </template>
     </vi-sticky>
   </div>
 </template>
@@ -32,6 +35,8 @@ import Tab from './components/tab/tab.vue'
 import SlideTab from './components/slide-tab/slide-tab.vue'
 import Background from './components/background/background.vue'
 
+const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view']
+
 export default {
   // 从其他页面转这个页面,不会keep-alive,子路由之间跳转可以keep-alive
   name: NO_KEEP_ALIVE_NAME,
@@ -43,11 +48,11 @@ export default {
   data() {
     return {
       IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME,
+      slideRouterModeList: slideRouterModeList,
+      slideRouterMode: slideRouterModeList[1],
       slideRouterOptions: {
-        name: 'a',
         snap: {
           loop: false,
-          a: 1
         }
       }
     }
@@ -59,7 +64,7 @@ export default {
   },
   methods: {
     change(index) {
-      console.log(index)
+      // console.log(index)
     },
     scroll(pos) {
       // console.log(pos)
