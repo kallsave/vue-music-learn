@@ -270,10 +270,6 @@ export default {
     box-sizing: border-box
     width: 100%
     height: calc(100vh - 44px)
-    // position: fixed
-    // position: absolute
-    // top: 88px
-    // bottom: 0
     font-size: $font-size-medium
     color: peru
     .search-box-wrapper

@@ -183,7 +183,7 @@ export default {
 @import "~@/common/stylus/mixin"
 
 .music
-  position: fixed
+  position: absolute
   z-index: $z-index-page
   top: 0
   left: 0
@@ -191,7 +191,7 @@ export default {
   right: 0
   background: $color-background
   .header
-    position: fixed
+    position: absolute
     width: 100%
     height: 40px
     top: 0

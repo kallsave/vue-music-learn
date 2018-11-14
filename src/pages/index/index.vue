@@ -2,9 +2,9 @@
   <div class="index">
     <vi-sticky ref="sticky">
       <m-header></m-header>
-      <vi-sticky-ele :ele-key="'tab'">
+      <!-- <vi-sticky-ele :ele-key="'tab'">
         <tab></tab>
-      </vi-sticky-ele>
+      </vi-sticky-ele> -->
       <template v-if="slideRouterMode === slideRouterModeList[0]">
         <vi-slide-router-transition
           slide-right-class="scroll-right"
@@ -39,7 +39,7 @@ const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view
 
 export default {
   // 从其他页面转这个页面,不会keep-alive,子路由之间跳转可以keep-alive
-  name: NO_KEEP_ALIVE_NAME,
+  name: IMMUTABLE_KEEP_ALIVE_NAME,
   components: {
     MHeader,
     Tab,
@@ -67,7 +67,7 @@ export default {
       // console.log(index)
     },
     scroll(pos) {
-      // console.log(pos)
+      console.log(pos)
     }
   },
 }
@@ -98,12 +98,9 @@ export default {
   position: absolute
 
 .scroll-right-leave-active
-  will-change: transform
-  transition: transform 0.2s
   display: none
 
 .scroll-right-leave-to
-  transform:  translate3d(-100%, 0px, 0px)
   display: none
 
 .scroll-left-enter
@@ -131,12 +128,9 @@ export default {
   transition: transform 0.2s
 
 .scroll-left-leave-active
-  will-change: transform
-  transition: transform 0.2s
   display: none
 
 .scroll-left-leave-to
-  transform:  translate3d(100%, 0px, 0px)
   display: none
 
 </style>

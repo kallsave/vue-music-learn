@@ -18,7 +18,8 @@
             :show-dots="true"
             :auto-play="true"
             @scroll-end="slideEnd"
-            @load-image="loadImage">
+            @load-image="loadImage"
+            @scroll="scroll">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->
             <!-- <template slot="dots">
@@ -78,7 +79,7 @@ const store = engine.createStore(storages, storePlugins)
 
 export default {
   // 可变keep-alive
-  name: NO_KEEP_ALIVE_NAME,
+  name: MUTABLE_KEEP_ALIVE_NAME,
   mixins: [sticky, playListMixin],
   data() {
     return {
@@ -178,6 +179,9 @@ export default {
       this.$router.push({
         path: `/music/recommend-detail/${item.dissid}`
       })
+    },
+    scroll() {
+      console.log('slide-scroll')
     },
     onPullingDown() {
       this._getData(true)

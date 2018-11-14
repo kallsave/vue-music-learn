@@ -680,7 +680,7 @@ export default {
 
 .player
   .normal-player
-    position: fixed
+    position: absolute
     left: 0
     right: 0
     top: 0
@@ -737,7 +737,7 @@ export default {
         font-size: $font-size-medium
         color: $color-text
     .middle
-      position: fixed
+      position: absolute
       width: 100%
       top: 80px
       bottom: 170px
@@ -862,7 +862,7 @@ export default {
   .mini-player
     display: flex
     align-items: center
-    position: fixed
+    position: absolute
     left: 0
     bottom: 0
     z-index: $z-index-page-x

@@ -13,8 +13,11 @@ export default {
   render(h, { props, children, parent, data }) {
     console.log(children)
     findClass(parent, 'header')
+    console.log(props)
+    console.log(data)
     return h(children[0].children[0].componentOptions.tag, {
-      attrs: data.attrs
+      attrs: data.attrs,
+      provide: data.attrs
     }, children)
   },
 }

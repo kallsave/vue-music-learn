@@ -126,13 +126,8 @@ export default {
   height: calc(100vh - 44px)
   background: $color-background
   overflow: hidden
-  // position: relative
   .index-list-scroll-wrapper
     box-sizing: border-box
     width: 100%
     height: calc(100vh - 44px)
-    // position: fixed
-    // position: absolute
-    // top: 88px
-    // bottom: 0
 </style>

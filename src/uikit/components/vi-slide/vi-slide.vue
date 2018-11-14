@@ -44,8 +44,10 @@ const EVENT_LOAD_IMAGE = 'load-image'
 
 const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_SCROLL_END, EVENT_BEFORE_SCROLL_START]
 
-// scroll-end,before-scroll-start事件是必须监听的
-// 因为基于scroll-end产生新的change事件判断处于哪一页
+// before-scroll-start,scroll-end,事件是必须监听的
+// before-scroll-start只会在touchstart触发(主动触发的标志)
+// 用于过滤嵌套scroll,slide的其他事件
+// scroll-end产生新的change事件判断处于哪一页
 // 考虑到slide如果外围有slide
 // 需要before-scroll-start时disable外围所有的slide
 // 在scroll-end时enable外围所有的slide
@@ -64,6 +66,7 @@ const DEFAULT_OPTIONS = {
     threshold: 0.3,
     speed: 400
   },
+  useTransition: true,
 }
 
 export default {
@@ -120,7 +123,7 @@ export default {
   data() {
     return {
       dots: [],
-      currentPageIndex: this.initPageIndex
+      currentPageIndex: this.initPageIndex,
     }
   },
   computed: {
@@ -189,7 +192,16 @@ export default {
       // better-scroll会改变options的值(浅引用)
       this.slide = new BScroll(this.$refs.slide, options)
 
+      // before-scroll-start其实是touch-start
+      this.slide.on(camelize(EVENT_BEFORE_SCROLL_START), () => {
+        this.touch = true
+        this.toggleAbleParentSlide(this.$parent, false)
+        this.$emit(EVENT_BEFORE_SCROLL_START)
+      })
+
       // scroll-end
+      // scroll-end在换页过程中会触发两次,因为有两页
+      this.changePage = 0
       this.slide.on(camelize(EVENT_SCROLL_END), () => {
         this.toggleAbleParentSlide(this.$parent, true)
         let pageIndex = this.slide.getCurrentPage().pageX
@@ -205,12 +217,6 @@ export default {
 
       this.slide.goToPage(this.initPageIndex, 0, 0)
 
-      // before-scroll-start其实是touch-start
-      this.slide.on(camelize(EVENT_BEFORE_SCROLL_START), () => {
-        this.$emit(EVENT_BEFORE_SCROLL_START)
-        this.toggleAbleParentSlide(this.$parent, false)
-      })
-
       this._listenScrollEvents()
     },
     _initDots() {
@@ -219,7 +225,7 @@ export default {
     _play() {
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {
-        this.slide.next(500)
+        this.slide && this.slide.next(500)
       }, this.interval)
     },
     _resizeHandler() {

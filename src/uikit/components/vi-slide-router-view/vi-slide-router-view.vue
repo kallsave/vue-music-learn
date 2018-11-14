@@ -1,20 +1,35 @@
 <template>
-  <vi-slide ref="slide"
-    :options="slideOptions"
-    :initPageIndex="currentIndex"
-    :scroll-events="scrollEvents"
-    @scroll-end="scrollEnd"
-    @change="change"
-    @scroll="scroll">
-    <div class="slide-item" v-for="(item, index) in siblingsRoute" :key="index">
-      <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
-        <component :is="item.component"></component>
-      </template>
-      <template v-else>
-        <component :is="hadShowPageList.indexOf(index) !== -1 ? item.component : backgroundComponent"></component>
-      </template>
-    </div>
-  </vi-slide>
+  <div class="vi-slide-router-view">
+    <slot name="tab">
+      <div class="vi-slide-router-view-tab">
+        <div class="vi-slide-router-view-tab-list">
+          <div class="vi-slide-router-view-tab-item"
+            v-for="(item, index) in siblingsRoute" :key="index">
+            <span class="vi-slide-router-view-tab-item-link" :class="{'active': index === currentIndex}"
+              @click="change(index)">{{item.meta.title}}</span>
+          </div>
+        </div>
+        <div class="vi-slide-router-view-tab-bar" :style="tabStyle"></div>
+      </div>
+    </slot>
+    <vi-slide ref="slide"
+      :options="slideOptions"
+      :initPageIndex="currentIndex"
+      :scroll-events="scrollEvents"
+      @scroll-end="scrollEnd"
+      @change="change"
+      @scroll="scroll"
+      @before-scroll-start="touchStart">
+      <div v-for="(item, index) in siblingsRoute" :key="index">
+        <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
+          <component :is="item.component"></component>
+        </template>
+        <template v-else>
+          <component :is="hadShowPageList.indexOf(index) !== -1 ? item.component : backgroundComponent"></component>
+        </template>
+      </div>
+    </vi-slide>
+  </div>
 </template>
 
 <script>
@@ -33,6 +48,8 @@ const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
 const EVENT_CHANGE = 'change'
 
 const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_SCROLL_END]
+
+const TAB_BAR_SIZE = 50
 
 // scroll-end和before-scroll-start事件是必须监听的
 const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END, EVENT_BEFORE_SCROLL_START]
@@ -97,6 +114,10 @@ export default {
       default() {
         return Background
       }
+    },
+    isChangeRouter: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -109,6 +130,13 @@ export default {
       return this.siblingsRoute.findIndex((item) => {
         return this.$route.matched[this.$route.matched.length - 1].regex.test(item.path)
       })
+    },
+    tabStyle() {
+      let itemPercent = 1 / this.siblingsRoute.length * 100
+      return {
+        width: `calc(${itemPercent}% - ${TAB_BAR_SIZE}px)`,
+        left: `calc(${this.currentIndex * itemPercent}% + ${TAB_BAR_SIZE / 2}px)`
+      }
     }
   },
   watch: {
@@ -127,16 +155,14 @@ export default {
     this.pushHadShowPageList(this.currentIndex)
   },
   mounted() {
-    console.log('this.$children', this.$children)
+    this._findSlide()
   },
   methods: {
-    _listenScrollEvents() {
-      const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
-      finalScrollEvents.forEach((event) => {
-        this.slide.on(camelize(event), (...args) => {
-          this.$emit(event, ...args)
-        })
-      })
+    _findSlide () {
+      this.slide = this.$refs.slide.slide
+    },
+    touchStart() {
+      this.touch = true
     },
     scrollEnd() {
       this.$emit(EVENT_SCROLL_END, ...arguments)
@@ -145,8 +171,8 @@ export default {
       this.$emit(EVENT_SCROLL, ...arguments)
     },
     change(index) {
-      this.$emit(EVENT_CHANGE, ...arguments)
       this.pushHadShowPageList(index)
+      this.$emit(EVENT_CHANGE, index)
       let siblingsRouteMatchedPath = ''
 
       this.siblingsRoute.forEach((item, n) => {
@@ -155,16 +181,20 @@ export default {
         }
       })
 
-      // 补全路由params参数
-      for (let k in this.$route.params) {
-        if (new RegExp(`(:${k})`).test(siblingsRouteMatchedPath)) {
-          let str = this.$route.params[k]
-          siblingsRouteMatchedPath = siblingsRouteMatchedPath.replace(RegExp.$1, str)
+      if (this.isChangeRouter) {
+        // 补全路由params参数
+        for (let k in this.$route.params) {
+          if (new RegExp(`(:${k})`).test(siblingsRouteMatchedPath)) {
+            let str = this.$route.params[k]
+            siblingsRouteMatchedPath = siblingsRouteMatchedPath.replace(RegExp.$1, str)
+          }
         }
+        this.$router.push({
+          path: siblingsRouteMatchedPath
+        })
+      } else {
+        this.$refs.slide && this.$refs.slide.slideToPage(index)
       }
-      this.$router.push({
-        path: siblingsRouteMatchedPath
-      })
     },
     pushHadShowPageList(index) {
       if (this.hadShowPageList.indexOf(index) === -1) {
@@ -175,6 +205,30 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus" scoped>
+@import "~@/common/stylus/variable"
 
+.vi-slide-router-view
+  .vi-slide-router-view-tab
+    position: relative
+    .vi-slide-router-view-tab-list
+      display: flex
+      height: 46px
+      line-height: 44px
+      .vi-slide-router-view-tab-item
+        flex: 1
+        text-align: center
+        .vi-slide-router-view-tab-item-link
+          box-sizing: border-box
+          color: $color-text-l
+          padding-bottom: 5px
+          font-size: $font-size-medium
+          &.active
+            color: $color-theme
+    .vi-slide-router-view-tab-bar
+      position: absolute
+      z-index: 5
+      height: 2px
+      bottom: 0
+      background-color: $color-theme
 </style>
