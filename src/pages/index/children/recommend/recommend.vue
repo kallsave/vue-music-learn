@@ -78,7 +78,7 @@ const store = engine.createStore(storages, storePlugins)
 
 export default {
   // 可变keep-alive
-  name: NO_KEEP_ALIVE_NAME,
+  name: MUTABLE_KEEP_ALIVE_NAME,
   mixins: [sticky, playListMixin],
   data() {
     return {

@@ -219,7 +219,7 @@ export default {
     _play() {
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {
-        this.slide.next(500)
+        this.slide && this.slide.next(500)
       }, this.interval)
     },
     _resizeHandler() {

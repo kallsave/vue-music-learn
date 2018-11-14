@@ -17,6 +17,7 @@ export default {
   },
   created() {
     console.log(this.list)
+    console.log(this)
   },
   data() {
     return {}
