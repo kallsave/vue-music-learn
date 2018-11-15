@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2018-11-09 19:49:59
+ * @Last Modified time: 2018-11-15 19:37:34
  */
 
 /**
@@ -86,29 +86,32 @@ export function deepClone (o) {
  *
  * 给target合并key(深度)
  * @export
- * @param {Object} target
- * @param {Object} rest
+ * @param {Object} to
+ * @param {Object} from
  * @returns
  */
-export function extend(target, ...rest) {
-  for (let i = 0; i < rest.length; i++) {
-    let source = deepClone(rest[i])
-    for (let key in source) {
-      target[key] = source[key]
+function deepAssign(to, from) {
+  for (let key in from) {
+    if (!to[key] || typeof to[key] !== 'object') {
+      to[key] = from[key]
+    } else {
+      deepAssign(to[key], from[key])
     }
   }
-  return target
 }
 
 /**
  * 支持多参数的深度克隆
- *
+ * 后面的优先级最大
  * @export
  * @param {Object} target
  * @param {Object} rest
  * @returns
  */
 export function mulitDeepClone(target, ...rest) {
-  let ret = extend(target, ...rest)
-  return deepClone(ret)
+  for (let i = 0; i < rest.length; i++) {
+    let source = deepClone(rest[i])
+    deepAssign(target, source)
+  }
+  return target
 }

@@ -8,7 +8,7 @@ import rankAlbum from './modules/rank-album/index.js'
 import recommendAlbum from './modules/recommend-album/index.js'
 
 // keep-alive
-import mutableKeepAliveName from './modules/keep-alive/mutable-keep-alive-name.js'
+import KeepAliveName from './modules/keep-alive-name/keep-alive-name.js'
 
 import createLogger from 'vuex/dist/logger'
 import createPersistedState from 'vuex-persistedstate'
@@ -56,7 +56,7 @@ export default new Vuex.Store({
     player,
     rankAlbum,
     recommendAlbum,
-    mutableKeepAliveName
+    KeepAliveName
   },
   strict: debug,
   plugins: debug ? VuexPlugins.concat([createLogger()]) : VuexPlugins

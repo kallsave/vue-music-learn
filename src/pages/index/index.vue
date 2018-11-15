@@ -19,8 +19,8 @@
         <vi-slide-router-view
           :scroll-events="['scroll']"
           :options="slideRouterOptions"
-          @scroll="scroll"
           @change="change"
+          @touch-scroll="touchScroll"
         ></vi-slide-router-view>
       </template>
     </vi-sticky>
@@ -66,8 +66,8 @@ export default {
     change(index) {
       // console.log(index)
     },
-    scroll(pos) {
-      console.log(pos)
+    touchScroll({x, y}) {
+      // console.log(x)
     }
   },
 }

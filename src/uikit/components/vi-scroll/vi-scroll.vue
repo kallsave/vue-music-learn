@@ -52,9 +52,8 @@ import Loading from './vi-scroll-loading.vue'
 import Bubble from './vi-scroll-bubble.vue'
 
 import BScroll from 'better-scroll'
-import { camelize } from '../../common/helpers/utils.js'
+import { camelize, mulitDeepClone } from '../../common/helpers/utils.js'
 import { getRect } from '../../common/helpers/dom.js'
-import assign from 'assign-deep'
 
 const COMPONENT_NAME = 'vi-scroll'
 
@@ -152,7 +151,7 @@ export default {
       if (pullDownRefresh === true) {
         pullDownRefresh = {}
       }
-      return assign({stop: this.pullDownStop}, pullDownRefresh)
+      return mulitDeepClone({stop: this.pullDownStop}, pullDownRefresh)
     },
     refreshTxt() {
       const pullDownRefresh = this.pullDownRefresh
@@ -225,7 +224,7 @@ export default {
   methods: {
     _initScroll() {
       this.name = COMPONENT_NAME
-      let options = assign({}, DEFAULT_OPTIONS, this.options)
+      let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
       this.scroll = new BScroll(this.$refs.wrapper, options)
       this._listenScrollEvents()
 

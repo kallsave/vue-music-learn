@@ -105,6 +105,7 @@ export default {
         click: true,
         snap: {
           loop: true,
+          threshold: 0.8
         },
         eventPassthrough: 'vertical',
       }
@@ -171,14 +172,15 @@ export default {
       // console.log('handler')
     },
     selectItem(e, item) {
-      if (!e._constructed) {
-        return
-      }
-      this.setRecommendAlbum(item)
-      // 先跳转后设置vuex
-      this.$router.push({
-        path: `/music/recommend-detail/${item.dissid}`
-      })
+      console.log('click')
+      // if (!e._constructed) {
+      //   return
+      // }
+      // this.setRecommendAlbum(item)
+      // // 先跳转后设置vuex
+      // this.$router.push({
+      //   path: `/music/recommend-detail/${item.dissid}`
+      // })
     },
     scroll() {
       console.log('slide-scroll')

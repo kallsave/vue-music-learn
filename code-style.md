@@ -234,7 +234,9 @@ params无法和path配合使用
 - better-scroll的事件传递
   多层scroll嵌套的场景,使用[stoppropagation](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#stoppropagationv190)隔断,因为一旦隔断,所有的事件模型(click,scroll,scrollEnd等)都不会被传递,所以通常不会阻断,而是通过enable,disable,手动调用scrollTo处理,手动阻断事件传递
 
-  如果better-scroll出现嵌套的scroll或者slide,有几层嵌套就会触发几次事件,而vue的事件传递$on,$emit和better-scroll也会一层层传递,而嵌套组件的事件名称是一样的,导致底层的事件(比如slide轮播图的scrollEnd会emit外层的scroll,slide的scrollEnd),而before-scroll-before这个事件是原生touchstart事件触发,这是个判断主动触发的标志
+  如果better-scroll出现嵌套的scroll或者slide,有几层嵌套就会触发几次better-scroll的原生事件,比如slide轮播图的scrollEnd,scroll会分发到外层的scroll,slide的scrollEnd,scroll,为了解决这个问题,在二级组件使用better-scroll的原生事件明显有bug,而是通过判断使用由better-scroll的原生事件派生出的派生事件(比如换页的change,手动滚动而不是自动滚动的touch-scroll),而beforeScrolBefore,touchEnd这些事件是判断主动触发的关键,scrollEnd是判断是否换页的关键,这些都是一级slide组件必须监听的事件
+
+  对于scroll,slide的组件设计,scroll事件比较消耗性能,其他better-scroll的原生事件性能消耗不大,scrollEvents有beforeScrollStart,scrollStart,scroll,scrollCancel,scrollEnd,touchEnd六个
 
 ## 其他
 - 使用TODO,FIXME,FORK标识代码,vscode下载TODO Highlight

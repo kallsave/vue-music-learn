@@ -17,9 +17,10 @@
       :initPageIndex="currentIndex"
       :scroll-events="scrollEvents"
       @scroll-end="scrollEnd"
+      @before-scroll-start="beforeScrollStart"
       @change="change"
-      @scroll="scroll"
-      @before-scroll-start="touchStart">
+      @touch-scroll="touchScroll"
+      @touch-end="touchEnd">
       <div v-for="(item, index) in siblingsRoute" :key="index">
         <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
           <component :is="item.component"></component>
@@ -37,28 +38,44 @@ import ViSlide from '../vi-slide/vi-slide.vue'
 import ViView from '../vi-view/vi-view.js'
 import Background from './vi-slide-router-view-background.vue'
 
-import { camelize, spliceArray, mulitDeepClone } from '../../common/helpers/utils.js'
+import { camelize, mulitDeepClone } from '../../common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-slide-router-view'
 
-const EVENT_SCROLL = 'scroll'
-const EVENT_SCROLL_END = 'scroll-end'
+// better-scroll原始的事件(不推荐在父组件中使用,会存在嵌套事件触发多次的,主动触发的问题)
 const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
+const EVENT_SCROLL_END = 'scroll-end'
+const EVENT_TOUCH_END = 'touch-end'
+// 需要传scrollEvents = ['scroll-start']
+const EVENT_SCROLL_START = 'scroll-start'
+// 需要传scrollEvents = ['scroll']
+const EVENT_SCROLL = 'scroll'
+// 需要传scrollEvents = ['scroll-cancel']
+const EVENT_SCROLL_CANCEL = 'scroll-cancel'
 
+// better-scroll原始的scrollEvents事件集合
+const SCROLL_EVENTS = [
+  EVENT_BEFORE_SCROLL_START,
+  EVENT_SCROLL_END,
+  EVENT_TOUCH_END,
+  EVENT_SCROLL,
+  EVENT_SCROLL_START
+]
+
+// 派生出来的事件(推荐在父组件中使用)
 const EVENT_CHANGE = 'change'
-
-const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_SCROLL_END]
+const EVENT_LOAD_IMAGE = 'load-image'
+// 需要在scrollEvents传['scroll']
+const EVENT_TOUCH_SCROLL = 'touch-scroll'
 
 const TAB_BAR_SIZE = 50
-
-// scroll-end和before-scroll-start事件是必须监听的
-const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END, EVENT_BEFORE_SCROLL_START]
 
 const DEFAULT_OPTIONS = {
   probeType: 3,
   directionLockThreshold: 0.5,
   scrollY: false,
   scrollX: true,
+  click: false,
   snap: {
     loop: false,
     threshold: 0.4,
@@ -123,6 +140,8 @@ export default {
   data() {
     return {
       hadShowPageList: [],
+      onePagescrollX: 0,
+      slideGroopWidth: 0,
     }
   },
   computed: {
@@ -131,11 +150,25 @@ export default {
         return this.$route.matched[this.$route.matched.length - 1].regex.test(item.path)
       })
     },
+    threshold() {
+      let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
+      console.log(options.snap.threshold)
+      return options.snap.threshold
+    },
+    tabExtendWidth () {
+      console.log(this.threshold)
+      return 0
+      // let onePageWidth = this.slideGroopWidth / this.siblingsRoute.length
+      // if (!this.onePagescrollX || this.onePagescrollX > onePageWidth * this.threshold) {
+      //   return 0
+      // }
+      // return this.onePagescrollX * 0.25
+    },
     tabStyle() {
       let itemPercent = 1 / this.siblingsRoute.length * 100
       return {
-        width: `calc(${itemPercent}% - ${TAB_BAR_SIZE}px)`,
-        left: `calc(${this.currentIndex * itemPercent}% + ${TAB_BAR_SIZE / 2}px)`
+        'width': `calc(${itemPercent}% - ${TAB_BAR_SIZE - this.tabExtendWidth}px )`,
+        'left': `calc(${this.currentIndex * itemPercent}% + ${TAB_BAR_SIZE / 2}px)`,
       }
     }
   },
@@ -156,19 +189,31 @@ export default {
   },
   mounted() {
     this._findSlide()
+    this._findSlideWidth()
   },
   methods: {
+    _findSlideWidth() {
+      this.slideGroopWidth = this.$refs.slide.getSlideWidth()
+    },
     _findSlide () {
       this.slide = this.$refs.slide.slide
     },
-    touchStart() {
-      this.touch = true
-    },
-    scrollEnd() {
-      this.$emit(EVENT_SCROLL_END, ...arguments)
+    beforeScrollStart() {
+      this.$emit(EVENT_BEFORE_SCROLL_START)
     },
     scroll() {
       this.$emit(EVENT_SCROLL, ...arguments)
+    },
+    scrollEnd() {
+      this.$emit(EVENT_SCROLL_END)
+    },
+    touchScroll({x, y}) {
+      let onePageWidth = this.slideGroopWidth / this.siblingsRoute.length
+      this.onePagescrollX = Math.abs(x) - (this.currentIndex * onePageWidth)
+      this.$emit(EVENT_TOUCH_SCROLL, ...arguments)
+    },
+    touchEnd() {
+      this.onePagescrollX = 0
     },
     change(index) {
       this.pushHadShowPageList(index)
@@ -231,4 +276,5 @@ export default {
       height: 2px
       bottom: 0
       background-color: $color-theme
+      transition: all 0.2s
 </style>

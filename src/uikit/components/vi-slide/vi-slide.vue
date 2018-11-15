@@ -20,7 +20,7 @@
           <span class="vi-slide-dot" :key="index"
             v-for="(item, index) in dots"
             :class="{active: currentPageIndex === index }"
-            @click="slideToPage(index)"></span>
+            @click.stop="slideToPage(index)"></span>
         </div>
       </slot>
     </template>
@@ -35,23 +35,43 @@ import BScroll from 'better-scroll'
 
 const COMPONENT_NAME = 'vi-slide'
 
-const EVENT_SCROLL = 'scroll'
-const EVENT_SCROLL_END = 'scroll-end'
+// better-scroll原始的事件(不推荐在父组件中使用,会存在嵌套事件触发多次的,主动触发的问题)
 const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
+const EVENT_SCROLL_END = 'scroll-end'
+const EVENT_TOUCH_END = 'touch-end'
+// 需要传scrollEvents = ['scroll-start']
+const EVENT_SCROLL_START = 'scroll-start'
+// 需要传scrollEvents = ['scroll']
+const EVENT_SCROLL = 'scroll'
+// 需要传scrollEvents = ['scroll-cancel']
+const EVENT_SCROLL_CANCEL = 'scroll-cancel'
 
-const EVENT_CHANGE = 'change'
-const EVENT_LOAD_IMAGE = 'load-image'
+// better-scroll原始的scrollEvents事件集合
+const SCROLL_EVENTS = [
+  EVENT_BEFORE_SCROLL_START,
+  EVENT_SCROLL_END,
+  EVENT_TOUCH_END,
+  EVENT_SCROLL,
+  EVENT_SCROLL_START
+]
 
-const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_SCROLL_END, EVENT_BEFORE_SCROLL_START]
-
-// before-scroll-start,scroll-end,事件是必须监听的
+// before-scroll-start,scroll-end,touch-end事件是必须监听的
 // before-scroll-start只会在touchstart触发(主动触发的标志)
-// 用于过滤嵌套scroll,slide的其他事件
-// scroll-end产生新的change事件判断处于哪一页
-// 考虑到slide如果外围有slide
+// 并且考虑到slide如果外围有slide
 // 需要before-scroll-start时disable外围所有的slide
 // 在scroll-end时enable外围所有的slide
-const BIND_SCROLL_EVENTS = [EVENT_SCROLL_END, EVENT_BEFORE_SCROLL_START]
+// scroll-end产生新的change事件判断处于哪一页
+const BIND_SCROLL_EVENTS = [
+  EVENT_SCROLL_END,
+  EVENT_BEFORE_SCROLL_START,
+  EVENT_TOUCH_END
+]
+
+// 派生出来的事件(推荐在父组件中使用)
+const EVENT_CHANGE = 'change'
+const EVENT_LOAD_IMAGE = 'load-image'
+// 需要在scrollEvents传['scroll']
+const EVENT_TOUCH_SCROLL = 'touch-scroll'
 
 const DEFAULT_OPTIONS = {
   // 多层嵌套会触发多次,所以需要click的场景自主添加
@@ -128,8 +148,7 @@ export default {
   },
   computed: {
     loop() {
-      let defaultOptions = mulitDeepClone({}, DEFAULT_OPTIONS)
-      let options = mulitDeepClone(defaultOptions, this.options)
+      let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
       return options.snap.loop
     }
   },
@@ -172,7 +191,7 @@ export default {
         item.style.width = slideWidth + 'px'
         width += slideWidth
       })
-
+      this.slideWidth = width
       if (this.loop && !isResize && this.children.length > 1) {
         // 如果需要loop无缝滚动功能,还有两个缓冲div
         width += 2 * slideWidth
@@ -182,9 +201,21 @@ export default {
     _listenScrollEvents() {
       const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
       finalScrollEvents.forEach((event) => {
-        this.slide.on(camelize(event), (...args) => {
-          this.$emit(event, ...args)
-        })
+        if (event === EVENT_SCROLL) {
+          this.slide.on(camelize(event), (...args) => {
+            this.$emit(event, ...args)
+            // slide存在loop: true自动轮播,
+            // 导致外层的scroll,slide的监听到scroll事件发生
+            // 有场景是需要主动触发的scroll
+            if (this.touch) {
+              this.$emit(EVENT_TOUCH_SCROLL, ...args)
+            }
+          })
+        } else {
+          this.slide.on(camelize(event), (...args) => {
+            this.$emit(event, ...args)
+          })
+        }
       })
     },
     _initSlide() {
@@ -200,8 +231,7 @@ export default {
       })
 
       // scroll-end
-      // scroll-end在换页过程中会触发两次,因为有两页
-      this.changePage = 0
+      // scroll-end在换页过程中至少会触发两次,因为有两页
       this.slide.on(camelize(EVENT_SCROLL_END), () => {
         this.toggleAbleParentSlide(this.$parent, true)
         let pageIndex = this.slide.getCurrentPage().pageX
@@ -213,6 +243,12 @@ export default {
         if (this.autoPlay) {
           this._play()
         }
+      })
+
+      // touch-end
+      this.slide.on(camelize(EVENT_TOUCH_END), () => {
+        this.touch = false
+        this.$emit(EVENT_TOUCH_END)
       })
 
       this.slide.goToPage(this.initPageIndex, 0, 0)
@@ -237,7 +273,9 @@ export default {
       this.slide.refresh()
     },
     slideToPage(index) {
+      clearTimeout(this.timer)
       this.slide.goToPage(index, 0, 400)
+      this.currentPageIndex = index
     },
     loadImage() {
       if (!this.checkLoaded) {
@@ -266,6 +304,9 @@ export default {
         this.toggleAbleParentSlide(vNode.$parent, toggle)
       }
     },
+    getSlideWidth() {
+      return this.slideWidth
+    }
   },
   destroyed() {
     this.timer = null
