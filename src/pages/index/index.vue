@@ -2,7 +2,7 @@
   <div class="index">
     <vi-sticky ref="sticky">
       <m-header></m-header>
-      <vi-sticky-ele :ele-key="'tab'">
+      <vi-sticky-ele>
         <tab></tab>
       </vi-sticky-ele>
       <template v-if="slideRouterMode === slideRouterModeList[0]">
@@ -22,6 +22,7 @@
           :options="slideRouterOptions"
           :tab-title-list="tabTitleList"
           :tab-bar-style="tabBarStyle"
+          :is-show-tab="false"
           @change="change"
           @touch-scroll="touchScroll"
           @scroll="scroll"
@@ -67,7 +68,7 @@ export default {
         '搜索'
       ],
       tabBarStyle: {
-        'left': '50',
+        left: '50px'
       }
     }
   },

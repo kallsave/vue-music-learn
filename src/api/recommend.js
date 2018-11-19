@@ -6,6 +6,8 @@ import {
   apiHandler,
 } from './config'
 
+import { mulitDeepClone } from '@/common/helpers/utils.js'
+
 import axios from 'axios'
 
 const baseURL = process.env.baseURL
@@ -44,7 +46,7 @@ export function getRecommend(params = {}) {
     vin: 0,
     needNewCode: 1
   }
-  const data = Object.assign({}, commonParams, defaultParams, params)
+  const data = mulitDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     // url是基础url, data是url参数, options是jsonp的回调参数
     return jsonp({
@@ -67,7 +69,7 @@ export function getDiscList(params = {}) {
     rnd: Math.random(),
     format: 'json'
   }
-  const data = Object.assign({}, commonParams, defaultParams, params)
+  const data = mulitDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     return instance({
       method: 'get',
@@ -90,7 +92,7 @@ export function getSongList(params = {}) {
     hostUin: 0,
     needNewCode: 0,
   }
-  const data = Object.assign({}, commonParams, defaultParams, params)
+  const data = mulitDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     return instance({
       method: 'get',

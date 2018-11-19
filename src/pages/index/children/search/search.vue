@@ -8,7 +8,7 @@
         :options="scrollOptions"
         @scroll="scrollHandler"
         @pulling-up="onPullingUp">
-        <vi-sticky-ele :ele-key="'search'">
+        <vi-sticky-ele>
           <div class="search-box-wrapper">
             <base-search-box
               ref="searchBox"

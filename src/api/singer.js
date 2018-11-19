@@ -6,6 +6,8 @@ import {
   apiHandler,
 } from './config'
 
+import { mulitDeepClone } from '@/common/helpers/utils.js'
+
 // jsonp接口
 export function getSingerList(params = {}) {
   const url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
@@ -19,7 +21,7 @@ export function getSingerList(params = {}) {
     needNewCode: 0,
     platform: 'yqq'
   }
-  const data = Object.assign({}, commonParams, defaultParams, params)
+  const data = mulitDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     return jsonp({
       url,
@@ -39,7 +41,7 @@ export function getSingerDetail(params = {}) {
     num: 80,
     songstatus: 1,
   }
-  const data = Object.assign({}, commonParams, defaultParams, params)
+  const data = mulitDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     return jsonp({
       url,

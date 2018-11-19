@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2018-11-16 15:13:57
+ * @Last Modified time: 2018-11-19 22:26:58
  */
 
 /**
@@ -21,7 +21,7 @@ export function camelize(str) {
 
 export function pxToNum(str) {
   str = str + ''
-  return Number(str.replace(/.*?(\d+\.?\d+)px/g, '$1'))
+  return Number(str.replace(/px/g, ''))
 }
 
 export function padPx(num) {

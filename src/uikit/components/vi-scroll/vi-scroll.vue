@@ -77,7 +77,6 @@ const DEFAULT_OPTIONS = {
   pullDownRefresh: false,
   pullUpLoad: false,
   directionLockThreshold: 1,
-  eventPassthrough: 'horizontal'
   // 会阻止原生的其他事件的事件冒泡,开启需要巨大的代价
   // 配置class有better-scroll的元素不会阻止,在最子代的元素添加class
   // preventDefaultException: {
@@ -173,7 +172,6 @@ export default {
     // watch也是基于promiseA+的异步,watch执行,但是是优先于DOM更新执行的
     data: {
       handler() {
-        console.log('watch scroll data')
         this.pullUpDirty = true
         this.$nextTick(() => {
           this.forceUpdate(true)
@@ -189,7 +187,6 @@ export default {
             this._onPullDownRefresh()
           }
         }
-
         if (!newVal && oldVal) {
           this.scroll.closePullDown()
           this._offPullDownRefresh()

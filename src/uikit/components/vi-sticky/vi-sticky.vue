@@ -110,10 +110,6 @@ export default {
         this.$emit(EVENT_PULLING_UP, arguments)
       })
     }
-    // 所有子组件的this.$nextTick之后
-    this.$nextTick(() => {
-      this._calculateStickyTop()
-    })
   },
   computed: {
     pullDownRefresh() {
@@ -182,7 +178,6 @@ export default {
       this.reset()
       const element = this.currentSticky.$el
       this.fixedElement.appendChild(element)
-      // deepAppendChild(this.fixedElement, element)
       this.$emit(EVENT_CHANGE, this.currentSticky)
     },
     transformTop(newVal) {
@@ -205,8 +200,7 @@ export default {
       }
       this.fixedElement = this.$refs.fixed
     },
-    _calculateStickyTop() {
-      this.stickyTop = this.$el.getBoundingClientRect().top
+    calculateStickyTop() {
       for (let key in this.stickyMap) {
         this.stickyMap[key].calculate()
       }
@@ -243,7 +237,6 @@ export default {
         const remove = this.fixedElement.removeChild(this.fixedElement.firstElementChild)
         if (remove.eleKey) {
           this.stickyMap[remove.eleKey].eleComponent.$el.appendChild(remove)
-          // deepAppendChild(this.stickyMap[remove.eleKey].eleComponent.$el, remove)
           this.$emit(EVENT_CANCEL)
         }
       }
@@ -258,7 +251,7 @@ export default {
     forceCalculateStickyTop() {
       this.scrollTop()
       this.$nextTick(() => {
-        this._calculateStickyTop()
+        this.calculateStickyTop()
         this.refresh()
       })
     },

@@ -5,6 +5,8 @@ import {
   apiHandler,
 } from './config'
 
+import { mulitDeepClone } from '@/common/helpers/utils.js'
+
 import axios from 'axios'
 
 const baseURL = process.env.baseURL
@@ -38,7 +40,7 @@ instance.interceptors.response.use((response) => {
 
 export function getLyric(params) {
   const url = 'lyric/fcgi-bin/fcg_query_lyric_new.fcg'
-  const data = Object.assign({}, commonParams, params)
+  const data = mulitDeepClone({}, commonParams, params)
   return apiHandler(() => {
     return instance({
       method: 'get',

@@ -11,14 +11,14 @@
         </ul>
         <img @load="imgLoad" src="https://ss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/6.jpg">
         <!-- 需要做吸顶处理的元素 -->
-        <vi-sticky-ele :ele-key="1" v-if="first">
+        <vi-sticky-ele v-if="first" ele-key="55">
           <div class="title1">256</div>
         </vi-sticky-ele>
         <ul>
           <li v-for="(item, index) in items2" :key="index">{{item}}</li>
         </ul>
-        <vi-sticky-ele :ele-key="eleNumber">
-          <div class="title2 needsclick" @click="clickHandle">999</div>
+        <vi-sticky-ele>
+          <div class="title2 needsclick" ele-key="56" @click="clickHandle">999</div>
         </vi-sticky-ele>
         <ul>
           <li v-for="(item, index) in items3" :key="index">{{item}}</li>
@@ -57,14 +57,14 @@ export default {
       items2: [],
       items3: _data.concat(),
       items4: _data.concat(),
-      first: true,
-      eleNumber: 2
+      first: false,
     }
   },
   created() {
     setTimeout(() => {
       this.items1 = _data.concat()
       this.items2 = _data.concat()
+      this.first = true
     }, 2000)
   },
   mounted() {

@@ -6,6 +6,8 @@ import {
   apiHandler,
 } from './config'
 
+import { mulitDeepClone } from '@/common/helpers/utils.js'
+
 import axios from 'axios'
 
 const baseURL = process.env.baseURL
@@ -44,7 +46,7 @@ export function getHotKey(params = {}) {
     needNewCode: 1,
     platform: 'h5'
   }
-  const data = Object.assign({}, commonParams, defaultParams, params)
+  const data = mulitDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     // url是基础url, data是url参数, options是jsonp的回调参数
     return jsonp({
@@ -71,7 +73,7 @@ export function search(params = {}) {
     aggr: 0,
     remoteplace: 'txt.mqq.all'
   }
-  const data = Object.assign({}, commonParams, defaultParams, params)
+  const data = mulitDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     return instance({
       method: 'get',

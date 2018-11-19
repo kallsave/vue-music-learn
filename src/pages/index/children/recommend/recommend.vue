@@ -6,29 +6,29 @@
         style="color: #ffcd32"
         :options="scrollOptions"
         :data="discList"
+        :scrollEvents="['scroll']"
         @scroll="scrollHandler"
         @pulling-down="onPullingDown">
         <div class="slide-wrapper">
           <vi-slide ref="slide"
             v-if="recommends.length"
-            :init-page-index="currentPageIndex"
+            :init-page-index="2"
             :data="recommends"
             :options="slideOptions"
             :show-dots="true"
             :auto-play="true"
-            @change="changeSlidePage"
             @scroll-end="scrollEnd"
             @load-image="loadImage"
             @scroll="scroll">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->
-            <!-- <template slot="dots">
+            <template slot="dots" slot-scope="scope">
               <div class="slide-dots">
-                <span class="slide-dot" :key="index"
-                  v-for="(item, index) in recommends"
-                  :class="{active: currentPageIndex === index }"></span>
+                <span class="slide-dot" :class="{active: scope.currentPageIndex === index }"
+                  :key="index" v-for="(item, index) in recommends"
+                  @click.stop="scope.slideToPage(index)"></span>
               </div>
-            </template> -->
+            </template>
           </vi-slide>
         </div>
         <div class="recommend-list">
@@ -84,7 +84,6 @@ export default {
   data() {
     return {
       recommends: [],
-      currentPageIndex: 2,
       discList: [],
       scrollOptions: {
         probeType: 3,
@@ -165,22 +164,19 @@ export default {
         })
       }
     },
-    changeSlidePage(pageIndex) {
-      this.currentPageIndex = pageIndex
-    },
     lazyComponentShow() {
       // console.log('handler')
     },
     selectItem(e, item) {
       console.log('click')
-      // if (!e._constructed) {
-      //   return
-      // }
-      // this.setRecommendAlbum(item)
-      // // 先跳转后设置vuex
-      // this.$router.push({
-      //   path: `/music/recommend-detail/${item.dissid}`
-      // })
+      if (!e._constructed) {
+        return
+      }
+      this.setRecommendAlbum(item)
+      // 先跳转后设置vuex
+      this.$router.push({
+        path: `/music/recommend-detail/${item.dissid}`
+      })
     },
     scroll() {
       console.log('slide-scroll')

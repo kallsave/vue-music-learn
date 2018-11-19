@@ -1,19 +1,19 @@
 <template>
-  <div class="vi-slide-router-view">
+  <div class="vi-slide-view">
     <template v-if="isShowTab">
       <slot name="tab"
         :tab-title-list="tabTitleList"
         :change-page="change">
-        <div class="vi-slide-router-view-tab">
-          <div class="vi-slide-router-view-tab-list">
-            <div class="vi-slide-router-view-tab-item"
+        <div class="vi-slide-view-tab">
+          <div class="vi-slide-view-tab-list">
+            <div class="vi-slide-view-tab-item"
               v-for="(item, index) in tabTitleList" :key="index">
-              <span class="vi-slide-router-view-tab-item-link" :class="{'active': index === currentIndex}"
+              <span class="vi-slide-view-tab-item-link" :class="{'active': index === currentIndex}"
                 @click="change(index)">{{item}}</span>
             </div>
           </div>
-          <div class="vi-slide-router-view-tab-bar" :style="tabStyle">
-            <div class="vi-slide-router-view-tab-bar-content" :style="tabContentStyle"></div>
+          <div class="vi-slide-view-tab-bar" :style="tabStyle">
+            <div class="vi-slide-view-tab-bar-content" :style="tabContentStyle"></div>
           </div>
         </div>
       </slot>
@@ -43,11 +43,11 @@
 <script>
 import ViSlide from '../vi-slide/vi-slide.vue'
 import ViView from '../vi-view/vi-view.js'
-import Background from './vi-slide-router-view-background.vue'
+import Background from './vi-slide-view-background.vue'
 
 import { camelize, mulitDeepClone, pxToNum, stylePadPx } from '../../common/helpers/utils.js'
 
-const COMPONENT_NAME = 'vi-slide-router-view'
+const COMPONENT_NAME = 'vi-slide-view'
 
 // better-scroll原始的事件(不推荐在父组件中使用,会存在嵌套事件触发多次的,主动触发的问题)
 const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
@@ -105,20 +105,6 @@ export default {
     ViSlide,
     ViView
   },
-  beforeCreate() {
-    const findSiblingsRoute = (routeList) => {
-      for (let i = 0; i < routeList.length; i++) {
-        let item = routeList[i]
-        if (this.$route.matched[this.$route.matched.length - 1].regex.test(item.path)) {
-          this.siblingsRoute = routeList
-          return
-        } else if (item.children) {
-          findSiblingsRoute(item.children)
-        }
-      }
-    }
-    findSiblingsRoute(this.$router.options.routes)
-  },
   props: {
     options: {
       type: Object,
@@ -163,6 +149,12 @@ export default {
         return {}
       }
     },
+    componentList: {
+      type: Array,
+      default() {
+        return []
+      },
+    }
   },
   data() {
     return {
@@ -210,15 +202,6 @@ export default {
     },
   },
   watch: {
-    $route(newVal) {
-      if (this.currentIndex !== -1) {
-        this.pushHadShowPageList(this.currentIndex)
-        this.$refs.slide && this.$refs.slide.slideToPage(this.currentIndex)
-        this.$nextTick(() => {
-          this.onePagescrollX = 0
-        })
-      }
-    },
   },
   mounted() {
     this._findSlide()
@@ -265,25 +248,11 @@ export default {
       this.onePagescrollX = 0
     },
     change(index) {
+      this.pushHadShowPageList(this.currentIndex)
+      this.$nextTick(() => {
+        this.onePagescrollX = 0
+      })
       this.$emit(EVENT_CHANGE, index)
-      let siblingsRouteMatchedPath = ''
-
-      this.siblingsRoute.forEach((item, n) => {
-        if (index === n) {
-          siblingsRouteMatchedPath = item.path
-        }
-      })
-
-      // 补全路由params参数
-      for (let k in this.$route.params) {
-        if (new RegExp(`(:${k})`).test(siblingsRouteMatchedPath)) {
-          let str = this.$route.params[k]
-          siblingsRouteMatchedPath = siblingsRouteMatchedPath.replace(RegExp.$1, str)
-        }
-      }
-      this.$router.push({
-        path: siblingsRouteMatchedPath
-      })
     },
     pushHadShowPageList(index) {
       if (this.hadShowPageList.indexOf(index) === -1) {
@@ -297,30 +266,30 @@ export default {
 <style lang="stylus">
 @import "~@/common/stylus/variable"
 
-.vi-slide-router-view
-  .vi-slide-router-view-tab
+.vi-slide-view
+  .vi-slide-view-tab
     position: relative
-    .vi-slide-router-view-tab-list
+    .vi-slide-view-tab-list
       display: flex
       height: 46px
       line-height: 44px
-      .vi-slide-router-view-tab-item
+      .vi-slide-view-tab-item
         flex: 1
         text-align: center
-        .vi-slide-router-view-tab-item-link
+        .vi-slide-view-tab-item-link
           box-sizing: border-box
           color: $color-text-l
           padding-bottom: 5px
           font-size: $font-size-medium
           &.active
             color: $color-theme
-    .vi-slide-router-view-tab-bar
+    .vi-slide-view-tab-bar
       position: absolute
       z-index: 5
       height: 2px
       bottom: 0
       transition: all 0.2s
-      .vi-slide-router-view-tab-bar-content
+      .vi-slide-view-tab-bar-content
         position: absolute
         height: 100%;
         width: 100%

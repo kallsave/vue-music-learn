@@ -15,7 +15,10 @@
     </div>
     <!-- 默认的dots样式 -->
     <template v-if="showDots">
-      <slot name="dots">
+      <slot name="dots"
+        :slide-to-page="slideToPage"
+        :dots="dots"
+        :current-page-index="currentPageIndex">
         <div class="vi-slide-dots">
           <span class="vi-slide-dot" :key="index"
             v-for="(item, index) in dots"
@@ -246,6 +249,7 @@ export default {
       })
 
       // touch-end
+      // touch-end不能作为准确结束的标志
       this.slide.on(camelize(EVENT_TOUCH_END), () => {
         this.touch = false
         this.$emit(EVENT_TOUCH_END)
