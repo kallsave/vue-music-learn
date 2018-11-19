@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2018-11-15 19:37:34
+ * @Last Modified time: 2018-11-16 15:13:57
  */
 
 /**
@@ -17,6 +17,58 @@ export function camelize(str) {
   return str.replace(/-(\w)/g, function (m, c) {
     return c ? c.toUpperCase() : ''
   })
+}
+
+export function pxToNum(str) {
+  str = str + ''
+  return Number(str.replace(/.*?(\d+\.?\d+)px/g, '$1'))
+}
+
+export function padPx(num) {
+  return `${num}px`
+}
+
+export function styleTogglePx(style, mode = true) {
+  const list = [
+    'width',
+    'height',
+    'line-height',
+    'font-size',
+    'left',
+    'right',
+    'top',
+    'bottom',
+    'margin-left',
+    'margin-right',
+    'margin-top',
+    'margin-bottom',
+    'padding-left',
+    'padding-right',
+    'padding-top',
+    'padding-bottom',
+  ]
+
+  const map = {}
+
+  for (let key in style) {
+    if (list.indexOf(key) !== -1) {
+      if (mode && !isNaN(style[key] - 0)) {
+        map[key] = padPx(style[key])
+      } else if (!mode) {
+        map[key] = pxToNum(style[key])
+      }
+    }
+  }
+
+  return mulitDeepClone(style, map)
+}
+
+export function stylePadPx(style) {
+  return styleTogglePx(style, true)
+}
+
+export function styleRemovePx(style) {
+  return styleTogglePx(style, false)
 }
 
 /**

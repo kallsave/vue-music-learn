@@ -2,9 +2,9 @@
   <div class="index">
     <vi-sticky ref="sticky">
       <m-header></m-header>
-      <!-- <vi-sticky-ele :ele-key="'tab'">
+      <vi-sticky-ele :ele-key="'tab'">
         <tab></tab>
-      </vi-sticky-ele> -->
+      </vi-sticky-ele>
       <template v-if="slideRouterMode === slideRouterModeList[0]">
         <vi-slide-router-transition
           slide-right-class="scroll-right"
@@ -17,10 +17,14 @@
       </template>
       <template v-else>
         <vi-slide-router-view
+          ref="viSlideRouterView"
           :scroll-events="['scroll']"
           :options="slideRouterOptions"
+          :tab-title-list="tabTitleList"
+          :tab-bar-style="tabBarStyle"
           @change="change"
           @touch-scroll="touchScroll"
+          @scroll="scroll"
         ></vi-slide-router-view>
       </template>
     </vi-sticky>
@@ -53,7 +57,17 @@ export default {
       slideRouterOptions: {
         snap: {
           loop: false,
+          threshold: 0.5,
         }
+      },
+      tabTitleList: [
+        '推荐',
+        '歌手',
+        '排行',
+        '搜索'
+      ],
+      tabBarStyle: {
+        'left': '50',
       }
     }
   },
@@ -68,6 +82,9 @@ export default {
     },
     touchScroll({x, y}) {
       // console.log(x)
+    },
+    scroll() {
+      // console.log('scroll')
     }
   },
 }

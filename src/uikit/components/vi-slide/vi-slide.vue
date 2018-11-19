@@ -232,10 +232,10 @@ export default {
 
       // scroll-end
       // scroll-end在换页过程中至少会触发两次,因为有两页
-      this.slide.on(camelize(EVENT_SCROLL_END), () => {
+      this.slide.on(camelize(EVENT_SCROLL_END), (...args) => {
         this.toggleAbleParentSlide(this.$parent, true)
         let pageIndex = this.slide.getCurrentPage().pageX
-        this.$emit(EVENT_SCROLL_END, pageIndex)
+        this.$emit(EVENT_SCROLL_END, ...args)
         if (this.currentPageIndex !== pageIndex) {
           this.currentPageIndex = pageIndex
           this.$emit(EVENT_CHANGE, pageIndex)

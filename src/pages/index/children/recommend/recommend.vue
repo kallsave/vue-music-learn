@@ -4,7 +4,6 @@
       <vi-scroll
         ref="scroll"
         style="color: #ffcd32"
-        :scroll-events="['scroll']"
         :options="scrollOptions"
         :data="discList"
         @scroll="scrollHandler"
@@ -17,7 +16,8 @@
             :options="slideOptions"
             :show-dots="true"
             :auto-play="true"
-            @scroll-end="slideEnd"
+            @change="changeSlidePage"
+            @scroll-end="scrollEnd"
             @load-image="loadImage"
             @scroll="scroll">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
@@ -105,7 +105,7 @@ export default {
         click: true,
         snap: {
           loop: true,
-          threshold: 0.8
+          threshold: 0.5
         },
         eventPassthrough: 'vertical',
       }
@@ -165,7 +165,7 @@ export default {
         })
       }
     },
-    slideEnd(pageIndex) {
+    changeSlidePage(pageIndex) {
       this.currentPageIndex = pageIndex
     },
     lazyComponentShow() {
@@ -184,6 +184,9 @@ export default {
     },
     scroll() {
       console.log('slide-scroll')
+    },
+    scrollEnd(pos) {
+      // console.log(pos)
     },
     onPullingDown() {
       this._getData(true)

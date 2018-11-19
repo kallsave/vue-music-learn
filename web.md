@@ -27,5 +27,22 @@ better-scroll文档
 
 [better-scroll各种demo](https://ustbhuangyi.github.io/better-scroll/#/examples/full-page-vertical-slide/en)
 
+抓包工具
+------------
+[charles]
+(https://pan.baidu.com/s/1nQgt1LBEj7WNLY48nc6eBQ)
+
 可以阻止原生浏览器的各种事件,很强大。可以看下源码
+
+科学上网
+------------
+[科学上网]
+(https://github.com/bannedbook/fanqiang/wiki)
+
+调试工具
+------------
+[postman接口调试]
+(https://www.getpostman.com/)
+
+[lighthouse首屏分析](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk?hl=zh-CN)
 

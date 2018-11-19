@@ -80,7 +80,7 @@ export default {
     this._initSlideRouter()
   },
   methods: {
-    _initSlideRouter () {
+    _initSlideRouter() {
       this.currentPath = this.$route.path
       this.listenerTouchstartHandler = this.touchstartHandler.bind(this)
       this.listenerTouchendHandler = this.touchendHandler.bind(this)

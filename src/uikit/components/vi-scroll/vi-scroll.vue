@@ -76,7 +76,8 @@ const DEFAULT_OPTIONS = {
   scrollbar: false,
   pullDownRefresh: false,
   pullUpLoad: false,
-  directionLockThreshold: 0.5,
+  directionLockThreshold: 1,
+  eventPassthrough: 'horizontal'
   // 会阻止原生的其他事件的事件冒泡,开启需要巨大的代价
   // 配置class有better-scroll的元素不会阻止,在最子代的元素添加class
   // preventDefaultException: {

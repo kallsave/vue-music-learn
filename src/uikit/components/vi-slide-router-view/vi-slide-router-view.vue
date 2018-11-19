@@ -1,22 +1,29 @@
 <template>
   <div class="vi-slide-router-view">
-    <slot name="tab">
-      <div class="vi-slide-router-view-tab">
-        <div class="vi-slide-router-view-tab-list">
-          <div class="vi-slide-router-view-tab-item"
-            v-for="(item, index) in siblingsRoute" :key="index">
-            <span class="vi-slide-router-view-tab-item-link" :class="{'active': index === currentIndex}"
-              @click="change(index)">{{item.meta.title}}</span>
+    <template v-if="isShowTab">
+      <slot name="tab"
+        :tab-title-list="tabTitleList"
+        :change-page="change">
+        <div class="vi-slide-router-view-tab">
+          <div class="vi-slide-router-view-tab-list">
+            <div class="vi-slide-router-view-tab-item"
+              v-for="(item, index) in tabTitleList" :key="index">
+              <span class="vi-slide-router-view-tab-item-link" :class="{'active': index === currentIndex}"
+                @click="change(index)">{{item}}</span>
+            </div>
+          </div>
+          <div class="vi-slide-router-view-tab-bar" :style="tabStyle">
+            <div class="vi-slide-router-view-tab-bar-content" :style="tabContentStyle"></div>
           </div>
         </div>
-        <div class="vi-slide-router-view-tab-bar" :style="tabStyle"></div>
-      </div>
-    </slot>
+      </slot>
+    </template>
     <vi-slide ref="slide"
       :options="slideOptions"
       :initPageIndex="currentIndex"
       :scroll-events="scrollEvents"
       @scroll-end="scrollEnd"
+      @scroll="scroll"
       @before-scroll-start="beforeScrollStart"
       @change="change"
       @touch-scroll="touchScroll"
@@ -38,7 +45,7 @@ import ViSlide from '../vi-slide/vi-slide.vue'
 import ViView from '../vi-view/vi-view.js'
 import Background from './vi-slide-router-view-background.vue'
 
-import { camelize, mulitDeepClone } from '../../common/helpers/utils.js'
+import { camelize, mulitDeepClone, pxToNum, stylePadPx } from '../../common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-slide-router-view'
 
@@ -68,8 +75,6 @@ const EVENT_LOAD_IMAGE = 'load-image'
 // 需要在scrollEvents传['scroll']
 const EVENT_TOUCH_SCROLL = 'touch-scroll'
 
-const TAB_BAR_SIZE = 50
-
 const DEFAULT_OPTIONS = {
   probeType: 3,
   directionLockThreshold: 0.5,
@@ -86,6 +91,12 @@ const DEFAULT_OPTIONS = {
     left: false,
     right: false
   }
+}
+
+const DEFAULT_TAB_BAR_STYLE = {
+  'background-color': '#ffcd32',
+  'left': '0px',
+  'height': '2px',
 }
 
 export default {
@@ -132,10 +143,30 @@ export default {
         return Background
       }
     },
-    isChangeRouter: {
+    isUseChangeRouter: {
       type: Boolean,
       default: true
-    }
+    },
+    isUseTabBarScrolling: {
+      type: Boolean,
+      default: false
+    },
+    isShowTab: {
+      type: Boolean,
+      default: false
+    },
+    tabTitleList: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+    tabBarStyle: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
   },
   data() {
     return {
@@ -143,6 +174,12 @@ export default {
       onePagescrollX: 0,
       slideGroopWidth: 0,
     }
+  },
+  created() {
+    this.pushHadShowPageList(this.currentIndex)
+    // created => children.props => children.data => children.created
+    this.slideOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
+    this._tabBarStyle = mulitDeepClone({}, DEFAULT_TAB_BAR_STYLE, stylePadPx(this.tabBarStyle))
   },
   computed: {
     currentIndex() {
@@ -152,25 +189,34 @@ export default {
     },
     threshold() {
       let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-      console.log(options.snap.threshold)
       return options.snap.threshold
-    },
-    tabExtendWidth () {
-      console.log(this.threshold)
-      return 0
-      // let onePageWidth = this.slideGroopWidth / this.siblingsRoute.length
-      // if (!this.onePagescrollX || this.onePagescrollX > onePageWidth * this.threshold) {
-      //   return 0
-      // }
-      // return this.onePagescrollX * 0.25
     },
     tabStyle() {
       let itemPercent = 1 / this.siblingsRoute.length * 100
-      return {
-        'width': `calc(${itemPercent}% - ${TAB_BAR_SIZE - this.tabExtendWidth}px )`,
-        'left': `calc(${this.currentIndex * itemPercent}% + ${TAB_BAR_SIZE / 2}px)`,
+      return mulitDeepClone({}, this.tabBarStyle, {
+        'width': `calc(${itemPercent}% - ${this._tabBarStyle.left})`,
+        'left': `calc(${this.currentIndex * itemPercent}% + ${pxToNum(this._tabBarStyle.left) / 2}px)`,
+      })
+    },
+    tabPosition() {
+      if (!this.onePagescrollX) {
+        return 0
       }
-    }
+      return this.onePagescrollX * 0.2
+    },
+    tabContentStyle() {
+      if (this.direction === 'right') {
+        return {
+          'right': `${-this.tabPosition}px`,
+          'background-color': this._tabBarStyle['background-color']
+        }
+      } else {
+        return {
+          'left': `${this.tabPosition}px`,
+          'background-color': this._tabBarStyle['background-color']
+        }
+      }
+    },
   },
   watch: {
     $route(newVal) {
@@ -182,18 +228,14 @@ export default {
       }
     },
   },
-  created() {
-    // created => children.props => children.data => children.created
-    this.slideOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-    this.pushHadShowPageList(this.currentIndex)
-  },
   mounted() {
     this._findSlide()
-    this._findSlideWidth()
+    this._calculateSlideWidth()
   },
   methods: {
-    _findSlideWidth() {
+    _calculateSlideWidth() {
       this.slideGroopWidth = this.$refs.slide.getSlideWidth()
+      this.onePageWidth = this.slideGroopWidth / this.siblingsRoute.length
     },
     _findSlide () {
       this.slide = this.$refs.slide.slide
@@ -204,16 +246,28 @@ export default {
     scroll() {
       this.$emit(EVENT_SCROLL, ...arguments)
     },
-    scrollEnd() {
+    scrollEnd(pos, slide) {
       this.$emit(EVENT_SCROLL_END)
     },
     touchScroll({x, y}) {
-      let onePageWidth = this.slideGroopWidth / this.siblingsRoute.length
-      this.onePagescrollX = Math.abs(x) - (this.currentIndex * onePageWidth)
+      if (this.isShowTab) {
+        let scrollX = Math.abs(x)
+        if (!this.touchStart) {
+          this.touchStart = true
+          this.touchStartX = scrollX
+        }
+        if (this.touchStartX && scrollX - this.touchStartX > 0) {
+          this.direction = 'right'
+        } else {
+          this.direction = 'left'
+        }
+        this.onePagescrollX = scrollX - (this.currentIndex * this.onePageWidth)
+      }
       this.$emit(EVENT_TOUCH_SCROLL, ...arguments)
     },
     touchEnd() {
       this.onePagescrollX = 0
+      this.touchStart = false
     },
     change(index) {
       this.pushHadShowPageList(index)
@@ -226,7 +280,7 @@ export default {
         }
       })
 
-      if (this.isChangeRouter) {
+      if (this.isUseChangeRouter) {
         // 补全路由params参数
         for (let k in this.$route.params) {
           if (new RegExp(`(:${k})`).test(siblingsRouteMatchedPath)) {
@@ -275,6 +329,13 @@ export default {
       z-index: 5
       height: 2px
       bottom: 0
-      background-color: $color-theme
       transition: all 0.2s
+      .vi-slide-router-view-tab-bar-content
+        position: absolute
+        height: 100%;
+        width: 100%
+        // left: 0;
+        // right: 0;
+        transition: all 0.2s
+
 </style>
