@@ -29,4 +29,11 @@
 - 音量播放器组建开发
 - 更加齐全的工具库(timer)
 - vue函数式组件
+- 去掉base-components
+- range组件
+- 开源webpack插件
+- svgtofont.js脚本增加如果没有fonts文件夹就新增fonts文件夹
+- pipe理念
+- recommend进入时触发pulldown
+- mand源码
 

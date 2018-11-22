@@ -21,6 +21,10 @@ svg学习
 ------------
 [svgtrick](http://svgtrick.com/)
 
+animejs文档
+------------
+[animejs](http://animejs.com/documentation/#basicTimeline)
+
 better-scroll文档
 ------------
 [better-scroll完整中文文档](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#preventdefaultexception)

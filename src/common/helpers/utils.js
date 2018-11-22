@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2018-11-20 00:09:49
+ * @Last Modified time: 2018-11-22 17:42:53
  */
 
 /**
@@ -94,6 +94,7 @@ export function middleline (str) {
 }
 
 // setTimeout节流高阶函数,被节流函数和一个节流时间
+// FIXME: globalTimer
 let globalTimer
 export function debounce (func, delay) {
   // 捕获args传给下一级
@@ -170,7 +171,7 @@ export function deepClone(o) {
  * @param {Object} from
  * @returns
  */
-function deepAssign(to, from) {
+export function deepAssign(to, from) {
   for (let key in from) {
     if (!to[key] || typeof to[key] !== 'object') {
       to[key] = from[key]

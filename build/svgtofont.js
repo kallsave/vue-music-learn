@@ -17,9 +17,9 @@ const APP_FOLDER = 'common'
 const APP_PREFIX = 'common-icon'
 
 // ui组件所在目录
-const UIKIT_FOLDER = 'vi'
+const UIKIT_FOLDER = 'uikit'
 // ui组件字体前缀
-const UIKIT_PREFIX = 'vi-'
+const UIKIT_PREFIX = ''
 
 // 其他组件字体前缀
 const LOCAL_PREFIX = 'w-'

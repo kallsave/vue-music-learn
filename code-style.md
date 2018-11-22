@@ -73,6 +73,22 @@ async function updateAllImg () {
 }
 ```
 
+如果在for循环中使用async/await,不想申明没必要的函数名
+```javascript
+(async() => {
+  for (var i = 0; i < imgList.length; i++) {
+    await((item) => {
+      return new Promise(() => {
+        // ...
+      }).catch(() => {
+        // ...
+        // console.error(err)
+      })
+    })(item)
+  }
+})()
+```
+
 ## Css代码规范
 - 不使用active,content,left,right等容易被命名使用的全局样式
 - 大量使用的icon-font才能作为全局字体图标
