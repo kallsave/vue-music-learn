@@ -3,42 +3,42 @@
   <div ref="wrapper" class="vi-scroll-wrapper">
     <div class="vi-scroll-content">
       <slot></slot>
-      <div v-if="pullUpLoad" class="vi-scroll-pullup">
-        <slot name="pullup"
-          :pullUpLoad="pullUpLoad"
-          :isPullUpLoad="isPullUpLoad"
-          :pullUpTxt="pullUpTxt"
-          :pullUpDirty="pullUpDirty"
-          :noMoreTxt="noMoreTxt"
+      <div v-if="pullUpLoad" class="vi-scroll-pull-up">
+        <slot name="pull-up"
+          :is-pull-up-load="isPullUpLoad"
+          :pull-up-txt="pullUpTxt"
+          :pull-up-dirty="pullUpDirty"
+          :no-nore-txt="noMoreTxt"
           :data="data">
-            <div v-if="isPullUpLoad" class="vi-scroll-pullup-trigger">
-              <div class="vi-scroll-pullup-before-trigger">{{pullUpTxt}}</div>
-              <div class="vi-scroll-pullup-after-trigger">
+            <div>scroll</div>
+            <div v-if="isPullUpLoad" class="vi-scroll-pull-up-trigger">
+              <div class="vi-scroll-pull-up-before-trigger">{{pullUpTxt}}</div>
+              <div class="vi-scroll-pull-up-after-trigger">
                 <loading></loading>
               </div>
             </div>
             <div v-if="!isPullUpLoad && pullUpDirty && data.length && noMoreTxt"
-              class="vi-scroll-pullup-no-more">{{noMoreTxt}}</div>
+              class="vi-scroll-pull-up-no-more">{{noMoreTxt}}</div>
         </slot>
       </div>
     </div>
-    <div ref="pulldown" v-if="pullDownRefresh" class="vi-scroll-pulldown">
-        <slot name="pulldown"
+    <div ref="pullDown" v-if="pullDownRefresh" class="vi-scroll-pull-down">
+        <slot name="pull-down"
           :pullDownRefresh="pullDownRefresh"
           :pullDownStyle="pullDownStyle"
           :beforePullDown="beforePullDown"
           :isPullingDown="isPullingDown"
           :afterPullDown="afterPullDown"
           :bubbleY="bubbleY">
-          <div class="vi-scroll-pulldown-wrapper" :style="pullDownStyle">
-            <div v-show="beforePullDown && !afterPullDown" class="vi-scroll-pulldown-before-trigger">
+          <div class="vi-scroll-pull-down-wrapper" :style="pullDownStyle">
+            <div v-show="beforePullDown && !afterPullDown" class="vi-scroll-pull-down-before-trigger">
               <bubble class="bubble" :y="bubbleY"></bubble>
             </div>
-            <div v-show="!beforePullDown" class="vi-scroll-pulldown-after-trigger">
+            <div v-show="!beforePullDown" class="vi-scroll-pull-down-after-trigger">
               <div v-show="isPullingDown && !afterPullDown" class="vi-scroll-loading">
                 <loading></loading>
               </div>
-              <div v-show="isPullingDown && afterPullDown" class="vi-scroll-pulldown-loaded">{{refreshTxt}}</div>
+              <div v-show="isPullingDown && afterPullDown" class="vi-scroll-pull-down-loaded">{{refreshTxt}}</div>
             </div>
           </div>
         </slot>
@@ -128,7 +128,7 @@ export default {
       isPullingDown: false,
       bubbleY: 0,
       // 如果传入pullDownRefresh是true,启用这个stop
-      // 但是最终pullDownStop的值是由pulldown的dom的高度决定的
+      // 但是最终pullDownStop的值是由pull-down的dom的高度决定的
       pullDownStop: 40,
       pullDownHeight: 60,
       pullDownStyle: '',
@@ -275,10 +275,10 @@ export default {
     },
     // 计算默认的停滞位置
     _getPullDownEleHeight() {
-      const pulldown = this.$refs.pulldown.firstChild
-      this.pullDownHeight = getRect(pulldown).height
+      const pullDown = this.$refs.pullDown.firstChild
+      this.pullDownHeight = getRect(pullDown).height
       this.$nextTick(() => {
-        this.pullDownStop = getRect(pulldown).height
+        this.pullDownStop = getRect(pullDown).height
       })
     },
     // 达到阀值只会一瞬间触发
@@ -297,7 +297,7 @@ export default {
         this.bubbleY = Math.max(0, pos.y - this.pullDownHeight)
         this.pullDownStyle = `top:${Math.min(pos.y - this.pullDownHeight, 0)}px`
       } else {
-        // 达到pulldown阀值得scroll
+        // 达到pull-down阀值得scroll
         this.bubbleY = 0
         this.pullDownStyle = `top:${Math.min(pos.y - this.pullDownStop, 0)}px`
       }
@@ -306,7 +306,6 @@ export default {
     // 如果data没更新,就要在外部手动触发forceUpdate恢复原来状态的方法
     // dirty如果是true则refresh
     forceUpdate(dirty = false) {
-      // 上拉没有finish的状态
       if (this.pullDownRefresh && this.isPullingDown) {
         this._reboundPullDown(() => {
           this._afterPullDown(dirty)
@@ -339,7 +338,7 @@ export default {
         next()
       }, stopTime)
     },
-    // 在finishPullDown调用后,调回pulldown位置和beforePullDown
+    // 在finishPullDown调用后,调回pull-down位置和beforePullDown
     _afterPullDown(dirty) {
       // this.scroll.options.bounceTime(默认800ms)后大概就是finishPullDown恢复到原点的时间
       this.resetPullDownTimer = setTimeout(() => {
@@ -379,24 +378,24 @@ export default {
   // 开启了下拉更新功能要设置overflow:hidden
   overflow: hidden
   .vi-scroll-content
-    .vi-scroll-pullup
-      .vi-scroll-pullup-trigger
+    .vi-scroll-pull-up
+      .vi-scroll-pull-up-trigger
         width: 100%
         display: flex
         justify-content: center
         align-items: center
-        .vi-scroll-pullup-before-trigger
+        .vi-scroll-pull-up-before-trigger
           padding: 22px 0
           min-height: 1em
           margin-right: 20px
-        .vi-scroll-pullup-after-trigger
+        .vi-scroll-pull-up-after-trigger
           padding: 19px 0
-      .vi-scroll-pullup-no-more
+      .vi-scroll-pull-up-no-more
         width: 100%
         text-align: center
         line-height: 80px
-  .vi-scroll-pulldown
-    .vi-scroll-pulldown-wrapper
+  .vi-scroll-pull-down
+    .vi-scroll-pull-down-wrapper
       position: absolute
       width: 100%
       left: 0
@@ -404,14 +403,14 @@ export default {
       justify-content: center
       align-items: center
       transition: all
-      .vi-scroll-pulldown-before-trigger
+      .vi-scroll-pull-down-before-trigger
         height: 54px
         line-height: 0
         padding-top: 6px
-      .vi-scroll-pulldown-after-trigger
+      .vi-scroll-pull-down-after-trigger
         .vi-scroll-loading
           padding: 8px 0
-        .vi-scroll-pulldown-loaded
+        .vi-scroll-pull-down-loaded
           box-sizing: border-box
           padding: 12px 0
           line-height: 40px

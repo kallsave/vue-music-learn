@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2018-11-22 17:42:53
+ * @Last Modified time: 2018-11-26 19:17:20
  */
 
 /**
@@ -94,19 +94,32 @@ export function middleline (str) {
 }
 
 // setTimeout节流高阶函数,被节流函数和一个节流时间
-// FIXME: globalTimer
-let globalTimer
+// 延迟一段时间执行,这段时间如果产生新的数据,重新开始计时
+// 场景:输入框ajax
 export function debounce (func, delay) {
-  // 捕获args传给下一级
-  // ...args是...arguments的简写
+  let timer
   return function (...args) {
-    if (globalTimer) {
-      clearTimeout(globalTimer)
+    if (timer) {
+      clearTimeout(timer)
     }
     // 箭头函数的arguments是外部函数的arguments
-    globalTimer = setTimeout(() => {
+    timer = setTimeout(() => {
       func.apply(this, args)
     }, delay)
+  }
+}
+
+// 每隔一段时间执行一次,中间的时间段执行的都被抛弃
+// 场景: 密集操作DOM元素等消耗内存的动作
+export function throttle(func, longtime) {
+  let throttleObj = {}
+  return function (...args) {
+    let time = new Date().getTime()
+
+    if (!throttleObj.lastTime || time - throttleObj.lastTime > longtime) {
+      throttleObj.lastTime = time
+      func.apply(this, args)
+    }
   }
 }
 

@@ -7,9 +7,8 @@
       :options="options"
       @scroll="scrollHandle">
       <slot></slot>
-      <template slot="pullup" slot-scope="pullupScope"
-        v-if="pullupScope.pullUpLoad">
-        <slot name="pullup" :pullupScope="pullupScope"></slot>
+      <template slot="pull-up" slot-scope="pullUpScope">
+        <slot name="pull-up" :pull-up-scope="pullUpScope"></slot>
       </template>
     </vi-scroll>
     <div ref="fixed" v-show="fixedVisable" :style="fixedStyle"></div>
@@ -91,7 +90,6 @@ export default {
       fixedStyle: {},
       fixedVisable: false,
       stickyMap: {},
-      stickyTop: 0,
       diff: 0,
       transformTop: 0,
       listHeight: [],

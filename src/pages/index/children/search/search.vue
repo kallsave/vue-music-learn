@@ -1,6 +1,6 @@
 <template>
   <div ref="search" class="search">
-    <div ref="scrollWrapper" class="search-sticky-wrapper">
+    <div ref="scrollWrapper" class="search-scroll-wrapper">
       <vi-sticky
         ref="scroll"
         :data="result"
@@ -17,7 +17,7 @@
               @focus="focusHandler"></base-search-box>
           </div>
         </vi-sticky-ele>
-        <div v-show="!query" class="shortcut-scroll-wrapper">
+        <div class="shortcut-wrapper" v-show="!query">
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
             <ul class="hot-key-list clear">
@@ -46,16 +46,16 @@
         <div class="no-result-wrapper" v-show="query && !result.length && isFetchSearch" >
           <no-result :title="'抱歉，暂无搜索结果'"></no-result>
         </div>
-        <template slot="pullup" slot-scope="scope">
+        <template slot="pull-up" slot-scope="scope">
           <div class="vi-scroll-pullup">
-            <div v-if="scope.pullupScope.isPullUpLoad" class="vi-scroll-pullup-trigger">
-              <div class="vi-scroll-pullup-before-trigger">{{scope.pullupScope.pullUpTxt}}</div>
+            <div v-if="scope.pullUpScope.isPullUpLoad" class="vi-scroll-pullup-trigger">
+              <div class="vi-scroll-pullup-before-trigger">{{scope.pullUpScope.pullUpTxt}}</div>
               <div class="vi-scroll-pullup-after-trigger">
                 <loading></loading>
               </div>
             </div>
-            <div v-if="!scope.pullupScope.isPullUpLoad && scope.pullupScope.pullUpDirty && scope.pullupScope.data.length && scope.pullupScope.noMoreTxt"
-              class="vi-scroll-pullup-no-more">{{scope.pullupScope.noMoreTxt}}</div>
+            <div v-if="isFetchSearch && scope.pullUpScope.isPullUpLoad && scope.pullUpScope.pullUpDirty && scope.pullUpScope.data.length && scope.pullUpScope.noMoreTxt"
+              class="vi-scroll-pullup-no-more">{{scope.pullUpScope.noMoreTxt}}</div>
           </div>
         </template>
       </vi-sticky>
@@ -115,9 +115,34 @@ export default {
       isFetchSearch: false,
     }
   },
+  watch: {
+    query: {
+      handler(newVal) {
+        this.isFetchSearch = false
+
+        if (!this.debounceQueryHandler) {
+          this.debounceQueryHandler = debounce((newVal) => {
+            this.page = 1
+            // 第三个参数如果是缓动,会导致盒子被拖拽
+            this.$refs.scroll.scroll.scrollTo(0, 0, 0)
+            this.search().then((res) => {
+              this.isFetchSearch = true
+              this.result = this._genResult(res.data)
+            })
+          }, DEBOUNCE_TIME)
+        }
+
+        this.debounceQueryHandler(newVal)
+      },
+    }
+  },
   mounted() {
     this._getHotKey()
-    this._watchQuery()
+    if (this.query) {
+      this.$refs.search.style.height = ``
+    } else {
+      this.$refs.search.style.height = `calc(100vh - 88px)`
+    }
   },
   methods: {
     ...mapMutations({
@@ -133,35 +158,6 @@ export default {
     _getHotKey() {
       getHotKey().then((res) => {
         this.hotKey = res.data.hotkey.slice(0, 10)
-      })
-    },
-    _watchQuery() {
-      this.$nextTick(() => {
-        if (this.query) {
-          this.$refs.search.style.height = 'calc(100vh - 44px)'
-        } else {
-          this.$refs.search.style.height = 'calc(100vh - 88px)'
-        }
-      })
-      let globalTimer
-      this.$watch('query', (newVal) => {
-        this.isFetchSearch = false
-        if (newVal) {
-          this.$refs.search.style.height = 'calc(100vh - 44px)'
-        } else {
-          this.$refs.search.style.height = 'calc(100vh - 88px)'
-        }
-        debounce((newVal) => {
-          this.page = 1
-          if (newVal) {
-            // 第三个参数如果是缓动,会导致盒子被拖拽
-            this.$refs.scroll.scroll.scrollTo(0, 0, 0)
-          }
-          this.search().then((res) => {
-            this.result = this._genResult(res.data)
-            this.isFetchSearch = true
-          })
-        }, DEBOUNCE_TIME)(newVal)
       })
     },
     search(res) {
@@ -266,17 +262,17 @@ export default {
   overflow: hidden
   background: $color-background
   // position: relative
-  .search-sticky-wrapper
+  .search-box-wrapper
+    box-sizing: border-box
+    padding: 20px
+    background: $color-background
+  .search-scroll-wrapper
     box-sizing: border-box
     width: 100%
     height: calc(100vh - 44px)
     font-size: $font-size-medium
     color: peru
-    .search-box-wrapper
-      box-sizing: border-box
-      padding: 20px
-      background: $color-background
-    .shortcut-scroll-wrapper
+    .shortcut-wrapper
       position: relative
       box-sizing: border-box
       .hot-key

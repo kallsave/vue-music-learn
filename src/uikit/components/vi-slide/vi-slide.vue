@@ -332,7 +332,6 @@ export default {
   .vi-slide-group
     position: relative
     overflow: hidden
-    height: 100%
     white-space: nowrap
     .vi-slide-item
       float: left

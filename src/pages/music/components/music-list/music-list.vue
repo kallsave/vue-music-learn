@@ -18,7 +18,7 @@
           @scroll="scrollHandler"
           @sticky-cancel="stickyCancel">
           <div class="scroll-blank" ref="scrollBlank">
-            <vi-sticky-ele v-show="isFetchSongList">
+            <vi-sticky-ele v-if="isFetchSongList">
               <div class="play-wrapper">
                 <div ref="playBtn" class="play" @click="random($event)">
                   <i class="icon-play"></i>

@@ -179,7 +179,7 @@ export default {
       })
     },
     scroll() {
-      console.log('slide-scroll')
+      // console.log('slide-scroll')
     },
     scrollEnd(pos) {
       // console.log(pos)

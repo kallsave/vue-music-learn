@@ -16,14 +16,14 @@ export default {
   mounted() {
     // 在父组件的所有子组件渲染完成后
     this.$nextTick(() => {
-      this._map()
+      this.init()
       this.Sticky.calculateStickyTop()
     })
   },
   methods: {
-    _map() {
+    init() {
       // 一开始进来的stickyTop作为独一无二的eleKey
-      const stickyTop = this.$el.firstElementChild.getBoundingClientRect().top - this.Sticky.stickyTop - this.Sticky.fixedY
+      const stickyTop = this.$el.firstElementChild.getBoundingClientRect().top - this.Sticky.$el.getBoundingClientRect().top - this.Sticky.fixedY
       this.$el.firstElementChild.eleKey = this.eleKey = stickyTop
       const clientWidth = this.$el.firstElementChild.clientWidth
       const clientHeight = this.$el.firstElementChild.clientHeight
@@ -43,7 +43,7 @@ export default {
     },
     // 计算一些stickyTop的数值,异步的场景需要调用这个方法
     calculate(key) {
-      const stickyTop = this.$el.firstElementChild.getBoundingClientRect().top - this.Sticky.stickyTop - this.Sticky.fixedY
+      const stickyTop = this.$el.firstElementChild.getBoundingClientRect().top - this.Sticky.$el.getBoundingClientRect().top - this.Sticky.fixedY
       mulitDeepClone(this.Sticky.stickyMap[this.eleKey], {
         stickyTop
       })
