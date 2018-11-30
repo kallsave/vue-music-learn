@@ -23,8 +23,6 @@ import {
   prefixStyle
 } from '@/common/helpers/dom.js'
 
-import { isEmptyObject } from '@/common/helpers/utils.js'
-
 const transformStyleKey = prefixStyle('transform')
 
 const COMPONENT_NAME = 'vi-sticky'

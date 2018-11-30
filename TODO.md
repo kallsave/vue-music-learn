@@ -22,7 +22,6 @@
 - 抓包工具
 - scroll组件暴露自动开启关闭上下拉功能的方法
 - native-sticky
-- sticky-ele的key可以去掉
 - 阅读createAPI源码
 - 更深入vue源码,阅读vue源码
 - go语言开发后台系统
@@ -36,4 +35,5 @@
 - pipe理念
 - recommend进入时触发pulldown
 - mand源码
+- sticky的options优化,stikcy优化代码
 

@@ -4,6 +4,7 @@ const WechatSticky = () => import(/* webpackChunkName: "WechatSticky" */ './test
 const ScrollTest = () => import(/* webpackChunkName: "ScrollTest" */ './test/children/scroll-test/scroll-test.vue')
 const Functional = () => import(/* webpackChunkName: "Funcitonal" */ './test/children/functional/functional.vue')
 const Inject = () => import(/* webpackChunkName: "Funcitonal" */ './test/children/inject/inject.vue')
+const Update = () => import(/* webpackChunkName: "Update" */ './test/children/update/update.vue')
 
 export default {
   path: '/test',
@@ -24,6 +25,10 @@ export default {
     {
       path: '/test/inject',
       component: Inject
+    },
+    {
+      path: '/test/update',
+      component: Update
     }
   ]
 }

@@ -144,6 +144,17 @@ async function updateAllImg () {
 ## 图标管理
 - 图标使用svgtofont来管理,具体的配置看build/svgtofont
 
+## Vue的语法
+- .sync语法需要和update:配合使用,例如:
+
+  this.$emit('update:isVisible', true) => @update:isVisible
+
+  也会找到:is-visible.sync = xxx
+
+  把传值赋给xxx => is-visible = xxx
+
+  最终isVisible = 传值
+
 ## 关于keep-alive
   keep-alive是实现原生交互效果(缓存页面)的很强大的组件,但是过多页面keep-alive也会造成页面卡顿
   >keep-alive场景:
@@ -228,7 +239,7 @@ params无法和path配合使用
 
 ## 路由过渡动画
 - 路由过渡动画有loading的作用,过渡enter开始时,页面的生命周期已经开始,接口也开始请求,然后过来的时候显得接口特别快
-
+- transform让fixed降级为absolute,如果页面有导航头是fixed的话,应该使用left而不是transform
 
 ## 关于better-scroll
 - 本项目大量使用了[better-scroll](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#preventdefaultexception)
