@@ -1,7 +1,7 @@
 <template>
   <div class="sticky-view-container">
     <div class="scroll-wrapper">
-      <vi-sticky
+      <vi-native-sticky
         ref="sticky"
         :z-index="50"
         :sticky-data="[items1, items2]"
@@ -10,32 +10,22 @@
           <li v-for="(item, index) in items1" :key="index">{{item}}</li>
         </ul>
         <img @load="imgLoad" src="https://ss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/6.jpg">
-        <!-- 需要做吸顶处理的元素 -->
-        <vi-sticky-ele v-if="first" merge-ele-key="55">
+        <vi-native-sticky-ele v-if="first" ele-key="55">
           <div class="title1">256</div>
-        </vi-sticky-ele>
+        </vi-native-sticky-ele>
         <ul>
           <li v-for="(item, index) in items2" :key="index">{{item}}</li>
         </ul>
-        <vi-sticky-ele merge-ele-key="55">
-          <div class="title2 needsclick" @click="clickHandle">999</div>
-        </vi-sticky-ele>
+        <vi-native-sticky-ele>
+          <div class="title2" ele-key="56" @click="clickHandle">999</div>
+        </vi-native-sticky-ele>
         <ul>
           <li v-for="(item, index) in items3" :key="index">{{item}}</li>
         </ul>
         <ul>
           <li v-for="(item, index) in items4" :key="index">{{item}}</li>
         </ul>
-        <vi-sticky-ele merge-ele-key="12">
-          <div class="title2 needsclick" @click="clickHandle">3669</div>
-        </vi-sticky-ele>
-        <ul>
-          <li v-for="(item, index) in items3" :key="index">{{item}}</li>
-        </ul>
-        <ul>
-          <li v-for="(item, index) in items4" :key="index">{{item}}</li>
-        </ul>
-      </vi-sticky>
+      </vi-native-sticky>
     </div>
   </div>
 </template>
@@ -70,11 +60,11 @@ export default {
     }
   },
   created() {
-    setTimeout(() => {
-      this.items1 = _data.concat()
-      this.items2 = _data.concat()
-      this.first = true
-    }, 2000)
+    // setTimeout(() => {
+    this.items1 = _data.concat()
+    this.items2 = _data.concat()
+    this.first = true
+    // }, 2000)
   },
   mounted() {
 
@@ -93,13 +83,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.needsclick
-  touch-action: none;
 .sticky-view-container
   height: 100vh
   .scroll-wrapper
     height: 100%
-    overflow: hidden
     .title1
       background: gold
       color: #fff

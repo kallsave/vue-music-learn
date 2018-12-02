@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2018-11-26 19:17:20
+ * @Last Modified time: 2018-12-02 11:20:56
  */
 
 /**
@@ -93,9 +93,15 @@ export function middleline (str) {
   return str.replace(/([A-Z])/g, '-$1').toLowerCase()
 }
 
-// setTimeout节流高阶函数,被节流函数和一个节流时间
-// 延迟一段时间执行,这段时间如果产生新的数据,重新开始计时
-// 场景:输入框ajax
+/**
+ * setTimeout防抖高阶函数
+ * 延迟一段时间执行,这段时间如果产生新的数据,重新开始计时
+ * 场景:输入框ajax
+ * @export
+ * @param {Function} func
+ * @param {Number} delay
+ * @returns
+ */
 export function debounce (func, delay) {
   let timer
   return function (...args) {
@@ -109,8 +115,15 @@ export function debounce (func, delay) {
   }
 }
 
-// 每隔一段时间执行一次,中间的时间段执行的都被抛弃
-// 场景: 密集操作DOM元素等消耗内存的动作
+/**
+ * 高阶节流函数
+ * 每隔一段时间执行一次,中间的时间段执行的都被抛弃
+ * 场景: 密集操作DOM元素等消耗内存的动作
+ * @export
+ * @param {Function} func
+ * @param {Number} longtime
+ * @returns
+ */
 export function throttle(func, longtime) {
   let throttleObj = {}
   return function (...args) {

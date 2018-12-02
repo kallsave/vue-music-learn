@@ -36,4 +36,10 @@
 - recommend进入时触发pulldown
 - mand源码
 - sticky的options优化,stikcy优化代码
-
+- 阅读better-scroll源码
+- 调研其他scroll库
+- 自己写一个scroll库
+- 没匹配到的路由做404
+- 用anime.js重写动画
+- sticky-ele增加动态添加移除sticky的方法
+- sticky-ele增加mergeEleKey

@@ -1,6 +1,15 @@
 <template>
   <div ref="search" class="search">
     <div ref="scrollWrapper" class="search-scroll-wrapper">
+      <vi-sticky-ele mergeEleKey="1">
+        <div class="search-box-wrapper">
+          <base-search-box
+            ref="searchBox"
+            v-model="query"
+            @clear="clearHandler"
+            @focus="focusHandler"></base-search-box>
+        </div>
+      </vi-sticky-ele>
       <vi-sticky
         ref="scroll"
         :data="result"
@@ -8,19 +17,10 @@
         :options="scrollOptions"
         @scroll="scrollHandler"
         @pulling-up="onPullingUp">
-        <vi-sticky-ele>
-          <div class="search-box-wrapper">
-            <base-search-box
-              ref="searchBox"
-              v-model="query"
-              @clear="clearHandler"
-              @focus="focusHandler"></base-search-box>
-          </div>
-        </vi-sticky-ele>
         <div class="shortcut-wrapper" v-show="!query">
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
-            <ul class="hot-key-list clear">
+            <ul class="hot-key-list">
               <li class="item" :key="index"
                 v-for="(item, index) in hotKey"
                 @click="query = item.k">
@@ -35,7 +35,7 @@
               v-for="(item, index) in result"
               @click="selectItem(item)">
               <div class="icon">
-                <i :class="getIconCls(item)"></i>
+                <i :class="getIconClass(item)"></i>
               </div>
               <div class="name">
                 <p class="text" v-html="getDisplayName(item)"></p>
@@ -68,7 +68,7 @@ import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { getHotKey, search } from '@/api/search.js'
 import { sticky, STICKY_TOP_BAR } from '../../mixins/inject-sticky.js'
 import { createSong } from '@/common/class/song.js'
-import { debounce } from '@/common/helpers/utils.js'
+import { debounce, throttle } from '@/common/helpers/utils.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import Singer from '@/common/class/singer.js'
 import { mapMutations, mapActions } from 'vuex'
@@ -133,16 +133,34 @@ export default {
         }
 
         this.debounceQueryHandler(newVal)
+
+        // this.$nextTick(() => {
+        //   if (!newVal) {
+        //     console.log('dis')
+        //     this.ViSticky.scroll.disable()
+        //   } else {
+        //     this.ViSticky.scroll.enable()
+        //   }
+        // })
       },
     }
   },
   mounted() {
     this._getHotKey()
-    if (this.query) {
-      this.$refs.search.style.height = ``
-    } else {
-      this.$refs.search.style.height = `calc(100vh - 88px)`
-    }
+    // this.$nextTick(() => {
+    //   if (!this.query) {
+    //     console.log('dis')
+    //     this.ViSticky.scroll.disable()
+    //   } else {
+    //     this.ViSticky.scroll.enable()
+    //   }
+    // })
+    // if (!this.query) {
+    //   this.$nextTick(() => {
+    //     this.$refs.search.style.height = 'calc(100vh - 88px)'
+    //     this.$refs.search.style.overflow = 'hidden'
+    //   })
+    // }
   },
   methods: {
     ...mapMutations({
@@ -203,7 +221,7 @@ export default {
       })
       return ret
     },
-    getIconCls(item) {
+    getIconClass(item) {
       if (item.type === TYPE_SINGER) {
         return 'icon-mine'
       } else {
@@ -248,7 +266,10 @@ export default {
         this.insertSong(item)
       }
     },
-  }
+  },
+  // beforeRouteLeave (to, from, next) {
+  //   this.ViSticky.enable()
+  // }
 }
 </script>
 
@@ -256,16 +277,17 @@ export default {
 @import "~@/common/stylus/variable"
 @import "~@/common/stylus/mixin"
 
+.search-box-wrapper
+  box-sizing: border-box
+  padding: 20px
+  background: $color-background
+
 .search
   width: 100%
   height: calc(100vh - 44px)
   overflow: hidden
   background: $color-background
   // position: relative
-  .search-box-wrapper
-    box-sizing: border-box
-    padding: 20px
-    background: $color-background
   .search-scroll-wrapper
     box-sizing: border-box
     width: 100%
@@ -282,6 +304,7 @@ export default {
           font-size: $font-size-medium
           color: $color-text-l
         .hot-key-list
+          clear()
           .item
             float: left
             padding: 5px 10px
@@ -301,8 +324,6 @@ export default {
           color: $color-text-l
           .text
             flex: 1
-          .clear
-            extend-click()
             .icon-clear
               font-size: $font-size-medium
               color: $color-text-d

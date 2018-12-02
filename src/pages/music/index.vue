@@ -1,6 +1,6 @@
 <template>
-  <transition name="router-slide">
-    <router-view></router-view>
+  <transition name="router-slide-css-transform">
+    <router-view class="router-view"></router-view>
   </transition>
 </template>
 

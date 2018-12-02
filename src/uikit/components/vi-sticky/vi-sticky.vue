@@ -4,14 +4,14 @@
       ref="scroll"
       :data="data"
       :scroll-events="scrollEvents"
-      :options="options"
+      :options="stickyOptions"
       @scroll="scrollHandle">
       <slot></slot>
       <template slot="pull-up" slot-scope="pullUpScope">
         <slot name="pull-up" :pull-up-scope="pullUpScope"></slot>
       </template>
     </vi-scroll>
-    <div ref="fixed" v-show="fixedVisable" :style="fixedStyle"></div>
+    <div ref="fixed" class="ddddddddddd" v-show="fixedVisable" :style="fixedStyle"></div>
   </div>
 </template>
 
@@ -23,6 +23,8 @@ import {
   prefixStyle
 } from '@/common/helpers/dom.js'
 
+import { mulitDeepClone } from '../../common/helpers/utils.js'
+
 const transformStyleKey = prefixStyle('transform')
 
 const COMPONENT_NAME = 'vi-sticky'
@@ -33,6 +35,14 @@ const EVENT_SCROLL = 'scroll'
 const EVENT_PULLING_DOWN = 'pulling-down'
 const EVENT_PULLING_UP = 'pulling-up'
 
+const DEFAULT_OPTIONS = {
+  click: true
+}
+
+const BIND_OPTIONS = {
+  probeType: 3,
+}
+
 export default {
   name: COMPONENT_NAME,
   components: {
@@ -40,7 +50,7 @@ export default {
   },
   provide() {
     return {
-      Sticky: this
+      ViSticky: this
     }
   },
   props: {
@@ -69,10 +79,7 @@ export default {
     options: {
       type: Object,
       default() {
-        return {
-          probeType: 3,
-          click: true
-        }
+        return {}
       }
     },
     scrollEvents: {
@@ -80,7 +87,7 @@ export default {
       default() {
         return ['scroll']
       }
-    }
+    },
   },
   data() {
     return {
@@ -91,20 +98,7 @@ export default {
       diff: 0,
       transformTop: 0,
       listHeight: [],
-    }
-  },
-  mounted() {
-    this._findFixedElement()
-    this._findScroll()
-    if (this.pullDownRefresh) {
-      this.$refs.scroll.$on(EVENT_PULLING_DOWN, () => {
-        this.$emit(EVENT_PULLING_DOWN, arguments)
-      })
-    }
-    if (this.pullUpLoad) {
-      this.$refs.scroll.$on(EVENT_PULLING_UP, () => {
-        this.$emit(EVENT_PULLING_UP, arguments)
-      })
+      stickyOptions: {},
     }
   },
   computed: {
@@ -131,21 +125,50 @@ export default {
       if (!length) {
         return
       }
+      // TODO: fixed bug
       newVal = Math.abs(newVal)
       for (let i = 0; i < length; i++) {
         let item1 = this.listHeight[i]
         let item2 = this.listHeight[i + 1]
+        let item3 = this.listHeight[i + 2]
         if (!item2 && newVal >= item1.stickyTop) {
           this.currentSticky = this.stickyMap[item1.eleKey]
           this.diff = newVal - item1.stickyTop
           return
-        } else if (item2 && newVal > item1.stickyTop && newVal < item2.stickyTop) {
+        } else if (item2 && newVal > item1.stickyTop && newVal <= item2.stickyTop) {
           this.currentSticky = this.stickyMap[item1.eleKey]
           this.diff = newVal - item1.stickyTop
-          this.nextDiff = item2.stickyTop - newVal
-          this.transformTop = item1.clientHeight - this.nextDiff
+          let nextDiff = item2.stickyTop - newVal
+          let transformTop = item1.clientHeight - nextDiff
+          if (item2.mergeEleKey && item2.mergeEleKey === item1.mergeEleKey) {
+            if (transformTop >= 0 && !this.hadMergeEle) {
+              this.fixedElement.appendChild(this.stickyMap[item2.eleKey].$el)
+              this.hadMergeEle = true
+            } else if (transformTop < 0 && this.hadMergeEle) {
+              this.hadMergeEle = false
+              const remove = this.fixedElement.removeChild(this.stickyMap[item2.eleKey].$el)
+              for (let key in this.stickyMap) {
+                if (this.stickyMap[key].$el === remove) {
+                  this.stickyMap[key].eleComponent.$el.appendChild(remove)
+                  this.$emit('removeMerge')
+                }
+              }
+            }
+            return
+          }
+          this.transformTop = transformTop
           return
         } else if (item2 && newVal >= item2.stickyTop) {
+          this.diff = newVal - item1.stickyTop
+          let nextDiff = item2.stickyTop - newVal
+          let transformTop = item1.clientHeight - nextDiff
+          if (item2.mergeEleKey && item2.mergeEleKey === item1.mergeEleKey) {
+            if (transformTop >= 0 && !this.hadMergeEle) {
+              this.fixedElement.appendChild(this.stickyMap[item2.eleKey].$el)
+              this.hadMergeEle = true
+            }
+            return
+          }
           this.currentSticky = this.stickyMap[item2.eleKey]
           this.transformTop = 0
           this.diff = newVal - item2.stickyTop
@@ -167,13 +190,14 @@ export default {
       this.fixedStyle = {
         'position': 'absolute',
         'top': `${this.fixedY}px`,
-        'width': `${this.currentSticky.clientWidth}px`,
         'z-index': this.zIndex,
-        'height': `${this.currentSticky.clientHeight}px`
+        'width': `${this.currentSticky.clientWidth}px`,
+        'height': `${this.currentSticky.clientHeight}px`,
       }
       this.reset()
       const element = this.currentSticky.$el
       this.fixedElement.appendChild(element)
+      this.hadMergeEle = false
       this.$emit(EVENT_CHANGE, this.currentSticky)
     },
     transformTop(newVal) {
@@ -183,6 +207,24 @@ export default {
       }
       this.fixTransformTop = fixTransformTop
       this.fixedElement.style[transformStyleKey] = `translateY(${fixTransformTop}px)`
+    }
+  },
+  created() {
+    // created => children.props => children.data => children.created
+    this.stickyOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options, BIND_OPTIONS)
+  },
+  mounted() {
+    this._findFixedElement()
+    this._findScroll()
+    if (this.pullDownRefresh) {
+      this.$refs.scroll.$on(EVENT_PULLING_DOWN, () => {
+        this.$emit(EVENT_PULLING_DOWN, arguments)
+      })
+    }
+    if (this.pullUpLoad) {
+      this.$refs.scroll.$on(EVENT_PULLING_UP, () => {
+        this.$emit(EVENT_PULLING_UP, arguments)
+      })
     }
   },
   methods: {
@@ -196,7 +238,7 @@ export default {
       }
       this.fixedElement = this.$refs.fixed
     },
-    calculateStickyTop() {
+    calculateAllStickyEleTop() {
       for (let key in this.stickyMap) {
         this.stickyMap[key].calculate()
       }
@@ -208,7 +250,8 @@ export default {
         result.push({
           eleKey: key,
           stickyTop: this.stickyMap[key].stickyTop,
-          clientHeight: this.stickyMap[key].clientHeight
+          clientHeight: this.stickyMap[key].clientHeight,
+          mergeEleKey: this.stickyMap[key].mergeEleKey
         })
       }
       this.listHeight = result.sort((a, b) => {
@@ -228,12 +271,15 @@ export default {
       this.reset()
       this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0, 0)
     },
+    // 吸顶元素复位
     reset() {
       if (this.fixedElement.firstElementChild) {
         const remove = this.fixedElement.removeChild(this.fixedElement.firstElementChild)
-        if (remove.eleKey) {
-          this.stickyMap[remove.eleKey].eleComponent.$el.appendChild(remove)
-          this.$emit(EVENT_CANCEL)
+        for (let key in this.stickyMap) {
+          if (this.stickyMap[key].$el === remove) {
+            this.stickyMap[key].eleComponent.$el.appendChild(remove)
+            this.$emit(EVENT_CANCEL)
+          }
         }
       }
       this.refresh()
@@ -247,7 +293,7 @@ export default {
     forceCalculateStickyTop() {
       this.scrollTop()
       this.$nextTick(() => {
-        this.calculateStickyTop()
+        this.calculateAllStickyEleTop()
         this.refresh()
       })
     },

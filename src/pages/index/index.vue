@@ -2,7 +2,7 @@
   <div class="index">
     <vi-sticky ref="sticky">
       <m-header></m-header>
-      <vi-sticky-ele>
+      <vi-sticky-ele mergeEleKey="1">
         <tab></tab>
       </vi-sticky-ele>
       <template v-if="slideRouterMode === slideRouterModeList[0]">

@@ -95,11 +95,11 @@ async function updateAllImg () {
 - 减少使用标签
 - 不使用id写样式
 
-## 组件规范
+## vue组件规范
 - uikit是不带任何的业务逻辑和项目样式,高度封装化,全局挂载的ui组件库:
-- uikit提供全局components,部分提供body挂载,由createAPI或者mount-in-body调用,样式使用vi-前缀严格开头,不使用css module的scoped,不使用webpack的alias语法,需要有component-name,使用局部图标字体,用[svgtofont](https://github.com/jaywcjlove/svgtofont)管理图标
+- uikit部分提供body挂载,由createAPI或者mount-in-body调用,样式使用vi-前缀严格开头,不使用css module的scoped,不使用webpack的alias语法,需要有component-name,使用局部图标字体,用[svgtofont](https://github.com/jaywcjlove/svgtofont)管理图标
 
-- base-components有待进化成ui-components,没有高度封装化,不带任何的业务逻辑
+- base有待进化成uikit,没有高度封装化,不带任何的业务逻辑
 
 - components是业务逻辑组件,带有接口,vuex使用的components
 全局的小零件,样式使用css module的scoped
@@ -111,6 +111,10 @@ async function updateAllImg () {
 - 遵循就近维护的原则,该组件引用的字体,图片都放在该组件的文件夹内
 
 - vue中$emit的事件名需要用const申明
+
+- 组件传值是遵循props单向原则(vue只能检测props的指针而不能检测属性下的变动),
+不能在子组件修改props的属性值(警惕v-model的隐形赋值改变属性的值),如果需要改变props的值传回给父组件,请使用深度克隆+$emit或者refs去拿值都可以
+
 
 ## 项目架构
 - api文件夹是接口文件夹,一个页面的接口放在一个js文件
@@ -154,6 +158,12 @@ async function updateAllImg () {
   把传值赋给xxx => is-visible = xxx
 
   最终isVisible = 传值
+
+- 因为.sync和update:使用有点绕,如果没有必要,减少.sync的使用:
+
+  组件的显示和隐藏可以通过this.$refs.xxx.show()/hide()来控制
+
+  这样可以减少变量,降低ui组件嵌套的复杂度,提高代码的可读性
 
 ## 关于keep-alive
   keep-alive是实现原生交互效果(缓存页面)的很强大的组件,但是过多页面keep-alive也会造成页面卡顿
@@ -255,6 +265,8 @@ params无法和path配合使用
   better-scroll的preventDefaultException主要是在冒泡阶段阻止,所以对不需要进行阻止原生行为的元素的最小子代元素添加class,在需要点击,跳转,获得焦点等等都要加...建议不要开启
 
   对于click事件来说,从最小的元素冒泡到外围,所以没有点击到最小的元素是无法传递下去的,如果想扩大点击范围,范围内的元素都要添加class
+
+  减少better-scroll嵌套场景的出现,因为会带来better-scroll嵌套事件分发的问题
 
   多次scroll嵌套的场景,使用[stoppropagation](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#stoppropagationv190)隔断,通过监听scroll,,如果不使用stoppropagation,外层scroll的scroll-content上拉导致出现空白,复杂的场景通过监听scroll的位置,在一定范围手动让外层scroll滚动,对scroll进行enable,disable,scrollTo处理
 

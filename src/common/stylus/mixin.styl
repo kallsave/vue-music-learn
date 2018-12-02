@@ -1,5 +1,15 @@
 @import './variable.styl'
 
+clear()
+  &:after
+    content: ''
+    display: block
+    clear: both
+    width: 0
+    height: 0
+    line-height: 0
+    visibility: hidden
+
 // 背景图片
 bg-image($url)
   background-image: url($url + "@2x.png")
