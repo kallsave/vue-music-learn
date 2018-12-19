@@ -251,6 +251,74 @@ params无法和path配合使用
 - 路由过渡动画有loading的作用,过渡enter开始时,页面的生命周期已经开始,接口也开始请求,然后过来的时候显得接口特别快
 - transform让fixed降级为absolute,如果页面有导航头是fixed的话,应该使用left而不是transform
 
+- 通过meta.index控制全局的路由跳转代码:
+App.vue
+```javascript
+<template>
+  <div id="app" class="app">
+    <transition :name="transitionName">
+      <router-view class="view"></router-view>
+    </transition>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'App',
+  data() {
+    return {
+      transitionName: '',
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      if (!to.meta || !to.meta.index || !from.meta || !from.meta.index) {
+        this.transitionName = ''
+        return;
+      }
+      if (to.meta.index >= from.meta.index) {
+        this.transitionName = 'scroll-right'
+      } else {
+        this.transitionName = 'scroll-left'
+      }
+    }
+  },
+}
+
+</script>
+
+<style lang="less">
+.view {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  &.scroll-right-enter,
+  &.scroll-left-leave-to {
+    position: fixed;
+    left: 100%;
+    z-index: 100;
+    background: #f4f4f4;
+    height: 100vh;
+    .vux-header {
+      left: 100%;
+      z-index: 100;
+    }
+  }
+
+  &.scroll-right-enter-active,
+  &.scroll-left-leave-active {
+    .vux-header {
+      transition: left 0.3s;
+    }
+    position: fixed;
+    z-index: 100;
+    will-change: left;
+    transition: left 0.3s;
+  }
+}
+</style>
+```
+
 ## 关于better-scroll
 - 本项目大量使用了[better-scroll](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#preventdefaultexception)
 

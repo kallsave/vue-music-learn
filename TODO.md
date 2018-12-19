@@ -43,3 +43,6 @@
 - 用anime.js重写动画
 - sticky-ele增加动态添加移除sticky的方法
 - sticky-ele增加mergeEleKey
+- slide增加手动设置高度,wrapper阻止冒泡
+- cube-ui的tab-composite,sticky
+- weui源码
