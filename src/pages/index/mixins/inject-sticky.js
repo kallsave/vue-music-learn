@@ -11,6 +11,8 @@ export const sticky = {
       } else if (pos.y >= 0 && pos.y <= STICKY_TOP_BAR && this.ViSticky.$disY !== STICKY_TOP_BAR) {
         this.ViSticky.$disY = STICKY_TOP_BAR
         this.ViSticky.scroll.enable()
+      } else if (pos.y > -STICKY_TOP_BAR) {
+        this.ViSticky.scroll.scrollTo(0, pos.y, 0)
       }
     },
   }

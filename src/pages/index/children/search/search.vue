@@ -1,15 +1,6 @@
 <template>
   <div ref="search" class="search">
     <div ref="scrollWrapper" class="search-scroll-wrapper">
-      <vi-sticky-ele mergeEleKey="1">
-        <div class="search-box-wrapper">
-          <base-search-box
-            ref="searchBox"
-            v-model="query"
-            @clear="clearHandler"
-            @focus="focusHandler"></base-search-box>
-        </div>
-      </vi-sticky-ele>
       <vi-sticky
         ref="scroll"
         :data="result"
@@ -17,6 +8,15 @@
         :options="scrollOptions"
         @scroll="scrollHandler"
         @pulling-up="onPullingUp">
+        <vi-sticky-ele>
+          <div class="search-box-wrapper">
+            <base-search-box
+              ref="searchBox"
+              v-model="query"
+              @clear="clearHandler"
+              @focus="focusHandler"></base-search-box>
+          </div>
+        </vi-sticky-ele>
         <div class="shortcut-wrapper" v-show="!query">
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
@@ -111,6 +111,7 @@ export default {
           }
         },
         directionLockThreshold: 0.2,
+        stopPropagation: true
       },
       isFetchSearch: false,
     }

@@ -24,11 +24,22 @@
             <!-- 同时使用slot也可以支持自定义样式 -->
             <template slot="dots" slot-scope="scope">
               <div class="slide-dots">
-                <span class="slide-dot" :class="{active: scope.currentPageIndex === index }"
-                  :key="index" v-for="(item, index) in recommends"
+                <span class="slide-dot"
+                  :class="{active: scope.currentPageIndex === index }"
+                  v-for="(item, index) in recommends" :key="index"
                   @click.stop="scope.slideToPage(index)"></span>
               </div>
             </template>
+            <div v-for="(item, index) in recommends" :key="index">
+              <a :href="item.linkUrl">
+                <img :src="item.picUrl">
+              </a>
+            </div>
+            <!-- <vi-slide-item  v-for="(item, index) in recommends" :key="index">
+              <a :href="item.linkUrl">
+                <img :src="item.picUrl">
+              </a>
+            </vi-slide-item> -->
           </vi-slide>
         </div>
         <div class="recommend-list">
@@ -185,8 +196,9 @@ export default {
       // console.log(pos)
     },
     onPullingDown() {
+      console.log('odfd')
       this._getData(true)
-    }
+    },
   },
 }
 </script>

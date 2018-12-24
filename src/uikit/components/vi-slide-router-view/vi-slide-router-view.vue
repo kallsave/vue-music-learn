@@ -28,14 +28,14 @@
       @change="change"
       @touch-scroll="touchScroll"
       @touch-end="touchEnd">
-      <div v-for="(item, index) in siblingsRoute" :key="index">
+      <vi-slide-item v-for="(item, index) in siblingsRoute" :key="index">
         <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
           <component :is="item.component"></component>
         </template>
         <template v-else>
           <component :is="hadShowPageList.indexOf(index) !== -1 ? item.component : backgroundComponent"></component>
         </template>
-      </div>
+      </vi-slide-item>
     </vi-slide>
   </div>
 </template>

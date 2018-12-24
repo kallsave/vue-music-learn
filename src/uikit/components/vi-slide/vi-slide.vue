@@ -1,16 +1,15 @@
  <!-- slide外围必须有一个父元素,因为slide的高度是由外围父元素决定的 -->
 <template>
-  <div ref="slide" class="vi-slide-wrapper"
+  <div ref="slide"
+    class="vi-slide-wrapper"
     :style="setStyle">
     <div ref="slideGroup" class="vi-slide-group">
       <slot>
         <!-- 默认的场景 -->
         <!-- 进来的数据要对好格式 -->
-        <div v-for="item in data" :key="item.linkUrl">
-          <a :href="item.linkUrl">
-            <img @load="loadImage" :src="item.picUrl" />
-          </a>
-        </div>
+        <vi-slide-item
+          v-for="(item, index) in data" :key="index"
+          :item="item"></vi-slide-item>
       </slot>
     </div>
     <!-- 默认的dots样式 -->
@@ -35,6 +34,7 @@
 import { addClass } from '../../common/helpers/dom.js'
 import { camelize, spliceArray, mulitDeepClone } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'
+import ViSlideItem from './vi-slide-item.vue'
 
 const COMPONENT_NAME = 'vi-slide'
 
@@ -67,7 +67,8 @@ const SCROLL_EVENTS = [
 const BIND_SCROLL_EVENTS = [
   EVENT_SCROLL_END,
   EVENT_BEFORE_SCROLL_START,
-  EVENT_TOUCH_END
+  EVENT_TOUCH_END,
+  EVENT_SCROLL
 ]
 
 // 派生出来的事件(推荐在父组件中使用)
@@ -90,10 +91,14 @@ const DEFAULT_OPTIONS = {
     speed: 400
   },
   useTransition: true,
+  stopPropagation: false
 }
 
 export default {
   name: COMPONENT_NAME,
+  components: {
+    ViSlideItem
+  },
   props: {
     data: {
       type: Array,
@@ -189,7 +194,7 @@ export default {
       let slideWidth = this.$refs.slide.clientWidth
       this.children = this.$refs.slideGroup.children
       Array.apply(null, this.children).forEach((item) => {
-        addClass(item, 'vi-slide-item')
+        addClass(item, 'vi-slide-float')
         // item本来的width是靠img撑开的,现在要固定,这样img就依赖了固定高度
         item.style.width = slideWidth + 'px'
         width += slideWidth
@@ -322,22 +327,16 @@ export default {
 
 <style lang="stylus">
 @import "../../common/stylus/variable.styl"
-// 考虑到vi-slide-wrapper不仅仅是做轮播图那么简单的功能
-// 还有整个页面的slide动作,height是100%外围父元素
 .vi-slide-wrapper
   position: relative
-  height: 100%
   // 这个很重要,better-scroll会根据wrapper的高宽做判断
   min-height: 1px;
   .vi-slide-group
     position: relative
     overflow: hidden
     white-space: nowrap
-    .vi-slide-item
+    .vi-slide-float
       float: left
-      // box-sizing: border-box
-      // overflow: hidden
-      // text-align: center
       a
         display: block
         overflow: hidden

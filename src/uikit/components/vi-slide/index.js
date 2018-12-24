@@ -1,7 +1,9 @@
-import Component from './vi-slide.vue'
+import ViSlide from './vi-slide.vue'
+import ViSlideItem from './vi-slide-item.vue'
 
-Component.install = function (Vue) {
-  Vue.component(Component.name, Component)
+ViSlide.install = function (Vue) {
+  Vue.component(ViSlide.name, ViSlide)
+  Vue.component(ViSlideItem.name, ViSlideItem)
 }
 
-export default Component
+export default ViSlide

@@ -15,7 +15,7 @@ export default {
   props: {
     mergeEleKey: {
       type: [String, Number],
-      default: 0
+      default: ''
     }
   },
   data() {
