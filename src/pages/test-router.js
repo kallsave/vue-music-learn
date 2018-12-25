@@ -5,6 +5,7 @@ const ScrollTest = () => import(/* webpackChunkName: "ScrollTest" */ './test/chi
 const Functional = () => import(/* webpackChunkName: "Funcitonal" */ './test/children/functional/functional.vue')
 const Inject = () => import(/* webpackChunkName: "Funcitonal" */ './test/children/inject/inject.vue')
 const NativeSticky = () => import(/* webpackChunkName: "NativeSticky" */ './test/children/native-sticky/native-sticky.vue')
+const Sticky = () => import(/* webpackChunkName: "Sticky" */ './test/children/sticky/sticky.vue')
 
 export default {
   path: '/test',
@@ -29,6 +30,10 @@ export default {
     {
       path: '/test/native-sticky',
       component: NativeSticky
+    },
+    {
+      path: '/test/sticky',
+      component: Sticky
     }
   ]
 }

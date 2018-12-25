@@ -55,6 +55,10 @@ export default {
     },
     clear() {
       this.$emit(EVENT_CLEAR)
+    },
+    // 主动获得焦点
+    focus() {
+      this.$refs.query.focus()
     }
   }
 }

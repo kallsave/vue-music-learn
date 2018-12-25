@@ -120,7 +120,6 @@ export default {
     query: {
       handler(newVal) {
         this.isFetchSearch = false
-
         if (!this.debounceQueryHandler) {
           this.debounceQueryHandler = debounce((newVal) => {
             this.page = 1
@@ -132,36 +131,15 @@ export default {
             })
           }, DEBOUNCE_TIME)
         }
-
         this.debounceQueryHandler(newVal)
-
-        // this.$nextTick(() => {
-        //   if (!newVal) {
-        //     console.log('dis')
-        //     this.ViSticky.scroll.disable()
-        //   } else {
-        //     this.ViSticky.scroll.enable()
-        //   }
-        // })
       },
     }
   },
   mounted() {
     this._getHotKey()
-    // this.$nextTick(() => {
-    //   if (!this.query) {
-    //     console.log('dis')
-    //     this.ViSticky.scroll.disable()
-    //   } else {
-    //     this.ViSticky.scroll.enable()
-    //   }
-    // })
-    // if (!this.query) {
-    //   this.$nextTick(() => {
-    //     this.$refs.search.style.height = 'calc(100vh - 88px)'
-    //     this.$refs.search.style.overflow = 'hidden'
-    //   })
-    // }
+  },
+  activated() {
+    this.$refs.searchBox.focus()
   },
   methods: {
     ...mapMutations({
@@ -298,6 +276,7 @@ export default {
     .shortcut-wrapper
       position: relative
       box-sizing: border-box
+      z-index: 0
       .hot-key
         margin: 0 20px 20px 20px
         .title

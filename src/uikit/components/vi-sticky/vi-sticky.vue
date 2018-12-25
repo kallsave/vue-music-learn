@@ -1,7 +1,6 @@
 <template>
   <div class="vi-sticky">
-    <vi-scroll
-      ref="scroll"
+    <vi-scroll ref="scroll"
       :data="data"
       :scroll-events="scrollEvents"
       :options="stickyOptions"
@@ -11,7 +10,10 @@
         <slot name="pull-up" :pull-up-scope="pullUpScope"></slot>
       </template>
     </vi-scroll>
-    <div ref="fixed" class="ddddddddddd" v-show="fixedVisable" :style="fixedStyle"></div>
+    <div ref="fixed"
+      class="vi-sticky-box"
+      v-show="fixedVisable"
+      :style="fixedStyle"></div>
   </div>
 </template>
 
@@ -29,8 +31,9 @@ const transformStyleKey = prefixStyle('transform')
 
 const COMPONENT_NAME = 'vi-sticky'
 
-const EVENT_CHANGE = 'sticky-change'
-const EVENT_CANCEL = 'sticky-cancel'
+const EVENT_STICKY_CHANGE = 'sticky-change'
+const EVENT_STICKY_CANCEL = 'sticky-cancel'
+const EVENT_STICKY_REMOVE_MERGE = 'sticky-remove-merge'
 const EVENT_SCROLL = 'scroll'
 const EVENT_PULLING_DOWN = 'pulling-down'
 const EVENT_PULLING_UP = 'pulling-up'
@@ -56,7 +59,7 @@ export default {
   props: {
     zIndex: {
       type: Number,
-      default: 10
+      default: 1000
     },
     // refresh
     data: {
@@ -132,47 +135,60 @@ export default {
         let item2 = this.listHeight[i + 1]
         let item3 = this.listHeight[i + 2]
         if (!item2 && newVal >= item1.stickyTop) {
+          // 如果只有一个sticky-ele并且滚动到了stikcy的位置
           this.currentSticky = this.stickyMap[item1.eleKey]
           this.diff = newVal - item1.stickyTop
           return
         } else if (item2 && newVal > item1.stickyTop && newVal <= item2.stickyTop) {
+          // 如果有多个sticky-ele并且滚动的位置处于两者中间
           this.currentSticky = this.stickyMap[item1.eleKey]
           this.diff = newVal - item1.stickyTop
           let nextDiff = item2.stickyTop - newVal
+          // transformTop > 0表示两者已经碰上了
           let transformTop = item1.clientHeight - nextDiff
+          // 如果这两者是可以合并的sticky-ele
           if (item2.mergeEleKey && item2.mergeEleKey === item1.mergeEleKey) {
+            // 合并
             if (transformTop >= 0 && !this.hadMergeEle) {
               this.fixedElement.appendChild(this.stickyMap[item2.eleKey].$el)
               this.hadMergeEle = true
+              return
             } else if (transformTop < 0 && this.hadMergeEle) {
+              // 分离
               this.hadMergeEle = false
               const remove = this.fixedElement.removeChild(this.stickyMap[item2.eleKey].$el)
               for (let key in this.stickyMap) {
                 if (this.stickyMap[key].$el === remove) {
                   this.stickyMap[key].eleComponent.$el.appendChild(remove)
-                  this.$emit('removeMerge')
+                  this.$emit(EVENT_STICKY_REMOVE_MERGE)
                 }
               }
             }
             return
+          } else {
+            this.transformTop = transformTop
           }
-          this.transformTop = transformTop
-          return
         } else if (item2 && newVal >= item2.stickyTop) {
+          // 如果有多个sticky-ele并且滚动到了后者的sticky
           this.diff = newVal - item1.stickyTop
           let nextDiff = item2.stickyTop - newVal
           let transformTop = item1.clientHeight - nextDiff
+          // 如果这两者是可以合并的sticky-ele
           if (item2.mergeEleKey && item2.mergeEleKey === item1.mergeEleKey) {
             if (transformTop >= 0 && !this.hadMergeEle) {
               this.fixedElement.appendChild(this.stickyMap[item2.eleKey].$el)
               this.hadMergeEle = true
+              return
+            }
+            // 修改这里
+            if (item3 && newVal > item2.stickyTop && newVal <= item3.stickyTop) {
             }
             return
+          } else {
+            this.currentSticky = this.stickyMap[item2.eleKey]
+            this.transformTop = 0
+            this.diff = newVal - item2.stickyTop
           }
-          this.currentSticky = this.stickyMap[item2.eleKey]
-          this.transformTop = 0
-          this.diff = newVal - item2.stickyTop
-          return
         } else {
           this.reset()
         }
@@ -197,8 +213,7 @@ export default {
       this.reset()
       const element = this.currentSticky.$el
       this.fixedElement.appendChild(element)
-      this.hadMergeEle = false
-      this.$emit(EVENT_CHANGE, this.currentSticky)
+      this.$emit(EVENT_STICKY_CHANGE, this.currentSticky)
     },
     transformTop(newVal) {
       let fixTransformTop = newVal > 0 ? -newVal : 0
@@ -278,7 +293,7 @@ export default {
         for (let key in this.stickyMap) {
           if (this.stickyMap[key].$el === remove) {
             this.stickyMap[key].eleComponent.$el.appendChild(remove)
-            this.$emit(EVENT_CANCEL)
+            this.$emit(EVENT_STICKY_CANCEL)
           }
         }
       }

@@ -2,7 +2,7 @@
   <div class="vi-slide-item">
     <slot>
       <a :href="item.linkUrl">
-        <img :src="item.picUrl">
+        <img :src="item.picUrl" @load="loadImage">
       </a>
     </slot>
   </div>
@@ -10,6 +10,8 @@
 
 <script>
 const COMPONENT_NAME = 'vi-slide-item'
+
+const EVENT_LOAD_IMAGE = 'load-image'
 
 export default {
   name: 'vi-slide-item',
@@ -19,6 +21,11 @@ export default {
       default() {
         return {}
       }
+    }
+  },
+  methods: {
+    loadImage() {
+      this.$emit(EVENT_LOAD_IMAGE)
     }
   }
 }

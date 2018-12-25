@@ -21,12 +21,9 @@
           <div class="title2 needsclick" @click="clickHandle">999</div>
         </vi-sticky-ele>
         <ul>
-          <li v-for="(item, index) in items3" :key="index">{{item}}</li>
-        </ul>
-        <ul>
           <li v-for="(item, index) in items4" :key="index">{{item}}</li>
         </ul>
-        <vi-sticky-ele merge-ele-key="12">
+        <vi-sticky-ele  merge-ele-key="55">
           <div class="title2 needsclick" @click="clickHandle">3669</div>
         </vi-sticky-ele>
         <ul>
@@ -86,7 +83,7 @@ export default {
     stickyChange(key) {
     },
     clickHandle() {
-      this.eleNumber = 1
+      console.log(66)
     }
   }
 }

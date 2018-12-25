@@ -377,6 +377,7 @@ export default {
   height: 100%
   // 开启了下拉更新功能要设置overflow:hidden
   overflow: hidden
+  z-index: 0
   .vi-scroll-content
     .vi-scroll-pull-up
       .vi-scroll-pull-up-trigger

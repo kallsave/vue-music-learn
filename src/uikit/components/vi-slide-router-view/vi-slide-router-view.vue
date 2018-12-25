@@ -239,6 +239,7 @@ export default {
       this.$emit(EVENT_SCROLL, ...arguments)
     },
     scrollEnd(pos, slide) {
+      console.log('end')
       this.$emit(EVENT_SCROLL_END)
     },
     touchScroll({x, y}) {

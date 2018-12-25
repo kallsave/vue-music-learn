@@ -9,7 +9,8 @@
         <!-- 进来的数据要对好格式 -->
         <vi-slide-item
           v-for="(item, index) in data" :key="index"
-          :item="item"></vi-slide-item>
+          :item="item"
+          @load-image=loadImage></vi-slide-item>
       </slot>
     </div>
     <!-- 默认的dots样式 -->
