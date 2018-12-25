@@ -282,9 +282,9 @@ export default {
       this.setSlideWidth(true)
       this.slide.refresh()
     },
-    slideToPage(index) {
+    slideToPage(index, time = 400) {
       clearTimeout(this.timer)
-      this.slide.goToPage(index, 0, 400)
+      this.slide.goToPage(index, 0, time)
       this.currentPageIndex = index
     },
     loadImage() {

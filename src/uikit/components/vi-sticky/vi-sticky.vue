@@ -19,33 +19,25 @@
 
 <script>
 import ViScroll from '../vi-scroll/vi-scroll.vue'
-
 import {
   getRect,
   prefixStyle
 } from '@/common/helpers/dom.js'
-
 import { mulitDeepClone } from '../../common/helpers/utils.js'
-
 const transformStyleKey = prefixStyle('transform')
-
 const COMPONENT_NAME = 'vi-sticky'
-
 const EVENT_STICKY_CHANGE = 'sticky-change'
 const EVENT_STICKY_CANCEL = 'sticky-cancel'
 const EVENT_STICKY_REMOVE_MERGE = 'sticky-remove-merge'
 const EVENT_SCROLL = 'scroll'
 const EVENT_PULLING_DOWN = 'pulling-down'
 const EVENT_PULLING_UP = 'pulling-up'
-
 const DEFAULT_OPTIONS = {
   click: true
 }
-
 const BIND_OPTIONS = {
   probeType: 3,
 }
-
 export default {
   name: COMPONENT_NAME,
   components: {
