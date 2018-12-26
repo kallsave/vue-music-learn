@@ -46,3 +46,5 @@
 - weui源码
 - sticky目前mergeEleKey只能支持两个,mergeEleKey的场景不支持切换
 - position: sticky兼容性挺好的
+- 修复search无法左右滚动,无法清除输入框的bug
+- 增加upload组件,找compress

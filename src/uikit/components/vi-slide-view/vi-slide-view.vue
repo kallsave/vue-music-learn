@@ -3,7 +3,7 @@
     <template v-if="isShowTab">
       <slot name="tab"
         :tab-title-list="tabTitleList"
-        :change-page="change">
+        :currentIndex="currentIndex">
         <div class="vi-slide-view-tab">
           <div class="vi-slide-view-tab-list">
             <div class="vi-slide-view-tab-item"
@@ -12,9 +12,9 @@
                 @click="change(index)">{{item}}</span>
             </div>
           </div>
-          <div class="vi-slide-view-tab-bar" :style="tabStyle">
+          <!-- <div class="vi-slide-view-tab-bar" :style="tabStyle">
             <div class="vi-slide-view-tab-bar-content" :style="tabContentStyle"></div>
-          </div>
+          </div> -->
         </div>
       </slot>
     </template>
@@ -28,12 +28,12 @@
       @change="change"
       @touch-scroll="touchScroll"
       @touch-end="touchEnd">
-      <div v-for="(item, index) in siblingsRoute" :key="index">
-        <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
-          <component :is="item.component"></component>
+      <div v-for="(item, index) in componentList" :key="index">
+        <template v-if="currentIndex === index">
+          <component :is="item"></component>
         </template>
         <template v-else>
-          <component :is="hadShowPageList.indexOf(index) !== -1 ? item.component : backgroundComponent"></component>
+          <component :is="hadShowPageList.indexOf(index) !== -1 ? item : backgroundComponent"></component>
         </template>
       </div>
     </vi-slide>
@@ -42,7 +42,6 @@
 
 <script>
 import ViSlide from '../vi-slide/vi-slide.vue'
-import ViView from '../vi-view/vi-view.js'
 import Background from './vi-slide-view-background.vue'
 
 import { camelize, mulitDeepClone, pxToNum, stylePadPx } from '../../common/helpers/utils.js'
@@ -103,7 +102,6 @@ export default {
   name: COMPONENT_NAME,
   components: {
     ViSlide,
-    ViView
   },
   props: {
     options: {
@@ -121,6 +119,12 @@ export default {
         return arr.every((item) => {
           return SCROLL_EVENTS.indexOf(item) !== -1
         })
+      }
+    },
+    componentList: {
+      type: Array,
+      default() {
+        return []
       }
     },
     backgroundComponent: {
@@ -149,18 +153,13 @@ export default {
         return {}
       }
     },
-    componentList: {
-      type: Array,
-      default() {
-        return []
-      },
-    }
   },
   data() {
     return {
       hadShowPageList: [],
       onePagescrollX: 0,
       slideGroopWidth: 0,
+      currentIndex: 0
     }
   },
   created() {
@@ -170,11 +169,6 @@ export default {
     this._tabBarStyle = mulitDeepClone({}, DEFAULT_TAB_BAR_STYLE, stylePadPx(this.tabBarStyle))
   },
   computed: {
-    currentIndex() {
-      return this.siblingsRoute.findIndex((item) => {
-        return this.$route.matched[this.$route.matched.length - 1].regex.test(item.path)
-      })
-    },
     threshold() {
       let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
       return options.snap.threshold
@@ -210,7 +204,7 @@ export default {
   methods: {
     _calculateSlideWidth() {
       this.slideGroopWidth = this.$refs.slide.getSlideWidth()
-      this.onePageWidth = this.slideGroopWidth / this.siblingsRoute.length
+      this.onePageWidth = this.slideGroopWidth / this.componentList.length
     },
     _findSlide () {
       this.slide = this.$refs.slide.slide
@@ -248,11 +242,14 @@ export default {
       this.onePagescrollX = 0
     },
     change(index) {
+      console.log(index)
+      this.currentIndex = index
       this.pushHadShowPageList(this.currentIndex)
+      this.$refs.slide.slideToPage(index, 0, 400)
+      this.$emit(EVENT_CHANGE, index)
       this.$nextTick(() => {
         this.onePagescrollX = 0
       })
-      this.$emit(EVENT_CHANGE, index)
     },
     pushHadShowPageList(index) {
       if (this.hadShowPageList.indexOf(index) === -1) {

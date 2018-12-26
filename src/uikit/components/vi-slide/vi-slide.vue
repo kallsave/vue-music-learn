@@ -316,6 +316,9 @@ export default {
     },
     getSlideWidth() {
       return this.slideWidth
+    },
+    refresh() {
+      this.slide.refresh()
     }
   },
   destroyed() {
