@@ -1,0 +1,22 @@
+@font-face {
+  font-family: "vi-upload-icon";
+  src: url('vi-upload-icon.eot?t=1545898732266'); /* IE9*/
+  src: url('vi-upload-icon.eot?t=1545898732266#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("vi-upload-icon.woff2?t=1545898732266") format("woff2"),
+  url("vi-upload-icon.woff?t=1545898732266") format("woff"),
+  url('vi-upload-icon.ttf?t=1545898732266') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('vi-upload-icon.svg?t=1545898732266#vi-upload-icon') format('svg'); /* iOS 4.1- */
+}
+
+[class^="vi-upload-icon-"], [class*=" vi-upload-icon-"] {
+  font-family: 'vi-upload-icon' !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.vi-upload-icon-correct:before { content: "\ea01"; }
+.vi-upload-icon-error:before { content: "\ea02"; }
+.vi-upload-icon-close:before { content: "\ea03"; }
