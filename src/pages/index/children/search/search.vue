@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
+import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { getHotKey, search } from '@/api/search.js'
 import { sticky, STICKY_TOP_BAR } from '../../mixins/inject-sticky.js'
 import { createSong } from '@/common/class/song.js'
@@ -81,7 +81,7 @@ const DEBOUNCE_TIME = 400
 const perpage = 20
 
 export default {
-  name: IMMUTABLE_KEEP_ALIVE_NAME,
+  name: MUTABLE_KEEP_ALIVE_NAME,
   components: {
     NoResult,
     Loading
@@ -137,9 +137,6 @@ export default {
   },
   mounted() {
     this._getHotKey()
-  },
-  activated() {
-    this.$refs.searchBox.focus()
   },
   methods: {
     ...mapMutations({
@@ -246,9 +243,6 @@ export default {
       }
     },
   },
-  // beforeRouteLeave (to, from, next) {
-  //   this.ViSticky.enable()
-  // }
 }
 </script>
 
@@ -272,7 +266,6 @@ export default {
     width: 100%
     height: calc(100vh - 44px)
     font-size: $font-size-medium
-    color: peru
     .shortcut-wrapper
       position: relative
       box-sizing: border-box
@@ -312,6 +305,7 @@ export default {
       .suggest-list
         box-sizing: border-box
         padding: 5px 30px
+        background: peru
         .suggest-item
           display: flex
           align-items: center

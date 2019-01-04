@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <font id="vi-upload-icon" horiz-adv-x="200">
+    <font-face font-family="vi-upload-icon"
+      units-per-em="200" ascent="200"
+      descent="0" />
+    <missing-glyph horiz-adv-x="0" />
+    <glyph glyph-name="close"
+      unicode="&#xEA03;"
+      horiz-adv-x="200" d="M100 175C58.75 175 25 141.25 25 100S58.75 25 100 25S175 58.75 175 100S141.25 175 100 175zM131.25 77.5C133.75 75 133.75 71.25 131.25 68.75S125 66.25 122.5 68.75L100 91.25L77.5 68.75C75 66.25 71.25 66.25 68.75 68.75S66.25 75 68.75 77.5L91.25 100L68.75 122.5C66.25 125 66.25 128.75 68.75 131.25S75 133.75 77.5 131.25L100 108.75L122.5 131.25C125 133.75 128.75 133.75 131.25 131.25S133.75 125 131.25 122.5L108.75 100L131.25 77.5z" />
+  </font>
+</defs>
+</svg>

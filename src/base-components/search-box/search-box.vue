@@ -1,8 +1,9 @@
 <template>
   <div class="search-box">
     <i class="icon-search"></i>
-    <input ref="query" class="box"
-      v-model="query" :placeholder="placeholder"
+    <input ref="query" class="input-box"
+      v-model="query"
+      :placeholder="placeholder"
       @focus="focusHandler"
       @input="inputHandler"
       @change="changeHandler"/>
@@ -36,8 +37,6 @@ export default {
       query: ''
     }
   },
-  created() {
-  },
   watch: {
     value(newVal) {
       this.query = newVal
@@ -54,6 +53,7 @@ export default {
       this.$emit(EVENT_FOCUS)
     },
     clear() {
+      alert('clear')
       this.$emit(EVENT_CLEAR)
     },
     // 主动获得焦点
@@ -69,6 +69,7 @@ export default {
 
 .search-box
   display: flex
+  position: relative
   align-items: center
   box-sizing: border-box
   width: 100%
@@ -79,16 +80,23 @@ export default {
   .icon-search
     font-size: 24px
     color: $color-background
-  .box
+  .input-box
     flex: 1
-    margin: 0 5px
+    margin: 0 35px 0 5px
+    padding: 5px
     line-height: 18px
     background: $color-highlight-background
     color: $color-text
     font-size: $font-size-medium
-    &::placeholder
+    &:placeholder
       color: $color-text-d
   .icon-dismiss
     font-size: 16px
     color: $color-background
+    position: absolute
+    z-index: 10
+    right: 10px
+    &:before
+      position: relative
+      z-index: 10
 </style>

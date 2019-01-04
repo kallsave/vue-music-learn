@@ -213,8 +213,10 @@ export default {
     $route(newVal) {
       if (this.currentIndex !== -1) {
         this.pushHadShowPageList(this.currentIndex)
-        this.$refs.slide && this.$refs.slide.slideToPage(this.currentIndex)
         this.$nextTick(() => {
+          setTimeout(() => {
+            this.$refs.slide && this.$refs.slide.slideToPage(this.currentIndex)
+          }, 60)
           this.onePagescrollX = 0
         })
       }

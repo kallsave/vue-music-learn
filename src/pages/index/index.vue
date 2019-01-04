@@ -2,9 +2,11 @@
   <div class="index">
     <vi-sticky ref="sticky">
       <m-header></m-header>
-      <vi-sticky-ele mergeEleKey="1">
-        <tab></tab>
-      </vi-sticky-ele>
+      <template v-if="slideRouterMode !== slideRouterModeList[2]">
+        <vi-sticky-ele>
+          <tab></tab>
+        </vi-sticky-ele>
+      </template>
       <template v-if="slideRouterMode === slideRouterModeList[0]">
         <vi-slide-router-transition
           slide-right-class="scroll-right"
@@ -15,7 +17,7 @@
           </keep-alive>
         </vi-slide-router-transition>
       </template>
-      <template v-else>
+      <template v-else-if="slideRouterMode === slideRouterModeList[1]">
         <vi-slide-router-view
           ref="viSlideRouterView"
           :scroll-events="['scroll']"
@@ -23,28 +25,46 @@
           :tab-title-list="tabTitleList"
           :tab-bar-style="tabBarStyle"
           :is-show-tab="false"
+          :componentList="componentList"
           @change="change"
           @touch-scroll="touchScroll"
           @scroll="scroll"
         ></vi-slide-router-view>
+      </template>
+      <template v-else-if="slideRouterMode === slideRouterModeList[2]">
+        <vi-slide-view
+          ref="viSlideRouterView"
+          :scroll-events="['scroll']"
+          :options="slideRouterOptions"
+          :tab-title-list="tabTitleList"
+          :tab-bar-style="tabBarStyle"
+          :is-show-tab="false"
+          :componentList="componentList"
+          @change="change"
+          @touch-scroll="touchScroll"
+          @scroll="scroll"
+        ></vi-slide-view>
       </template>
     </vi-sticky>
   </div>
 </template>
 
 <script>
-import { IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
+import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { mapGetters } from 'vuex'
 import MHeader from './components/m-header/m-header.vue'
 import Tab from './components/tab/tab.vue'
 import SlideTab from './components/slide-tab/slide-tab.vue'
 import Background from './components/background/background.vue'
+const Recommend = () => import(/* webpackChunkName: "Recommend" */ './children/recommend/recommend.vue')
+const Singer = () => import(/* webpackChunkName: "Singer" */ './children/singer/singer.vue')
+const Rank = () => import(/* webpackChunkName: "Rank" */ './children/rank/rank.vue')
+const Search = () => import(/* webpackChunkName: "Search" */ './children/search/search.vue')
 
-const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view']
+const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view', 'vi-slide-view']
 
 export default {
-  // 从其他页面转这个页面,不会keep-alive,子路由之间跳转可以keep-alive
-  name: IMMUTABLE_KEEP_ALIVE_NAME,
+  name: MUTABLE_KEEP_ALIVE_NAME,
   components: {
     MHeader,
     Tab,
@@ -66,6 +86,12 @@ export default {
         '歌手',
         '排行',
         '搜索'
+      ],
+      componentList: [
+        Recommend,
+        Singer,
+        Rank,
+        Search
       ],
       tabBarStyle: {
         left: '50px'
