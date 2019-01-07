@@ -75,16 +75,17 @@ async function updateAllImg () {
 
 如果在for循环中使用async/await,不想申明没必要的函数名
 ```javascript
-(async() => {
-  for (var i = 0; i < imgList.length; i++) {
-    await((item) => {
-      return new Promise(() => {
+;(async() => {
+  for (let i = 0; i < imgList.length; i++) {
+    await(() => {
+      return new Promise(((resolve, reject) => {
         // ...
+        resolve()
       }).catch(() => {
         // ...
-        // console.error(err)
+        console.error(err)
       })
-    })(item)
+    })()
   }
 })()
 ```
@@ -257,7 +258,7 @@ App.vue
 <template>
   <div id="app" class="app">
     <transition :name="transitionName">
-      <router-view class="view"></router-view>
+      <router-view class="router-view"></router-view>
     </transition>
   </div>
 </template>
@@ -288,35 +289,80 @@ export default {
 </script>
 
 <style lang="less">
-.view {
+.router-view {
   position: absolute;
   width: 100%;
   left: 0;
-  &.scroll-right-enter,
-  &.scroll-left-leave-to {
+  // 防止布局溢出导致动画抖动
+  overflow-x: hidden;
+  &.scroll-right-enter {
     position: fixed;
-    left: 100%;
-    z-index: 100;
+    z-index: 200;
     background: #f4f4f4;
     height: 100vh;
+    left: 100%;
     .vux-header {
+      z-index: 200;
       left: 100%;
+    }
+  }
+  &.scroll-right-enter-active,
+  &.scroll-right-enter-to {
+    position: fixed;
+    z-index: 200;
+    background: #f4f4f4;
+    height: 100vh;
+    will-change: left;
+    transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    .vux-header {
+      z-index: 200;
+      will-change: left;
+      transition: left 0.25s cubic-bezier(.06, .56, .2, .97);
+    }
+  }
+  &.scroll-left-leave-to {
+    z-index: 200;
+    background: #f4f4f4;
+    height: 100vh;
+    left: 100%;
+  }
+  &.scroll-left-leave-active,
+  &.scroll-left-leave {
+    z-index: 200;
+    background: #f4f4f4;
+    height: 100vh;
+    left: 100%;
+    will-change: left;
+    transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+  }
+  &.scroll-right-leave-to {
+    z-index: 100;
+    .vux-header {
       z-index: 100;
     }
   }
-
-  &.scroll-right-enter-active,
-  &.scroll-left-leave-active {
-    .vux-header {
-      transition: left 0.3s;
-    }
-    position: fixed;
+  &.scroll-right-leave-active, &.scroll-right-leave {
     z-index: 100;
+    left: -20%;
     will-change: left;
-    transition: left 0.3s;
+    transition: left 0.25s cubic-bezier(.06, .56, .2, .97);
+    .vux-header {
+      z-index: 100;
+      will-change: left;
+      left: -50%;
+      transition: left 0.25s cubic-bezier(.06, .56, .2, .97);
+    }
+  }
+  &.scroll-left-enter {
+    left: -20%;
+    z-index: 100;
+  }
+  &.scroll-left-enter-activ
+  &.scroll-left-enter-to {
+    z-index: 100;
+    transition: left 0.25s cubic-bezier(.06, .56, .2, .97);
   }
 }
-</style>
 ```
 
 ## 关于better-scroll

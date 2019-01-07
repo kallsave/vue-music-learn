@@ -1,9 +1,9 @@
-export function hasClass (el, className) {
+export function hasClass(el, className) {
   const reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
   return reg.test(el.className)
 }
 
-export function addClass (el, className) {
+export function addClass(el, className) {
   /* istanbul ignore if */
   if (hasClass(el, className)) {
     return
@@ -14,7 +14,7 @@ export function addClass (el, className) {
   el.className = newClass.join(' ')
 }
 
-export function removeClass (el, className) {
+export function removeClass(el, className) {
   /* istanbul ignore if */
   if (!hasClass(el, className)) {
     return
@@ -24,14 +24,14 @@ export function removeClass (el, className) {
   el.className = el.className.replace(reg, ' ')
 }
 
-export function getData (el, name) {
+export function getData(el, name) {
   const prefix = 'data-'
   return el.getAttribute(prefix + name)
 }
 
 // getRect是获取相对父元素的位置,如果想获取相对页面的位置
 // 请使用getBoundingClientRect
-export function getRect (el) {
+export function getRect(el) {
   return {
     top: el.offsetTop,
     left: el.offsetLeft,
@@ -60,7 +60,7 @@ let vendor = (() => {
   return false
 })()
 
-export function prefixStyle (style) {
+export function prefixStyle(style) {
   /* istanbul ignore if */
   if (vendor === false) {
     return false
@@ -87,7 +87,7 @@ export function getMatchedTarget(e, targetClassName) {
   return el
 }
 
-export function dispatchEvent (ele, name, { type = 'Event', bubbles = true, cancelable = true } = {}) {
+export function dispatchEvent(ele, name, { type = 'Event', bubbles = true, cancelable = true } = {}) {
   const e = document.createEvent(type)
   e.initEvent(name, bubbles, cancelable)
   ele.dispatchEvent(e)

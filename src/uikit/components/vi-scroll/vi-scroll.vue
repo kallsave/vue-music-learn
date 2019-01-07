@@ -205,7 +205,6 @@ export default {
             this._onPullUpLoad()
           }
         }
-
         if (!newVal && oldVal) {
           this.isPullUpLoad = false
           this.scroll.finishPullUp()
@@ -367,7 +366,6 @@ export default {
   beforeDestroy() {
     this.destroy()
   }
-
 }
 </script>
 
