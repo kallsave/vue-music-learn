@@ -1,6 +1,6 @@
 <template>
   <div class="vi-slide-view">
-    <template v-if="isShowTab">
+    <template v-if="tabTitleList.length > 0">
       <slot name="tab"
         :tab-title-list="tabTitleList"
         :currentIndex="currentIndex">
@@ -12,9 +12,9 @@
                 @click="change(index)">{{item}}</span>
             </div>
           </div>
-          <!-- <div class="vi-slide-view-tab-bar" :style="tabStyle">
+          <div class="vi-slide-view-tab-bar" :style="tabStyle">
             <div class="vi-slide-view-tab-bar-content" :style="tabContentStyle"></div>
-          </div> -->
+          </div>
         </div>
       </slot>
     </template>
@@ -76,7 +76,7 @@ const EVENT_TOUCH_SCROLL = 'touch-scroll'
 
 const DEFAULT_OPTIONS = {
   probeType: 3,
-  directionLockThreshold: 0.5,
+  directionLockThreshold: 0,
   scrollY: false,
   scrollX: true,
   click: false,
@@ -136,10 +136,6 @@ export default {
     isUseTabBarScrolling: {
       type: Boolean,
       default: false
-    },
-    isShowTab: {
-      type: Boolean,
-      default: true
     },
     tabTitleList: {
       type: Array,
@@ -206,7 +202,7 @@ export default {
       this.slideGroopWidth = this.$refs.slide.getSlideWidth()
       this.onePageWidth = this.slideGroopWidth / this.componentList.length
     },
-    _findSlide () {
+    _findSlide() {
       this.slide = this.$refs.slide.slide
     },
     beforeScrollStart() {
@@ -219,7 +215,7 @@ export default {
       this.$emit(EVENT_SCROLL_END)
     },
     touchScroll({x, y}) {
-      if (this.isShowTab) {
+      if (this.tabTitleList.length > 0) {
         let scrollX = Math.abs(x)
         if (!this.touchStart) {
           this.touchStart = true

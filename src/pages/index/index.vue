@@ -3,9 +3,9 @@
     <vi-sticky ref="sticky">
       <m-header></m-header>
       <template v-if="slideRouterMode !== slideRouterModeList[2]">
-        <vi-sticky-ele>
+        <!-- <vi-sticky-ele>
           <tab></tab>
-        </vi-sticky-ele>
+        </vi-sticky-ele> -->
       </template>
       <template v-if="slideRouterMode === slideRouterModeList[0]">
         <vi-slide-router-transition
@@ -24,7 +24,6 @@
           :options="slideRouterOptions"
           :tab-title-list="tabTitleList"
           :tab-bar-style="tabBarStyle"
-          :is-show-tab="false"
           :componentList="componentList"
           @change="change"
           @touch-scroll="touchScroll"
@@ -38,7 +37,6 @@
           :options="slideRouterOptions"
           :tab-title-list="tabTitleList"
           :tab-bar-style="tabBarStyle"
-          :is-show-tab="false"
           :componentList="componentList"
           @change="change"
           @touch-scroll="touchScroll"

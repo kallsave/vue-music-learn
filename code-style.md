@@ -273,16 +273,20 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      if (!to.meta || !to.meta.index || !from.meta || !from.meta.index) {
-        this.transitionName = ''
-        return;
+        if (!to.meta || !to.meta.index || !from.meta || !from.meta.index) {
+          this.transitionName = 'fade'
+          this.mode = 'out-in'
+          return;
+        }
+        if (to.meta.index >= from.meta.index) {
+          this.transitionName = 'scroll-right'
+          // this.mode = 'out-in'
+          this.mode = ''
+        } else {
+          this.transitionName = 'scroll-left'
+          this.mode = ''
+        }
       }
-      if (to.meta.index >= from.meta.index) {
-        this.transitionName = 'scroll-right'
-      } else {
-        this.transitionName = 'scroll-left'
-      }
-    }
   },
 }
 
@@ -317,14 +321,18 @@ export default {
     .vux-header {
       z-index: 200;
       will-change: left;
-      transition: left 0.25s cubic-bezier(.06, .56, .2, .97);
+      transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
     }
   }
   &.scroll-left-leave-to {
     z-index: 200;
     background: #f4f4f4;
     height: 100vh;
-    left: 100%;
+    left: 0%;
+    .vux-header {
+      z-index: 200;
+      left: 0%;
+    }
   }
   &.scroll-left-leave-active,
   &.scroll-left-leave {
@@ -334,6 +342,12 @@ export default {
     left: 100%;
     will-change: left;
     transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    .vux-header {
+      z-index: 200;
+      left: 100%;
+      will-change: left;
+      transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    }
   }
   &.scroll-right-leave-to {
     z-index: 100;
@@ -341,7 +355,8 @@ export default {
       z-index: 100;
     }
   }
-  &.scroll-right-leave-active, &.scroll-right-leave {
+  &.scroll-right-leave-active,
+  &.scroll-right-leave {
     z-index: 100;
     left: -20%;
     will-change: left;
@@ -349,18 +364,57 @@ export default {
     .vux-header {
       z-index: 100;
       will-change: left;
-      left: -50%;
+      left: -30%;
       transition: left 0.25s cubic-bezier(.06, .56, .2, .97);
     }
   }
   &.scroll-left-enter {
-    left: -20%;
-    z-index: 100;
+    z-index: 300;
+    left: -30%;
   }
-  &.scroll-left-enter-activ
+  &.scroll-left-enter-active,
   &.scroll-left-enter-to {
     z-index: 100;
-    transition: left 0.25s cubic-bezier(.06, .56, .2, .97);
+    background: #f4f4f4;
+    will-change: left;
+    transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+  }
+  // 给不适合scroll过渡效果的页面做的适配效果
+  &.fade-leave-to {
+    opacity: 0;
+  }
+
+  &.fade-leave-active,
+  &.fade-leave {
+    opacity: 0;
+    transition: left 0.1s cubic-bezier(.06, .56, .2, .97);
+  }
+
+  &.fade-enter {
+    position: fixed;
+    z-index: 200;
+    background: #f4f4f4;
+    height: 100vh;
+    left: 100%;
+    .vux-header {
+      z-index: 200;
+      left: 100%;
+    }
+  }
+
+  &.fade-enter-active,
+  &.fade-enter-to {
+    position: fixed;
+    z-index: 200;
+    background: #f4f4f4;
+    height: 100vh;
+    will-change: left;
+    transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    .vux-header {
+      z-index: 200;
+      will-change: left;
+      transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    }
   }
 }
 ```

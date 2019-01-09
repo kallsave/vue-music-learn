@@ -48,3 +48,6 @@
 - position: sticky兼容性挺好的
 - 修复search无法左右滚动,无法清除输入框的bug
 - 增加upload组件,找compress
+- svg的viewport
+- easy-html-webpack-plugin增加模板替换功能
+- search新页面

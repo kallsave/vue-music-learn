@@ -141,33 +141,33 @@ export default {
           return
         } else if (item2 && newVal > item1.stickyTop && newVal <= item2.stickyTop) {
           // 如果有多个sticky-ele并且滚动的位置处于两者中间
-          this.currentSticky = this.stickyMap[item1.eleKey]
-          this.diff = newVal - item1.stickyTop
-          let nextDiff = item2.stickyTop - newVal
-          // transformTop > 0表示两者已经碰上了
-          let transformTop = item1.clientHeight - nextDiff
-          // 如果这两者是可以合并的sticky-ele
-          if (item2.mergeEleKey && item2.mergeEleKey === item1.mergeEleKey) {
-            // 合并
-            if (transformTop >= 0 && !this.hadMergeEle) {
-              this.fixedElement.appendChild(this.stickyMap[item2.eleKey].$el)
-              this.hadMergeEle = true
-              return
-            } else if (transformTop < 0 && this.hadMergeEle) {
-              // 分离
-              this.hadMergeEle = false
-              const remove = this.fixedElement.removeChild(this.stickyMap[item2.eleKey].$el)
-              for (let key in this.stickyMap) {
-                if (this.stickyMap[key].$el === remove) {
-                  this.stickyMap[key].eleComponent.$el.appendChild(remove)
-                  this.$emit(EVENT_STICKY_REMOVE_MERGE)
-                }
-              }
-            }
-            return
-          } else {
-            this.transformTop = transformTop
-          }
+          // this.currentSticky = this.stickyMap[item1.eleKey]
+          // this.diff = newVal - item1.stickyTop
+          // let nextDiff = item2.stickyTop - newVal
+          // // transformTop > 0表示两者已经碰上了
+          // let transformTop = item1.clientHeight - nextDiff
+          // // 如果这两者是可以合并的sticky-ele
+          // if (item2.mergeEleKey && item2.mergeEleKey === item1.mergeEleKey) {
+          //   // 合并
+          //   if (transformTop >= 0 && !this.hadMergeEle) {
+          //     this.fixedElement.appendChild(this.stickyMap[item2.eleKey].$el)
+          //     this.hadMergeEle = true
+          //     return
+          //   } else if (transformTop < 0 && this.hadMergeEle) {
+          //     // 分离
+          //     this.hadMergeEle = false
+          //     const remove = this.fixedElement.removeChild(this.stickyMap[item2.eleKey].$el)
+          //     for (let key in this.stickyMap) {
+          //       if (this.stickyMap[key].$el === remove) {
+          //         this.stickyMap[key].eleComponent.$el.appendChild(remove)
+          //         this.$emit(EVENT_STICKY_REMOVE_MERGE)
+          //       }
+          //     }
+          //   }
+          //   return
+          // } else {
+          //   this.transformTop = transformTop
+          // }
         } else if (item2 && newVal >= item2.stickyTop) {
           // 如果有多个sticky-ele并且滚动到了后者的sticky
           this.diff = newVal - item1.stickyTop

@@ -108,7 +108,7 @@ export default {
           // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
           stopTime: 1000
         },
-        directionLockThreshold: 0.2,
+        directionLockThreshold: 0,
       },
       slideOptions: {
         probeType: 1,
