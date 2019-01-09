@@ -36,7 +36,7 @@ export class Song {
 }
 
 // 从接口处理数据使用这个函数
-export function createSong (musicData) {
+export function createSong(musicData) {
   const url = param(`http://dl.stream.qqmusic.qq.com/C400${musicData.strMediaMid}.m4a`, musicKey)
 
   return new Song({
@@ -52,7 +52,7 @@ export function createSong (musicData) {
   })
 }
 
-function filterSinger (singer) {
+function filterSinger(singer) {
   let result = []
   if (!singer) {
     return ''

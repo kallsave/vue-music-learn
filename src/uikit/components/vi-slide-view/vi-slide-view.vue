@@ -215,6 +215,7 @@ export default {
       this.$emit(EVENT_SCROLL_END)
     },
     touchScroll({x, y}) {
+      console.log(x)
       if (this.tabTitleList.length > 0) {
         let scrollX = Math.abs(x)
         if (!this.touchStart) {

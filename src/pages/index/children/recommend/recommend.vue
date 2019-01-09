@@ -196,7 +196,6 @@ export default {
       // console.log(pos)
     },
     onPullingDown() {
-      console.log('odfd')
       this._getData(true)
     },
   },

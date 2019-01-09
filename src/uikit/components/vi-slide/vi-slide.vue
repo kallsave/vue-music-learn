@@ -235,7 +235,6 @@ export default {
 
       // scroll
       this.slide.on(camelize(EVENT_SCROLL), (...args) => {
-        this.touch = true
         this.$emit(EVENT_SCROLL, ...args)
         // slide存在loop: true自动轮播,
         // 导致外层的scroll,slide的监听到scroll事件发生
@@ -263,8 +262,10 @@ export default {
       // touch-end
       // touch-end不能作为准确结束的标志
       this.slide.on(camelize(EVENT_TOUCH_END), () => {
-        this.touch = false
-        this.$emit(EVENT_TOUCH_END)
+        if (this.touch) {
+          this.touch = false
+          this.$emit(EVENT_TOUCH_END)
+        }
       })
 
       this.slide.goToPage(this.initPageIndex, 0, 0)

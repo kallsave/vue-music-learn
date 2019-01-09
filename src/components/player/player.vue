@@ -453,11 +453,11 @@ export default {
         createKeyframe.runAnimation(el, 'mini-img-rotate')
       }, startRotateTime)
     },
-    miniImgAfterLeave (el) {
+    miniImgAfterLeave(el) {
       // 小圆圆隐藏后
       el.animation = ''
     },
-    _miniImgEnterConfig () {
+    _miniImgEnterConfig() {
       const angle = getTransformAngle(this.$refs.bigImg)
       return {
         angle

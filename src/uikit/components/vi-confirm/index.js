@@ -1,4 +1,4 @@
-import Component from './vi-collapse.js'
+import Component from './vi-confirm.vue'
 
 Component.install = function (Vue) {
   Vue.component(Component.name, Component)

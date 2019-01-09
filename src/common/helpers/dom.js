@@ -94,7 +94,7 @@ export function dispatchEvent(ele, name, { type = 'Event', bubbles = true, cance
 }
 
 // 得到transform上的rotate,其他值不准确
-export function getTransformAngle (dom) {
+export function getTransformAngle(dom) {
   const transform = prefixStyle('transform')
   let matrix = getComputedStyle(dom).getPropertyValue(transform)
   let angle = 0

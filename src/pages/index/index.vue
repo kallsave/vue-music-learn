@@ -79,20 +79,20 @@ export default {
           threshold: 0.5,
         }
       },
-      tabTitleList: [
-        '推荐',
-        '歌手',
-        '排行',
-        '搜索'
-      ],
       componentList: [
         Recommend,
         Singer,
         Rank,
         Search
       ],
+      tabTitleList: [
+        '推荐',
+        '歌手',
+        '排行',
+        '搜索'
+      ],
       tabBarStyle: {
-        left: '50px'
+        left: '50px',
       }
     }
   },

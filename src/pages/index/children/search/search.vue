@@ -66,7 +66,7 @@
 <script>
 import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { getHotKey, search } from '@/api/search.js'
-import { sticky, STICKY_TOP_BAR } from '../../mixins/inject-sticky.js'
+import { sticky } from '../../mixins/inject-sticky.js'
 import { createSong } from '@/common/class/song.js'
 import { debounce, throttle } from '@/common/helpers/utils.js'
 import { playListMixin } from '@/common/mixins/player.js'
@@ -79,6 +79,8 @@ const TYPE_SINGER = 'singer'
 const DEBOUNCE_TIME = 400
 
 const perpage = 20
+
+const STICKY_TOP_BAR = -1
 
 export default {
   name: MUTABLE_KEEP_ALIVE_NAME,
@@ -111,7 +113,6 @@ export default {
           }
         },
         directionLockThreshold: 0,
-        stopPropagation: true
       },
       isFetchSearch: false,
     }
@@ -145,6 +146,21 @@ export default {
     ...mapActions([
       'insertSong'
     ]),
+    scrollHandler(pos) {
+      if (pos.y < -STICKY_TOP_BAR && this.ViSticky.$disY !== -STICKY_TOP_BAR) {
+        this.ViSticky.$disY = -STICKY_TOP_BAR
+        this.ViSticky.scroll.scrollTo(0, -STICKY_TOP_BAR, 0)
+        this.ViSticky.scroll.disable()
+      } else if (pos.y >= 0 && pos.y <= STICKY_TOP_BAR && this.ViSticky.$disY !== STICKY_TOP_BAR) {
+        this.ViSticky.$disY = STICKY_TOP_BAR
+        this.ViSticky.scroll.enable()
+      } else if (pos.y > -STICKY_TOP_BAR) {
+        if (this.ViSticky.scroll.y >= 0) {
+          return
+        }
+        this.ViSticky.scroll.scrollTo(0, pos.y, 0)
+      }
+    },
     handlePlayList() {
       this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
       this.$refs.scroll.refresh()

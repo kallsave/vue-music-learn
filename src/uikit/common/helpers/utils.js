@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2018-12-25 17:17:37
+ * @Last Modified time: 2019-01-09 20:50:15
  */
 
 /**
@@ -78,7 +78,7 @@ export function styleRemovePx(style) {
 * @param {Array, Array...}
 * @returns new Array
 */
-export function assignArray () {
+export function assignArray() {
   let arr = [].concat.apply([], arguments)
   let ret = []
   for (let i = 0, len = arr.length; i < len; i++) {
@@ -104,11 +104,11 @@ export function spliceArray() {
   })
 }
 
-export function checkClass (o) {
+export function checkClass(o) {
   return Object.prototype.toString.call(o).slice(8, -1)
 }
 
-export function deepClone (o) {
+export function deepClone(o) {
   let ret
   let instance = checkClass(o)
   if (instance === 'Array') {

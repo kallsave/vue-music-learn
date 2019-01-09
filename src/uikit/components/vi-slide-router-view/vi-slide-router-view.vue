@@ -1,6 +1,6 @@
 <template>
   <div class="vi-slide-router-view">
-    <template v-if="tabTitleList.length > 0">
+    <template v-if="isShowTabBar">
       <slot name="tab"
         :tab-title-list="tabTitleList"
         :change-page="change">
@@ -159,6 +159,10 @@ export default {
         return {}
       }
     },
+    isShowTabBar: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -210,6 +214,7 @@ export default {
       if (this.currentIndex !== -1) {
         this.pushHadShowPageList(this.currentIndex)
         this.$nextTick(() => {
+          // TODO:
           setTimeout(() => {
             this.$refs.slide && this.$refs.slide.slideToPage(this.currentIndex)
           }, 60)
@@ -237,11 +242,10 @@ export default {
       this.$emit(EVENT_SCROLL, ...arguments)
     },
     scrollEnd(pos, slide) {
-      console.log('end')
       this.$emit(EVENT_SCROLL_END)
     },
     touchScroll({x, y}) {
-      if (this.tabTitleList.length > 0) {
+      if (this.isShowTabBar) {
         let scrollX = Math.abs(x)
         if (!this.touchStart) {
           this.touchStart = true

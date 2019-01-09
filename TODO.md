@@ -51,3 +51,15 @@
 - svg的viewport
 - easy-html-webpack-plugin增加模板替换功能
 - search新页面
+- 初始化时自动下拉
+- vi-slide-view考虑去掉component
+
+# 优先
+- vi-slide-view
+- 没匹配到的路由做404
+- svg的viewport
+- index-list支持slot
+- dialog组件开发
+- confirm组件开发
+- click重复的问题
+- 改写路由
