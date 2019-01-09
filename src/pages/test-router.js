@@ -6,6 +6,7 @@ const Functional = () => import(/* webpackChunkName: "Funcitonal" */ './test/chi
 const Inject = () => import(/* webpackChunkName: "Funcitonal" */ './test/children/inject/inject.vue')
 const NativeSticky = () => import(/* webpackChunkName: "NativeSticky" */ './test/children/native-sticky/native-sticky.vue')
 const Sticky = () => import(/* webpackChunkName: "Sticky" */ './test/children/sticky/sticky.vue')
+const Collapse = () => import(/* webpackChunkName: "Sticky" */ './test/children/collapse/collapse.vue')
 
 export default {
   path: '/test',
@@ -34,6 +35,10 @@ export default {
     {
       path: '/test/sticky',
       component: Sticky
+    },
+    {
+      path: '/test/collapse',
+      component: Collapse
     }
   ]
 }

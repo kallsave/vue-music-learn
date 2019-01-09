@@ -213,12 +213,6 @@ export default {
         if (event === EVENT_SCROLL) {
           this.slide.on(camelize(event), (...args) => {
             this.$emit(event, ...args)
-            // slide存在loop: true自动轮播,
-            // 导致外层的scroll,slide的监听到scroll事件发生
-            // 有场景是需要主动触发的scroll
-            if (this.touch) {
-              this.$emit(EVENT_TOUCH_SCROLL, ...args)
-            }
           })
         } else {
           this.slide.on(camelize(event), (...args) => {
@@ -237,6 +231,18 @@ export default {
         this.touch = true
         this.toggleAbleParentSlide(this.$parent, false)
         this.$emit(EVENT_BEFORE_SCROLL_START)
+      })
+
+      // scroll
+      this.slide.on(camelize(EVENT_SCROLL), (...args) => {
+        this.touch = true
+        this.$emit(EVENT_SCROLL, ...args)
+        // slide存在loop: true自动轮播,
+        // 导致外层的scroll,slide的监听到scroll事件发生
+        // 有场景是需要主动触发的scroll
+        if (this.touch) {
+          this.$emit(EVENT_TOUCH_SCROLL, ...args)
+        }
       })
 
       // scroll-end

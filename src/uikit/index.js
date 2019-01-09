@@ -14,6 +14,7 @@ import ViSlideView from './components/vi-slide-view/index.js'
 import ViView from './components/vi-view/index.js'
 import ViInject from './components/vi-inject/index.js'
 import ViNativeSticky from './components/vi-native-sticky/index.js'
+import ViCollapse from './components/vi-collapse/index.js'
 
 const components = [
   ViLoadListCon,
@@ -31,7 +32,8 @@ const components = [
   ViSlideView,
   ViView,
   ViInject,
-  ViNativeSticky
+  ViNativeSticky,
+  ViCollapse
 ]
 
 function install(Vue) {

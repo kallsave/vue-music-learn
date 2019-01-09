@@ -110,7 +110,7 @@ export default {
             noMore: '没有更多的结果啦'
           }
         },
-        directionLockThreshold: 0.2,
+        directionLockThreshold: 0,
         stopPropagation: true
       },
       isFetchSearch: false,

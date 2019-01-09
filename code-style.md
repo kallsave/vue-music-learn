@@ -75,16 +75,17 @@ async function updateAllImg () {
 
 如果在for循环中使用async/await,不想申明没必要的函数名
 ```javascript
-(async() => {
-  for (var i = 0; i < imgList.length; i++) {
-    await((item) => {
-      return new Promise(() => {
+;(async() => {
+  for (let i = 0; i < imgList.length; i++) {
+    await(() => {
+      return new Promise(((resolve, reject) => {
         // ...
+        resolve()
       }).catch(() => {
         // ...
-        // console.error(err)
+        console.error(err)
       })
-    })(item)
+    })()
   }
 })()
 ```
@@ -257,7 +258,7 @@ App.vue
 <template>
   <div id="app" class="app">
     <transition :name="transitionName">
-      <router-view class="view"></router-view>
+      <router-view class="router-view"></router-view>
     </transition>
   </div>
 </template>
@@ -272,51 +273,150 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      if (!to.meta || !to.meta.index || !from.meta || !from.meta.index) {
-        this.transitionName = ''
-        return;
+        if (!to.meta || !to.meta.index || !from.meta || !from.meta.index) {
+          this.transitionName = 'fade'
+          this.mode = 'out-in'
+          return;
+        }
+        if (to.meta.index >= from.meta.index) {
+          this.transitionName = 'scroll-right'
+          // this.mode = 'out-in'
+          this.mode = ''
+        } else {
+          this.transitionName = 'scroll-left'
+          this.mode = ''
+        }
       }
-      if (to.meta.index >= from.meta.index) {
-        this.transitionName = 'scroll-right'
-      } else {
-        this.transitionName = 'scroll-left'
-      }
-    }
   },
 }
 
 </script>
 
 <style lang="less">
-.view {
+.router-view {
   position: absolute;
   width: 100%;
   left: 0;
-  &.scroll-right-enter,
-  &.scroll-left-leave-to {
+  // 防止布局溢出导致动画抖动
+  overflow-x: hidden;
+  &.scroll-right-enter {
     position: fixed;
-    left: 100%;
-    z-index: 100;
+    z-index: 200;
     background: #f4f4f4;
     height: 100vh;
+    left: 100%;
     .vux-header {
+      z-index: 200;
       left: 100%;
+    }
+  }
+  &.scroll-right-enter-active,
+  &.scroll-right-enter-to {
+    position: fixed;
+    z-index: 200;
+    background: #f4f4f4;
+    height: 100vh;
+    will-change: left;
+    transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    .vux-header {
+      z-index: 200;
+      will-change: left;
+      transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    }
+  }
+  &.scroll-left-leave-to {
+    z-index: 200;
+    background: #f4f4f4;
+    height: 100vh;
+    left: 0%;
+    .vux-header {
+      z-index: 200;
+      left: 0%;
+    }
+  }
+  &.scroll-left-leave-active,
+  &.scroll-left-leave {
+    z-index: 200;
+    background: #f4f4f4;
+    height: 100vh;
+    left: 100%;
+    will-change: left;
+    transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    .vux-header {
+      z-index: 200;
+      left: 100%;
+      will-change: left;
+      transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    }
+  }
+  &.scroll-right-leave-to {
+    z-index: 100;
+    .vux-header {
       z-index: 100;
     }
   }
-
-  &.scroll-right-enter-active,
-  &.scroll-left-leave-active {
-    .vux-header {
-      transition: left 0.3s;
-    }
-    position: fixed;
+  &.scroll-right-leave-active,
+  &.scroll-right-leave {
     z-index: 100;
+    left: -20%;
     will-change: left;
-    transition: left 0.3s;
+    transition: left 0.25s cubic-bezier(.06, .56, .2, .97);
+    .vux-header {
+      z-index: 100;
+      will-change: left;
+      left: -30%;
+      transition: left 0.25s cubic-bezier(.06, .56, .2, .97);
+    }
+  }
+  &.scroll-left-enter {
+    z-index: 300;
+    left: -30%;
+  }
+  &.scroll-left-enter-active,
+  &.scroll-left-enter-to {
+    z-index: 100;
+    background: #f4f4f4;
+    will-change: left;
+    transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+  }
+  // 给不适合scroll过渡效果的页面做的适配效果
+  &.fade-leave-to {
+    opacity: 0;
+  }
+
+  &.fade-leave-active,
+  &.fade-leave {
+    opacity: 0;
+    transition: left 0.1s cubic-bezier(.06, .56, .2, .97);
+  }
+
+  &.fade-enter {
+    position: fixed;
+    z-index: 200;
+    background: #f4f4f4;
+    height: 100vh;
+    left: 100%;
+    .vux-header {
+      z-index: 200;
+      left: 100%;
+    }
+  }
+
+  &.fade-enter-active,
+  &.fade-enter-to {
+    position: fixed;
+    z-index: 200;
+    background: #f4f4f4;
+    height: 100vh;
+    will-change: left;
+    transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    .vux-header {
+      z-index: 200;
+      will-change: left;
+      transition: left 0.3s cubic-bezier(.06, .56, .2, .97);
+    }
   }
 }
-</style>
 ```
 
 ## 关于better-scroll

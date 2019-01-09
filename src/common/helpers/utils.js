@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2018-12-02 11:20:56
+ * @Last Modified time: 2019-01-07 12:14:11
  */
 
 /**
@@ -13,7 +13,7 @@
  * @param {Number} [n=2] 补零的个数,默认是2
  * @returns
  */
-export function padZero (num, n = 2) {
+export function padZero(num, n = 2) {
   let len = num.toString().length
   while (len < n) {
     num = '0' + num
@@ -29,7 +29,7 @@ export function padZero (num, n = 2) {
  * @param {Numbe} max 较大的数字
  * @returns
  */
-function getRandomInt (min, max) {
+function getRandomInt(min, max) {
   // Math.random()不包括1,有缺陷
   // Matho.random的作用
   return Math.random() * (max - min + 1) + min | 0
@@ -42,7 +42,7 @@ function getRandomInt (min, max) {
  * @param {Array} arr
  * @returns
  */
-export function shuffle (arr) {
+export function shuffle(arr) {
   let _arr = arr.slice()
   for (let i = 0; i < _arr.length; i++) {
     let j = getRandomInt(0, i)
@@ -60,7 +60,7 @@ export function shuffle (arr) {
  * @param {Object, Array} obj
  * @returns
  */
-export function isEmptyObject (obj) {
+export function isEmptyObject(obj) {
   for (let key in obj) {
     return false
   }
@@ -74,7 +74,7 @@ export function isEmptyObject (obj) {
  * @param {*} str
  * @returns
  */
-export function camelize (str) {
+export function camelize(str) {
   str = String(str)
   return str.replace(/-(\w)/g, function (m, c) {
     return c ? c.toUpperCase() : ''
@@ -88,7 +88,7 @@ export function camelize (str) {
  * @param {*} str
  * @returns
  */
-export function middleline (str) {
+export function middleline(str) {
   str = String(str)
   return str.replace(/([A-Z])/g, '-$1').toLowerCase()
 }
@@ -102,7 +102,7 @@ export function middleline (str) {
  * @param {Number} delay
  * @returns
  */
-export function debounce (func, delay) {
+export function debounce(func, delay) {
   let timer
   return function (...args) {
     if (timer) {

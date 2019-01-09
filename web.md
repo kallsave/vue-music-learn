@@ -3,11 +3,13 @@
 ------------
 [code](https://codesandbox.io/s/vue)
 
-
 vue插件
 ------------
 [awesome-vue](https://github.com/vuejs/awesome-vue)
 
+vuex文档
+------------
+[vuex](https://vuex.vuejs.org/zh/api/#createnamespacedhelpers)
 
 图片转svg
 ------------

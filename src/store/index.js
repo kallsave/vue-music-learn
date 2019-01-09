@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createLogger from 'vuex/dist/logger'
+
+import createPersistedState from 'vuex-persistedstate'
 
 // modules
 import singers from './modules/singer/index.js'
@@ -9,9 +12,6 @@ import recommendAlbum from './modules/recommend-album/index.js'
 
 // keep-alive
 import KeepAliveName from './modules/keep-alive-name/keep-alive-name.js'
-
-import createLogger from 'vuex/dist/logger'
-import createPersistedState from 'vuex-persistedstate'
 
 // store是集合了各种storages的操作,默认是不带expire的localStorage
 // localStorage比cookie好,如果数据超过4k,cookie将丢失数据导致vuex没有保存
@@ -31,11 +31,13 @@ const store = engine.createStore(storages, storePlugins)
 
 const debug = process.env.NODE_ENV !== 'production'
 
-// createPersistedState和Vuex结合缺陷之一,不能保存对象的prototype,需要注意
-// createPersistedState和Vuex结合缺陷之二,不能区分处理key的报存时间,而是把整个vuex报存
-// createPersistedState只能处理常规的数据,需要其他需求用store操作
+const ignoreMutations = []
+// const ignoreMutations = ['SET_RECOMMEND_ALBUM']
+
+// localStore保存对象的prototype,需要注意
 const VuexPlugins = [
   createPersistedState({
+    key: 'vue-music',
     storage: {
       getItem: (key) => {
         return store.get(key)
@@ -44,6 +46,20 @@ const VuexPlugins = [
         store.set(key, value, new Date().getTime() + 10000 * 60)
       },
       removeItem: (key) => store.remove(key)
+    },
+    // getState(key) {
+    //   return store.get(key)
+    // },
+    // setState(key, value) {
+    //   console.log('value', value)
+    //   store.set(key, value, new Date().getTime() + 10000 * 60)
+    // },
+    filter(mutations) {
+      // 过滤掉
+      if (ignoreMutations.indexOf(mutations.type) !== -1) {
+        return false
+      }
+      return true
     }
   })
 ]
