@@ -75,8 +75,10 @@ const BIND_SCROLL_EVENTS = [
 // 派生出来的事件(推荐在父组件中使用)
 const EVENT_CHANGE = 'change'
 const EVENT_LOAD_IMAGE = 'load-image'
-// 需要在scrollEvents传['scroll']
+// 需要在scrollEvents传['scroll'],手指始终touch才会触发
 const EVENT_TOUCH_SCROLL = 'touch-scroll'
+// 需要在scrollEvents传['scroll'],手指主动触发
+const EVENT_TOUCH_TRIGGER_SCROLL = 'touch-trigger-scroll'
 
 const DEFAULT_OPTIONS = {
   // 多层嵌套会触发多次,所以需要click的场景自主添加
@@ -92,7 +94,8 @@ const DEFAULT_OPTIONS = {
     speed: 400
   },
   useTransition: true,
-  stopPropagation: false
+  stopPropagation: false,
+  bounceTime: 800,
 }
 
 export default {
@@ -155,12 +158,6 @@ export default {
       currentPageIndex: this.initPageIndex,
     }
   },
-  computed: {
-    loop() {
-      let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-      return options.snap.loop
-    }
-  },
   watch: {
     data: {
       handler() {
@@ -173,6 +170,11 @@ export default {
       },
       deep: true
     },
+  },
+  created() {
+    let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
+    this.loop = options.snap.loop
+    this.bounceTime = options.bounceTime
   },
   mounted() {
     this.name = COMPONENT_NAME
@@ -229,6 +231,7 @@ export default {
       // before-scroll-start其实是touch-start
       this.slide.on(camelize(EVENT_BEFORE_SCROLL_START), () => {
         this.touch = true
+        this.touchTrigger = true
         this.toggleAbleParentSlide(this.$parent, false)
         this.$emit(EVENT_BEFORE_SCROLL_START)
       })
@@ -238,9 +241,12 @@ export default {
         this.$emit(EVENT_SCROLL, ...args)
         // slide存在loop: true自动轮播,
         // 导致外层的scroll,slide的监听到scroll事件发生
-        // 有场景是需要主动触发的scroll
+        // 有场景是需要主动触发的scroll并且手指离开会停止
         if (this.touch) {
           this.$emit(EVENT_TOUCH_SCROLL, ...args)
+        }
+        if (this.touchTrigger) {
+          this.$emit(EVENT_TOUCH_TRIGGER_SCROLL, ...args)
         }
       })
 
@@ -259,11 +265,17 @@ export default {
         }
       })
 
-      // touch-end
+      // better-scroll的touch-end
       // touch-end不能作为准确结束的标志
       this.slide.on(camelize(EVENT_TOUCH_END), () => {
+        // 回滚的时间
+        // TODO:并不准确
+        setTimeout(() => {
+          this.touchTrigger = false
+        }, this.bounceTime)
         if (this.touch) {
           this.touch = false
+          // 因为有了touch-start的判断,派生出的touch-end可以作为准确结束的标志
           this.$emit(EVENT_TOUCH_END)
         }
       })

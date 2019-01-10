@@ -24,6 +24,7 @@
           :options="slideRouterOptions"
           :tab-title-list="tabTitleList"
           :tab-bar-style="tabBarStyle"
+          :is-show-tab-bar="true"
           :componentList="componentList"
           @change="change"
           @touch-scroll="touchScroll"
@@ -92,7 +93,6 @@ export default {
         '搜索'
       ],
       tabBarStyle: {
-        left: '50px',
       }
     }
   },

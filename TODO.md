@@ -55,6 +55,7 @@
 - vi-slide-view考虑去掉component
 
 # 优先
+- 完成tab-bar组件
 - vi-slide-view
 - 没匹配到的路由做404
 - svg的viewport
@@ -63,3 +64,4 @@
 - confirm组件开发
 - click重复的问题
 - 改写路由
+- 完成剩余内容

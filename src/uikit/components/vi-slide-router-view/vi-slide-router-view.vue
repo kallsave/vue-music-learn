@@ -5,15 +5,15 @@
         :tab-title-list="tabTitleList"
         :change-page="change">
         <div class="vi-slide-router-view-tab">
-          <div class="vi-slide-router-view-tab-list">
-            <div class="vi-slide-router-view-tab-item"
+          <div ref="tabList" class="vi-slide-router-view-tab-list">
+            <div ref="tabItem" class="vi-slide-router-view-tab-item"
               v-for="(item, index) in tabTitleList" :key="index">
               <span class="vi-slide-router-view-tab-item-link" :class="{'active': index === currentIndex}"
                 @click="change(index)">{{item}}</span>
             </div>
           </div>
-          <div class="vi-slide-router-view-tab-bar" :style="tabStyle">
-            <div class="vi-slide-router-view-tab-bar-content" :style="tabContentStyle"></div>
+          <div ref="tabBar" class="vi-slide-router-view-tab-bar">
+            <div class="vi-slide-router-view-tab-bar-content" :style="tabBarContentStyle"></div>
           </div>
         </div>
       </slot>
@@ -27,6 +27,7 @@
       @before-scroll-start="beforeScrollStart"
       @change="change"
       @touch-scroll="touchScroll"
+      @touch-trigger-scroll="touchTriggerScroll"
       @touch-end="touchEnd">
       <vi-slide-item v-for="(item, index) in siblingsRoute" :key="index">
         <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
@@ -44,8 +45,8 @@
 import ViSlide from '../vi-slide/vi-slide.vue'
 import ViView from '../vi-view/vi-view.js'
 import Background from './vi-slide-router-view-background.vue'
-
 import { camelize, mulitDeepClone, pxToNum, stylePadPx } from '../../common/helpers/utils.js'
+import { prefixStyle } from '../../common/helpers/dom.js'
 
 const COMPONENT_NAME = 'vi-slide-router-view'
 
@@ -95,9 +96,11 @@ const DEFAULT_OPTIONS = {
 
 const DEFAULT_TAB_BAR_STYLE = {
   'background-color': '#ffcd32',
-  'left': '0px',
   'height': '2px',
+  'width': '50px'
 }
+
+const TRANSFORM = prefixStyle('transform')
 
 export default {
   name: COMPONENT_NAME,
@@ -169,13 +172,8 @@ export default {
       hadShowPageList: [],
       onePagescrollX: 0,
       slideGroopWidth: 0,
+      tabBarContentStyle: {},
     }
-  },
-  created() {
-    this.pushHadShowPageList(this.currentIndex)
-    // created => children.props => children.data => children.created
-    this.slideOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-    this._tabBarStyle = mulitDeepClone({}, DEFAULT_TAB_BAR_STYLE, stylePadPx(this.tabBarStyle))
   },
   computed: {
     currentIndex() {
@@ -186,27 +184,6 @@ export default {
     threshold() {
       let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
       return options.snap.threshold
-    },
-    tabStyle() {
-      let itemPercent = 1 / this.siblingsRoute.length * 100
-      return mulitDeepClone({}, this.tabBarStyle, {
-        'width': `calc(${itemPercent}% - ${this._tabBarStyle.left})`,
-        'left': `calc(${this.currentIndex * itemPercent}% + ${pxToNum(this._tabBarStyle.left) / 2}px)`,
-      })
-    },
-    tabContentStyle() {
-      const tabPosition = this.onePagescrollX * 0.3
-      if (this.direction === 'right') {
-        return {
-          'right': `${-tabPosition}px`,
-          'background-color': this._tabBarStyle['background-color']
-        }
-      } else {
-        return {
-          'left': `${-tabPosition}px`,
-          'background-color': this._tabBarStyle['background-color']
-        }
-      }
     },
   },
   watch: {
@@ -223,14 +200,26 @@ export default {
       }
     },
   },
+  created() {
+    this.pushHadShowPageList(this.currentIndex)
+    // created => children.props => children.data => children.created
+    this.slideOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
+    this.tabBarContentStyle = mulitDeepClone({}, DEFAULT_TAB_BAR_STYLE, stylePadPx(this.tabBarStyle))
+  },
   mounted() {
     this._findSlide()
     this._calculateSlideWidth()
   },
   methods: {
     _calculateSlideWidth() {
-      this.slideGroopWidth = this.$refs.slide.getSlideWidth()
-      this.onePageWidth = this.slideGroopWidth / this.siblingsRoute.length
+      const slideGroopWidth = this.$refs.slide.getSlideWidth()
+      const slidePageWidth = this.$refs.slide.getSlideWidth() / this.tabTitleList.length
+      const tabListWidth = this.$refs.tabList.clientWidth
+      const tabItemWidth = tabListWidth / this.tabTitleList.length
+      this.rate = tabListWidth / slideGroopWidth
+      const tabBarWidth = this.$refs.tabBar.clientWidth
+      this.remainder = (tabItemWidth - tabBarWidth) / 2
+      this.$refs.tabBar.style[TRANSFORM] = `translateX(${this.rate * Math.abs(this.slide.x) + this.remainder}px)`
     },
     _findSlide() {
       this.slide = this.$refs.slide.slide
@@ -238,34 +227,37 @@ export default {
     beforeScrollStart() {
       this.$emit(EVENT_BEFORE_SCROLL_START)
     },
-    scroll() {
+    scroll({x}) {
       this.$emit(EVENT_SCROLL, ...arguments)
+      let scrollX = Math.abs(x)
+      this.$refs.tabBar.style[TRANSFORM] = `translateX(${this.rate * scrollX + this.remainder}px)`
     },
     scrollEnd(pos, slide) {
       this.$emit(EVENT_SCROLL_END)
     },
+    touchTriggerScroll({x, y}) {
+
+    },
     touchScroll({x, y}) {
-      if (this.isShowTabBar) {
-        let scrollX = Math.abs(x)
-        if (!this.touchStart) {
-          this.touchStart = true
-          this.touchStartX = scrollX
-        }
-        if (this.touchStartX && scrollX - this.touchStartX > 0) {
-          this.direction = 'right'
-        } else {
-          this.direction = 'left'
-        }
-        this.onePagescrollX = Math.abs(scrollX - (this.currentIndex * this.onePageWidth))
-      }
+    //   if (this.isShowTabBar) {
+    //     let scrollX = Math.abs(x)
+    //     if (!this.touchStart) {
+    //       this.touchStart = true
+    //       this.touchStartX = scrollX
+    //     }
+    //     let X = Math.abs(this.slide.x)
+    //     console.log(X)
+    //     this.$refs.tabBar.style[TRANSFORM] = `translateX(${this.rate * X + this.remainder}px)`
+    //   }
       this.$emit(EVENT_TOUCH_SCROLL, ...arguments)
     },
     touchEnd() {
       if (this.onePagescrollX >= this.threshold * this.onePageWidth) {
         this.touchStart = false
-        return
+      } else {
+        this.onePagescrollX = 0
       }
-      this.onePagescrollX = 0
+      this.$emit(EVENT_TOUCH_END)
     },
     change(index) {
       this.$emit(EVENT_CHANGE, index)
@@ -320,13 +312,8 @@ export default {
     .vi-slide-router-view-tab-bar
       position: absolute
       z-index: 5
-      height: 2px
       bottom: 0
-      transition: all 0.2s
       .vi-slide-router-view-tab-bar-content
-        position: absolute
-        height: 100%;
-        width: 100%
-        transition: left 0.2s, right 0.2s
+        height: 2px
 
 </style>
