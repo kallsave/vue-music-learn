@@ -42,19 +42,15 @@ const COMPONENT_NAME = 'vi-slide'
 // better-scroll原始的事件(不推荐在父组件中使用,会存在嵌套事件触发多次的,主动触发的问题)
 const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
 const EVENT_SCROLL_END = 'scroll-end'
-const EVENT_TOUCH_END = 'touch-end'
 // 需要传scrollEvents = ['scroll-start']
 const EVENT_SCROLL_START = 'scroll-start'
 // 需要传scrollEvents = ['scroll']
 const EVENT_SCROLL = 'scroll'
-// 需要传scrollEvents = ['scroll-cancel']
-const EVENT_SCROLL_CANCEL = 'scroll-cancel'
 
 // better-scroll原始的scrollEvents事件集合
 const SCROLL_EVENTS = [
   EVENT_BEFORE_SCROLL_START,
   EVENT_SCROLL_END,
-  EVENT_TOUCH_END,
   EVENT_SCROLL,
   EVENT_SCROLL_START
 ]
@@ -68,17 +64,10 @@ const SCROLL_EVENTS = [
 const BIND_SCROLL_EVENTS = [
   EVENT_SCROLL_END,
   EVENT_BEFORE_SCROLL_START,
-  EVENT_TOUCH_END,
-  EVENT_SCROLL
 ]
 
-// 派生出来的事件(推荐在父组件中使用)
 const EVENT_CHANGE = 'change'
 const EVENT_LOAD_IMAGE = 'load-image'
-// 需要在scrollEvents传['scroll'],手指始终touch才会触发
-const EVENT_TOUCH_SCROLL = 'touch-scroll'
-// 需要在scrollEvents传['scroll'],手指主动触发
-const EVENT_TOUCH_TRIGGER_SCROLL = 'touch-trigger-scroll'
 
 const DEFAULT_OPTIONS = {
   // 多层嵌套会触发多次,所以需要click的场景自主添加
@@ -158,6 +147,12 @@ export default {
       currentPageIndex: this.initPageIndex,
     }
   },
+  computed: {
+    loop() {
+      let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
+      return options.snap.loop
+    }
+  },
   watch: {
     data: {
       handler() {
@@ -171,15 +166,9 @@ export default {
       deep: true
     },
   },
-  created() {
-    let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-    this.loop = options.snap.loop
-    this.bounceTime = options.bounceTime
-  },
   mounted() {
-    this.name = COMPONENT_NAME
-    this.setSlideWidth()
     this._initDots()
+    this.setSlideWidth()
     this._initSlide()
     if (this.autoPlay) {
       this._play()
@@ -225,7 +214,6 @@ export default {
     },
     _initSlide() {
       let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-      // better-scroll会改变options的值(浅引用)
       this.slide = new BScroll(this.$refs.slide, options)
 
       // before-scroll-start其实是touch-start
@@ -234,20 +222,6 @@ export default {
         this.touchTrigger = true
         this.toggleAbleParentSlide(this.$parent, false)
         this.$emit(EVENT_BEFORE_SCROLL_START)
-      })
-
-      // scroll
-      this.slide.on(camelize(EVENT_SCROLL), (...args) => {
-        this.$emit(EVENT_SCROLL, ...args)
-        // slide存在loop: true自动轮播,
-        // 导致外层的scroll,slide的监听到scroll事件发生
-        // 有场景是需要主动触发的scroll并且手指离开会停止
-        if (this.touch) {
-          this.$emit(EVENT_TOUCH_SCROLL, ...args)
-        }
-        if (this.touchTrigger) {
-          this.$emit(EVENT_TOUCH_TRIGGER_SCROLL, ...args)
-        }
       })
 
       // scroll-end
@@ -262,21 +236,6 @@ export default {
         }
         if (this.autoPlay) {
           this._play()
-        }
-      })
-
-      // better-scroll的touch-end
-      // touch-end不能作为准确结束的标志
-      this.slide.on(camelize(EVENT_TOUCH_END), () => {
-        // 回滚的时间
-        // TODO:并不准确
-        setTimeout(() => {
-          this.touchTrigger = false
-        }, this.bounceTime)
-        if (this.touch) {
-          this.touch = false
-          // 因为有了touch-start的判断,派生出的touch-end可以作为准确结束的标志
-          this.$emit(EVENT_TOUCH_END)
         }
       })
 

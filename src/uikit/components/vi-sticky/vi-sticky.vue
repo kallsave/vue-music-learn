@@ -217,8 +217,7 @@ export default {
     }
   },
   created() {
-    // created => children.props => children.data => children.created
-    this.stickyOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options, BIND_OPTIONS)
+    this._propChildren()
   },
   mounted() {
     this._findFixedElement()
@@ -235,6 +234,10 @@ export default {
     }
   },
   methods: {
+    _propChildren() {
+      // created => children.props => children.data => children.created
+      this.stickyOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options, BIND_OPTIONS)
+    },
     scrollHandle(pos) {
       this.scrollY = pos.y
       this.$emit(EVENT_SCROLL, pos, this.scroll)

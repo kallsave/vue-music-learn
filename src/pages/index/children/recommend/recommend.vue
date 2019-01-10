@@ -18,8 +18,7 @@
             :show-dots="true"
             :auto-play="true"
             @scroll-end="scrollEnd"
-            @load-image="loadImage"
-            @scroll="scroll">
+            @load-image="loadImage">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->
             <template slot="dots" slot-scope="scope">
@@ -188,9 +187,6 @@ export default {
       this.$router.push({
         path: `/music/recommend-detail/${item.dissid}`
       })
-    },
-    scroll() {
-      // console.log('slide-scroll')
     },
     scrollEnd(pos) {
       // console.log(pos)

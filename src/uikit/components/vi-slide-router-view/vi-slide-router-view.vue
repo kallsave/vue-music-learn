@@ -25,10 +25,7 @@
       @scroll-end="scrollEnd"
       @scroll="scroll"
       @before-scroll-start="beforeScrollStart"
-      @change="change"
-      @touch-scroll="touchScroll"
-      @touch-trigger-scroll="touchTriggerScroll"
-      @touch-end="touchEnd">
+      @change="change">
       <vi-slide-item v-for="(item, index) in siblingsRoute" :key="index">
         <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
           <component :is="item.component"></component>
@@ -53,19 +50,15 @@ const COMPONENT_NAME = 'vi-slide-router-view'
 // better-scroll原始的事件(不推荐在父组件中使用,会存在嵌套事件触发多次的,主动触发的问题)
 const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
 const EVENT_SCROLL_END = 'scroll-end'
-const EVENT_TOUCH_END = 'touch-end'
 // 需要传scrollEvents = ['scroll-start']
 const EVENT_SCROLL_START = 'scroll-start'
 // 需要传scrollEvents = ['scroll']
 const EVENT_SCROLL = 'scroll'
-// 需要传scrollEvents = ['scroll-cancel']
-const EVENT_SCROLL_CANCEL = 'scroll-cancel'
 
 // better-scroll原始的scrollEvents事件集合
 const SCROLL_EVENTS = [
   EVENT_BEFORE_SCROLL_START,
   EVENT_SCROLL_END,
-  EVENT_TOUCH_END,
   EVENT_SCROLL,
   EVENT_SCROLL_START
 ]
@@ -73,8 +66,6 @@ const SCROLL_EVENTS = [
 // 派生出来的事件(推荐在父组件中使用)
 const EVENT_CHANGE = 'change'
 const EVENT_LOAD_IMAGE = 'load-image'
-// 需要在scrollEvents传['scroll']
-const EVENT_TOUCH_SCROLL = 'touch-scroll'
 
 const DEFAULT_OPTIONS = {
   probeType: 3,
@@ -170,7 +161,6 @@ export default {
   data() {
     return {
       hadShowPageList: [],
-      onePagescrollX: 0,
       slideGroopWidth: 0,
       tabBarContentStyle: {},
     }
@@ -191,26 +181,25 @@ export default {
       if (this.currentIndex !== -1) {
         this.pushHadShowPageList(this.currentIndex)
         this.$nextTick(() => {
-          // TODO:
-          setTimeout(() => {
-            this.$refs.slide && this.$refs.slide.slideToPage(this.currentIndex)
-          }, 60)
-          this.onePagescrollX = 0
+          this.$refs.slide && this.$refs.slide.slideToPage(this.currentIndex)
         })
       }
     },
   },
   created() {
     this.pushHadShowPageList(this.currentIndex)
-    // created => children.props => children.data => children.created
-    this.slideOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-    this.tabBarContentStyle = mulitDeepClone({}, DEFAULT_TAB_BAR_STYLE, stylePadPx(this.tabBarStyle))
+    this._propChildren()
   },
   mounted() {
     this._findSlide()
     this._calculateSlideWidth()
   },
   methods: {
+    _propChildren() {
+      // created => children.props => children.data => children.created
+      this.slideOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
+      this.tabBarContentStyle = mulitDeepClone({}, DEFAULT_TAB_BAR_STYLE, stylePadPx(this.tabBarStyle))
+    },
     _calculateSlideWidth() {
       const slideGroopWidth = this.$refs.slide.getSlideWidth()
       const slidePageWidth = this.$refs.slide.getSlideWidth() / this.tabTitleList.length
@@ -234,30 +223,6 @@ export default {
     },
     scrollEnd(pos, slide) {
       this.$emit(EVENT_SCROLL_END)
-    },
-    touchTriggerScroll({x, y}) {
-
-    },
-    touchScroll({x, y}) {
-    //   if (this.isShowTabBar) {
-    //     let scrollX = Math.abs(x)
-    //     if (!this.touchStart) {
-    //       this.touchStart = true
-    //       this.touchStartX = scrollX
-    //     }
-    //     let X = Math.abs(this.slide.x)
-    //     console.log(X)
-    //     this.$refs.tabBar.style[TRANSFORM] = `translateX(${this.rate * X + this.remainder}px)`
-    //   }
-      this.$emit(EVENT_TOUCH_SCROLL, ...arguments)
-    },
-    touchEnd() {
-      if (this.onePagescrollX >= this.threshold * this.onePageWidth) {
-        this.touchStart = false
-      } else {
-        this.onePagescrollX = 0
-      }
-      this.$emit(EVENT_TOUCH_END)
     },
     change(index) {
       this.$emit(EVENT_CHANGE, index)
