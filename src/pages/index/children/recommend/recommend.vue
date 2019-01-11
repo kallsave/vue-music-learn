@@ -16,7 +16,7 @@
             :data="recommends"
             :options="slideOptions"
             :show-dots="true"
-            :auto-play="true"
+            :auto-play="false"
             @scroll-end="scrollEnd"
             @load-image="loadImage">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->

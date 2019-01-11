@@ -6,6 +6,11 @@
         <!-- <vi-sticky-ele>
           <tab></tab>
         </vi-sticky-ele> -->
+        <vi-tab
+          ref="tab"
+          :tab-list="tabTitleList"
+          :currentIndex.sync="currentIndex"
+          @click-tab-item="clickTabItem"></vi-tab>
       </template>
       <template v-if="slideRouterMode === slideRouterModeList[0]">
         <vi-slide-router-transition
@@ -27,8 +32,7 @@
           :is-show-tab-bar="true"
           :componentList="componentList"
           @change="change"
-          @touch-scroll="touchScroll"
-          @scroll="scroll"
+          @touch-scroll="scroll"
         ></vi-slide-router-view>
       </template>
       <template v-else-if="slideRouterMode === slideRouterModeList[2]">
@@ -40,7 +44,6 @@
           :tab-bar-style="tabBarStyle"
           :componentList="componentList"
           @change="change"
-          @touch-scroll="touchScroll"
           @scroll="scroll"
         ></vi-slide-view>
       </template>
@@ -55,10 +58,13 @@ import MHeader from './components/m-header/m-header.vue'
 import Tab from './components/tab/tab.vue'
 import SlideTab from './components/slide-tab/slide-tab.vue'
 import Background from './components/background/background.vue'
+import { prefixStyle } from '@/common/helpers/dom.js'
 const Recommend = () => import(/* webpackChunkName: "Recommend" */ './children/recommend/recommend.vue')
 const Singer = () => import(/* webpackChunkName: "Singer" */ './children/singer/singer.vue')
 const Rank = () => import(/* webpackChunkName: "Rank" */ './children/rank/rank.vue')
 const Search = () => import(/* webpackChunkName: "Search" */ './children/search/search.vue')
+
+const TRANSFORM = prefixStyle('transform')
 
 const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view', 'vi-slide-view']
 
@@ -93,7 +99,9 @@ export default {
         '搜索'
       ],
       tabBarStyle: {
-      }
+        'transition': 'none'
+      },
+      currentIndex: 0
     }
   },
   computed: {
@@ -101,15 +109,25 @@ export default {
       'mutableKeepAliveName'
     ])
   },
+  mounted() {
+    this.currentIndex = this.$refs.viSlideRouterView.getCurrentIndex()
+  },
   methods: {
     change(index) {
-      // console.log(index)
+      this.currentIndex = index
     },
-    touchScroll({x, y}) {
-      // console.log(x)
+    scroll({x, y}) {
+      const slideGroopWidth = this.$refs.viSlideRouterView.getSlideWidth()
+      const slidePageWidth = slideGroopWidth / this.tabTitleList.length
+      const tabWidth = this.$refs.tab.$el.clientWidth
+      const tabItemWidth = tabWidth / this.tabTitleList.length
+      this.rate = tabWidth / slideGroopWidth
+      const tabSliderWidth = this.$refs.tab.tabSlider.clientWidth
+      this.remainder = (tabItemWidth - tabSliderWidth) / 2
+      this.$refs.tab.tabSlider.style[TRANSFORM] = `translateX(${this.rate * Math.abs(x) + this.remainder}px)`
     },
-    scroll() {
-      // console.log('scroll')
+    clickTabItem(index) {
+      this.$refs.viSlideRouterView.change(index)
     }
   },
 }

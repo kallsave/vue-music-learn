@@ -1,23 +1,5 @@
 <template>
   <div class="vi-slide-router-view">
-    <template v-if="isShowTabBar">
-      <slot name="tab"
-        :tab-title-list="tabTitleList"
-        :change-page="change">
-        <div class="vi-slide-router-view-tab">
-          <div ref="tabList" class="vi-slide-router-view-tab-list">
-            <div ref="tabItem" class="vi-slide-router-view-tab-item"
-              v-for="(item, index) in tabTitleList" :key="index">
-              <span class="vi-slide-router-view-tab-item-link" :class="{'active': index === currentIndex}"
-                @click="change(index)">{{item}}</span>
-            </div>
-          </div>
-          <div ref="tabBar" class="vi-slide-router-view-tab-bar">
-            <div class="vi-slide-router-view-tab-bar-content" :style="tabBarContentStyle"></div>
-          </div>
-        </div>
-      </slot>
-    </template>
     <vi-slide ref="slide"
       :options="slideOptions"
       :initPageIndex="currentIndex"
@@ -25,6 +7,7 @@
       @scroll-end="scrollEnd"
       @scroll="scroll"
       @before-scroll-start="beforeScrollStart"
+      @touch-scroll="touchScroll"
       @change="change">
       <vi-slide-item v-for="(item, index) in siblingsRoute" :key="index">
         <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
@@ -42,8 +25,7 @@
 import ViSlide from '../vi-slide/vi-slide.vue'
 import ViView from '../vi-view/vi-view.js'
 import Background from './vi-slide-router-view-background.vue'
-import { camelize, mulitDeepClone, pxToNum, stylePadPx } from '../../common/helpers/utils.js'
-import { prefixStyle } from '../../common/helpers/dom.js'
+import { mulitDeepClone } from '../../common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-slide-router-view'
 
@@ -66,6 +48,7 @@ const SCROLL_EVENTS = [
 // 派生出来的事件(推荐在父组件中使用)
 const EVENT_CHANGE = 'change'
 const EVENT_LOAD_IMAGE = 'load-image'
+const EVENT_TOUCH_SCROLL = 'touch-scroll'
 
 const DEFAULT_OPTIONS = {
   probeType: 3,
@@ -84,14 +67,6 @@ const DEFAULT_OPTIONS = {
     right: false
   }
 }
-
-const DEFAULT_TAB_BAR_STYLE = {
-  'background-color': '#ffcd32',
-  'height': '2px',
-  'width': '50px'
-}
-
-const TRANSFORM = prefixStyle('transform')
 
 export default {
   name: COMPONENT_NAME,
@@ -137,10 +112,6 @@ export default {
         return Background
       }
     },
-    isUseTabBarScrolling: {
-      type: Boolean,
-      default: false
-    },
     tabTitleList: {
       type: Array,
       default() {
@@ -161,7 +132,6 @@ export default {
   data() {
     return {
       hadShowPageList: [],
-      slideGroopWidth: 0,
       tabBarContentStyle: {},
     }
   },
@@ -171,19 +141,17 @@ export default {
         return this.$route.matched[this.$route.matched.length - 1].regex.test(item.path)
       })
     },
-    threshold() {
-      let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-      return options.snap.threshold
-    },
   },
   watch: {
-    $route(newVal) {
-      if (this.currentIndex !== -1) {
-        this.pushHadShowPageList(this.currentIndex)
-        this.$nextTick(() => {
-          this.$refs.slide && this.$refs.slide.slideToPage(this.currentIndex)
-        })
-      }
+    $route: {
+      handler(newVal) {
+        if (this.currentIndex !== -1) {
+          this.pushHadShowPageList(this.currentIndex)
+          this.$nextTick(() => {
+            this.$refs.slide && this.$refs.slide.slideToPage(this.currentIndex)
+          })
+        }
+      },
     },
   },
   created() {
@@ -192,37 +160,33 @@ export default {
   },
   mounted() {
     this._findSlide()
-    this._calculateSlideWidth()
   },
   methods: {
     _propChildren() {
       // created => children.props => children.data => children.created
       this.slideOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-      this.tabBarContentStyle = mulitDeepClone({}, DEFAULT_TAB_BAR_STYLE, stylePadPx(this.tabBarStyle))
-    },
-    _calculateSlideWidth() {
-      const slideGroopWidth = this.$refs.slide.getSlideWidth()
-      const slidePageWidth = this.$refs.slide.getSlideWidth() / this.tabTitleList.length
-      const tabListWidth = this.$refs.tabList.clientWidth
-      const tabItemWidth = tabListWidth / this.tabTitleList.length
-      this.rate = tabListWidth / slideGroopWidth
-      const tabBarWidth = this.$refs.tabBar.clientWidth
-      this.remainder = (tabItemWidth - tabBarWidth) / 2
-      this.$refs.tabBar.style[TRANSFORM] = `translateX(${this.rate * Math.abs(this.slide.x) + this.remainder}px)`
     },
     _findSlide() {
       this.slide = this.$refs.slide.slide
     },
+    getSlideWidth() {
+      return this.$refs.slide && this.$refs.slide.getSlideWidth()
+    },
     beforeScrollStart() {
       this.$emit(EVENT_BEFORE_SCROLL_START)
     },
-    scroll({x}) {
+    scroll() {
       this.$emit(EVENT_SCROLL, ...arguments)
-      let scrollX = Math.abs(x)
-      this.$refs.tabBar.style[TRANSFORM] = `translateX(${this.rate * scrollX + this.remainder}px)`
+    },
+    touchScroll() {
+      console.log(2369)
+      this.$emit(EVENT_TOUCH_SCROLL, ...arguments)
     },
     scrollEnd(pos, slide) {
       this.$emit(EVENT_SCROLL_END)
+    },
+    getCurrentIndex() {
+      return this.currentIndex
     },
     change(index) {
       this.$emit(EVENT_CHANGE, index)
@@ -255,7 +219,7 @@ export default {
 </script>
 
 <style lang="stylus">
-@import "~@/common/stylus/variable"
+@import "../../common/stylus/variable.styl"
 
 .vi-slide-router-view
   .vi-slide-router-view-tab

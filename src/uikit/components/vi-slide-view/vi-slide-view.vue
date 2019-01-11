@@ -25,9 +25,7 @@
       @scroll-end="scrollEnd"
       @scroll="scroll"
       @before-scroll-start="beforeScrollStart"
-      @change="change"
-      @touch-scroll="touchScroll"
-      @touch-end="touchEnd">
+      @change="change">
       <div v-for="(item, index) in componentList" :key="index">
         <template v-if="currentIndex === index">
           <component :is="item"></component>
@@ -191,8 +189,6 @@ export default {
       }
     },
   },
-  watch: {
-  },
   mounted() {
     this._findSlide()
     this._calculateSlideWidth()
@@ -213,23 +209,6 @@ export default {
     },
     scrollEnd(pos, slide) {
       this.$emit(EVENT_SCROLL_END)
-    },
-    touchScroll({x, y}) {
-      console.log(x)
-      if (this.tabTitleList.length > 0) {
-        let scrollX = Math.abs(x)
-        if (!this.touchStart) {
-          this.touchStart = true
-          this.touchStartX = scrollX
-        }
-        if (this.touchStartX && scrollX - this.touchStartX > 0) {
-          this.direction = 'right'
-        } else {
-          this.direction = 'left'
-        }
-        this.onePagescrollX = Math.abs(scrollX - (this.currentIndex * this.onePageWidth))
-      }
-      this.$emit(EVENT_TOUCH_SCROLL, ...arguments)
     },
     touchEnd() {
       if (this.onePagescrollX >= this.threshold * this.onePageWidth) {

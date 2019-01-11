@@ -42,7 +42,7 @@
 import ViScroll from '@/uikit/components/vi-scroll/vi-scroll.vue'
 import { getData, prefixStyle } from '@/common/helpers/dom.js'
 
-const transform = prefixStyle('transform')
+const TRANSFORM = prefixStyle('transform')
 
 const DEFAULT_OPTIONS = {
   probeType: 3,
@@ -132,7 +132,7 @@ export default {
     diff(newVal) {
       // fixedTop是要做的tranform位移,负值
       let fixedTop = (newVal > 0 && newVal < this.listTitleHeight) ? newVal - this.listTitleHeight : 0
-      this.$refs.fixed.style[transform] = `translate3d(0,${fixedTop}px,0)`
+      this.$refs.fixed.style[TRANSFORM] = `translate3d(0,${fixedTop}px,0)`
     }
   },
   methods: {

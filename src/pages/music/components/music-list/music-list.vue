@@ -49,7 +49,7 @@ import { playListMixin } from '@/common/mixins/player.js'
 import { prefixStyle } from '@/common/helpers/dom.js'
 import { mapGetters, mapActions } from 'vuex'
 
-const transform = prefixStyle('transform')
+const TRANSFORM = prefixStyle('transform')
 const backdrop = prefixStyle('backdrop-filter')
 const filter = prefixStyle('filter')
 
@@ -119,7 +119,7 @@ export default {
       } else {
         blur = Math.min(5, percent * 5)
       }
-      this.$refs.bgImage.style[transform] = `scale(${scale})`
+      this.$refs.bgImage.style[TRANSFORM] = `scale(${scale})`
     },
     isFetchSongList(newVal) {
       if (newVal) {

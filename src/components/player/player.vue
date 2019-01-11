@@ -147,7 +147,7 @@ const DURATION_ROTATE = 20000
 const DURATION_CHANGE_SONG = 800
 const DURATION_START_ROTATE = 800
 
-const transform = prefixStyle('transform')
+const TRANSFORM = prefixStyle('transform')
 
 export default {
   data() {
@@ -332,7 +332,7 @@ export default {
         if (!this.playing || !this.isSongReady) {
           return
         }
-        this.$refs.bigImg.style[transform] = ''
+        this.$refs.bigImg.style[TRANSFORM] = ''
         let frameList = [
           {
             rotate: this.bigImgAngle
@@ -428,7 +428,7 @@ export default {
       createKeyframe.runAnimation(el, 'mini-img-enter')
     },
     miniImgAfterEnter(el, startRotateTime = 0) {
-      this.$refs.miniImg.style[transform] = ''
+      this.$refs.miniImg.style[TRANSFORM] = ''
       setTimeout(() => {
         if (!this.playing || !this.isSongReady) {
           return
@@ -662,11 +662,11 @@ export default {
         if (this.fullScreen) {
           this.bigImgAngle = getTransformAngle(this.$refs.bigImg)
           this.$refs.bigImg.style.animation = ''
-          this.$refs.bigImg.style[transform] = `rotate(${this.bigImgAngle}deg)`
+          this.$refs.bigImg.style[TRANSFORM] = `rotate(${this.bigImgAngle}deg)`
         } else {
           this.bigImgAngle = getTransformAngle(this.$refs.miniImg)
           this.$refs.miniImg.style.animation = ''
-          this.$refs.miniImg.style[transform] = `rotate(${this.bigImgAngle}deg)`
+          this.$refs.miniImg.style[TRANSFORM] = `rotate(${this.bigImgAngle}deg)`
         }
       }
     }

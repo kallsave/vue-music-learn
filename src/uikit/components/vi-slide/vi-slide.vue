@@ -33,7 +33,7 @@
 <script>
 // TODO: slot支持slideToPage
 import { addClass } from '../../common/helpers/dom.js'
-import { camelize, spliceArray, mulitDeepClone } from '../../common/helpers/utils.js'
+import { camelize, spliceArray, mulitDeepClone, debounce } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'
 import ViSlideItem from './vi-slide-item.vue'
 
@@ -68,6 +68,9 @@ const BIND_SCROLL_EVENTS = [
 
 const EVENT_CHANGE = 'change'
 const EVENT_LOAD_IMAGE = 'load-image'
+const EVENT_TOUCH_SCROLL = 'touch-scroll'
+
+const SCROLL_STOP_TIME = 2500
 
 const DEFAULT_OPTIONS = {
   // 多层嵌套会触发多次,所以需要click的场景自主添加
@@ -204,6 +207,9 @@ export default {
         if (event === EVENT_SCROLL) {
           this.slide.on(camelize(event), (...args) => {
             this.$emit(event, ...args)
+            if (this.touchTrigger) {
+              this.$emit(EVENT_TOUCH_SCROLL, ...args)
+            }
           })
         } else {
           this.slide.on(camelize(event), (...args) => {
@@ -218,14 +224,13 @@ export default {
 
       // before-scroll-start其实是touch-start
       this.slide.on(camelize(EVENT_BEFORE_SCROLL_START), () => {
-        this.touch = true
         this.touchTrigger = true
         this.toggleAbleParentSlide(this.$parent, false)
         this.$emit(EVENT_BEFORE_SCROLL_START)
       })
 
       // scroll-end
-      // scroll-end在换页过程中至少会触发两次,因为有两页
+      // scroll-end在换页过程中至少会触发两次,因为有两页,所以需要节流
       this.slide.on(camelize(EVENT_SCROLL_END), (...args) => {
         this.toggleAbleParentSlide(this.$parent, true)
         let pageIndex = this.slide.getCurrentPage().pageX
@@ -237,6 +242,12 @@ export default {
         if (this.autoPlay) {
           this._play()
         }
+        if (!this.debounceHandler) {
+          this.debounceHandler = debounce(() => {
+            this.touchTrigger = false
+          }, SCROLL_STOP_TIME)
+        }
+        this.debounceHandler()
       })
 
       this.slide.goToPage(this.initPageIndex, 0, 0)

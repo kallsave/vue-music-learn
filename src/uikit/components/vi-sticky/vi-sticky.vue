@@ -24,7 +24,7 @@ import {
   prefixStyle
 } from '@/common/helpers/dom.js'
 import { mulitDeepClone } from '../../common/helpers/utils.js'
-const transformStyleKey = prefixStyle('transform')
+const TRANSFORM = prefixStyle('transform')
 const COMPONENT_NAME = 'vi-sticky'
 const EVENT_STICKY_CHANGE = 'sticky-change'
 const EVENT_STICKY_CANCEL = 'sticky-cancel'
@@ -213,7 +213,7 @@ export default {
         return
       }
       this.fixTransformTop = fixTransformTop
-      this.fixedElement.style[transformStyleKey] = `translateY(${fixTransformTop}px)`
+      this.fixedElement.style[TRANSFORM] = `translateY(${fixTransformTop}px)`
     }
   },
   created() {

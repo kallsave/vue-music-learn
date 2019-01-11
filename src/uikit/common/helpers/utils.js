@@ -167,3 +167,46 @@ export function mulitDeepClone(target, ...rest) {
   }
   return target
 }
+
+/**
+ * setTimeout防抖高阶函数
+ * 延迟一段时间执行,这段时间如果产生新的数据,重新开始计时
+ * 场景:输入框ajax
+ * @export
+ * @param {Function} func
+ * @param {Number} delay
+ * @returns
+ */
+export function debounce(func, delay) {
+  let timer
+  return function (...args) {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    // 箭头函数的arguments是外部函数的arguments
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, delay)
+  }
+}
+
+/**
+ * 高阶节流函数
+ * 每隔一段时间执行一次,中间的时间段执行的都被抛弃
+ * 场景: 密集操作DOM元素等消耗内存的动作
+ * @export
+ * @param {Function} func
+ * @param {Number} longtime
+ * @returns
+ */
+export function throttle(func, longtime) {
+  let throttleObj = {}
+  return function (...args) {
+    let time = new Date().getTime()
+
+    if (!throttleObj.lastTime || time - throttleObj.lastTime > longtime) {
+      throttleObj.lastTime = time
+      func.apply(this, args)
+    }
+  }
+}
