@@ -21,7 +21,7 @@ export default {
 .sticky
   .box1
     height: 300px
-    background:green
+    background: green
   .sticky-ele1
     height: 30px
     background: gold

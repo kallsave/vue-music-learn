@@ -28,11 +28,6 @@
             </vi-sticky-ele>
           </div>
           <div class="song-list-wrapper">
-            <vi-loading
-              ref="songLoading"
-              :scale="0.8"
-              :title-color="'#ffcd32'"
-              :icon-color="'#ffcd32'"></vi-loading>
             <song-list
               :rank="rank"
               :song-list="songList"
@@ -50,12 +45,15 @@ import { prefixStyle } from '@/common/helpers/dom.js'
 import { mapGetters, mapActions } from 'vuex'
 
 const TRANSFORM = prefixStyle('transform')
-const backdrop = prefixStyle('backdrop-filter')
-const filter = prefixStyle('filter')
+const BACKDROP = prefixStyle('backdrop-filter')
+const FILTER = prefixStyle('filter')
 
 const RESERVED_HEIGHT = 40
 
 export default {
+  components: {
+    SongList
+  },
   mixins: [playListMixin],
   props: {
     title: {
@@ -97,7 +95,6 @@ export default {
     this.imageHeight = document.body.clientWidth * 0.7
   },
   mounted() {
-    this.$refs.songLoading.show()
     this.$refs.scrollBlank.style.height = `${this.imageHeight - RESERVED_HEIGHT}px`
   },
   computed: {
@@ -123,11 +120,7 @@ export default {
     },
     isFetchSongList(newVal) {
       if (newVal) {
-        this.$refs.songLoading && this.$refs.songLoading.hide().then(() => {
-          this.$nextTick(() => {
-            this.$refs.sticky.forceCalculateStickyTop()
-          })
-        })
+        this.$refs.sticky.forceCalculateStickyTop()
       }
     },
   },
@@ -172,9 +165,6 @@ export default {
       })
     }
   },
-  components: {
-    SongList
-  }
 }
 </script>
 

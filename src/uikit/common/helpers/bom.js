@@ -1,5 +1,4 @@
-export const requestAnimFrame =
-  window.requestAnimFrame =
+export const requestAnimationFrame =
   window.requestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
   window.mozRequestAnimationFrame ||

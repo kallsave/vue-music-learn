@@ -6,11 +6,6 @@
         <!-- <vi-sticky-ele>
           <tab></tab>
         </vi-sticky-ele> -->
-        <vi-tab
-          ref="tab"
-          :tab-list="tabTitleList"
-          :currentIndex.sync="currentIndex"
-          @click-tab-item="clickTabItem"></vi-tab>
       </template>
       <template v-if="slideRouterMode === slideRouterModeList[0]">
         <vi-slide-router-transition
@@ -24,15 +19,15 @@
       </template>
       <template v-else-if="slideRouterMode === slideRouterModeList[1]">
         <vi-slide-router-view
+          class="slide-router-view"
           ref="viSlideRouterView"
           :scroll-events="['scroll']"
           :options="slideRouterOptions"
-          :tab-title-list="tabTitleList"
-          :tab-bar-style="tabBarStyle"
-          :is-show-tab-bar="true"
-          :componentList="componentList"
-          @change="change"
-          @touch-scroll="scroll"
+          :is-show-tab="true"
+          :tab-list="tabList"
+          :tab-style="tabStyle"
+          :tab-slider-style="tabSliderStyle"
+          tab-active-class="blue"
         ></vi-slide-router-view>
       </template>
       <template v-else-if="slideRouterMode === slideRouterModeList[2]">
@@ -40,9 +35,9 @@
           ref="viSlideRouterView"
           :scroll-events="['scroll']"
           :options="slideRouterOptions"
-          :tab-title-list="tabTitleList"
-          :tab-bar-style="tabBarStyle"
           :componentList="componentList"
+          :tab-title-list="tabList"
+          :tab-bar-style="sliderStyle"
           @change="change"
           @scroll="scroll"
         ></vi-slide-view>
@@ -56,15 +51,11 @@ import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME 
 import { mapGetters } from 'vuex'
 import MHeader from './components/m-header/m-header.vue'
 import Tab from './components/tab/tab.vue'
-import SlideTab from './components/slide-tab/slide-tab.vue'
 import Background from './components/background/background.vue'
-import { prefixStyle } from '@/common/helpers/dom.js'
 const Recommend = () => import(/* webpackChunkName: "Recommend" */ './children/recommend/recommend.vue')
 const Singer = () => import(/* webpackChunkName: "Singer" */ './children/singer/singer.vue')
 const Rank = () => import(/* webpackChunkName: "Rank" */ './children/rank/rank.vue')
 const Search = () => import(/* webpackChunkName: "Search" */ './children/search/search.vue')
-
-const TRANSFORM = prefixStyle('transform')
 
 const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view', 'vi-slide-view']
 
@@ -73,7 +64,6 @@ export default {
   components: {
     MHeader,
     Tab,
-    SlideTab
   },
   data() {
     return {
@@ -92,16 +82,19 @@ export default {
         Rank,
         Search
       ],
-      tabTitleList: [
+      tabList: [
         '推荐',
         '歌手',
         '排行',
         '搜索'
       ],
-      tabBarStyle: {
+      tabSliderStyle: {
         'transition': 'none'
       },
-      currentIndex: 0
+      tabStyle: {
+        'height': '44px',
+        'line-height': '44px'
+      }
     }
   },
   computed: {
@@ -109,30 +102,16 @@ export default {
       'mutableKeepAliveName'
     ])
   },
-  mounted() {
-    this.currentIndex = this.$refs.viSlideRouterView.getCurrentIndex()
-  },
-  methods: {
-    change(index) {
-      this.currentIndex = index
-    },
-    scroll({x, y}) {
-      const slideGroopWidth = this.$refs.viSlideRouterView.getSlideWidth()
-      const slidePageWidth = slideGroopWidth / this.tabTitleList.length
-      const tabWidth = this.$refs.tab.$el.clientWidth
-      const tabItemWidth = tabWidth / this.tabTitleList.length
-      this.rate = tabWidth / slideGroopWidth
-      const tabSliderWidth = this.$refs.tab.tabSlider.clientWidth
-      this.remainder = (tabItemWidth - tabSliderWidth) / 2
-      this.$refs.tab.tabSlider.style[TRANSFORM] = `translateX(${this.rate * Math.abs(x) + this.remainder}px)`
-    },
-    clickTabItem(index) {
-      this.$refs.viSlideRouterView.change(index)
-    }
-  },
 }
 </script>
 
+<style lang="stylus">
+@import "~@/common/stylus/variable.styl"
+.index
+  .slide-router-view
+    .blue
+      color: $color-theme!important
+</style>
 <style lang="stylus" scoped>
 .index
   height: 100vh

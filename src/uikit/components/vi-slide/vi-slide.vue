@@ -66,7 +66,7 @@ const BIND_SCROLL_EVENTS = [
   EVENT_BEFORE_SCROLL_START,
 ]
 
-const EVENT_CHANGE = 'change'
+const EVENT_CHANGE_PAGE = 'change-page'
 const EVENT_LOAD_IMAGE = 'load-image'
 const EVENT_TOUCH_SCROLL = 'touch-scroll'
 
@@ -234,10 +234,10 @@ export default {
       this.slide.on(camelize(EVENT_SCROLL_END), (...args) => {
         this.toggleAbleParentSlide(this.$parent, true)
         let pageIndex = this.slide.getCurrentPage().pageX
-        this.$emit(EVENT_SCROLL_END, ...args)
+        this.$emit(EVENT_SCROLL_END, pageIndex)
         if (this.currentPageIndex !== pageIndex) {
           this.currentPageIndex = pageIndex
-          this.$emit(EVENT_CHANGE, pageIndex)
+          this.$emit(EVENT_CHANGE_PAGE, pageIndex)
         }
         if (this.autoPlay) {
           this._play()
@@ -324,8 +324,10 @@ export default {
   position: relative
   // 这个很重要,better-scroll会根据wrapper的高宽做判断
   min-height: 1px;
+  height: 100%
   .vi-slide-group
     position: relative
+    height: 100%
     overflow: hidden
     white-space: nowrap
     .vi-slide-float

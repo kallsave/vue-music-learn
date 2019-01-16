@@ -17,7 +17,7 @@ vuex文档
 
 cubic-bezier
 ------------
-[cubic-bezier](http://cubic-bezier.com/#.17,.67,.83,.67)
+[cubic-bezier](http://cubic-bezier.com/#0.165,0.84,0.44,1)
 
 svg学习
 ------------

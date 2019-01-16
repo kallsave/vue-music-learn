@@ -24,16 +24,15 @@ const instance = axios.create({
 
 // 响应拦截器,对404等或者后端自定义的code错误
 instance.interceptors.response.use((response) => {
-  if (response.request.responseURL.indexOf('lyric/fcgi-bin/fcg_query_lyric_new.fcg') !== -1) {
-    /* eslint no-useless-escape: "off" */
-    response.data = response.data.replace(/^\w+\((.*)\)$/g, '$1')
-    response.data = JSON.parse(response.data)
-  }
+  // if (response.request.responseURL.indexOf('lyric/fcgi-bin/fcg_query_lyric_new.fcg') !== -1) {
+  //   /* eslint no-useless-escape: "off" */
+  //   response.data = response.data.replace(/^\w+\((.*)\)$/g, '$1')
+  //   response.data = JSON.parse(response.data)
+  // }
   // 根据后台设置的code逻辑做处理
   if ((response.status === 200 || response.status === '200') && response.data.code === API_OK) {
     return Promise.resolve(response)
   } else {
-    console.log(response)
     return Promise.reject(API_ERROR)
   }
 })

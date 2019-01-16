@@ -1,5 +1,24 @@
 <template>
   <div class="vi-slide-router-view">
+    <template v-if="isShowTab">
+      <div class="vi-tab">
+        <slot name="tab-list">
+          <div ref="tabList"
+            class="vi-tab-list">
+            <div class="vi-tab-item"
+              :class="[index === currentIndex ? tabActiveClass : '']"
+              :style="tabStyle"
+              v-for="(item, index) in tabList"
+              :key="index"
+              @click="tabItemClick(index)">{{item}}
+            </div>
+          </div>
+          <div ref="tabSlider" class="vi-tab-slider"
+            :style="sliderContentStyle">
+          </div>
+        </slot>
+      </div>
+    </template>
     <vi-slide ref="slide"
       :options="slideOptions"
       :initPageIndex="currentIndex"
@@ -8,7 +27,7 @@
       @scroll="scroll"
       @before-scroll-start="beforeScrollStart"
       @touch-scroll="touchScroll"
-      @change="change">
+      @change-page="changePage">
       <vi-slide-item v-for="(item, index) in siblingsRoute" :key="index">
         <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
           <component :is="item.component"></component>
@@ -23,9 +42,10 @@
 
 <script>
 import ViSlide from '../vi-slide/vi-slide.vue'
-import ViView from '../vi-view/vi-view.js'
+import ViTab from '../vi-tab/vi-tab'
 import Background from './vi-slide-router-view-background.vue'
-import { mulitDeepClone } from '../../common/helpers/utils.js'
+import { mulitDeepClone, stylePadPx } from '../../common/helpers/utils.js'
+import { prefixStyle } from '../../common/helpers/dom.js'
 
 const COMPONENT_NAME = 'vi-slide-router-view'
 
@@ -46,9 +66,15 @@ const SCROLL_EVENTS = [
 ]
 
 // 派生出来的事件(推荐在父组件中使用)
-const EVENT_CHANGE = 'change'
+const EVENT_CHANGE_PAGE = 'change-page'
 const EVENT_LOAD_IMAGE = 'load-image'
 const EVENT_TOUCH_SCROLL = 'touch-scroll'
+
+// vi-slide-router-view的事件
+const EVENT_INDEX_CHANGE = 'index-change'
+
+// tab的事件
+const EVENT_CLICK_TAB_ITEM = 'click-tab-item'
 
 const DEFAULT_OPTIONS = {
   probeType: 3,
@@ -68,11 +94,20 @@ const DEFAULT_OPTIONS = {
   }
 }
 
+const DEFAULT_TAB_SLIDER_STYLE = {
+  'background-color': '#ffcd32',
+  'height': '2px',
+  'width': '50px',
+  'transition': 'transform 0.3s cubic-bezier(.61,0,.44,1)'
+}
+
+const TRANSFORM = prefixStyle('transform')
+
 export default {
   name: COMPONENT_NAME,
   components: {
     ViSlide,
-    ViView
+    ViTab
   },
   beforeCreate() {
     const findSiblingsRoute = (routeList) => {
@@ -112,27 +147,36 @@ export default {
         return Background
       }
     },
-    tabTitleList: {
+    tabList: {
       type: Array,
       default() {
         return []
       },
     },
-    tabBarStyle: {
+    tabSliderStyle: {
       type: Object,
       default() {
         return {}
       }
     },
-    isShowTabBar: {
+    isShowTab: {
       type: Boolean,
       default: false
+    },
+    tabStyle: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    tabActiveClass: {
+      type: String,
+      default: 'active'
     }
   },
   data() {
     return {
       hadShowPageList: [],
-      tabBarContentStyle: {},
     }
   },
   computed: {
@@ -141,6 +185,9 @@ export default {
         return this.$route.matched[this.$route.matched.length - 1].regex.test(item.path)
       })
     },
+    sliderContentStyle() {
+      return mulitDeepClone({}, DEFAULT_TAB_SLIDER_STYLE, stylePadPx(this.tabSliderStyle))
+    }
   },
   watch: {
     $route: {
@@ -153,6 +200,16 @@ export default {
         }
       },
     },
+    currentIndex: {
+      handler(newVal) {
+        this.$emit(EVENT_INDEX_CHANGE, newVal)
+        this.$nextTick(() => {
+          console.log(66)
+          this._initTabSlider()
+        })
+      },
+      immediate: true
+    }
   },
   created() {
     this.pushHadShowPageList(this.currentIndex)
@@ -160,8 +217,21 @@ export default {
   },
   mounted() {
     this._findSlide()
+    // this._initTabSlider()
   },
   methods: {
+    _initTabSlider() {
+      let tabWidth = this.$refs.tabList.clientWidth
+      this.tabItemWidth = tabWidth / this.tabList.length
+      let tabSliderWidth = this.$refs.tabSlider.clientWidth
+      this.remainder = (this.tabItemWidth - tabSliderWidth) / 2
+      let translateX = this.currentIndex * this.tabItemWidth + this.remainder
+      this.$refs.tabSlider.style.display = 'none'
+      this.sliderTranslateX(translateX)
+      // 强制重排
+      let reflow = this.$refs.tabList.clientWidth
+      this.$refs.tabSlider.style.display = 'block'
+    },
     _propChildren() {
       // created => children.props => children.data => children.created
       this.slideOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
@@ -175,11 +245,14 @@ export default {
     beforeScrollStart() {
       this.$emit(EVENT_BEFORE_SCROLL_START)
     },
-    scroll() {
+    scroll({x, y}) {
+      let scrollX = Math.abs(x)
+      this.rate = this.$refs.tabList.clientWidth / this.getSlideWidth()
+      let translateX = scrollX * this.rate + this.remainder
+      this.sliderTranslateX(translateX)
       this.$emit(EVENT_SCROLL, ...arguments)
     },
-    touchScroll() {
-      console.log(2369)
+    touchScroll({x, y}) {
       this.$emit(EVENT_TOUCH_SCROLL, ...arguments)
     },
     scrollEnd(pos, slide) {
@@ -188,8 +261,8 @@ export default {
     getCurrentIndex() {
       return this.currentIndex
     },
-    change(index) {
-      this.$emit(EVENT_CHANGE, index)
+    changePage(index) {
+      this.$emit(EVENT_CHANGE_PAGE, index)
       let siblingsRouteMatchedPath = ''
 
       this.siblingsRoute.forEach((item, n) => {
@@ -214,6 +287,12 @@ export default {
         this.hadShowPageList.push(index)
       }
     },
+    tabItemClick(index) {
+      this.changePage(index)
+    },
+    sliderTranslateX(x) {
+      this.$refs.tabSlider.style[TRANSFORM] = `translateX(${x}px)`
+    },
   }
 }
 </script>
@@ -222,27 +301,24 @@ export default {
 @import "../../common/stylus/variable.styl"
 
 .vi-slide-router-view
-  .vi-slide-router-view-tab
+  .vi-tab
     position: relative
-    .vi-slide-router-view-tab-list
+    .vi-tab-list
       display: flex
-      height: 46px
-      line-height: 44px
-      .vi-slide-router-view-tab-item
+      .vi-tab-item
         flex: 1
+        height: 44px
+        line-height: 42px
         text-align: center
-        .vi-slide-router-view-tab-item-link
-          box-sizing: border-box
-          color: $color-text-l
-          padding-bottom: 5px
-          font-size: $font-size-medium
-          &.active
-            color: $color-theme
-    .vi-slide-router-view-tab-bar
+        box-sizing: border-box
+        color: $color-text-l
+        padding-bottom: 5px
+        font-size: $font-size-medium
+        &.active
+          color: $color-theme
+    .vi-tab-slider
       position: absolute
       z-index: 5
       bottom: 0
-      .vi-slide-router-view-tab-bar-content
-        height: 2px
-
+      height: 2px
 </style>

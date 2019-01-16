@@ -53,15 +53,22 @@
 - search新页面
 - 初始化时自动下拉
 - vi-slide-view考虑去掉component
+- 没匹配到的路由做404
+- 看黄老师的音乐列表页的transfrom产生的scroll效果
 
 # 优先
 - 完成tab-bar组件
 - vi-slide-view
-- 没匹配到的路由做404
 - svg的viewport
 - index-list支持slot
 - dialog组件开发
 - confirm组件开发
 - click重复的问题
-- 改写路由
+- 改写路由,路由过渡动画
+- 音乐列表页使用模糊效果
 - 完成剩余内容
+- 重写vi-loading
+- 音乐播放不了的问题
+- player.vue的bug
+- sticky在真机上快速滑动有问题
+
