@@ -221,7 +221,7 @@ export default {
       console.log(index)
       this.currentIndex = index
       this.pushHadShowPageList(this.currentIndex)
-      this.$refs.slide.slideToPage(index, 0, 400)
+      this.$refs.slide.goToPage(index, 0, 400)
       this.$emit(EVENT_CHANGE, index)
       this.$nextTick(() => {
         this.onePagescrollX = 0

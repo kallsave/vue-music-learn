@@ -1,7 +1,9 @@
-import Component from './vi-tab.vue'
+import ViTab from './vi-tab.vue'
+import ViTabItem from './vi-tab-item.vue'
 
-Component.install = function (Vue) {
-  Vue.component(Component.name, Component)
+ViTab.install = function (Vue) {
+  Vue.component(ViTab.name, ViTab)
+  Vue.component(ViTabItem.name, ViTabItem)
 }
 
-export default Component
+export default ViTab

@@ -1,8 +1,8 @@
 <template>
   <div class="collapse">
-    <vi-collapse :time="200">
+    <vi-collapse-transition :time="200">
       <div class="content" v-show="model" @click="model=false"></div>
-    </vi-collapse>
+    </vi-collapse-transition>
     <div class="box" @click="model=true">666</div>
   </div>
 </template>

@@ -16,14 +16,14 @@
     <!-- 默认的dots样式 -->
     <template v-if="showDots">
       <slot name="dots"
-        :slide-to-page="slideToPage"
+        :go-to-page="goToPage"
         :dots="dots"
         :current-page-index="currentPageIndex">
         <div class="vi-slide-dots">
           <span class="vi-slide-dot" :key="index"
             v-for="(item, index) in dots"
             :class="{active: currentPageIndex === index }"
-            @click.stop="slideToPage(index)"></span>
+            @click.stop="goToPage(index)"></span>
         </div>
       </slot>
     </template>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-// TODO: slot支持slideToPage
+// TODO: slot支持goToPage
 import { addClass } from '../../common/helpers/dom.js'
 import { camelize, spliceArray, mulitDeepClone, debounce } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'
@@ -182,8 +182,6 @@ export default {
     }
   },
   methods: {
-    // slide的content盒子的宽度是要用js计算
-    // 并且如果loop了,那么会创建两个缓冲div
     setSlideWidth(isResize) {
       let width = 0
       let slideWidth = this.$refs.slide.clientWidth
@@ -271,7 +269,7 @@ export default {
       this.setSlideWidth(true)
       this.slide.refresh()
     },
-    slideToPage(index, time = 400) {
+    goToPage(index, time = 400) {
       clearTimeout(this.timer)
       this.slide.goToPage(index, 0, time)
       this.currentPageIndex = index

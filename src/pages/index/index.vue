@@ -2,11 +2,11 @@
   <div class="index">
     <vi-sticky ref="sticky">
       <m-header></m-header>
-      <template v-if="slideRouterMode !== slideRouterModeList[2]">
-        <!-- <vi-sticky-ele>
+      <!-- <template v-if="slideRouterMode !== slideRouterModeList[2]">
+        <vi-sticky-ele>
           <tab></tab>
-        </vi-sticky-ele> -->
-      </template>
+        </vi-sticky-ele>
+      </template> -->
       <template v-if="slideRouterMode === slideRouterModeList[0]">
         <vi-slide-router-transition
           slide-right-class="scroll-right"
@@ -18,16 +18,21 @@
         </vi-slide-router-transition>
       </template>
       <template v-else-if="slideRouterMode === slideRouterModeList[1]">
+        <vi-tab ref="tab" :slider-style="sliderStyle">
+          <vi-tab-item
+            v-for="(item, index) in tabList"
+            :key="index"
+            :selected="index === currentIndex"
+            active-class="customer-color"
+            @click.native="tabItemClick(index)">{{item}}</vi-tab-item>
+        </vi-tab>
         <vi-slide-router-view
           class="slide-router-view"
           ref="viSlideRouterView"
           :scroll-events="['scroll']"
           :options="slideRouterOptions"
-          :is-show-tab="true"
-          :tab-list="tabList"
-          :tab-style="tabStyle"
-          :tab-slider-style="tabSliderStyle"
-          tab-active-class="blue"
+          @index-change="indexChange"
+          @scroll="scroll"
         ></vi-slide-router-view>
       </template>
       <template v-else-if="slideRouterMode === slideRouterModeList[2]">
@@ -36,9 +41,6 @@
           :scroll-events="['scroll']"
           :options="slideRouterOptions"
           :componentList="componentList"
-          :tab-title-list="tabList"
-          :tab-bar-style="sliderStyle"
-          @change="change"
           @scroll="scroll"
         ></vi-slide-view>
       </template>
@@ -88,12 +90,9 @@ export default {
         '排行',
         '搜索'
       ],
-      tabSliderStyle: {
-        'transition': 'none'
-      },
-      tabStyle: {
-        'height': '44px',
-        'line-height': '44px'
+      currentIndex: 0,
+      sliderStyle: {
+        transition: 'none'
       }
     }
   },
@@ -102,17 +101,36 @@ export default {
       'mutableKeepAliveName'
     ])
   },
+  mounted() {
+
+  },
+  methods: {
+    indexChange(index) {
+      this.currentIndex = index
+    },
+    tabItemClick(index) {
+      this.$refs.viSlideRouterView.changePage(index)
+    },
+    scroll({x, y}) {
+      let scrollX = Math.abs(x)
+      let tabWidth = this.$refs.tab.$el.clientWidth
+      let slideGroupWidth = this.$refs.viSlideRouterView.getSlideWidth()
+      let rate = tabWidth / slideGroupWidth
+      let translateX = rate * scrollX
+      let remainder = this.$refs.tab.getRemainder()
+      this.$refs.tab.translateSliderTo(translateX + remainder)
+    }
+  }
 }
 </script>
 
 <style lang="stylus">
 @import "~@/common/stylus/variable.styl"
 .index
-  .slide-router-view
-    .blue
-      color: $color-theme!important
+  .customer-color
+    color: $color-theme!important
 </style>
-<style lang="stylus" scoped>
+<style lang="stylus">
 .index
   height: 100vh
   position: relative

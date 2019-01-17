@@ -1,7 +1,7 @@
 import { addClass, removeClass } from '../../common/helpers/dom.js'
-import './collapse.styl'
+import './vi-collapse-transition.styl'
 
-const COMPONENT_NAME = 'vi-collapse'
+const COMPONENT_NAME = 'vi-collapse-transition'
 
 const Transition = {
   beforeEnter(el) {
@@ -16,7 +16,6 @@ const Transition = {
     el.style.paddingTop = 0
     el.style.paddingBottom = 0
   },
-
   enter(el) {
     el.dataset.oldOverflow = el.style.overflow
     if (el.scrollHeight !== 0) {
@@ -31,14 +30,12 @@ const Transition = {
 
     el.style.overflow = 'hidden'
   },
-
   afterEnter(el) {
     // for safari: remove class then reset height is necessary
     removeClass(el, 'vi-collapse-transition')
     el.style.height = ''
     el.style.overflow = el.dataset.oldOverflow
   },
-
   beforeLeave(el) {
     if (!el.dataset) {
       el.dataset = {}
@@ -50,7 +47,6 @@ const Transition = {
     el.style.height = el.scrollHeight + 'px'
     el.style.overflow = 'hidden'
   },
-
   leave(el) {
     if (el.scrollHeight !== 0) {
       // for safari: add class after set height, or it will jump to zero height suddenly, weired
@@ -60,7 +56,6 @@ const Transition = {
       el.style.paddingBottom = 0
     }
   },
-
   afterLeave(el) {
     removeClass(el, 'vi-collapse-transition')
     el.style.height = ''

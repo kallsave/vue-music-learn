@@ -26,7 +26,7 @@
                 <span class="slide-dot"
                   :class="{active: scope.currentPageIndex === index }"
                   v-for="(item, index) in recommends" :key="index"
-                  @click.stop="scope.slideToPage(index)"></span>
+                  @click.stop="scope.goToPage(index)"></span>
               </div>
             </template>
             <div v-for="(item, index) in recommends" :key="index">

@@ -3,114 +3,87 @@
     <slot name="tab-list">
       <div ref="tabList"
         class="vi-tab-list">
-        <div class="vi-tab-item"
-          :class="[index === currentIndex ? tabActiveClass : '']"
-          :style="tabStyle"
-          v-for="(item, index) in tabList"
-          :key="index"
-          @click="changeIndex(index)">{{item}}
-        </div>
+        <slot></slot>
       </div>
       <div ref="tabSlider" class="vi-tab-slider"
-        :style="sliderContentStyle">
+        :style="styleForSlider">
       </div>
     </slot>
   </div>
 </template>
 
 <script>
-import { mulitDeepClone, pxToNum, stylePadPx } from '../../common/helpers/utils.js'
-import { prefixStyle } from '../../common/helpers/dom.js'
+import { mulitDeepClone, stylePadPx } from '../../common/helpers/utils.js'
+import { prefixStyle, addClass } from '../../common/helpers/dom.js'
+
+import ViTabItem from './vi-tab-item.vue'
 
 const COMPONENT_NAME = 'vi-tab'
 
-const EVENT_CLICK_TAB_ITEM = 'click-tab-item'
+const EVENT_TAB_ITEM_CLICK = 'tab-item-click'
 
 const DEFAULT_TAB_SLIDER_STYLE = {
   'background-color': '#ffcd32',
   'height': '2px',
   'width': '50px',
-  'transition': 'all 0.3s'
+  'transition': 'transform 0.3s cubic-bezier(.61,0,.44,1)'
 }
 
 const TRANSFORM = prefixStyle('transform')
 
 export default {
   name: COMPONENT_NAME,
+  components: {
+    ViTabItem
+  },
   props: {
-    tabList: {
-      type: Array,
-      default() {
-        return []
-      },
-    },
-    tabSliderStyle: {
+    sliderStyle: {
       type: Object,
       default() {
         return {}
       }
-    },
-    isShowTabSlider: {
-      type: Boolean,
-      default: false
-    },
-    currentIndex: {
-      type: Number,
-      default: 0
-    }
-  },
-  data() {
-    return {
-      tabStyle: {},
     }
   },
   computed: {
-    sliderContentStyle() {
+    styleForSlider() {
       return mulitDeepClone({}, DEFAULT_TAB_SLIDER_STYLE, stylePadPx(this.sliderStyle))
     }
   },
-  watch: {
-    currentIndex: {
-      handler(newVal) {
-        this.$nextTick(() => {
-          let tabWidth = this.$refs.tab.clientWidth
-          this.tabItemWidth = tabWidth / this.tabList.length
-          let tabSliderWidth = this.tabSlider.clientWidth
-          this.remainder = (this.tabItemWidth - tabSliderWidth) / 2
-          let translateX = newVal * this.tabItemWidth + this.remainder
-          this.$refs.tabSlider.style.display = 'none'
-          this.sliderTranslateX(translateX)
-          requestAnimationFrame(() => {
-            this.$refs.tabSlider.style.display = 'block'
-          })
-        })
-      },
-      immediate: true
-    }
-  },
   mounted() {
-    this._findTabSlider()
-    this._setTabContentStyle()
+    this.getRemainder()
+    this._initTab()
   },
   methods: {
-    getTabWidth() {
-      return this.$refs.tab && this.$refs.tab.clientWidth
-    },
     getRemainder() {
+      this.tabWidth = this.$refs.tabList.clientWidth
+      this.tabItemWidth = this.tabWidth / this.$children.length
+      this.tabSliderWidth = this.$refs.tabSlider.clientWidth
+      this.remainder = (this.tabItemWidth - this.tabSliderWidth) / 2
       return this.remainder
     },
-    _findTabSlider() {
-      this.tabSlider = this.$refs.tabSlider
+    _initTab() {
+      Array.apply(null, this.$children).forEach((item, index) => {
+        item.$on('selected', (isFirst) => {
+          this.currentIndex = index
+          let translateX = this.currentIndex * this.tabItemWidth + this.remainder
+          this.translateSliderTo(translateX, isFirst)
+        })
+      })
     },
-    sliderTranslateX(x) {
-      this.$refs.tabSlider.style[TRANSFORM] = `translateX(${x}px)`
+    tabItemClick(index) {
+      this.$emit(EVENT_TAB_ITEM_CLICK, index)
     },
-    changeIndex(index) {
-      let translateX = this.currentIndex * this.tabItemWidth + this.remainder
-      this.sliderTranslateX(translateX)
-      this.$emit('update:currentIndex', index)
-      this.$emit(EVENT_CLICK_TAB_ITEM, index)
-    }
+    translateSliderTo(x, isFlow) {
+      if (isFlow) {
+        this.$refs.tabSlider.style.display = 'none'
+        this.$refs.tabSlider.style[TRANSFORM] = `translateX(${x}px)`
+        // 强制重排
+        let reflow = this.$refs.tabList.clientWidth
+        this.$refs.tabSlider.style.display = 'block'
+      } else {
+        this.$refs.tabSlider.style[TRANSFORM] = `translateX(${x}px)`
+      }
+    },
   }
 }
 </script>
@@ -122,17 +95,8 @@ export default {
   position: relative
   .vi-tab-list
     display: flex
-    .vi-tab-item
+    .vi-tab-flex
       flex: 1
-      height: 44px
-      line-height: 42px
-      text-align: center
-      box-sizing: border-box
-      color: $color-text-l
-      padding-bottom: 5px
-      font-size: $font-size-medium
-      &.active
-        color: $color-theme
   .vi-tab-slider
     position: absolute
     z-index: 5

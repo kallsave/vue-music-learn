@@ -3,11 +3,13 @@
     <slot name="collapse-header"
       :is-collapse="isCollapse"
       :toggle="toggle"></slot>
-    <template v-if="!isCollapse">
-      <slot name="collapse-content"
-        :is-collapse="isCollapse"
-        :toggle="toggle"></slot>
-    </template>
+    <vi-collapse-transition>
+      <template v-if="!isCollapse">
+        <slot name="collapse-content"
+          :is-collapse="isCollapse"
+          :toggle="toggle"></slot>
+      </template>
+    </vi-collapse-transition>
     <template v-if="isCollapse">
       <slot name="collapse-content-skeleton"
         :is-collapse="isCollapse"
@@ -17,7 +19,15 @@
 </template>
 
 <script>
+import ViCollapseTransition from './vi-collapse-transition.js'
+
+const COMPONENT_NAME = 'vi-collapse'
+
 export default {
+  name: COMPONENT_NAME,
+  components: {
+    ViCollapseTransition
+  },
   props: {
     isInitCollapse: {
       type: Boolean,

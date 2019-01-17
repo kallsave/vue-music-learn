@@ -15,7 +15,7 @@ created => children.props => children.data => children.created =>
 
 ## Css书写规范
 - 一个样式一行
-- 能用position: absolute的就不用fixed,fixed在很多场景下有bug:
+- 不推荐使用fixed,能用position: absolute的就不用fixed,fixed在很多场景下有bug:
   fixed会在transform下会降级为absolute
 
   fixed布局的弹窗如果有输入框,在ios上输入光标偏移
@@ -521,6 +521,9 @@ export default {
   如果better-scroll出现嵌套的scroll或者slide,有几层嵌套就会触发几次better-scroll的原生事件,比如slide轮播图的scrollEnd,scroll会分发到外层的scroll,slide的scrollEnd,scroll,为了解决这个问题,在二级组件使用better-scroll的原生事件明显有bug,而是通过判断使用由better-scroll的原生事件派生出的派生事件(比如换页的change,手动滚动而不是自动滚动的touch-scroll),而beforeScrolBefore,touchEnd这些事件是判断主动触发的关键,scrollEnd是判断是否换页的关键,这些都是一级slide组件必须监听的事件
 
   对于scroll,slide的组件设计,scroll事件比较消耗性能,其他better-scroll的原生事件性能消耗不大,scrollEvents有beforeScrollStart,scrollStart,scroll,scrollCancel,scrollEnd,touchEnd六个
+
+## 动画的过渡效果
+- 当机子的性能不好时,动画就会掉帧,其中动画开始和动画结束最容易掉帧,会出现闪屏,卡顿等,优化的思路是用贝塞尔曲线对动画的速率做调节,在动画开始和结束时,动画的速率最低,也就是ease-out-in,比较好的曲线参数是cubic-bezier(.61,0,.44,1)
 
 ## 其他
 - 使用TODO,FIXME,FORK标识代码,vscode下载TODO Highlight
