@@ -29,28 +29,28 @@ export default new Router({
           path: '/recommend',
           component: Recommend,
           meta: {
-            title: '推荐'
+            index: 1,
           },
         },
         {
           path: '/singer',
           component: Singer,
           meta: {
-            title: '歌手'
+            index: 1,
           },
         },
         {
           path: '/rank',
           component: Rank,
           meta: {
-            title: '排行'
+            index: 1,
           },
         },
         {
           path: '/search',
           component: Search,
           meta: {
-            title: '搜索'
+            index: 1,
           },
         },
       ]
@@ -73,5 +73,27 @@ export default new Router({
         }
       ]
     },
+    // 新的路由动效
+    {
+      path: '/new-music/recommend-detail/:id',
+      component: RecommendDetail,
+      meta: {
+        index: 2
+      }
+    },
+    {
+      path: '/new-music/singer-detail/:id',
+      component: SingerDetail,
+      meta: {
+        index: 2
+      }
+    },
+    {
+      path: '/new-music/rank-detail/:id',
+      component: RankDetail,
+      meta: {
+        index: 2
+      }
+    }
   ]
 })

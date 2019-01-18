@@ -80,8 +80,6 @@ const DEBOUNCE_TIME = 400
 
 const perpage = 20
 
-const STICKY_TOP_BAR = -1
-
 export default {
   name: MUTABLE_KEEP_ALIVE_NAME,
   components: {
@@ -146,21 +144,6 @@ export default {
     ...mapActions([
       'insertSong'
     ]),
-    scrollHandler(pos) {
-      if (pos.y < -STICKY_TOP_BAR && this.ViSticky.$disY !== -STICKY_TOP_BAR) {
-        this.ViSticky.$disY = -STICKY_TOP_BAR
-        this.ViSticky.scroll.scrollTo(0, -STICKY_TOP_BAR, 0)
-        this.ViSticky.scroll.disable()
-      } else if (pos.y >= 0 && pos.y <= STICKY_TOP_BAR && this.ViSticky.$disY !== STICKY_TOP_BAR) {
-        this.ViSticky.$disY = STICKY_TOP_BAR
-        this.ViSticky.scroll.enable()
-      } else if (pos.y > -STICKY_TOP_BAR) {
-        if (this.ViSticky.scroll.y >= 0) {
-          return
-        }
-        this.ViSticky.scroll.scrollTo(0, pos.y, 0)
-      }
-    },
     handlePlayList() {
       this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
       this.$refs.scroll.refresh()
@@ -249,10 +232,13 @@ export default {
           id: item.singermid,
           name: item.singername
         })
-        this.$router.push({
-          path: `/music/singer-detail/${singer.id}`
-        })
         this.setSinger(singer)
+        // this.$router.push({
+        //   path: `/music/singer-detail/${singer.id}`
+        // })
+        this.$router.push({
+          path: `/new-music/singer-detail/${singer.id}`
+        })
       } else {
         // 插入歌曲在当前页播放
         this.insertSong(item)
@@ -321,7 +307,7 @@ export default {
       .suggest-list
         box-sizing: border-box
         padding: 5px 30px
-        background: peru
+        z-index: -1
         .suggest-item
           display: flex
           align-items: center

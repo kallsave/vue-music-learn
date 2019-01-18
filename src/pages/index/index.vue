@@ -2,11 +2,11 @@
   <div class="index">
     <vi-sticky ref="sticky">
       <m-header></m-header>
-      <!-- <template v-if="slideRouterMode !== slideRouterModeList[2]">
+      <template v-if="slideRouterMode === slideRouterModeList[0]">
         <vi-sticky-ele>
           <tab></tab>
         </vi-sticky-ele>
-      </template> -->
+      </template>
       <template v-if="slideRouterMode === slideRouterModeList[0]">
         <vi-slide-router-transition
           slide-right-class="scroll-right"
@@ -30,19 +30,9 @@
           class="slide-router-view"
           ref="viSlideRouterView"
           :scroll-events="['scroll']"
-          :options="slideRouterOptions"
           @index-change="indexChange"
           @scroll="scroll"
         ></vi-slide-router-view>
-      </template>
-      <template v-else-if="slideRouterMode === slideRouterModeList[2]">
-        <vi-slide-view
-          ref="viSlideRouterView"
-          :scroll-events="['scroll']"
-          :options="slideRouterOptions"
-          :componentList="componentList"
-          @scroll="scroll"
-        ></vi-slide-view>
       </template>
     </vi-sticky>
   </div>
@@ -59,7 +49,7 @@ const Singer = () => import(/* webpackChunkName: "Singer" */ './children/singer/
 const Rank = () => import(/* webpackChunkName: "Rank" */ './children/rank/rank.vue')
 const Search = () => import(/* webpackChunkName: "Search" */ './children/search/search.vue')
 
-const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view', 'vi-slide-view']
+const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view']
 
 export default {
   name: MUTABLE_KEEP_ALIVE_NAME,
@@ -72,18 +62,6 @@ export default {
       IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME,
       slideRouterModeList: slideRouterModeList,
       slideRouterMode: slideRouterModeList[1],
-      slideRouterOptions: {
-        snap: {
-          loop: false,
-          threshold: 0.5,
-        }
-      },
-      componentList: [
-        Recommend,
-        Singer,
-        Rank,
-        Search
-      ],
       tabList: [
         '推荐',
         '歌手',
@@ -136,23 +114,25 @@ export default {
   position: relative
 
 .scroll-right-enter
+  will-change: transform
   transform:  translate3d(100%, 0px, 0px)
 
 .scroll-right-enter-active
+  position: absolute
+  top: 88px
+  width: 100%
+  height: calc(100vh - 44px)
+  z-index: 100
   will-change: transform
   transition: transform 0.2s
-  z-index: 100
-  width: 100%
-  height: calc(100vh - 44px)
-  top: 88px
-  position: absolute
 
 .scroll-right-enter-to
-  z-index: 100
+  position: absolute
+  top: 88px
   width: 100%
   height: calc(100vh - 44px)
-  top: 88px
-  position: absolute
+  z-index: 100
+  will-change: auto
 
 .scroll-right-leave-active
   display: none
@@ -164,23 +144,24 @@ export default {
   transform:  translate3d(-100%, 0px, 0px)
 
 .scroll-left-enter-active
+  position: absolute
+  top: 88px
+  width: 100%
+  height: calc(100vh - 44px)
+  z-index: 100
   will-change: transform
   transition: transform 0.2s
-  z-index: 100
+
+.scroll-left-enter
+  position: absolute
+  top: 88px
   width: 100%
   height: calc(100vh - 44px)
-  top: 88px
-  position: absolute
-
-.scroll-left-enter-to
   z-index: 100
-  width: 100%
-  height: calc(100vh - 44px)
-  top: 88px
-  position: absolute
+  will-change: transform
+  transform:  translate3d(-100%, 0px, 0px)
 
-.scroll-left-enter-to
-  transform:  translate3d(0px, 0px, 0px)
+.scroll-left-enter-active
   will-change: transform
   transition: transform 0.2s
 

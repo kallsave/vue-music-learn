@@ -71,4 +71,5 @@
 - 音乐播放不了的问题
 - player.vue的bug
 - sticky在真机上快速滑动有问题
+- musice页面合并
 

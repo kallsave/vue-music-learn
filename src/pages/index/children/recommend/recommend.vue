@@ -17,7 +17,6 @@
             :options="slideOptions"
             :show-dots="true"
             :auto-play="false"
-            @scroll-end="scrollEnd"
             @load-image="loadImage">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->
@@ -122,6 +121,7 @@ export default {
   },
   mounted() {
     this._getData()
+    // this.$refs.scroll.scrollTo()
   },
   methods: {
     ...mapMutations({
@@ -178,18 +178,16 @@ export default {
       // console.log('handler')
     },
     selectItem(e, item) {
-      console.log('click')
       if (!e._constructed) {
         return
       }
       this.setRecommendAlbum(item)
-      // 先跳转后设置vuex
+      // this.$router.push({
+      //   path: `/music/recommend-detail/${item.dissid}`
+      // })
       this.$router.push({
-        path: `/music/recommend-detail/${item.dissid}`
+        path: `/new-music/recommend-detail/${item.dissid}`
       })
-    },
-    scrollEnd(pos) {
-      // console.log(pos)
     },
     onPullingDown() {
       this._getData(true)

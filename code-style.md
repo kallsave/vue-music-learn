@@ -3,6 +3,7 @@
 - 减少html中的class,一个dom尽量只有一个class
 - 一行代码的长度不得超过编辑器的长度,子元素尽量都换行
 - ref > v-if = v-show > class >  for = key > : > @
+- 一些坑点: 在苹果手机和谷歌浏览器上,button,input这些原生的控件对事件的捕获能力要比div强,所以写一些第三方组件,需要点击的bom可以优先考虑button
 
 ## JS代码书写规范
 - 遵循eslint代码规范

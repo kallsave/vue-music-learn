@@ -81,10 +81,13 @@ export default {
       if (!e._constructed) {
         return
       }
-      this.$router.push({
-        path: `/music/rank-detail/${item.id}`
-      })
       this.setRankAlbum(item)
+      // this.$router.push({
+      //   path: `/music/rank-detail/${item.id}`
+      // })
+      this.$router.push({
+        path: `/new-music/rank-detail/${item.id}`
+      })
     }
   }
 }

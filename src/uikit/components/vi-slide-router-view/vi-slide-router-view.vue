@@ -60,7 +60,7 @@ const DEFAULT_OPTIONS = {
   click: false,
   snap: {
     loop: false,
-    threshold: 0.4,
+    threshold: 0.3,
   },
   bounce: {
     top: true,
@@ -69,15 +69,6 @@ const DEFAULT_OPTIONS = {
     right: false
   }
 }
-
-const DEFAULT_TAB_SLIDER_STYLE = {
-  'background-color': '#ffcd32',
-  'height': '2px',
-  'width': '50px',
-  'transition': 'transform 0.3s cubic-bezier(.61,0,.44,1)'
-}
-
-const TRANSFORM = prefixStyle('transform')
 
 export default {
   name: COMPONENT_NAME,

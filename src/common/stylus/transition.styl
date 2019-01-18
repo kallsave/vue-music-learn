@@ -1,11 +1,15 @@
 // enter => enter-to 中间是slide-enter-active过渡态
 // leave => leave-to 中间是slide-leave-active过渡态
 // 每到一个阶段,css的类就会自动添加和去除
-.router-slide-css-transform-enter-active,
-.router-slide-css-transform-leave-active
-  transition: all 0.3s
+.router-slide-css-transform-enter
+  transform: translate3d(100%, 0, 0)
 
-.router-slide-css-transform-enter,
+.router-slide-css-transform-enter-active
+  transition: all 0.3s cubic-bezier(.61,0,.44,1)
+
+.router-slide-css-transform-leave-active
+  transition: all 0.3s cubic-bezier(.61,0,.44,1)
+
 .router-slide-css-transform-leave-to
   transform: translate3d(100%, 0, 0)
 

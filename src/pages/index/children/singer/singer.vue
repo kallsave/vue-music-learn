@@ -110,8 +110,11 @@ export default {
     },
     selectSinger(singer) {
       this.setSinger(singer)
+      // this.$router.push({
+      //   path: `/music/singer-detail/${singer.id}`
+      // })
       this.$router.push({
-        path: `/music/singer-detail/${singer.id}`
+        path: `/new-music/singer-detail/${singer.id}`
       })
     },
   }

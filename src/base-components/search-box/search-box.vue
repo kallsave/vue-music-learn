@@ -1,14 +1,14 @@
 <template>
   <div class="search-box">
-    <i class="icon-search"></i>
+    <button class="icon-search" @click="a"></button>
     <input ref="query" class="input-box"
       v-model="query"
       :placeholder="placeholder"
       @focus="focusHandler"
       @input="inputHandler"
       @change="changeHandler"/>
-    <i class="icon-dismiss" v-show="query"
-      @click="clear"></i>
+    <button class="icon-dismiss" v-show="query"
+      @click="clear"></button>
   </div>
 </template>
 
@@ -53,12 +53,14 @@ export default {
       this.$emit(EVENT_FOCUS)
     },
     clear() {
-      alert('clear')
       this.$emit(EVENT_CLEAR)
     },
     // 主动获得焦点
     focus() {
       this.$refs.query.focus()
+    },
+    a() {
+      console.log('a')
     }
   }
 }
@@ -78,6 +80,12 @@ export default {
   background: $color-highlight-background
   border-radius: 6px
   .icon-search
+    margin: 0
+    padding: 0
+    outline: none
+    border: none
+    background: transparent
+    background-color: transparent
     font-size: 24px
     color: $color-background
   .input-box
@@ -91,12 +99,15 @@ export default {
     &:placeholder
       color: $color-text-d
   .icon-dismiss
+    margin: 0
+    padding: 0
+    outline: none
+    border: none
+    background: transparent
+    background-color: transparent
     font-size: 16px
     color: $color-background
     position: absolute
-    z-index: 10
+    z-index: 100
     right: 10px
-    &:before
-      position: relative
-      z-index: 10
 </style>
