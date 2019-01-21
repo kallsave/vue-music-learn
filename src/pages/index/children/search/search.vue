@@ -139,7 +139,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setSinger: 'SET_SINGER'
+      setSinger: 'SET_SINGER',
+      searchHistory: 'SET_SEARCH_HISTORY',
     }),
     ...mapActions([
       'insertSong'
@@ -227,6 +228,7 @@ export default {
       this.isFetchSearch = false
     },
     selectItem(item) {
+      this.searchHistory([])
       if (item.type === TYPE_SINGER) {
         const singer = new Singer({
           id: item.singermid,

@@ -176,10 +176,7 @@ export default {
     if (this.autoPlay) {
       this._play()
     }
-    if (!this.isListenResize) {
-      this.isListenResize = true
-      window.addEventListener('resize', this._resizeHandler, false)
-    }
+    window.addEventListener('resize', this._resizeHandler, false)
   },
   methods: {
     setSlideWidth(isResize) {
