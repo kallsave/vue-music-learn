@@ -74,7 +74,7 @@ import { MUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/kee
 import { getRecommend, getDiscList } from '@/api/recommend.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
-import { sticky } from '../../mixins/inject-sticky.js'
+import { injectStickyMixin } from '../../mixins/inject-sticky.js'
 
 // store.js
 const engine = require('store/src/store-engine')
@@ -89,7 +89,7 @@ const store = engine.createStore(storages, storePlugins)
 export default {
   // 可变keep-alive
   name: MUTABLE_KEEP_ALIVE_NAME,
-  mixins: [sticky, playListMixin],
+  mixins: [injectStickyMixin, playListMixin],
   data() {
     return {
       recommends: [],

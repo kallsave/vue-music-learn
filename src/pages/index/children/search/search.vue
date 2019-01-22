@@ -66,7 +66,7 @@
 <script>
 import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { getHotKey, search } from '@/api/search.js'
-import { sticky } from '../../mixins/inject-sticky.js'
+import { injectStickyMixin } from '../../mixins/inject-sticky.js'
 import { createSong } from '@/common/class/song.js'
 import { debounce, throttle } from '@/common/helpers/utils.js'
 import { playListMixin } from '@/common/mixins/player.js'
@@ -86,7 +86,7 @@ export default {
     NoResult,
     Loading
   },
-  mixins: [sticky, playListMixin],
+  mixins: [injectStickyMixin, playListMixin],
   props: {
     isShowSinger: {
       type: Boolean,

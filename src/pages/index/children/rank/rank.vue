@@ -33,11 +33,11 @@ import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
 import { getTopList } from '@/api/rank.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
-import { sticky } from '../../mixins/inject-sticky.js'
+import { injectStickyMixin } from '../../mixins/inject-sticky.js'
 
 export default {
   name: IMMUTABLE_KEEP_ALIVE_NAME,
-  mixins: [sticky, playListMixin],
+  mixins: [injectStickyMixin, playListMixin],
   data() {
     return {
       rankList: [],

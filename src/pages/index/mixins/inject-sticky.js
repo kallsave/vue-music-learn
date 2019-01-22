@@ -1,6 +1,6 @@
 export const STICKY_TOP_BAR = 44
 
-export const sticky = {
+export const injectStickyMixin = {
   inject: ['ViSticky'],
   methods: {
     scrollHandler(pos) {
