@@ -5,18 +5,17 @@
         class="vi-tab-list">
         <slot></slot>
       </div>
-      <div ref="tabSlider" class="vi-tab-slider"
-        :style="styleForSlider">
-      </div>
     </slot>
+    <div ref="tabSlider"
+      class="vi-tab-slider"
+      :style="styleForSlider">
+    </div>
   </div>
 </template>
 
 <script>
 import { mulitDeepClone, stylePadPx } from '../../common/helpers/utils.js'
 import { prefixStyle, addClass } from '../../common/helpers/dom.js'
-
-import ViTabItem from './vi-tab-item.vue'
 
 const COMPONENT_NAME = 'vi-tab'
 
@@ -33,16 +32,13 @@ const TRANSFORM = prefixStyle('transform')
 
 export default {
   name: COMPONENT_NAME,
-  components: {
-    ViTabItem
-  },
   props: {
     sliderStyle: {
       type: Object,
       default() {
         return {}
       }
-    }
+    },
   },
   computed: {
     styleForSlider() {
@@ -50,25 +46,33 @@ export default {
     }
   },
   mounted() {
-    this.getRemainder()
-    this._initTab()
+    this._calculate()
+    this._initSlider()
+    window.addEventListener('resize', this._resizeHandler, false)
   },
   methods: {
-    getRemainder() {
+    _calculate() {
       this.tabWidth = this.$refs.tabList.clientWidth
       this.tabItemWidth = this.tabWidth / this.$children.length
       this.tabSliderWidth = this.$refs.tabSlider.clientWidth
       this.remainder = (this.tabItemWidth - this.tabSliderWidth) / 2
-      return this.remainder
     },
-    _initTab() {
+    _initSlider() {
       Array.apply(null, this.$children).forEach((item, index) => {
-        item.$on('selected', (isFirst) => {
+        item.$on('selected', (isFlow) => {
           this.currentIndex = index
           let translateX = this.currentIndex * this.tabItemWidth + this.remainder
-          this.translateSliderTo(translateX, isFirst)
+          this.translateSliderTo(translateX, isFlow)
         })
       })
+    },
+    _resizeHandler() {
+      this._calculate()
+      let translateX = this.currentIndex * this.tabItemWidth + this.remainder
+      this.translateSliderTo(translateX, true)
+    },
+    getRemainder() {
+      return this.remainder
     },
     tabItemClick(index) {
       this.$emit(EVENT_TAB_ITEM_CLICK, index)
@@ -84,7 +88,10 @@ export default {
         this.$refs.tabSlider.style[TRANSFORM] = `translateX(${x}px)`
       }
     },
-  }
+  },
+  destroyed() {
+    window.removeEventListener('resize', this._resizeHandler, false)
+  },
 }
 </script>
 

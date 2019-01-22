@@ -9,7 +9,6 @@
 - dialog组件开发
 - confirm组件开发
 - 手机播放不了音乐
-- 检查keep-alive带来的refresh问题
 - 给各组件写README.md文档
 - 测试router更多传参用法
 - scroll的没有更多的样式bug
@@ -19,7 +18,6 @@
 - vi-slide-router-view提供默认tab组件,同时给外部提供可自定义的tab组建
 - vi-slide-router-transition支持各种场景的$route参数
 - 网易严选nav组件
-- 抓包工具
 - scroll组件暴露自动开启关闭上下拉功能的方法
 - native-sticky
 - 阅读createAPI源码
@@ -46,7 +44,6 @@
 - weui源码
 - sticky目前mergeEleKey只能支持两个,mergeEleKey的场景不支持切换
 - position: sticky兼容性挺好的
-- 修复search无法左右滚动,无法清除输入框的bug
 - 增加upload组件,找compress
 - svg的viewport
 - easy-html-webpack-plugin增加模板替换功能
@@ -57,8 +54,6 @@
 - 看黄老师的音乐列表页的transfrom产生的scroll效果
 
 # 优先
-- 完成tab-bar组件
-- vi-slide-view
 - svg的viewport
 - index-list支持slot
 - dialog组件开发
@@ -69,7 +64,5 @@
 - 完成剩余内容
 - 重写vi-loading
 - 音乐播放不了的问题
-- player.vue的bug
-- sticky在真机上快速滑动有问题
 - musice页面合并
 

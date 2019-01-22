@@ -37,8 +37,8 @@ export default {
   mounted() {
     this.$nextTick(() => {
       if (this.selected) {
-        const isFirst = true
-        this.$emit(EVENT_SELECTED, isFirst)
+        const isFlow = true
+        this.$emit(EVENT_SELECTED, isFlow)
       }
     })
   },
