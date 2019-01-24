@@ -1,66 +1,46 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
+import local from './cache/local-storage/index.js'
 
 import createPersistedState from 'vuex-persistedstate'
+
+// keep-alive-module
+import keepAliveName from './modules/keep-alive-name/keep-alive-name.js'
 
 // modules
 import singers from './modules/singer/index.js'
 import player from './modules/player/index.js'
 import rankAlbum from './modules/rank-album/index.js'
 import recommendAlbum from './modules/recommend-album/index.js'
-
-// keep-alive
-import KeepAliveName from './modules/keep-alive-name/keep-alive-name.js'
-
-// store是集合了各种storages的操作,默认是不带expire的localStorage
-// localStorage比cookie好,如果数据超过4k,cookie将丢失数据导致vuex没有保存
-// 可以定制化自己的配置
-// https://github.com/marcuswestin/store.js#make-your-own-build
-const engine = require('store/src/store-engine')
-const storages = [
-  require('store/storages/localStorage')
-]
-
-const storePlugins = [
-  require('store/plugins/defaults'),
-  require('store/plugins/expire')
-]
-
-const store = engine.createStore(storages, storePlugins)
+import searchHistory from './modules/search-history/search-history.js'
 
 const debug = process.env.NODE_ENV !== 'production'
 
-const ignoreMutations = []
-// const ignoreMutations = ['SET_RECOMMEND_ALBUM']
+// 不通过PersistedState插件做缓存的mutations
+// 用于不需要存储或者更自定义的功能
+const persistedstateIgnoreMutations = [
+  'SET_SEARCH_HISTORY'
+]
 
 // localStore保存对象的prototype,需要注意
 const VuexPlugins = [
   createPersistedState({
     key: 'vue-music',
-    storage: {
-      getItem: (key) => {
-        return store.get(key)
-      },
-      setItem: (key, value) => {
-        store.set(key, value, new Date().getTime() + 10000 * 60)
-      },
-      removeItem: (key) => store.remove(key)
-    },
-    // getState(key) {
-    //   return store.get(key)
-    // },
-    // setState(key, value) {
-    //   console.log('value', value)
-    //   store.set(key, value, new Date().getTime() + 10000 * 60)
-    // },
     filter(mutations) {
       // 过滤掉
-      if (ignoreMutations.indexOf(mutations.type) !== -1) {
+      if (persistedstateIgnoreMutations.indexOf(mutations.type) !== -1) {
         return false
       }
       return true
-    }
+    },
+    getState(key) {
+      return local.get(key)
+    },
+    setState(key, value) {
+      // 存储一分钟,因为操作的一个大的数据,在界面保持触发操作永远不会失效
+      local.set(key, value, new Date().getTime() + 1000 * 60)
+    },
   })
 ]
 
@@ -68,11 +48,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
+    keepAliveName,
     singers,
     player,
     rankAlbum,
     recommendAlbum,
-    KeepAliveName
+    searchHistory
   },
   strict: debug,
   plugins: debug ? VuexPlugins.concat([createLogger()]) : VuexPlugins

@@ -1,0 +1,39 @@
+import local from '../../index.js'
+
+const SEARCH_KEY = '__search__'
+
+const SEARCH_MAX_LENGTH = 15
+
+function insertArray({ arr, val, compare = (item) => {
+  return item === val
+}, maxLength } = {}) {
+  const index = arr.findIndex(compare)
+
+  if (index === 0) {
+    return
+  }
+
+  if (index > 0) {
+    arr.splice(index, 1)
+  }
+  arr.unshift(val)
+  if (maxLength && arr.length > maxLength) {
+    arr.pop()
+  }
+}
+
+export function saveSearch(query) {
+  let searchList = local.get(SEARCH_KEY) || []
+  insertArray({
+    arr: searchList,
+    val: query,
+    maxLength: SEARCH_MAX_LENGTH
+  })
+  // 存储一天
+  local.set(SEARCH_KEY, searchList, new Date().getTime() + 1000 * 60 * 60 * 24)
+  return searchList
+}
+
+export function loadSearch() {
+  return local.get(SEARCH_KEY) || []
+}

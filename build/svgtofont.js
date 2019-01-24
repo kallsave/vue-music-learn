@@ -1,9 +1,19 @@
 const path = require('path')
+const fs = require('fs')
 const svgtofont = require('svgtofont')
 const glob = require('glob-all')
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
+}
+
+function fsExistsSync(path) {
+  try {
+    fs.accessSync(path, fs.F_OK)
+  } catch (e) {
+    return false
+  }
+  return true
 }
 
 // 约定项目放置svg图片的目录
@@ -34,6 +44,20 @@ let fontFiles = glob.sync([
   // resolve(`src/base-components/**/${SVG_FOLDER}`),
 ])
 
+// ; (async () => {
+//   for (let i = 0; i < fontFiles.length; i++) {
+//     await (() => {
+//       return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//           let item = fontFiles[i]
+//           console.log('item', item)
+//           resolve()
+//         }, 100)
+//       })
+//     })()
+//   }
+// })()
+
 fontFiles.forEach((item) => {
   let dist = item.replace(distRuler, `$1${FONTS_FOLDER}`)
   let fontName = ''
@@ -44,6 +68,12 @@ fontFiles.forEach((item) => {
   } else {
     fontName = LOCAL_PREFIX + item.replace(fontNameRuler, `$2`) + '-icon'
   }
+  // 如果没有fonts目录,创建fonts目录
+  let reg = new RegExp(`${SVG_FOLDER}`)
+  let fontsFolderPath = item.replace(reg, `${FONTS_FOLDER}`)
+  if (!fs.existsSync(fontsFolderPath)) {
+    fs.mkdirSync(fontsFolderPath)
+  }
 
   svgtofont({
     src: item,
@@ -53,9 +83,9 @@ fontFiles.forEach((item) => {
     startNumber: 20000,
     emptyDist: false
   }).then(() => {
-    // console.log('done')
+    console.log('done')
   }).catch((err) => {
-    // console.log(err)
+    console.log(err)
   })
 })
 

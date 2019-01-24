@@ -23,7 +23,7 @@
             <ul class="hot-key-list">
               <li class="item" :key="index"
                 v-for="(item, index) in hotKey"
-                @click="query = item.k">
+                @click="hotSearch(item)">
                 <span>{{item.k}}</span>
               </li>
             </ul>
@@ -71,7 +71,7 @@ import { createSong } from '@/common/class/song.js'
 import { debounce, throttle } from '@/common/helpers/utils.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import Singer from '@/common/class/singer.js'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import NoResult from './components/no-result/no-result.vue'
 import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
 
@@ -115,12 +115,21 @@ export default {
       isFetchSearch: false,
     }
   },
+  computed: {
+    ...mapGetters([
+      'searchHistory',
+    ]),
+  },
   watch: {
     query: {
       handler(newVal) {
         this.isFetchSearch = false
         if (!this.debounceQueryHandler) {
           this.debounceQueryHandler = debounce((newVal) => {
+            if (!newVal.trim()) {
+              return
+            }
+            this.saveSearchHistoryLocalStorage(newVal)
             this.page = 1
             // 第三个参数如果是缓动,会导致盒子被拖拽
             this.$refs.scroll.scroll.scrollTo(0, 0, 0)
@@ -140,10 +149,10 @@ export default {
   methods: {
     ...mapMutations({
       setSinger: 'SET_SINGER',
-      searchHistory: 'SET_SEARCH_HISTORY',
     }),
     ...mapActions([
-      'insertSong'
+      'insertSong',
+      'saveSearchHistoryLocalStorage'
     ]),
     handlePlayList() {
       this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
@@ -213,6 +222,9 @@ export default {
     },
     clearHandler() {
       this.query = ''
+    },
+    hotSearch(hotKey) {
+      this.query = hotKey.k
     },
     onPullingUp() {
       if (this.hasMore) {

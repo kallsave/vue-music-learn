@@ -1,3 +1,5 @@
+import { saveSearch, loadSearch } from '../../cache/local-storage/modules/search-history/search-history.js'
+
 const types = {
   SET_SEARCH_HISTORY: 'SET_SEARCH_HISTORY',
 }
@@ -5,7 +7,7 @@ const types = {
 const searchHistory = {
   state: {
     // 搜索记录
-    searchHistory: [],
+    searchHistory: loadSearch(),
   },
   getters: {
     searchHistory: (state) => state.searchHistory
@@ -16,8 +18,8 @@ const searchHistory = {
     },
   },
   actions: {
-    saveSearchHistoryLocalStorage({ commit }, searchHistory) {
-      commit(types.SET_SEARCH_HISTORY, searchHistory)
+    saveSearchHistoryLocalStorage({ commit }, query) {
+      commit(types.SET_SEARCH_HISTORY, saveSearch(query))
     }
   }
 }

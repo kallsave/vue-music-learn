@@ -49,3 +49,5 @@ better-scroll文档
 
 [lighthouse首屏分析](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk?hl=zh-CN)
 
+[Web技术文档](https://developer.mozilla.org/zh-CN/docs/Web)
+

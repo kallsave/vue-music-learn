@@ -9,17 +9,10 @@
 - 遵循eslint代码规范
 - 常量需要使用const大写申明,单词区分用下滑线标识
 - 内部函数用_开头
-- components > beforeCreate> mixins > provide > inject >  props > data > created > computed > watch > mounted > activated > methods > updated
+- components > beforeCreate > mixins > provide > inject >  props > data > created > computed > watch > mounted > activated > methods > updated
 生命周期:
 created => children.props => children.data => children.created =>
 - mounted中避免使用this.$nextTick,这种场景用于确保父组件中所有的子组件的dom都挂载完毕。
-
-## Css书写规范
-- 一个样式一行
-- 不推荐使用fixed,能用position: absolute的就不用fixed,fixed在很多场景下有bug:
-  fixed会在transform下会降级为absolute
-
-  fixed布局的弹窗如果有输入框,在ios上输入光标偏移
 
 - 动作命名:
   can 判断是否可执行某个动作
@@ -31,6 +24,13 @@ created => children.props => children.data => children.created =>
   get 获取某个值
 
   set 设置某个值
+
+## Css书写规范
+- 一个样式一行
+- 不推荐使用fixed,能用position: absolute的就不用fixed,fixed在很多场景下有bug:
+  fixed会在transform下会降级为absolute
+
+  fixed布局的弹窗如果有输入框,在ios上输入光标偏移
 
 ## 语法建议
 - Promise的catch语法建议
@@ -76,18 +76,20 @@ async function updateAllImg () {
 
 如果在for循环中使用async/await,不想申明没必要的函数名
 ```javascript
-;(async() => {
-  for (let i = 0; i < imgList.length; i++) {
-    await(() => {
-      return new Promise(((resolve, reject) => {
-        // ...
-        resolve()
-      }).catch(() => {
-        // ...
-        console.error(err)
+; (async () => {
+  for (let i = 0; i < arr.length; i++) {
+    await (() => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.log(i)
+          resolve()
+        }, 1000)
       })
     })()
   }
+  await (() => {
+    console.log(777)
+  })()
 })()
 ```
 
@@ -273,226 +275,65 @@ export default {
     }
   },
   watch: {
-    '$route' (to, from) {
-        if (!to.meta || !to.meta.index || !from.meta || !from.meta.index) {
-          this.transitionName = 'fade'
-          this.mode = 'out-in'
-          return;
-        }
-        if (to.meta.index >= from.meta.index) {
-          this.transitionName = 'scroll-right'
-          // this.mode = 'out-in'
-          this.mode = ''
-        } else {
-          this.transitionName = 'scroll-left'
-          this.mode = ''
-        }
+    $route(to, from) {
+      if (!to.meta || !to.meta.index || !from.meta || !from.meta.index) {
+        this.transitionName = ''
+        this.mode = ''
+        return
       }
+      if (to.meta.index >= from.meta.index) {
+        this.transitionName = 'move-right'
+        this.mode = ''
+      } else {
+        this.transitionName = 'move-left'
+        this.mode = ''
+      }
+    }
   },
 }
 
 </script>
 
-<style lang="less">
-.router-view {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  // 防止布局溢出导致动画抖动
-  overflow-x: hidden;
-  will-change: left;
-  &.scroll-right-enter {
-    position: fixed;
-    z-index: 200;
-    background-color: #f4f4f4;
-    height: 100vh;
-    left: 100%;
-    will-change: left;
-    .vux-header {
-      z-index: 200;
-      left: 100%;
-      will-change: left;
-    }
-  }
-  &.scroll-right-enter-active {
-    position: fixed;
-    z-index: 200;
-    background-color: #f4f4f4;
-    height: 100vh;
-    // 贝塞尔曲线优化的思路是:
-    // css动画遇到性能问题时会丢帧,可能会导致卡顿,闪屏
-    // 卡顿和闪屏多发生在动画结束的时候
-    // 所以动画的开始要快(丢帧无所谓),动画结束时要慢(保证准确执行)
-    transition: left 0.3s cubic-bezier(.14,.52,.04,.98);
-    .vux-header {
-      z-index: 200;
-      transition: left 0.28s cubic-bezier(.14,.52,.04,.98);
-    }
-    .page-header-bar {
-      background-color:#C53A3A;
-    }
-  }
-  &.scroll-right-enter-to {
-    position: fixed;
-    z-index: 200;
-    background-color: #f4f4f4;
-    height: 100vh;
-    will-change: auto;
-    .vux-header {
-      z-index: 200;
-      will-change: auto;
-    }
-  }
-  &.scroll-right-leave-to {
-    z-index: 10;
-    will-change: left;
-    .vux-header {
-      z-index: 10;
-      will-change: left;
-    }
-  }
-  &.scroll-right-leave-active {
-    z-index: 10;
-    left: -20%;
-    will-change: left;
-    // 比0.3s差0.02s是因为:
-    // 进来的页面和出去的页面动画是mode=''同时进行的,
-    // 如果出去的页面的滚动条处于超出视图的位置时,这时候切换到进来的页面,
-    // 而进来的页面如果高度也大于视图的位置,
-    // 这时候浏览器的默认行为会把滚动条拉到原来的位置,
-    // 这样进来的页面就不是从顶部开始了,并且导致闪屏
-    // 所以要让出去的页面消失后才让进来的页面展示,
-    // 但是这个时间差要短,如果过长,会导致留白的出现.
-    transition: left 0.28s cubic-bezier(.14,.52,.04,.98);
-    .vux-header {
-      z-index: 10;
-    }
-  }
-  &.scroll-right-leave {
-    z-index: 10;
-    left: -20%;
-    will-change: auto;
-    .vux-header {
-      z-index: 10;
-      will-change: auto;
-    }
-  }
-  &.scroll-left-enter {
-    z-index: 200;
-    left: -30%;
-    will-change: left;
-    .vux-header {
-      z-index: 100;
-      left: -30%;
-      will-change: left;
-    }
-  }
-  &.scroll-left-enter-active {
-    z-index: 100;
-    background-color: #f4f4f4;
-    will-change: left;
-    transition: left 0.3s cubic-bezier(.14,.52,.04,.98);
-    .vux-header {
-      z-index: 100;
-      transition: left 0.3s cubic-bezier(.14,.52,.04,.98);
-    }
-  }
-  &.scroll-left-enter-to {
-    z-index: 100;
-    background-color: #f4f4f4;
-    will-change: auto;
-    .vux-header {
-      z-index: 100;
-      will-change: auto;
-    }
-  }
-  &.scroll-left-leave-to {
-    z-index: 200;
-    background-color: #f4f4f4;
-    height: 100vh;
-    left: 0%;
-    will-change: left;
-    .vux-header {
-      z-index: 200;
-      left: 0%;
-      will-change: left;
-    }
-  }
-  &.scroll-left-leave-active {
-    z-index: 200;
-    background-color: #f4f4f4;
-    height: 100vh;
-    left: 100%;
-    transition: left 0.3s cubic-bezier(.14,.52,.04,.98);
-    .vux-header {
-      z-index: 200;
-      left: 100%;
-      transition: left 0.3s cubic-bezier(.14,.52,.04,.98);
-    }
-  }
-  &.scroll-left-leave {
-    z-index: 200;
-    background-color: #f4f4f4;
-    height: 100vh;
-    left: 100%;
-    will-change: auto;
-    .vux-header {
-      z-index: 200;
-      will-change: auto;
-    }
-  }
+<style lang="stylus" scoped>
+.router-view
+  &.move-right-enter
+    will-change: transform
+    transform: translate3d(100%, 0, 0)
+  &.move-right-enter-active
+    will-change: transform
+    transition: transform 0.3s cubic-bezier(.61,0,.44,1)
+  &.move-right-enter-to
+    will-change: auto
+    transform: none
 
-  // 给editRemark页面做的适配效果
-  &.fade-leave-to {
-    opacity: 0;
-  }
+  &.move-right-leave
+    will-change: transform
+  &.move-right-leave-active
+    transform: translate3d(-30%, 0, 0)
+    transition: transform 0.28s cubic-bezier(.61,0,.44,1)
+  &.move-right-leave-to
+    will-change: auto
+    transform: translate3d(-30%, 0, 0)
 
-  &.fade-leave-active,
-  &.fade-leave {
-    opacity: 0;
-    transition: left 0.1s cubic-bezier(.14,.52,.04,.98);
-  }
+  &.move-left-enter
+    transform: translate3d(-30%, 0, 0)
+    will-change: transform
+  &.move-left-enter-active
+    will-change: transform
+    transition: transform 0.3s cubic-bezier(.61,0,.44,1)
+  &.move-left-enter-to
+    will-change: auto
+    transform: none
 
-  &.fade-enter {
-    position: fixed;
-    z-index: 200;
-    background-color: #f4f4f4;
-    height: 100vh;
-    left: 100%;
-    will-change: left;
-    .vux-header {
-      z-index: 200;
-      left: 100%;
-      will-change: left;
-    }
-  }
-
-  &.fade-enter-active,
-  &.fade-enter-to {
-    position: fixed;
-    z-index: 200;
-    background: #f4f4f4;
-    height: 100vh;
-    transition: left 0.3s cubic-bezier(.14,.52,.04,.98);
-    .vux-header {
-      z-index: 200;
-      will-change: left;
-      transition: left 0.3s cubic-bezier(.14,.52,.04,.98);
-    }
-  }
-  &.fade-enter-to {
-    position: fixed;
-    z-index: 200;
-    background: #f4f4f4;
-    height: 100vh;
-    will-change: auto;
-    .vux-header {
-      z-index: 200;
-      will-change: left;
-      will-change: auto;
-    }
-  }
-}
+  &.move-left-leave
+    will-change: transform
+  &.move-left-leave-active
+    transform: translate3d(100%, 0, 0)
+    transition: transform 0.28s cubic-bezier(.61,0,.44,1)
+  &.move-left-leave-to
+    will-change: auto
+    transform: translate3d(100%, 0, 0)
+</style>
 ```
 
 ## 关于better-scroll

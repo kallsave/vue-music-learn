@@ -52,6 +52,7 @@
 - vi-slide-view考虑去掉component
 - 没匹配到的路由做404
 - 看黄老师的音乐列表页的transfrom产生的scroll效果
+- 打包部署
 
 # 优先
 - svg的viewport
