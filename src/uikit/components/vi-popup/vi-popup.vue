@@ -1,16 +1,22 @@
 <template>
-  <div class="vi-popup" :style="{'z-index': zIndex}" v-show="isVisible">
-    <div class="vi-popup-mask" :class="{'vi-popup-mask-active': mask}" @click="maskClick">
+  <div class="vi-popup"
+    :style="{'z-index': zIndex}"
+    v-show="isVisible">
+    <div class="vi-popup-mask"
+      :class="{'vi-popup-mask-active': mask}"
+      @click="maskClick">
       <!-- 自定义背景板 -->
       <!-- slot的局限性在于只在两级组件中使用,不能多级组件传递 -->
       <slot name="mask"></slot>
       <!-- 自定义背景板,v-html可以多级调用结构 -->
       <!-- 对于需求变动过多的组件,比如dialog组件,使用createAPI的createElement来重写 -->
       <template v-if="customMask">
-        <div class="vi-popup-custom-mask" v-html="customMask"></div>
+        <div class="vi-popup-custom-mask"
+          v-html="customMask"></div>
       </template>
     </div>
-    <div v-if="$slots.default" class="vi-popup-content-center">
+    <div class="vi-popup-content-center"
+      v-if="$slots.default" >
       <slot></slot>
     </div>
     <!-- 不是居中的content,自定义样式,或者可以做关闭按钮小组件插槽 -->
@@ -73,5 +79,5 @@ export default {
     left: 50%
     transform: translate(-50%, -50%)
 .vi-popup-mask-active
-  background: rgba(0, 0, 0, 0.6)
+  background: rgba(0, 0, 0, 0.4)
 </style>

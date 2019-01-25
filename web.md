@@ -49,5 +49,12 @@ better-scroll文档
 
 [lighthouse首屏分析](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk?hl=zh-CN)
 
-[Web技术文档](https://developer.mozilla.org/zh-CN/docs/Web)
+部署工具
+------------
+
+[gitlab-ci.yml配置任务](https://fennay.github.io/gitlab-ci-cn/gitlab-ci-yaml.html)
+
+[gitlab文档](https://docs.gitlab.com.cn)
+
+[github的travis.yml配置任务](https://www.travis-ci.org/)
 

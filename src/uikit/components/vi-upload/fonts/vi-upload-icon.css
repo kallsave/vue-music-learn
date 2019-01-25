@@ -1,11 +1,11 @@
 @font-face {
   font-family: "vi-upload-icon";
-  src: url('vi-upload-icon.eot?t=1548324451916'); /* IE9*/
-  src: url('vi-upload-icon.eot?t=1548324451916#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url("vi-upload-icon.woff2?t=1548324451916") format("woff2"),
-  url("vi-upload-icon.woff?t=1548324451916") format("woff"),
-  url('vi-upload-icon.ttf?t=1548324451916') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('vi-upload-icon.svg?t=1548324451916#vi-upload-icon') format('svg'); /* iOS 4.1- */
+  src: url('vi-upload-icon.eot?t=1548331152287'); /* IE9*/
+  src: url('vi-upload-icon.eot?t=1548331152287#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("vi-upload-icon.woff2?t=1548331152287") format("woff2"),
+  url("vi-upload-icon.woff?t=1548331152287") format("woff"),
+  url('vi-upload-icon.ttf?t=1548331152287') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('vi-upload-icon.svg?t=1548331152287#vi-upload-icon') format('svg'); /* iOS 4.1- */
 }
 
 [class^="vi-upload-icon-"], [class*=" vi-upload-icon-"] {

@@ -9,7 +9,9 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "svg": "node build/svgtofont.js"
+    "svg": "node build/svgtofont.js",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "transformModules": {
     "cube-ui": {
@@ -24,8 +26,6 @@
     }
   },
   "dependencies": {
-    "assign-deep": "^1.0.0",
-    "auto-compute-first-screen-time": "^5.7.5",
     "axios": "^0.18.0",
     "better-scroll": "^1.12.3",
     "create-keyframe-animation": "^0.1.0",
@@ -83,12 +83,13 @@
     "shelljs": "^0.7.6",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "svgtofont": "^1.1.15",
+    "svgtofont": "1.1.13",
     "uglifyjs-webpack-plugin": "^1.3.0",
     "url-loader": "^0.5.8",
     "vue-loader": "^13.7.3",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.21",
+    "vuepress": "^0.14.8",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.11.3",

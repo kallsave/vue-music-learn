@@ -1,4 +1,4 @@
-import Component from './vi-confirm.vue'
+import Component from './vi-action-sheet.vue'
 import create from './api.js'
 
 Component.install = function (Vue) {

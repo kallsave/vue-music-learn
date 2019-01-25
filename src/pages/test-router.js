@@ -7,6 +7,8 @@ const Inject = () => import(/* webpackChunkName: "Funcitonal" */ './test/childre
 const NativeSticky = () => import(/* webpackChunkName: "NativeSticky" */ './test/children/native-sticky/native-sticky.vue')
 const Sticky = () => import(/* webpackChunkName: "Sticky" */ './test/children/sticky/sticky.vue')
 const Collapse = () => import(/* webpackChunkName: "Sticky" */ './test/children/collapse/collapse.vue')
+const ActionSheet = () => import(/* webpackChunkName: "ActionSheet" */ './test/children/action-sheet/action-sheet.vue')
+const Picker = () => import(/* webpackChunkName: "ActionSheet" */ './test/children/picker/picker.vue')
 
 export default {
   path: '/test',
@@ -39,6 +41,14 @@ export default {
     {
       path: '/test/collapse',
       component: Collapse
-    }
+    },
+    {
+      path: '/test/action-sheet',
+      component: ActionSheet
+    },
+    {
+      path: '/test/picker',
+      component: Picker
+    },
   ]
 }

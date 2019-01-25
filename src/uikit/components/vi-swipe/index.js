@@ -1,9 +1,7 @@
-import Component from './vi-confirm.vue'
-import create from './api.js'
+import Component from './vi-swipe.vue'
 
 Component.install = function (Vue) {
   Vue.component(Component.name, Component)
-  create(Vue, Component)
 }
 
 export default Component

@@ -15,6 +15,8 @@ import ViInject from './components/vi-inject/index.js'
 import ViNativeSticky from './components/vi-native-sticky/index.js'
 import ViCollapse from './components/vi-collapse/index.js'
 import ViTab from './components/vi-tab/index.js'
+import ViActionSheet from './components/vi-action-sheet/index.js'
+import ViSwipe from './components/vi-swipe/index.js'
 
 const components = [
   ViLoadListCon,
@@ -33,7 +35,9 @@ const components = [
   ViInject,
   ViNativeSticky,
   ViCollapse,
-  ViTab
+  ViTab,
+  ViActionSheet,
+  ViSwipe,
 ]
 
 function install(Vue) {

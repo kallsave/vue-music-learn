@@ -60,10 +60,11 @@
 - dialog组件开发
 - confirm组件开发
 - click重复的问题
-- 改写路由,路由过渡动画
 - 音乐列表页使用模糊效果
 - 完成剩余内容
 - 重写vi-loading
 - 音乐播放不了的问题
 - musice页面合并
+- lock
+- swipe
 

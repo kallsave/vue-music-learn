@@ -1,12 +1,17 @@
 <template>
   <transition :name="transition">
-    <div class="vi-loading" v-show="isVisible" :style="style">
-      <div class="vi-loading-content" :style="{transform: `scale(${scale})`}">
+    <div class="vi-loading"
+      v-show="isVisible"
+      :style="style">
+      <div class="vi-loading-content"
+        :style="{transform: `scale(${scale})`}">
         <div class="vi-loading-spinner-content">
-          <i class="vi-loading-spinner" :style="{'background-color': iconColor}"
+          <i class="vi-loading-spinner"
+            :style="{'background-color': iconColor}"
             v-for="(item, index) in balde" :key="index"></i>
         </div>
-        <p class="vi-loading-title" :style="{'color': titleColor}" v-text="title"></p>
+        <p class="vi-loading-title"
+          :style="{'color': titleColor}">{{title}}</p>
       </div>
     </div>
   </transition>

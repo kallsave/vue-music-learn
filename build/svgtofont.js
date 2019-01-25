@@ -48,11 +48,35 @@ let fontFiles = glob.sync([
 //   for (let i = 0; i < fontFiles.length; i++) {
 //     await (() => {
 //       return new Promise((resolve, reject) => {
-//         setTimeout(() => {
-//           let item = fontFiles[i]
-//           console.log('item', item)
-//           resolve()
-//         }, 100)
+//         let item = fontFiles[i]
+//         let dist = item.replace(distRuler, `$1${FONTS_FOLDER}`)
+//         let fontName = ''
+//         if (item.indexOf(APP_FOLDER) !== -1) {
+//           fontName = APP_PREFIX
+//         } else if (item.indexOf(UIKIT_FOLDER) !== -1) {
+//           fontName = UIKIT_PREFIX + item.replace(fontNameRuler, `$2`) + '-icon'
+//         } else {
+//           fontName = LOCAL_PREFIX + item.replace(fontNameRuler, `$2`) + '-icon'
+//         }
+//         // 如果没有fonts目录,创建fonts目录
+//         let reg = new RegExp(`${SVG_FOLDER}`)
+//         let fontsFolderPath = item.replace(reg, `${FONTS_FOLDER}`)
+//         if (!fs.existsSync(fontsFolderPath)) {
+//           fs.mkdirSync(fontsFolderPath)
+//         }
+
+//         svgtofont({
+//           src: path.resolve(item),
+//           dist: path.resolve(dist),
+//           fontName,
+//           css: true,
+//           startNumber: 20000,
+//           emptyDist: false,
+//         }).then(() => {
+//           console.log('done')
+//         }).catch((err) => {
+//           console.log('err', err)
+//         })
 //       })
 //     })()
 //   }
@@ -81,7 +105,11 @@ fontFiles.forEach((item) => {
     fontName,
     css: true,
     startNumber: 20000,
-    emptyDist: false
+    emptyDist: false,
+    svgicons2svgfont: {
+      fontHeight: 1000,
+      normalize: true
+    },
   }).then(() => {
     console.log('done')
   }).catch((err) => {

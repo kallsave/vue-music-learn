@@ -1,25 +1,33 @@
 <!--toast组件一定是居中的,如果需要不居中的loading请使用非编程式占位的的loading-->
 <template>
-  <vi-popup :mask="mask"
+  <vi-popup
+    :mask="mask"
+    :z-index="zIndex"
     v-show="isVisible"
     touchmove.prevent.native>
-    <div class="vi-toast" :style="{'transform': `scale(${scale})`}">
-      <div class="vi-toast-mask" :class="{'vi-toast-mask-active': toastMask}"></div>
+    <div class="vi-toast"
+      :style="{'transform': `scale(${scale})`}">
+      <div class="vi-toast-mask"
+        :class="{'vi-toast-mask-active': toastMask}"></div>
       <div class="vi-toast-content">
-        <div v-if="icon === 'loading'" class="vi-toast-spinner-contain">
-          <i class="vi-toast-spinner" :style="{'background-color': iconColor}"
+        <div class="vi-toast-spinner-contain"
+          v-if="icon === 'loading'" >
+          <i class="vi-toast-spinner"
+            :style="{'background-color': iconColor}"
             v-for="(item, index) in balde" :key="index"></i>
         </div>
         <transition name="vi-zoom">
-          <div v-if="icon === 'correct'" class="vi-toast-correct-contain">
-            <i class="vi-toast-icon-correct vi-toast-correct" :style="{'color': iconColor}"></i>
+          <div class="vi-toast-correct-contain"
+            v-if="icon === 'correct'">
+            <i class="vi-toast-icon-correct vi-toast-correct"
+              :style="{'color': iconColor}"></i>
           </div>
         </transition>
         <transition name="vi-svg-path">
-          <div v-if="icon === 'svg-correct' && isVisible" class="vi-toast-svg-correct-contain">
+          <div class="vi-toast-svg-correct-contain"
+            v-if="icon === 'svg-correct' && isVisible">
             <svg>
-              <path
-                class="vi-toast-svg-correct"
+              <path class="vi-toast-svg-correct"
                 transform="scale(0.25),translate(150 90)"
                 fill="transparent"
                 :stroke="iconColor"
@@ -30,12 +38,15 @@
           </div>
         </transition>
         <transition name="vi-zoom">
-          <div v-if="icon === 'error'" class="vi-toast-error-contain">
-            <i class="vi-toast-icon-error vi-toast-error" :style="{'color': iconColor}"></i>
+          <div class="vi-toast-error-contain"
+              v-if="icon === 'error'">
+            <i class="vi-toast-icon-error vi-toast-error"
+              :style="{'color': iconColor}"></i>
           </div>
         </transition>
         <slot name="icon"></slot>
-        <p class="vi-toast-title" :style="{'color': titleColor}" v-text="title"></p>
+        <p class="vi-toast-title"
+          :style="{'color': titleColor}">{{title}}</p>
       </div>
     </div>
   </vi-popup>
@@ -85,6 +96,10 @@ export default {
     time: {
       type: Number,
       default: 0
+    },
+    zIndex: {
+      type: Number,
+      default: 100
     }
   },
   data() {

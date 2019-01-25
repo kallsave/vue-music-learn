@@ -1,3 +1,5 @@
+@import "./variable.styl"
+
 // enter => enter-to 中间是slide-enter-active过渡态
 // leave => leave-to 中间是slide-leave-active过渡态
 // 每到一个阶段,css的类就会自动添加和去除
@@ -5,10 +7,10 @@
   transform: translate3d(100%, 0, 0)
 
 .router-slide-css-transform-enter-active
-  transition: all 0.3s cubic-bezier(.61,0,.44,1)
+  transition: all 0.3s $ease-out-in
 
 .router-slide-css-transform-leave-active
-  transition: all 0.3s cubic-bezier(.61,0,.44,1)
+  transition: all 0.3s $ease-out-in
 
 .router-slide-css-transform-leave-to
   transform: translate3d(100%, 0, 0)
@@ -22,7 +24,7 @@
 
 .router-slide-css-left-enter-active,
 .router-slide-css-left-leave-active
-  transition: left 0.3s cubic-bezier(.61,0,.44,1)
+  transition: left 0.3s $ease-out-in
 
 .router-slide-css-left-enter,
 .router-slide-css-left-leave-to
