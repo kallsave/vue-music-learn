@@ -6,12 +6,8 @@
 - scroll组件支持自定义pulldown并实现网易严选的下拉效果
 - index-list支持slot
 - 使用骨架屏
-- dialog组件开发
-- confirm组件开发
-- 手机播放不了音乐
 - 给各组件写README.md文档
 - 测试router更多传参用法
-- scroll的没有更多的样式bug
 - store提供同步异步操作
 - vi-slide-router-view像router-view一样可以带props
 - vi-slide-router-view支持各种场景的$route参数(query参数未完成)
@@ -24,20 +20,13 @@
 - 更深入vue源码,阅读vue源码
 - go语言开发后台系统
 - 音量播放器组建开发
-- 更加齐全的工具库(timer)
-- vue函数式组件
-- 去掉base-components
 - range组件
-- 开源webpack插件
-- svgtofont.js脚本增加如果没有fonts文件夹就新增fonts文件夹
 - pipe理念
 - recommend进入时触发pulldown
 - mand源码
-- sticky的options优化,stikcy优化代码
 - 阅读better-scroll源码
 - 调研其他scroll库
 - 自己写一个scroll库
-- 没匹配到的路由做404
 - 用anime.js重写动画
 - sticky-ele增加动态添加移除sticky的方法
 - sticky-ele增加mergeEleKey
@@ -49,9 +38,6 @@
 - easy-html-webpack-plugin增加模板替换功能
 - search新页面
 - 初始化时自动下拉
-- vi-slide-view考虑去掉component
-- 没匹配到的路由做404
-- 看黄老师的音乐列表页的transfrom产生的scroll效果
 - 打包部署
 
 # 优先
@@ -64,7 +50,12 @@
 - 完成剩余内容
 - 重写vi-loading
 - 音乐播放不了的问题
-- musice页面合并
 - lock
 - swipe
+- timer库
+- 单元测试
+- 测试cube-ui所有组件的用法
+- 没匹配到的路由做404
+- 看黄老师的音乐列表页的transfrom产生的scroll效果
+- vuepress
 

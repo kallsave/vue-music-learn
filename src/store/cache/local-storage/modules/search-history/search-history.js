@@ -2,7 +2,7 @@ import local from '../../index.js'
 
 const SEARCH_KEY = '__search__'
 
-const SEARCH_MAX_LENGTH = 15
+const SEARCH_MAX_LENGTH = 8
 
 function insertArray({ arr, val, compare = (item) => {
   return item === val
@@ -22,18 +22,43 @@ function insertArray({ arr, val, compare = (item) => {
   }
 }
 
+function deleteFromArray({ arr, val, compare = (item) => {
+  return item === val
+}}) {
+  const index = arr.findIndex(compare)
+  if (index > -1) {
+    arr.splice(index, 1)
+  }
+}
+
+export function loadSearch() {
+  return local.get(SEARCH_KEY) || []
+}
+
 export function saveSearch(query) {
-  let searchList = local.get(SEARCH_KEY) || []
+  let searchList = loadSearch()
+  let timeSlice = 1000 * 60 * 60 * 24
   insertArray({
     arr: searchList,
     val: query,
     maxLength: SEARCH_MAX_LENGTH
   })
   // 存储一天
-  local.set(SEARCH_KEY, searchList, new Date().getTime() + 1000 * 60 * 60 * 24)
+  local.set(SEARCH_KEY, searchList, new Date().getTime() + timeSlice)
   return searchList
 }
 
-export function loadSearch() {
-  return local.get(SEARCH_KEY) || []
+export function deleteSearch(query) {
+  let searchList = loadSearch()
+  deleteFromArray({
+    arr: searchList,
+    val: query,
+  })
+  local.set(SEARCH_KEY, searchList)
+  return searchList
+}
+
+export function clearSearch() {
+  local.remove(SEARCH_KEY)
+  return []
 }

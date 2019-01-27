@@ -1,17 +1,22 @@
 <template>
-  <div class="player" v-show="playList.length>0">
+  <div class="player"
+    v-show="playList.length>0">
     <transition name="normal">
-      <div class="normal-player" v-show="fullScreen">
+      <div class="normal-player"
+        v-show="fullScreen">
         <div class="background">
             <img width="100%" height="100%"
               :src="currentSong.image">
         </div>
         <div class="top">
-          <div class="back" @click="close">
+          <div class="back"
+            @click="close">
             <i class="icon-back"></i>
           </div>
-          <h1 class="title" v-html="currentSong.name"></h1>
-          <h2 class="subtitle" v-html="currentSong.singer"></h2>
+          <h1 class="title"
+            v-html="currentSong.name"></h1>
+          <h2 class="subtitle"
+            v-html="currentSong.singer"></h2>
         </div>
         <div class="middle">
           <vi-slide
@@ -20,16 +25,14 @@
             <div class="middle-l">
               <div class="cd-wrapper">
                 <div class="cd">
-                  <transition
-                    :duration="durationChangeSone"
+                  <transition :duration="durationChangeSone"
                     @enter="changeSongEnter"
                     @after-enter="changeSongAfterEnter">
                     <img class="image image-cover"
                       :src="oldSong.image"
                       v-show="isSongChange">
                   </transition>
-                  <transition
-                    :duration="durationMove"
+                  <transition :duration="durationMove"
                     @enter="bigImgEnter"
                     @after-enter="bigImgAfterEnter"
                     @leave="bigImgLeave"
@@ -51,9 +54,11 @@
                 :options="scrollOptions">
                 <div class="lyric-wrapper">
                   <div v-if="currentLyric">
-                    <p ref="lyricLine" class="text"
+                    <p ref="lyricLine"
+                      class="text"
                       :class="{'current': currentLineNum === index}"
-                      v-for="(line, index) in currentLyric.lines" :key="index">{{line.txt}}</p>
+                      v-for="(line, index) in currentLyric.lines"
+                      :key="index">{{line.txt}}</p>
                   </div>
                 </div>
               </vi-scroll>
@@ -62,16 +67,16 @@
         </div>
         <div class="bottom">
           <div class="slide-dots">
-            <span class="slide-dot" :key="index"
-              v-for="(item, index) in [0, 1]"
-              :class="{active: currentSlideIndex === index }"></span>
+            <span class="slide-dot"
+              :class="{active: currentSlideIndex === index }"
+              :key="index"
+              v-for="(item, index) in [0, 1]"></span>
           </div>
           <div class="progress-wrapper">
             <span class="time time-l">{{format(currentTime)}}</span>
             <div class="progress-bar-wrapper">
-              <vi-progress-bar
-                :percent="percent"
-                @percent-change="percentChange"></vi-progress-bar>
+              <base-progress-bar :percent="percent"
+                @percent-change="percentChange"></base-progress-bar>
             </div>
             <span class="time time-r">{{format(currentSong.duration)}}</span>
           </div>
@@ -82,11 +87,14 @@
             <div class="icon i-left">
               <i class="icon-prev" @click="prev"></i>
             </div>
-            <div class="icon i-center" :class="disableClass">
-              <i :class="playIcon" @click.stop="togglePlaying"></i>
+            <div class="icon i-center"
+              :class="disableClass">
+              <i :class="playIcon"
+                @click.stop="togglePlaying"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon-next" @click="next"></i>
+              <i class="icon-next"
+                @click="next"></i>
             </div>
             <div class="icon i-right">
               <i class="icon icon-not-favorite"></i>
@@ -96,15 +104,18 @@
       </div>
     </transition>
     <transition name="mini">
-      <div class="mini-player" v-show="!fullScreen" @click="open">
+      <div class="mini-player"
+        v-show="!fullScreen"
+        @click="open">
         <div class="icon">
-          <transition
-            :duration="durationMove"
+          <transition :duration="durationMove"
             @before-enter="miniImgEnter"
             @after-enter="miniImgAfterEnter"
             @after-leave="miniImgAfterLeave">
-            <img width="40" height="40" :src="currentSong.image"
-              ref="miniImg" v-show="!fullScreen">
+            <img ref="miniImg"
+              width="40" height="40"
+              :src="currentSong.image"
+              v-show="!fullScreen">
           </transition>
         </div>
         <div class="text">
@@ -112,14 +123,16 @@
           <p class="desc" v-html="currentSong.singer"></p>
         </div>
         <div class="control" ref="control">
-          <vi-progress-circle
+          <base-progress-circle
             :radius="32"
             :percent="percent">
-            <i class="icon-mini" :class="miniIcon"
+            <i class="icon-mini"
+              :class="miniIcon"
               @click.stop="togglePlaying" ></i>
-          </vi-progress-circle>
+          </base-progress-circle>
         </div>
-        <div class="control" @click.stop="redirectToRecommend">
+        <div class="control"
+          @click.stop="redirectToRecommend">
           <i class="icon-playlist"></i>
         </div>
       </div>

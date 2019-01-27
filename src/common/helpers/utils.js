@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-01-07 12:14:11
+ * @Last Modified time: 2019-01-27 17:58:07
  */
 
 /**
@@ -93,45 +93,37 @@ export function middleline(str) {
   return str.replace(/([A-Z])/g, '-$1').toLowerCase()
 }
 
-/**
- * setTimeout防抖高阶函数
- * 延迟一段时间执行,这段时间如果产生新的数据,重新开始计时
- * 场景:输入框ajax
- * @export
- * @param {Function} func
- * @param {Number} delay
- * @returns
- */
-export function debounce(func, delay) {
-  let timer
-  return function (...args) {
-    if (timer) {
-      clearTimeout(timer)
+const DEFAULT_TIME_SLICE = 400
+
+export class Debounce {
+  constructor(timeSlice = DEFAULT_TIME_SLICE) {
+    this.timeSlice = timeSlice
+  }
+  run(func) {
+    if (func && typeof func === 'function') {
+      if (this.timer) {
+        window.clearTimeout(this.timer)
+      }
+      this.timer = window.setTimeout(func, this.timeSlice)
     }
-    // 箭头函数的arguments是外部函数的arguments
-    timer = setTimeout(() => {
-      func.apply(this, args)
-    }, delay)
   }
 }
 
-/**
- * 高阶节流函数
- * 每隔一段时间执行一次,中间的时间段执行的都被抛弃
- * 场景: 密集操作DOM元素等消耗内存的动作
- * @export
- * @param {Function} func
- * @param {Number} longtime
- * @returns
- */
-export function throttle(func, longtime) {
-  let throttleObj = {}
-  return function (...args) {
+export class Throttle {
+  constructor(timeSlice = DEFAULT_TIME_SLICE) {
+    this.timeSlice = timeSlice
+  }
+  run(func, overload) {
     let time = new Date().getTime()
-
-    if (!throttleObj.lastTime || time - throttleObj.lastTime > longtime) {
-      throttleObj.lastTime = time
-      func.apply(this, args)
+    if (!this.lastTime || time - this.lastTime > this.timeSlice) {
+      this.lastTime = time
+      if (func && typeof func === 'function') {
+        func()
+      }
+    } else {
+      if (overload && typeof overload === 'function') {
+        overload()
+      }
     }
   }
 }

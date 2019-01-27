@@ -9,10 +9,14 @@ const Singer = () => import(/* webpackChunkName: "Singer" */ './index/children/s
 const Search = () => import(/* webpackChunkName: "Search" */ './index/children/search/search.vue')
 const Rank = () => import(/* webpackChunkName: "Rank" */ './index/children/rank/rank.vue')
 
+// music路由
 const MusicList = () => import(/* webpackChunkName: "MusicList" */ './music/index.vue')
 const SingerDetail = () => import(/* webpackChunkName: "SingerDetail" */ './music/children/singer-detail/singer-detail.vue')
 const RecommendDetail = () => import(/* webpackChunkName: "RecommendDetail" */ './music/children/recommend-detail/recommend-detail.vue')
 const RankDetail = () => import(/* webpackChunkName: "RankDetail" */ './music/children/rank-detail/rank-detail.vue')
+
+// 404路由
+const NotFoundComponent = () => import(/* webpackChunkName: "404" */ './404/index.vue')
 
 Vue.use(Router)
 
@@ -93,6 +97,12 @@ export default new Router({
       component: RankDetail,
       meta: {
         index: 2
+      }
+    },
+    { path: '*',
+      component: NotFoundComponent,
+      meta: {
+        index: 100
       }
     }
   ]

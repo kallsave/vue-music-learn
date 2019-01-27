@@ -1,8 +1,9 @@
 <template>
-  <div ref="search" class="search">
-    <div ref="scrollWrapper" class="search-scroll-wrapper">
-      <vi-sticky
-        ref="scroll"
+  <div ref="search"
+    class="search">
+    <div ref="scrollWrapper"
+      class="search-scroll-wrapper">
+      <vi-sticky ref="scroll"
         :data="result"
         :scroll-events="['scroll']"
         :options="scrollOptions"
@@ -10,29 +11,43 @@
         @pulling-up="onPullingUp">
         <vi-sticky-ele>
           <div class="search-box-wrapper">
-            <base-search-box
-              ref="searchBox"
+            <base-search-box ref="searchBox"
               v-model="query"
               @clear="clearHandler"
               @focus="focusHandler"></base-search-box>
           </div>
         </vi-sticky-ele>
-        <div class="shortcut-wrapper" v-show="!query">
+        <div class="shortcut-wrapper"
+          v-show="!query">
           <div class="hot-key">
-            <h1 class="title">热门搜索</h1>
+            <h1 class="hot-key-title">热门搜索</h1>
             <ul class="hot-key-list">
-              <li class="item" :key="index"
-                v-for="(item, index) in hotKey"
+              <li class="item"
+                :key="index" v-for="(item, index) in hotKey"
                 @click="hotSearch(item)">
                 <span>{{item.k}}</span>
               </li>
             </ul>
           </div>
+          <div class="search-history"
+            v-show="searchHistory.length">
+            <h1 class="search-history-title">
+              <span class="search-history-text">搜索历史</span>
+              <span class="clear-search-history"
+                @click="showConfirm" >
+                <i class="icon-clear"></i>
+              </span>
+            </h1>
+            <search-list :searches="searchHistory"
+              @delete="deleteSearchHistory"
+              @select="addQuery"></search-list>
+          </div>
         </div>
-        <div class="result-scroll-wrapper" v-show="query">
+        <div class="result-scroll-wrapper"
+          v-show="query">
           <ul class="suggest-list">
-            <li class="suggest-item" :key="index"
-              v-for="(item, index) in result"
+            <li class="suggest-item"
+              :key="index" v-for="(item, index) in result"
               @click="selectItem(item)">
               <div class="icon">
                 <i :class="getIconClass(item)"></i>
@@ -43,19 +58,23 @@
             </li>
           </ul>
         </div>
-        <div class="no-result-wrapper" v-show="query && !result.length && isFetchSearch" >
+        <div class="no-result-wrapper"
+          v-show="query && !result.length && isFetchSearch">
           <no-result :title="'抱歉，暂无搜索结果'"></no-result>
         </div>
-        <template slot="pull-up" slot-scope="scope">
+        <template slot="pull-up"
+          slot-scope="scope">
           <div class="vi-scroll-pullup">
-            <div v-if="scope.pullUpScope.isPullUpLoad" class="vi-scroll-pullup-trigger">
+            <div class="vi-scroll-pullup-trigger"
+              v-if="scope.pullUpScope.isPullUpLoad">
               <div class="vi-scroll-pullup-before-trigger">{{scope.pullUpScope.pullUpTxt}}</div>
               <div class="vi-scroll-pullup-after-trigger">
                 <loading></loading>
               </div>
             </div>
-            <div v-if="isFetchSearch && scope.pullUpScope.isPullUpLoad && scope.pullUpScope.pullUpDirty && scope.pullUpScope.data.length && scope.pullUpScope.noMoreTxt"
-              class="vi-scroll-pullup-no-more">{{scope.pullUpScope.noMoreTxt}}</div>
+            <div class="vi-scroll-pullup-no-more"
+              v-if="isFetchSearch && scope.pullUpScope.isPullUpLoad && scope.pullUpScope.pullUpDirty && scope.pullUpScope.data.length && scope.pullUpScope.noMoreTxt"
+              >{{scope.pullUpScope.noMoreTxt}}</div>
           </div>
         </template>
       </vi-sticky>
@@ -68,15 +87,17 @@ import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME 
 import { getHotKey, search } from '@/api/search.js'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
 import { createSong } from '@/common/class/song.js'
-import { debounce, throttle } from '@/common/helpers/utils.js'
+import { Debounce, Throttle } from '@/common/helpers/utils.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import Singer from '@/common/class/singer.js'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import NoResult from './components/no-result/no-result.vue'
 import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
+import SearchList from '@/components/search-list/search-list.vue'
 
 const TYPE_SINGER = 'singer'
 const DEBOUNCE_TIME = 400
+const THROTTLE_TIME = 1000
 
 const perpage = 20
 
@@ -84,7 +105,8 @@ export default {
   name: MUTABLE_KEEP_ALIVE_NAME,
   components: {
     NoResult,
-    Loading
+    Loading,
+    SearchList
   },
   mixins: [injectStickyMixin, playListMixin],
   props: {
@@ -124,27 +146,27 @@ export default {
     query: {
       handler(newVal) {
         this.isFetchSearch = false
-        if (!this.debounceQueryHandler) {
-          this.debounceQueryHandler = debounce((newVal) => {
-            if (!newVal.trim()) {
-              return
-            }
-            this.saveSearchHistoryLocalStorage(newVal)
-            this.page = 1
-            // 第三个参数如果是缓动,会导致盒子被拖拽
-            this.$refs.scroll.scroll.scrollTo(0, 0, 0)
-            this.search().then((res) => {
-              this.isFetchSearch = true
-              this.result = this._genResult(res.data)
-            })
-          }, DEBOUNCE_TIME)
-        }
-        this.debounceQueryHandler(newVal)
+        this.debounceQueryHandler.run(() => {
+          if (!newVal.trim()) {
+            return
+          }
+          console.log(newVal)
+          this.saveSearchHistoryLocalStorage(newVal)
+          this.page = 1
+          // 第三个参数如果是缓动,会导致盒子被拖拽
+          this.$refs.scroll.scroll.scrollTo(0, 0, 0)
+          this.search().then((res) => {
+            this.isFetchSearch = true
+            this.result = this._genResult(res.data)
+          })
+        })
       },
     }
   },
   mounted() {
     this._getHotKey()
+    this._createDebounceInstance()
+    this._createThrottleInstance()
   },
   methods: {
     ...mapMutations({
@@ -152,11 +174,19 @@ export default {
     }),
     ...mapActions([
       'insertSong',
-      'saveSearchHistoryLocalStorage'
+      'saveSearchHistoryLocalStorage',
+      'deleteSearchHistoryLocalStorage',
+      'clearSearchHistoryLocalStorage'
     ]),
     handlePlayList() {
       this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
       this.$refs.scroll.refresh()
+    },
+    _createDebounceInstance() {
+      this.debounceQueryHandler = new Debounce(400)
+    },
+    _createThrottleInstance() {
+      this.throttleHandler = new Throttle(1000)
     },
     _getHotKey() {
       getHotKey().then((res) => {
@@ -240,7 +270,6 @@ export default {
       this.isFetchSearch = false
     },
     selectItem(item) {
-      this.searchHistory([])
       if (item.type === TYPE_SINGER) {
         const singer = new Singer({
           id: item.singermid,
@@ -258,6 +287,20 @@ export default {
         this.insertSong(item)
       }
     },
+    showConfirm() {
+      this.clearSearchHistoryLocalStorage()
+    },
+    addQuery() {
+      this.throttleHandler.run(() => {
+        console.log('add')
+      })
+    },
+    deleteSearchHistory(item) {
+      this.throttleHandler.run(() => {
+        console.log(item)
+        this.deleteSearchHistoryLocalStorage(item)
+      })
+    }
   },
 }
 </script>
@@ -269,6 +312,14 @@ export default {
 .search-box-wrapper
   box-sizing: border-box
   padding: 20px
+  background: $color-background
+
+.hot-key-title
+  height: 40px
+  line-height: 40px
+  font-size: $font-size-medium
+  color: $color-text-l
+  padding: 0 0 0 20px
   background: $color-background
 
 .search
@@ -287,12 +338,15 @@ export default {
       box-sizing: border-box
       z-index: 0
       .hot-key
-        margin: 0 20px 20px 20px
-        .title
-          line-height: 43px
+        .hot-key-title
+          height: 40px
+          line-height: 40px
           font-size: $font-size-medium
           color: $color-text-l
+          padding: 0 0 0 20px
+          background: $color-background
         .hot-key-list
+          padding: 0 0 0 20px
           clear()
           .item
             float: left
@@ -305,14 +359,16 @@ export default {
       .search-history
         position: relative
         margin: 0 20px
-        .title
+        .search-history-title
           display: flex
           align-items: center
           height: 40px
+          line-height: 40px
           font-size: $font-size-medium
           color: $color-text-l
-          .text
+          .search-history-text
             flex: 1
+          .clear-search-history
             .icon-clear
               font-size: $font-size-medium
               color: $color-text-d

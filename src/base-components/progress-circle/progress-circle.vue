@@ -25,7 +25,7 @@
 
 <script>
 
-const COMPONENT_NAME = 'vi-progress-circle'
+const COMPONENT_NAME = 'base-progress-circle'
 
 export default {
   name: COMPONENT_NAME,

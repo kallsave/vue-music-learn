@@ -226,6 +226,7 @@ export default {
 
 <style lang="stylus">
 @import "~@/common/stylus/variable.styl"
+
 .vi-index-list
   position: relative
   width: 100%

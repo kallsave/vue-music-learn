@@ -13,13 +13,13 @@
 </template>
 
 <script>
-import { prefixStyle } from '../../common/helpers/dom.js'
+import { prefixStyle } from '@/common/helpers/dom.js'
 
 const transform = prefixStyle('transform')
 
 const PROGRESS_BTN_WIDTH = 16
 
-const COMPONENT_NAME = 'vi-progress-bar'
+const COMPONENT_NAME = 'base-progress-bar'
 
 const EVENT_PERCENT_CHANGE = 'percent-change'
 

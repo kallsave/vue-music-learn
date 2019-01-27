@@ -67,7 +67,7 @@ export default {
 </script>
 
 <style lang="stylus">
-@import "~@/common/stylus/variable"
+@import "~@/common/stylus/variable.styl"
 
 .search-box
   display: flex

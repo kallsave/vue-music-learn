@@ -135,7 +135,6 @@ const player = {
       commit(types.SET_FULL_SCREEN, true)
       commit(types.SET_PLAYING_STATE, true)
     },
-
     // localStorage不能存储class的问题
     addSongClass({ state, commit }) {
       let playList = state.playList.map((item) => {

@@ -1,11 +1,14 @@
 <template>
   <div class="song-list">
     <ul>
-      <li class="song-list-item" :key="index"
+      <li class="song-list-item"
+        :key="index"
         v-for="(song, index) in songList"
         @click="selectItem($event, song, index)">
-        <div class="song-list-rank" v-show="rank">
-          <span :class="getRankCls(index)" v-text="getRankText(index)"></span>
+        <div class="song-list-rank"
+          v-show="rank">
+          <span :class="getRankCls(index)"
+            v-text="getRankText(index)"></span>
         </div>
         <div class="song-list-content">
           <h2 class="song-list-name">{{song.name}}</h2>
@@ -17,7 +20,6 @@
 </template>
 
 <script>
-
 const EVENT_SELECT = 'select'
 
 export default {

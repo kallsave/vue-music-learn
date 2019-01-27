@@ -9,6 +9,8 @@ import Vi from '@/uikit/index.js'
 
 import BaseIndexList from '@/base-components/index-list/index.js'
 import BaseSearchBox from '@/base-components/search-box/index.js'
+import BaseProgressBar from '@/base-components/progress-bar/index.js'
+import BaseProgressCircle from '@/base-components/progress-circle/index.js'
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const Vconsole = require('vconsole')
@@ -18,6 +20,8 @@ import BaseSearchBox from '@/base-components/search-box/index.js'
 Vue.use(Vi)
 Vue.use(BaseSearchBox)
 Vue.use(BaseIndexList)
+Vue.use(BaseProgressBar)
+Vue.use(BaseProgressCircle)
 
 // 全局默认vue-lazyload配置,可以在局部组件自定义
 // VueLazyLoad是非常优秀的插件,可以让长列表的部分渲染

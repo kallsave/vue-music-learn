@@ -1,4 +1,4 @@
-import { saveSearch, loadSearch } from '../../cache/local-storage/modules/search-history/search-history.js'
+import { saveSearch, loadSearch, deleteSearch, clearSearch } from '../../cache/local-storage/modules/search-history/search-history.js'
 
 const types = {
   SET_SEARCH_HISTORY: 'SET_SEARCH_HISTORY',
@@ -20,6 +20,12 @@ const searchHistory = {
   actions: {
     saveSearchHistoryLocalStorage({ commit }, query) {
       commit(types.SET_SEARCH_HISTORY, saveSearch(query))
+    },
+    deleteSearchHistoryLocalStorage({ commit }, query) {
+      commit(types.SET_SEARCH_HISTORY, deleteSearch(query))
+    },
+    clearSearchHistoryLocalStorage({ commit }) {
+      commit(types.SET_SEARCH_HISTORY, clearSearch())
     }
   }
 }

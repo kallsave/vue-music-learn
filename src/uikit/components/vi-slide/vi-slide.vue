@@ -33,7 +33,7 @@
 <script>
 // TODO: slot支持goToPage
 import { addClass } from '../../common/helpers/dom.js'
-import { camelize, spliceArray, mulitDeepClone, debounce } from '../../common/helpers/utils.js'
+import { camelize, spliceArray, mulitDeepClone, Debounce } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'
 import ViSlideItem from './vi-slide-item.vue'
 
@@ -238,11 +238,11 @@ export default {
           this._play()
         }
         if (!this.debounceHandler) {
-          this.debounceHandler = debounce(() => {
-            this.touchTrigger = false
-          }, SCROLL_STOP_TIME)
+          this.debounceHandler = new Debounce(SCROLL_STOP_TIME)
         }
-        this.debounceHandler()
+        this.debounceHandler.run(() => {
+          this.touchTrigger = false
+        })
       })
 
       this.slide.goToPage(this.initPageIndex, 0, 0)

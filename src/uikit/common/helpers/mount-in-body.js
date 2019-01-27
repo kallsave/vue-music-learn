@@ -31,7 +31,7 @@ const mixins = {
 }
 
 // 挂载在body上
-export default function mountInBody (Vue, Component, isSingle = true) {
+export default function mountInBody(Vue, Component, isSingle = true) {
   const name = Component.name
   const prefixName = 'body'
   let camelizeName = camelize(`$${prefixName}-${name}`)

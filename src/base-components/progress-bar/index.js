@@ -1,4 +1,4 @@
-import Component from './vi-progress-circle.vue'
+import Component from './progress-bar.vue'
 
 Component.install = function (Vue) {
   Vue.component(Component.name, Component)

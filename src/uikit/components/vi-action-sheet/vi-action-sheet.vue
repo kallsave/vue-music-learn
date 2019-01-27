@@ -1,13 +1,13 @@
 <template>
   <transition name="vi-action-sheet-fade">
-    <vi-popup
+    <vi-popup v-show="isVisible"
       :mask="mask"
-      v-show="isVisible"
       @mask-click="maskClick"
       touchmove.prevent.native>
       <div slot="content">
         <transition name="vi-action-sheet-move">
-          <div class="vi-action-sheet" v-show="isVisible">
+          <div class="vi-action-sheet"
+            v-show="isVisible">
             <div class="vi-action-sheet-list">
               <div class="vi-action-sheet-item">66</div>
             </div>
