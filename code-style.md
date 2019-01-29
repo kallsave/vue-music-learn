@@ -353,7 +353,9 @@ export default {
 
   减少better-scroll嵌套场景的出现,因为会带来better-scroll嵌套事件分发的问题
 
-  多次scroll嵌套的场景,使用[stoppropagation](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/options.html#stoppropagationv190)隔断,通过监听scroll,,如果不使用stoppropagation,外层scroll的scroll-content上拉导致出现空白,复杂的场景通过监听scroll的位置,在一定范围手动让外层scroll滚动,对scroll进行enable,disable,scrollTo处理
+  多层scroll嵌套的场景,复杂的场景通过监听scroll的位置,在一定范围手动让外层scroll滚动,对scroll进行enable,disable,scrollTo处理
+
+  多层scroll嵌套可以考虑不做嵌套,做兄弟元素scroll,scrollTo处理
 
   stoppropagation已知问题不仅仅是对better-scroll的touch事件阻断,对原生的touch事件都会有阻断
 

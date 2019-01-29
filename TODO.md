@@ -7,7 +7,6 @@
 - index-list支持slot
 - 使用骨架屏
 - 给各组件写README.md文档
-- 测试router更多传参用法
 - store提供同步异步操作
 - vi-slide-router-view像router-view一样可以带props
 - vi-slide-router-view支持各种场景的$route参数(query参数未完成)
@@ -52,7 +51,6 @@
 - 完成剩余内容
 - 重写vi-loading
 - 音乐播放不了的问题
-- lock
 - swipe
 - timer库
 - 单元测试

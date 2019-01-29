@@ -34,6 +34,7 @@ import { getTopList } from '@/api/rank.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
+import { Throttle } from '@/common/helpers/utils.js'
 
 export default {
   name: IMMUTABLE_KEEP_ALIVE_NAME,
@@ -50,6 +51,7 @@ export default {
   },
   mounted() {
     this._getTopList()
+    this._createThrottleInstance()
   },
   methods: {
     ...mapMutations({
@@ -76,17 +78,18 @@ export default {
         }).hide()
       })
     },
+    _createThrottleInstance() {
+      this.throttleHandler = new Throttle(1000)
+    },
     selectItem(e, item) {
-      // 有bug,阻止不了原生的click
-      if (!e._constructed) {
-        return
-      }
-      this.setRankAlbum(item)
-      // this.$router.push({
-      //   path: `/music/rank-detail/${item.id}`
-      // })
-      this.$router.push({
-        path: `/new-music/rank-detail/${item.id}`
+      this.throttleHandler(() => {
+        this.setRankAlbum(item)
+        // this.$router.push({
+        //   path: `/music/rank-detail/${item.id}`
+        // })
+        this.$router.push({
+          path: `/new-music/rank-detail/${item.id}`
+        })
       })
     }
   }
