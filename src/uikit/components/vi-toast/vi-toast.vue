@@ -1,10 +1,8 @@
-<!--toast组件一定是居中的,如果需要不居中的loading请使用非编程式占位的的loading-->
 <template>
-  <vi-popup
+  <vi-popup v-show="isVisible"
     :mask="mask"
     :z-index="zIndex"
-    v-show="isVisible"
-    touchmove.prevent.native>
+    :lock="lock">
     <div class="vi-toast"
       :style="{'transform': `scale(${scale})`}">
       <div class="vi-toast-mask"
@@ -100,6 +98,10 @@ export default {
     zIndex: {
       type: Number,
       default: 100
+    },
+    lock: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

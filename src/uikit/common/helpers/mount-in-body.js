@@ -1,3 +1,5 @@
+import { mulitDeepClone } from '@/common/helpers/utils.js'
+
 function camelize(str) {
   str = String(str)
   return str.replace(/-(\w)/g, function (m, c) {
@@ -17,13 +19,11 @@ const mixins = {
     },
     // 多例模式可以使用这个方法更新数据
     update(options) {
-      for (var key in options) {
-        if (typeof options[key] !== 'function') {
-          this.$data.options[key] = options[key]
-        } else {
-          let name = middleline(options[key].name)
-          this.$off(name)
-          this.$on(name, options[key])
+      for (let oKey in options) {
+        for (let pKey in this.$props) {
+          if (oKey === pKey) {
+            this.$props[pKey] = options[oKey]
+          }
         }
       }
     }
@@ -40,7 +40,6 @@ export default function mountInBody(Vue, Component, isSingle = true) {
     // 第一次挂载并且是单例模式
     if (instance === null && isSingle) {
       Component.mixins.push(mixins)
-      // 返回一个没有挂载的扩展实例构造器<toast></toast>
       let Constructor = Vue.extend(Component)
       instance = new Constructor()
 
@@ -78,7 +77,6 @@ export default function mountInBody(Vue, Component, isSingle = true) {
     }
 
     instance.update(options)
-
     return instance
   }
 }

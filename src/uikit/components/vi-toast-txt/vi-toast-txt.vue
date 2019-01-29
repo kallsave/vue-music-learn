@@ -1,7 +1,7 @@
 <template>
-  <vi-popup :mask="mask"
-    v-show="isVisible"
-    touchmove.prevent.native>
+  <vi-popup v-show="isVisible"
+    :mask="mask"
+    :lock="lock">
     <transition name="vi-toast-txt">
       <div v-show="isVisible"
         class="vi-toast-txt"
@@ -35,6 +35,10 @@ export default {
     mask: {
       type: Boolean,
       default: false
+    },
+    lock: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {

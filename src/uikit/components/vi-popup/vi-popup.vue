@@ -4,7 +4,8 @@
     v-show="isVisible">
     <div class="vi-popup-mask"
       :class="{'vi-popup-mask-active': mask}"
-      @click="maskClick">
+      @click="maskClick"
+      @touchmove="touchmove($event)">
       <!-- 自定义背景板 -->
       <!-- slot的局限性在于只在两级组件中使用,不能多级组件传递 -->
       <slot name="mask"></slot>
@@ -16,12 +17,16 @@
       </template>
     </div>
     <div class="vi-popup-content-center"
-      v-if="$slots.default" >
+      v-if="$slots.default"
+      @touchmove.prevent>
       <slot></slot>
     </div>
     <!-- 不是居中的content,自定义样式,或者可以做关闭按钮小组件插槽 -->
-    <template v-if="$slots.content">
-      <slot name="content"></slot>
+    <template v-if="$slots.customContent">
+      <div class="vi-popup-custom-content"
+        @touchmove.prevent>
+        <slot name="customContent"></slot>
+      </div>
     </template>
   </div>
 </template>
@@ -48,36 +53,47 @@ export default {
     },
     zIndex: {
       type: Number,
-      default: 100
+      default: 200
+    },
+    lock: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
     maskClick() {
       this.$emit(EVENT_MASK_CLICK)
     },
+    touchmove(e) {
+      if (this.lock) {
+        e.preventDefault()
+      }
+    }
   }
 }
 </script>
 
 <style lang="stylus">
+@import "../../common/stylus/variable.styl"
+
 .vi-popup
   position: fixed
   top: 0
   right: 0
   left: 0
   bottom: 0
-  // pointer-events是可以继承的
-  // pointer-events: none
+  z-index: $z-index-popup
   .vi-popup-mask
     position: absolute
     width: 100%
     height: 100%
-    // pointer-events: auto
+  .vi-popup-mask-active
+    background: $color-popup-background
   .vi-popup-content-center
     position: absolute
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
-.vi-popup-mask-active
-  background: rgba(0, 0, 0, 0.4)
+  .vi-popup-custom-content
+    z-index: 10
 </style>

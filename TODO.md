@@ -32,13 +32,15 @@
 - sticky-ele增加mergeEleKey
 - weui源码
 - sticky目前mergeEleKey只能支持两个,mergeEleKey的场景不支持切换
-- position: sticky兼容性挺好的
+- position: sticky兼容性挺好的:https://segmentfault.com/a/1190000007183209
 - 增加upload组件,找compress
 - svg的viewport
 - easy-html-webpack-plugin增加模板替换功能
 - search新页面
 - 初始化时自动下拉
 - 打包部署
+- 调研css和js统一
+- 写一个更好的createApi
 
 # 优先
 - svg的viewport
@@ -56,6 +58,7 @@
 - 单元测试
 - 测试cube-ui所有组件的用法
 - 没匹配到的路由做404
-- 看黄老师的音乐列表页的transfrom产生的scroll效果
+- 看黄老师的音乐列表页的transfrom产生的scroll效果一个上拉拖拽的组件
 - vuepress
+- 在各个浏览器上测试组件,z-index等
 

@@ -26,6 +26,7 @@
     }
   },
   "dependencies": {
+    "assign-deep": "^1.0.0",
     "axios": "^0.18.0",
     "better-scroll": "^1.12.3",
     "create-keyframe-animation": "^0.1.0",
@@ -33,9 +34,11 @@
     "js-base64": "^2.5.0",
     "jsonp": "^0.2.1",
     "lyric-parser": "^1.0.1",
+    "quicklink": "^1.0.0",
     "store": "^2.0.12",
     "vconsole": "^3.2.0",
     "vue": "^2.5.21",
+    "vue-create-api": "^0.2.0",
     "vue-lazyload": "^1.2.6",
     "vue-router": "^3.0.2",
     "vuex": "^3.0.1",

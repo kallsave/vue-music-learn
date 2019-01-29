@@ -9,6 +9,7 @@ const Sticky = () => import(/* webpackChunkName: "Sticky" */ './test/children/st
 const Collapse = () => import(/* webpackChunkName: "Sticky" */ './test/children/collapse/collapse.vue')
 const ActionSheet = () => import(/* webpackChunkName: "ActionSheet" */ './test/children/action-sheet/action-sheet.vue')
 const Picker = () => import(/* webpackChunkName: "ActionSheet" */ './test/children/picker/picker.vue')
+const Quicklink = () => import(/* webpackChunkName: "Quicklink" */ './test/children/quicklink/quicklink.vue')
 
 export default {
   path: '/test',
@@ -49,6 +50,10 @@ export default {
     {
       path: '/test/picker',
       component: Picker
+    },
+    {
+      path: '/test/quicklink',
+      component: Quicklink
     },
   ]
 }
