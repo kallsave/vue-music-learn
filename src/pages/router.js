@@ -20,7 +20,7 @@ const NotFoundComponent = () => import(/* webpackChunkName: "404" */ './404/inde
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'hash',
   routes: [
     TestRouter,
@@ -34,6 +34,7 @@ export default new Router({
           component: Recommend,
           meta: {
             index: 1,
+            title: '推荐'
           },
         },
         {
@@ -41,6 +42,7 @@ export default new Router({
           component: Singer,
           meta: {
             index: 1,
+            title: '歌手'
           },
         },
         {
@@ -48,6 +50,7 @@ export default new Router({
           component: Rank,
           meta: {
             index: 1,
+            title: '排行'
           },
         },
         {
@@ -55,6 +58,7 @@ export default new Router({
           component: Search,
           meta: {
             index: 1,
+            title: '搜索'
           },
         },
       ]
@@ -82,28 +86,41 @@ export default new Router({
       path: '/new-music/recommend-detail/:id',
       component: RecommendDetail,
       meta: {
-        index: 2
+        index: 2,
+        title: '推荐歌单详情'
       }
     },
     {
       path: '/new-music/singer-detail/:id',
       component: SingerDetail,
       meta: {
-        index: 2
+        index: 2,
+        title: '歌手歌单详情'
       }
     },
     {
       path: '/new-music/rank-detail/:id',
       component: RankDetail,
       meta: {
-        index: 2
+        index: 2,
+        title: '排行歌单详情'
       }
     },
     { path: '*',
       component: NotFoundComponent,
       meta: {
-        index: 100
+        index: 100,
+        title: '页面丢失了'
       }
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+  next()
+})
+
+export default router

@@ -75,21 +75,12 @@ import { getRecommend, getDiscList } from '@/api/recommend.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
-
-// store.js
-const engine = require('store/src/store-engine')
-const storages = [
-  require('store/storages/localStorage')
-]
-const storePlugins = [
-  require('store/plugins/defaults'),
-]
-const store = engine.createStore(storages, storePlugins)
+import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.js'
 
 export default {
   // 可变keep-alive
   name: MUTABLE_KEEP_ALIVE_NAME,
-  mixins: [injectStickyMixin, playListMixin],
+  mixins: [injectStickyMixin, playListMixin, createThrottleInstanceMixin],
   data() {
     return {
       recommends: [],
@@ -138,28 +129,15 @@ export default {
       })
     },
     _getRecommend(forceUpdate) {
-      let recommends = store.get('music-recommends')
-      if (recommends && !forceUpdate) {
-        this.recommends = recommends
-        return Promise.resolve()
-      } else {
-        return getRecommend().then((res) => {
-          this.recommends = res.data.slider
-          // store.set('music-recommends', res.data.slider)
-        })
-      }
+      return getRecommend().then((res) => {
+        this.recommends = res.data.slider
+      })
     },
     _getDiscList(forceUpdate) {
-      let discList = store.get('music-discList')
-      if (discList && !forceUpdate) {
-        this.discList = discList
-        return Promise.resolve()
-      }
       return new Promise((resolve, reject) => {
         getDiscList().then((res) => {
           setTimeout(() => {
             this.discList = res.data.list
-            // store.set('music-discList', res.data.list)
             resolve(res)
           }, 1000)
         })
@@ -178,15 +156,14 @@ export default {
       // console.log('handler')
     },
     selectItem(e, item) {
-      if (!e._constructed) {
-        return
-      }
-      this.setRecommendAlbum(item)
-      // this.$router.push({
-      //   path: `/music/recommend-detail/${item.dissid}`
-      // })
-      this.$router.push({
-        path: `/new-music/recommend-detail/${item.dissid}`
+      this.throttleHandler.run(() => {
+        this.setRecommendAlbum(item)
+        // this.$router.push({
+        //   path: `/music/recommend-detail/${item.dissid}`
+        // })
+        this.$router.push({
+          path: `/new-music/recommend-detail/${item.dissid}`
+        })
       })
     },
     onPullingDown() {

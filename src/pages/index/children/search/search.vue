@@ -94,12 +94,13 @@ import { mapMutations, mapActions, mapGetters } from 'vuex'
 import NoResult from './components/no-result/no-result.vue'
 import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
 import SearchList from '@/components/search-list/search-list.vue'
+import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.js'
 
 const TYPE_SINGER = 'singer'
 const DEBOUNCE_TIME = 400
 const THROTTLE_TIME = 1000
 
-const perpage = 20
+let perpage = 20
 
 export default {
   name: MUTABLE_KEEP_ALIVE_NAME,
@@ -108,7 +109,7 @@ export default {
     Loading,
     SearchList
   },
-  mixins: [injectStickyMixin, playListMixin],
+  mixins: [injectStickyMixin, playListMixin, createThrottleInstanceMixin],
   props: {
     isShowSinger: {
       type: Boolean,

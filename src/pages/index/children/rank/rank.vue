@@ -34,11 +34,11 @@ import { getTopList } from '@/api/rank.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
-import { Throttle } from '@/common/helpers/utils.js'
+import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.js'
 
 export default {
   name: IMMUTABLE_KEEP_ALIVE_NAME,
-  mixins: [injectStickyMixin, playListMixin],
+  mixins: [injectStickyMixin, playListMixin, createThrottleInstanceMixin],
   data() {
     return {
       rankList: [],
@@ -51,7 +51,6 @@ export default {
   },
   mounted() {
     this._getTopList()
-    this._createThrottleInstance()
   },
   methods: {
     ...mapMutations({
@@ -78,11 +77,8 @@ export default {
         }).hide()
       })
     },
-    _createThrottleInstance() {
-      this.throttleHandler = new Throttle(1000)
-    },
     selectItem(e, item) {
-      this.throttleHandler(() => {
+      this.throttleHandler.run(() => {
         this.setRankAlbum(item)
         // this.$router.push({
         //   path: `/music/rank-detail/${item.id}`

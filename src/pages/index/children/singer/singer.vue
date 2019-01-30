@@ -19,13 +19,14 @@ import { playListMixin } from '@/common/mixins/player.js'
 import { getSingerList } from '@/api/singer.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
+import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.js'
 
 const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'
 
 export default {
   name: IMMUTABLE_KEEP_ALIVE_NAME,
-  mixins: [injectStickyMixin, playListMixin],
+  mixins: [injectStickyMixin, playListMixin, createThrottleInstanceMixin],
   data() {
     return {
       singerList: [],
@@ -109,12 +110,14 @@ export default {
       return hot.concat(ret)
     },
     selectSinger(singer) {
-      this.setSinger(singer)
-      // this.$router.push({
-      //   path: `/music/singer-detail/${singer.id}`
-      // })
-      this.$router.push({
-        path: `/new-music/singer-detail/${singer.id}`
+      this.throttleHandler.run(() => {
+        this.setSinger(singer)
+        // this.$router.push({
+        //   path: `/music/singer-detail/${singer.id}`
+        // })
+        this.$router.push({
+          path: `/new-music/singer-detail/${singer.id}`
+        })
       })
     },
   }

@@ -1,12 +1,12 @@
 <template>
   <vi-popup v-show="isVisible"
-    :mask="mask"
+    :is-show-mask="isShowMask"
     :z-index="zIndex"
     :lock="lock">
     <div class="vi-toast"
       :style="{'transform': `scale(${scale})`}">
       <div class="vi-toast-mask"
-        :class="{'vi-toast-mask-active': toastMask}"></div>
+        :class="{'vi-toast-mask-active': isShowToastMask}"></div>
       <div class="vi-toast-content">
         <div class="vi-toast-spinner-contain"
           v-if="icon === 'loading'" >
@@ -63,7 +63,7 @@ export default {
   },
   mixins: [visibilityMixin],
   props: {
-    mask: {
+    isShowMask: {
       type: Boolean,
       default: false
     },
@@ -71,7 +71,7 @@ export default {
       type: String,
       default: '正在加载...'
     },
-    toastMask: {
+    isShowToastMask: {
       type: Boolean,
       default: true
     },

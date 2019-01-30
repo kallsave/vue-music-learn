@@ -1,7 +1,8 @@
 <template>
   <transition name="vi-action-sheet-fade">
     <vi-popup v-show="isVisible"
-      :mask="mask"
+      :is-show-mask="isShowMask"
+      :is-mask-lock="isMaskLock"
       @mask-click="maskClick">
       <div slot="customContent">
         <transition name="vi-action-sheet-move">
@@ -63,7 +64,7 @@ export default {
         return []
       }
     },
-    mask: {
+    isShowMask: {
       type: Boolean,
       default: true
     },
@@ -75,7 +76,7 @@ export default {
       type: Boolean,
       default: true
     },
-    lock: {
+    isMaskLock: {
       type: Boolean,
       default: true
     },
@@ -83,7 +84,7 @@ export default {
       type: String,
       default: 'gold'
     },
-    isClickMaskClose: {
+    isMaskCloseAble: {
       type: Boolean,
       default: true
     }
@@ -98,7 +99,7 @@ export default {
   },
   methods: {
     maskClick() {
-      if (this.isClickMaskClose) {
+      if (this.isMaskCloseAble) {
         this.isVisible = false
       }
     },
