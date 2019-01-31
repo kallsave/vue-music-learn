@@ -33,15 +33,15 @@ const router = new Router({
           path: '/recommend',
           component: Recommend,
           meta: {
-            index: 1,
-            title: '推荐'
+            isUseRouterTransition: true,
+            title: '推荐',
           },
         },
         {
           path: '/singer',
           component: Singer,
           meta: {
-            index: 1,
+            isUseRouterTransition: true,
             title: '歌手'
           },
         },
@@ -49,7 +49,7 @@ const router = new Router({
           path: '/rank',
           component: Rank,
           meta: {
-            index: 1,
+            isUseRouterTransition: true,
             title: '排行'
           },
         },
@@ -57,7 +57,7 @@ const router = new Router({
           path: '/search',
           component: Search,
           meta: {
-            index: 1,
+            isUseRouterTransition: true,
             title: '搜索'
           },
         },
@@ -86,7 +86,7 @@ const router = new Router({
       path: '/new-music/recommend-detail/:id',
       component: RecommendDetail,
       meta: {
-        index: 2,
+        isUseRouterTransition: true,
         title: '推荐歌单详情'
       }
     },
@@ -94,7 +94,7 @@ const router = new Router({
       path: '/new-music/singer-detail/:id',
       component: SingerDetail,
       meta: {
-        index: 2,
+        isUseRouterTransition: true,
         title: '歌手歌单详情'
       }
     },
@@ -102,14 +102,14 @@ const router = new Router({
       path: '/new-music/rank-detail/:id',
       component: RankDetail,
       meta: {
-        index: 2,
+        isUseRouterTransition: true,
         title: '排行歌单详情'
       }
     },
     { path: '*',
       component: NotFoundComponent,
       meta: {
-        index: 100,
+        isUseRouterTransition: true,
         title: '页面丢失了'
       }
     }

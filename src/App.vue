@@ -23,7 +23,8 @@ export default {
     return {
       IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME,
       transitionName: '',
-      mode: ''
+      mode: '',
+      routerHistory: []
     }
   },
   computed: {
@@ -32,18 +33,46 @@ export default {
     ])
   },
   watch: {
-    $route(to, from) {
-      if (!to.meta || !to.meta.index || !from.meta || !from.meta.index) {
-        this.transitionName = ''
-        this.mode = ''
+    $route: {
+      handler(to, from) {
+        if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
+          this.transitionName = ''
+          this.mode = ''
+        } else {
+          if (to.fullPath === this.routerHistory[1]) {
+            this.transitionName = 'move-left'
+            // 返回到一个页面,相当于新打开一个页面
+            this.routerHistory = []
+          } else {
+            this.transitionName = 'move-right'
+          }
+        }
+
+        this.insertArray({
+          arr: this.routerHistory,
+          val: to.fullPath,
+          maxLength: 2
+        })
+      },
+      immediate: true
+    },
+  },
+  methods: {
+    insertArray({ arr, val, compare = (item) => {
+      return item === val
+    }, maxLength } = {}) {
+      const index = arr.findIndex(compare)
+
+      if (index === 0) {
         return
       }
-      if (to.meta.index >= from.meta.index) {
-        this.transitionName = 'move-right'
-        this.mode = ''
-      } else {
-        this.transitionName = 'move-left'
-        this.mode = ''
+
+      if (index > 0) {
+        arr.splice(index, 1)
+      }
+      arr.unshift(val)
+      if (maxLength && arr.length > maxLength) {
+        arr.pop()
       }
     }
   }
