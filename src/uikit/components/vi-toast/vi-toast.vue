@@ -150,12 +150,14 @@ export default {
     width: 100%
     height: 100%
     border-radius: 9px
+    overflow: hidden
   .vi-toast-mask-active
     background: rgba(0, 0, 0, .7)
   .vi-toast-content
     position: relative
     .vi-toast-spinner-contain
       position: relative
+      box-sizing: content-box
       height: 80px
       .vi-toast-spinner
         position: absolute
@@ -163,6 +165,8 @@ export default {
         top: 50%
         width: 3px
         height: 10px
+        // margin-top: -5px
+        margin-left: -1.5px
         border-radius: 3px
         opacity: .25
         background-color: #fff
@@ -194,7 +198,6 @@ export default {
         padding: 20px 0px 14px 0px
     .vi-toast-title
       font-size: $font-size-medium
-      color: $color-text-l
       text-align: center
       line-height: 25px
       width: 100px
@@ -237,11 +240,11 @@ export default {
 .vi-svg-path-enter-active
   animation-name: vi-csstime
   animation-duration: 1s
-  // .vi-toast-svg-correct
+  animation-name: vi-svg-dash
+  animation-delay: 0.2s
+  animation-duration: 1s
   stroke-dasharray: 1000
   stroke-dashoffset: 1000
-  animation-name: vi-svg-dash
-  animation-duration: 1s
 
 @keyframes vi-svg-dash
   0%

@@ -69,7 +69,6 @@ export default {
   name: COMPONENT_NAME,
   functional: true,
   render(h, { children, data }) {
-    console.log(data.attrs)
     return h('transition', {
       on: Transition
     }, children)

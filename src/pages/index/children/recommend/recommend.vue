@@ -1,6 +1,9 @@
 <template>
   <div class="recommend sticky-content" ref="recommend">
     <div ref="scrollWrapper" class="scroll-wrapper">
+      <vi-loading ref="loading"
+        v-model="isShowLoading"
+        :scale="1"></vi-loading>
       <vi-scroll
         ref="scroll"
         style="color: #ffcd32"
@@ -107,12 +110,22 @@ export default {
           threshold: 0.5
         },
         eventPassthrough: 'vertical',
-      }
+      },
+      isShowLoading: true
     }
   },
   mounted() {
     this._getData()
-    // this.$refs.scroll.scrollTo()
+
+    // this.$refs.loading.show()
+
+    setTimeout(() => {
+      this.isShowLoading = false
+    }, 2000)
+
+    // this.$createViToast({
+    //   icon: 'svg-correct'
+    // }).show()
   },
   methods: {
     ...mapMutations({
@@ -170,6 +183,9 @@ export default {
       this._getData(true)
     },
   },
+  destroyed() {
+
+  }
 }
 </script>
 

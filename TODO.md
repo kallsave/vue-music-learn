@@ -59,4 +59,8 @@
 - 看黄老师的音乐列表页的transfrom产生的scroll效果一个上拉拖拽的组件
 - vuepress
 - 在各个浏览器上测试组件,z-index等
+- vi-toast支持自定义icon
+- Throttle和Dedounce支持首次执行和首次不执行
+- vi-loading用vi-collapse-transition写
+- vi-popup增加是否可以穿透
 
