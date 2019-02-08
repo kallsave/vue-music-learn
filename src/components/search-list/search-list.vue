@@ -40,7 +40,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 @import "~@/common/stylus/mixin.styl"
 
 .search-list

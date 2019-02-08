@@ -37,14 +37,14 @@ export default {
     // 阀值
     threshold: {
       type: Number,
-      default: 100
+      default: 50
     },
     // 锁定方向
     // 1的时候是45度角
     // 越小越不容易触发切换
     directionLockThreshold: {
       type: Number,
-      default: 0.2
+      default: 0.8
     },
     slideRightClass: {
       type: String,
@@ -69,12 +69,11 @@ export default {
     }
   },
   watch: {
-    '$route'(to, from) {
-      this.currentPath = to.path
+    $route: {
+      handler(to, from) {
+        this.currentPath = to.path
+      }
     }
-  },
-  created() {
-    this.identification = COMPONENT_NAME
   },
   mounted() {
     this._initSlideRouter()
@@ -91,15 +90,17 @@ export default {
       if (!this.enabled) {
         return
       }
-      this.startX = e.changedTouches[0].pageX
-      this.startY = e.changedTouches[0].pageY
+      const point = e.changedTouches[0]
+      this.startX = point.pageX
+      this.startY = point.pageY
     },
     touchendHandler(e) {
       if (!this.enabled) {
         return
       }
-      const direction = this.startX - e.changedTouches[0].pageX
-      const moveY = this.startY - e.changedTouches[0].pageY
+      const point = e.changedTouches[0]
+      const direction = this.startX - point.pageX
+      const moveY = this.startY - point.pageY
       const diffX = Math.abs(direction)
       const diffY = Math.abs(moveY)
       const directionLockThreshold = Math.abs(diffY / diffX)

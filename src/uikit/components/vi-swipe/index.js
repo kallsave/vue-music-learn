@@ -1,7 +1,9 @@
-import Component from './vi-swipe.vue'
+import Swipe from './vi-swipe-group.vue'
+import SwipeItem from './vi-swipe.vue'
 
-Component.install = function (Vue) {
-  Vue.component(Component.name, Component)
+Swipe.install = function (Vue) {
+  Vue.component(Swipe.name, Swipe)
+  Vue.component(SwipeItem.name, SwipeItem)
 }
 
-export default Component
+export default Swipe

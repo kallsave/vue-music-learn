@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-01-27 17:58:07
+ * @Last Modified time: 2019-02-04 11:32:11
  */
 
 /**
@@ -100,7 +100,7 @@ export class Debounce {
     this.timeSlice = timeSlice
   }
   run(func) {
-    if (func && typeof func === 'function') {
+    if (typeof func === 'function') {
       if (this.timer) {
         window.clearTimeout(this.timer)
       }
@@ -114,14 +114,14 @@ export class Throttle {
     this.timeSlice = timeSlice
   }
   run(func, overload) {
-    let time = new Date().getTime()
-    if (!this.lastTime || time - this.lastTime > this.timeSlice) {
-      this.lastTime = time
-      if (func && typeof func === 'function') {
+    let currentTime = new Date().getTime()
+    if (!this.lastTime || currentTime - this.lastTime > this.timeSlice) {
+      this.lastTime = currentTime
+      if (typeof func === 'function') {
         func()
       }
     } else {
-      if (overload && typeof overload === 'function') {
+      if (typeof overload === 'function') {
         overload()
       }
     }

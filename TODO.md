@@ -10,7 +10,6 @@
 - store提供同步异步操作
 - vi-slide-router-view像router-view一样可以带props
 - vi-slide-router-view支持各种场景的$route参数(query参数未完成)
-- vi-slide-router-view提供默认tab组件,同时给外部提供可自定义的tab组建
 - vi-slide-router-transition支持各种场景的$route参数
 - 网易严选nav组件
 - scroll组件暴露自动开启关闭上下拉功能的方法
@@ -27,40 +26,34 @@
 - 调研其他scroll库
 - 自己写一个scroll库
 - 用anime.js重写动画
-- sticky-ele增加动态添加移除sticky的方法
 - sticky-ele增加mergeEleKey
 - weui源码
 - sticky目前mergeEleKey只能支持两个,mergeEleKey的场景不支持切换
-- position: sticky兼容性挺好的:https://segmentfault.com/a/1190000007183209
-- 增加upload组件,找compress
 - svg的viewport
 - easy-html-webpack-plugin增加模板替换功能
 - search新页面
 - 初始化时自动下拉
 - 打包部署
 - 调研css和js统一
-- 写一个更好的createApi
 
 # 优先
-- svg的viewport
 - index-list支持slot
 - dialog组件开发
 - confirm组件开发
-- click重复的问题
 - 音乐列表页使用模糊效果
 - 完成剩余内容
-- 重写vi-loading
 - 音乐播放不了的问题
 - swipe
-- timer库
 - 单元测试
 - 测试cube-ui所有组件的用法
-- 没匹配到的路由做404
 - 看黄老师的音乐列表页的transfrom产生的scroll效果一个上拉拖拽的组件
 - vuepress
 - 在各个浏览器上测试组件,z-index等
+- svg的viewport
 - vi-toast支持自定义icon
 - Throttle和Dedounce支持首次执行和首次不执行
-- vi-loading用vi-collapse-transition写
 - vi-popup增加是否可以穿透
-
+- touch研究
+- vue-router源码
+- image-preview
+- sticky去掉scroll

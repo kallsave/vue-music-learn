@@ -14,6 +14,7 @@
         <!-- 对于需求变动过多的组件,比如dialog组件,使用createAPI的createElement来重写 -->
         <template v-if="customMask">
           <div class="vi-popup-custom-mask"
+            @touchmove.prevent
             v-html="customMask"></div>
         </template>
       </div>
@@ -57,11 +58,7 @@ export default {
       type: Number,
       default: 200
     },
-    isMaskLock: {
-      type: Boolean,
-      default: true
-    },
-    isMaskCloseAble: {
+    isLockScroll: {
       type: Boolean,
       default: true
     },
@@ -73,7 +70,7 @@ export default {
       this.$emit(EVENT_MASK_CLICK)
     },
     touchmove(e) {
-      if (this.isMaskLock) {
+      if (this.isLockScroll) {
         e.preventDefault()
       }
     }

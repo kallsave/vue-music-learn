@@ -24,6 +24,7 @@
 <script>
 import ViCollapseTransition from './vi-collapse-transition.js'
 import { prefixStyle } from '../../common/helpers/dom.js'
+
 const TRANSITIONEND = prefixStyle('transitionEnd')
 
 const COMPONENT_NAME = 'vi-collapse'

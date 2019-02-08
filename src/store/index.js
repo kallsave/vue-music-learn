@@ -15,7 +15,8 @@ import rankAlbum from './modules/rank-album/index.js'
 import recommendAlbum from './modules/recommend-album/index.js'
 import searchHistory from './modules/search-history/search-history.js'
 
-const debug = process.env.NODE_ENV !== 'production'
+// const debug = process.env.NODE_ENV !== 'production'
+const debug = false
 
 // 不通过PersistedState插件做缓存的mutations
 // 用于不需要存储或者更自定义的功能

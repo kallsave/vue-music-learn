@@ -2,7 +2,7 @@
   <transition name="vi-action-sheet-fade">
     <vi-popup v-show="isVisible"
       :is-show-mask="isShowMask"
-      :is-mask-lock="isMaskLock"
+      :is-lock-scroll="isLockScroll"
       @mask-click="maskClick">
       <div slot="customContent">
         <transition name="vi-action-sheet-move">
@@ -76,7 +76,7 @@ export default {
       type: Boolean,
       default: true
     },
-    isMaskLock: {
+    isLockScroll: {
       type: Boolean,
       default: true
     },

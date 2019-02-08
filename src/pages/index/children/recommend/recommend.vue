@@ -111,16 +111,16 @@ export default {
         },
         eventPassthrough: 'vertical',
       },
-      isShowLoading: true
+      isShowLoading: false
     }
   },
   mounted() {
     this._getData()
 
-    // this.$refs.loading.show()
+    this.$refs.loading.show()
 
     setTimeout(() => {
-      this.isShowLoading = false
+      this.$refs.loading.hide()
     }, 2000)
 
     // this.$createViToast({
@@ -169,7 +169,7 @@ export default {
       // console.log('handler')
     },
     selectItem(e, item) {
-      this.throttleHandler.run(() => {
+      this.throttle.run(() => {
         this.setRecommendAlbum(item)
         // this.$router.push({
         //   path: `/music/recommend-detail/${item.dissid}`
@@ -189,7 +189,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 @import "~@/common/stylus/variable.styl"
 
 .recommend

@@ -59,7 +59,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 @import "~@/common/stylus/variable.styl"
 @import "~@/common/stylus/mixin.styl"
 
@@ -81,11 +81,11 @@ export default {
         height: 24px
         background-size: 25px 24px
         &.icon0
-          bg-image('first')
+          bg-image('./images/first')
         &.icon1
-          bg-image('second')
+          bg-image('./images/second')
         &.icon2
-          bg-image('third')
+          bg-image('./images/third')
       .text
         color: $color-theme
         font-size: $font-size-large

@@ -1,10 +1,10 @@
 <template>
   <vi-popup v-show="isVisible"
-    :mask="mask"
-    :lock="lock">
+    :is-show-mask="isShowMask"
+    :is-lock-scroll="isLockScroll">
     <transition name="vi-toast-txt">
-      <div v-show="isVisible"
-        class="vi-toast-txt"
+      <div class="vi-toast-txt"
+         v-show="isVisible"
         :style="{'z-index': zIndex}">
         {{txt}}
       </div>
@@ -32,11 +32,11 @@ export default {
       type: Number,
       default: 0
     },
-    mask: {
+    isShowMask: {
       type: Boolean,
       default: false
     },
-    lock: {
+    isLockScroll: {
       type: Boolean,
       default: true
     }

@@ -6,9 +6,9 @@
         <vi-popup ref="popup"
           v-show="isVisible"
           @mask-click="maskClick">
-          <template slot="mask">
+          <!-- <template slot="mask">
             <div class="custom-mask"></div>
-          </template>
+          </template> -->
           <div class="popup-content">
             <img class="image" src="./images/dialog.jpg" />
             <div class="close" @click="close"></div>
@@ -27,19 +27,20 @@ export default {
   },
   methods: {
     show() {
+      console.log(6)
       this.isVisible = true
     },
     close() {
       this.isVisible = false
     },
     maskClick() {
-      this.close()
+      // this.close()
     }
   }
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 @import "~@/common/stylus/variable.styl"
 
 .dialog-fade-enter-active
@@ -68,6 +69,7 @@ export default {
     animation-timing-function: $ease-out-in
     animation-direction: normal
     animation-fill-mode: forwards
+  .vi-popup-mask-gray,
   .custom-mask
     animation-name: popup-in
     animation-duration: .5s

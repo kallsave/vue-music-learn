@@ -187,7 +187,7 @@ export default {
       this.debounceQueryHandler = new Debounce(400)
     },
     _createThrottleInstance() {
-      this.throttleHandler = new Throttle(1000)
+      this.throttle = new Throttle(1000)
     },
     _getHotKey() {
       getHotKey().then((res) => {
@@ -292,12 +292,12 @@ export default {
       this.clearSearchHistoryLocalStorage()
     },
     addQuery() {
-      this.throttleHandler.run(() => {
+      this.throttle.run(() => {
         console.log('add')
       })
     },
     deleteSearchHistory(item) {
-      this.throttleHandler.run(() => {
+      this.throttle.run(() => {
         console.log(item)
         this.deleteSearchHistoryLocalStorage(item)
       })
@@ -306,7 +306,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 @import "~@/common/stylus/variable"
 @import "~@/common/stylus/mixin"
 

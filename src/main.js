@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './pages/router.js'
-import store from './store'
+import store from './store/index.js'
 import VueLazyLoad from 'vue-lazyload'
 
 import '@/common/stylus/index.styl'

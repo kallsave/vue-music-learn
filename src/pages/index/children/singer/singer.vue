@@ -110,7 +110,7 @@ export default {
       return hot.concat(ret)
     },
     selectSinger(singer) {
-      this.throttleHandler.run(() => {
+      this.throttle.run(() => {
         this.setSinger(singer)
         // this.$router.push({
         //   path: `/music/singer-detail/${singer.id}`
@@ -124,7 +124,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 @import "~@/common/stylus/variable"
 
 .singer

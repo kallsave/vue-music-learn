@@ -78,7 +78,7 @@ export default {
       })
     },
     selectItem(e, item) {
-      this.throttleHandler.run(() => {
+      this.throttle.run(() => {
         this.setRankAlbum(item)
         // this.$router.push({
         //   path: `/music/rank-detail/${item.id}`
@@ -92,7 +92,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 @import "~@/common/stylus/variable.styl"
 @import "~@/common/stylus/mixin.styl"
 

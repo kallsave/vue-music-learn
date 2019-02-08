@@ -1,27 +1,25 @@
 <template>
-  <vi-collapse
-    @transition-end="transitionEnd">
-    <template slot="collapse-content">
-      <div ref="loading"
-        class="vi-loading"
-        v-show="isVisible"
-        :style="style">
-        <div class="vi-loading-spinner-content"
-          :style="{transform: `scale(${scale})`}">
-          <i class="vi-loading-spinner"
-            v-for="(item, index) in balde" :key="index"></i>
-        </div>
+  <vi-collapse-transition>
+    <div ref="loading"
+      class="vi-loading"
+      v-show="isVisible"
+      :style="style">
+      <div class="vi-loading-spinner-content"
+        :style="{transform: `scale(${scale})`}">
+        <i class="vi-loading-spinner"
+          v-for="(item, index) in balde" :key="index"></i>
       </div>
-    </template>
-  </vi-collapse>
+    </div>
+  </vi-collapse-transition>
 </template>
 
 <script>
+import ViCollapseTransition from '../vi-collapse/vi-collapse-transition.js'
 import ViCollapse from '../vi-collapse/vi-collapse.vue'
 import visibilityMixin from '../../common/mixins/visibility.js'
 import { prefixStyle } from '../../common/helpers/dom.js'
 
-const transitionEnd = prefixStyle('transitionEnd')
+const TRANSITIONEND = prefixStyle('transitionEnd')
 
 const COMPONENT_NAME = 'vi-loading'
 
@@ -69,6 +67,9 @@ export default {
       immediate: true
     }
   },
+  mounted() {
+    this._addEventListener()
+  },
   methods: {
     hide() {
       this.hidePromise = new Promise((resolve, reject) => {
@@ -84,7 +85,13 @@ export default {
       })
       return this.showPromise
     },
-    transitionEnd() {
+    _addEventListener() {
+      this.$refs.loading.addEventListener(TRANSITIONEND, this.transitionEndCallBack, false)
+    },
+    _removeEventListener() {
+      this.$refs.loading.addEventListener(TRANSITIONEND, this.transitionEndCallBack, false)
+    },
+    transitionEndCallBack() {
       if (this.isVisible) {
         this.showResolve()
         this.$emit(EVENT_SHOW_FINISH)
@@ -92,13 +99,10 @@ export default {
         this.hideResolve()
         this.$emit(EVENT_HIDE_FINISH)
       }
-    },
-    _addEventListener() {
-    },
-    _removeEventListener() {
-    },
+    }
   },
   destroyed() {
+    this._removeEventListener()
     this.showPromise = null
     this.hidePromise = null
     this.hidePromise = null

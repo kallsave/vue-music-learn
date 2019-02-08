@@ -10,7 +10,9 @@ const Collapse = () => import(/* webpackChunkName: "Sticky" */ './test/children/
 const ActionSheet = () => import(/* webpackChunkName: "ActionSheet" */ './test/children/action-sheet/action-sheet.vue')
 const Picker = () => import(/* webpackChunkName: "ActionSheet" */ './test/children/picker/picker.vue')
 const Quicklink = () => import(/* webpackChunkName: "Quicklink" */ './test/children/quicklink/quicklink.vue')
-const Popup = () => import(/* webpackChunkName: "Quicklink" */ './test/children/popup/popup.vue')
+const Popup = () => import(/* webpackChunkName: "Popup" */ './test/children/popup/popup.vue')
+const Swipe = () => import(/* webpackChunkName: "Swipe" */ './test/children/swipe/swipe.vue')
+const Touch = () => import(/* webpackChunkName: "Touch" */ './test/children/touch/touch.vue')
 
 export default {
   path: '/test',
@@ -59,6 +61,14 @@ export default {
     {
       path: '/test/popup',
       component: Popup
+    },
+    {
+      path: '/test/swipe',
+      component: Swipe
+    },
+    {
+      path: '/test/touch',
+      component: Touch
     },
   ]
 }

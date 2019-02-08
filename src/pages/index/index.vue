@@ -61,7 +61,7 @@ export default {
     return {
       IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME,
       slideRouterModeList: slideRouterModeList,
-      slideRouterMode: slideRouterModeList[1],
+      slideRouterMode: slideRouterModeList[0],
       tabList: [
         '推荐',
         '歌手',

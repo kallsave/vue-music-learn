@@ -88,7 +88,7 @@ async function updateAllImg () {
     })()
   }
   await (() => {
-    console.log(777)
+    ...
   })()
 })()
 ```

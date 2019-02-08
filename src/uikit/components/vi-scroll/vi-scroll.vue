@@ -47,10 +47,8 @@
 </template>
 
 <script>
-
 import Loading from './vi-scroll-loading.vue'
 import Bubble from './vi-scroll-bubble.vue'
-
 import BScroll from 'better-scroll'
 import { camelize, mulitDeepClone } from '../../common/helpers/utils.js'
 import { getRect } from '../../common/helpers/dom.js'

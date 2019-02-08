@@ -3,7 +3,8 @@
   <div ref="slide"
     class="vi-slide-wrapper"
     :style="setStyle">
-    <div ref="slideGroup" class="vi-slide-group">
+    <div ref="slideGroup"
+      class="vi-slide-group">
       <slot>
         <!-- 默认的场景 -->
         <!-- 进来的数据要对好格式 -->
@@ -20,8 +21,8 @@
         :dots="dots"
         :current-page-index="currentPageIndex">
         <div class="vi-slide-dots">
-          <span class="vi-slide-dot" :key="index"
-            v-for="(item, index) in dots"
+          <span class="vi-slide-dot"
+            v-for="(item, index) in dots" :key="index"
             :class="{active: currentPageIndex === index }"
             @click.stop="goToPage(index)"></span>
         </div>
@@ -31,7 +32,6 @@
 </template>
 
 <script>
-// TODO: slot支持goToPage
 import { addClass } from '../../common/helpers/dom.js'
 import { camelize, spliceArray, mulitDeepClone, Debounce } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'

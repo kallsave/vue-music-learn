@@ -6,7 +6,7 @@ export default {
   },
   methods: {
     _createThrottleInstance() {
-      this.throttleHandler = new Throttle(1000)
+      this.throttle = new Throttle(1000)
     },
   },
 }

@@ -2,7 +2,7 @@
   <vi-popup v-show="isVisible"
     :is-show-mask="isShowMask"
     :z-index="zIndex"
-    :lock="lock">
+    :is-lock-scroll="isLockScroll">
     <div class="vi-toast"
       :style="{'transform': `scale(${scale})`}">
       <div class="vi-toast-mask"
@@ -99,7 +99,7 @@ export default {
       type: Number,
       default: 100
     },
-    lock: {
+    isLockScroll: {
       type: Boolean,
       default: true
     }
@@ -178,7 +178,7 @@ export default {
     i[class^="vi-toast-icon"]
       box-sizing: border-box
       text-align: center
-      display: block
+      display: bisLockScroll
       color: #fff
     .vi-toast-correct-contain
       .vi-toast-correct
@@ -188,7 +188,7 @@ export default {
       height: 80px
       position: relative
       svg
-        display: block
+        display: bisLockScroll
         height: 100%
         margin: 0
         padding: 0
