@@ -3,9 +3,9 @@
     <div ref="swipeItem"
       class="vi-swipe-item"
       @transitionend="transitionendHandler"
-      @touchstart.stop="touchstartHandler"
-      @touchmove.stop="touchmoveHandler"
-      @touchend.stop="touchendHandler">
+      @touchstart.stop.prevent="touchstartHandler"
+      @touchmove.stop.prevent="touchmoveHandler"
+      @touchend.stop.prevent="touchendHandler">
       <slot></slot>
       <div class="menu-wrapper" ref="menuWrapper">
         <slot name="menu">
@@ -44,12 +44,17 @@ export default {
     menu: {
       type: Array,
       default() {
-        return {}
+        return []
       }
     },
     threshold: {
       type: Number,
-      default: 20
+      default: 0.5
+    }
+  },
+  data() {
+    return {
+      isShowMenu: false
     }
   },
   created() {
@@ -58,16 +63,15 @@ export default {
   mounted() {
     this._findScrollerStyle()
     this._calculateMaxScrollX()
-    this._calculateThreshold()
-    this.scrollerStyle[TRANSITION] = 'all 0.3s'
+    this.scrollerStyle[TRANSITION] = 'all 0.1s'
   },
   methods: {
     touchstartHandler(e) {
       const point = e.touches[0]
       this.pointX = point.pageX
-      this.moved = false
       this.startX = this.x
       this.startTime = new Date().getTime()
+      this.distX = 0
     },
     touchmoveHandler(e) {
       const point = e.touches[0]
@@ -87,8 +91,6 @@ export default {
         this.movingDirectionX = 0
       }
 
-      let timestamp = new Date().getTime()
-
       let newX = this.x + deltaX
       if (newX > 0) {
         newX = 0
@@ -98,26 +100,30 @@ export default {
       }
       this._translate(newX)
 
+      let timestamp = new Date().getTime()
       // 如果在移动的过程中有停留,相当于重新开始
       if (timestamp - this.startTime > momentumLimitTime) {
         this.startTime = timestamp
         this.startX = this.x
+        this.distX = 0
       }
     },
     touchendHandler(e) {
-
+      this.endTime = new Date().getTime()
+      this.distTime = (this.endTime - this.startTime)
+      console.log(this.distX / this.distTime)
+      if (this.distX / this.distTime < -this.threshold || this.x === this.maxScrollX) {
+        // 如果向左滑动,并且速度超过了1px / ms
+        // 左滑到底
+        this._translate(this.maxScrollX)
+        this.isShowMenu = true
+      } else {
+        this._translate(0)
+        this.isShowMenu = false
+      }
     },
     _findScrollerStyle() {
       this.scrollerStyle = this.$refs.swipeItem.style
-    },
-    _transitionProperty(property = 'transform') {
-      this.scrollerStyle[TRANSFORM_PROPERTY] = property
-    },
-    _transitionTimingFunction(easing) {
-
-    },
-    _transitionTime(time) {
-
     },
     _translate(x) {
       this.scrollerStyle[TRANSFORM] = `translate(${x}px, 0)`
@@ -132,15 +138,8 @@ export default {
       }
       this.maxScrollX = -width
     },
-    _calculateThreshold() {
-      if (this.threshold + this.maxScrollX > 0) {
-        this._threshold = this.maxScrollX
-      } else {
-        this._threshold = this.threshold
-      }
-    },
     transitionendHandler() {
-      console.log(666)
+      this._translate(this.x)
     }
   }
 }

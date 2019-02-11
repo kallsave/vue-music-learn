@@ -45,7 +45,6 @@ export default {
   data() {
     return {
       balde: 12,
-      isListenedTransitionEnd: false
     }
   },
   computed: {
