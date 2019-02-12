@@ -13,7 +13,7 @@ export default {
     }
   },
   created() {
-    console.log(this.viInject)
+    console.log('this.viInject', this.viInject)
   }
 }
 </script>

@@ -31,7 +31,6 @@ export default {
       touchColor: 'gold',
       onSelect(item, hide) {
         console.log(item)
-        // hide()
       },
       onCancel(hide) {
         hide()

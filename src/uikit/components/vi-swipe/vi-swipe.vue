@@ -1,94 +1,156 @@
 <template>
-  <div class="vi-swipe-item-wrapper">
-    <div ref="swipeItem"
-      class="vi-swipe-item"
-      @transitionend="transitionendHandler"
-      @touchstart.stop.prevent="touchstartHandler"
-      @touchmove.stop.prevent="touchmoveHandler"
-      @touchend.stop.prevent="touchendHandler">
-      <slot></slot>
-      <div class="menu-wrapper" ref="menuWrapper">
-        <slot name="menu">
-          <div class="vi-swipe-menu">
-            <div class="vi-swipe-menu-item">删除</div>
-            <div class="vi-swipe-menu-item">删除</div>
-          </div>
-        </slot>
-      </div>
-    </div>
+  <div ref="swipeItem"
+    class="vi-swipe-item"
+    @transitionend.stop="transitionendHandler"
+    @touchstart.stop="touchstartHandler"
+    @touchmove.stop="touchmoveHandler"
+    @touchend.stop="touchendHandler">
+    <slot></slot>
+    <ul class="vi-swipe-menu-list">
+      <li ref="menu"
+        class="vi-swipe-menu"
+        v-for="(menu, index) in menuList" :key="index"
+        :style="genMenuStyl(menu)"
+        @click.prevent="clickMenu(menu)">{{menu.text}}</li>
+    </ul>
   </div>
 </template>
 
 <script>
-import { prefixStyle } from '../../common/helpers/dom.js'
+import {
+  getRect,
+  prefixStyle
+} from '../../common/helpers/dom.js'
+
+import {
+  EASE_OUT_QUART,
+} from '../../common/helpers/ease.js'
 
 const COMPONENT_NAME = 'vi-swipe'
 
-const TRANSFORM = prefixStyle('transform')
-const TRANSFORM_PROPERTY = prefixStyle('transitionProperty')
-const TRANSFORM_DURATION = prefixStyle('transitionDuration')
-const TRANSFORM_TIMING_FUNCTION = prefixStyle('transitionTimingFunction')
-const TRANSITION = prefixStyle('transition')
+const EVENT_BTN_CLICK = 'menu-click'
+const EVENT_SCROLL = 'scroll'
+const EVENT_ACTIVE = 'active'
 
 const DIRECTION_LEFT = 1
 const DIRECTION_RIGHT = -1
-const momentumLimitTime = 300
+const STATE_SHRINK = 0
+const STATE_GROW = 1
+const EASINGTIME = 600
+const MOMENTUMLIMITTIME = 300
+const MOMENTUMLIMITDISTANCE = 15
+
+const TRANSFORM = prefixStyle('transform')
+const TRANSITION = prefixStyle('transition')
+const TRANSITION_PROPERTY = prefixStyle('transitionProperty')
+const TRANSITION_DURATION = prefixStyle('transitionDuration')
+const TRANSITION_TIMING_FUNCTION = prefixStyle('transitionTimingFunction')
 
 export default {
   name: COMPONENT_NAME,
+  inject: ['swipe'],
   props: {
-    directionLockThreshold: {
-      type: Number,
-      default: 5
-    },
-    menu: {
+    menuList: {
       type: Array,
       default() {
         return []
       }
     },
-    threshold: {
+    index: {
       type: Number,
-      default: 0.5
-    }
-  },
-  data() {
-    return {
-      isShowMenu: false
-    }
+      required: true
+    },
+    enable: {
+      type: Boolean,
+      default: true
+    },
+    // 锁定方向
+    // 1的时候是45度角
+    // 越小越不容易触发切换
+    directionLockThreshold: {
+      type: Number,
+      default: 0.8
+    },
   },
   created() {
+    // transform距离
     this.x = 0
+    // 收缩状态
+    this.state = STATE_SHRINK
+    this.swipe.addItem(this)
   },
   mounted() {
-    this._findScrollerStyle()
+    this._initScroller()
+    this._initCachedMenus()
     this._calculateMaxScrollX()
-    this.scrollerStyle[TRANSITION] = 'all 0.1s'
   },
   methods: {
+    _initScroller() {
+      this.scrollerStyle = this.$refs.swipeItem.style
+      this.scrollerStyle[TRANSITION_PROPERTY] = 'transform'
+      this.scrollerStyle[TRANSITION_TIMING_FUNCTION] = EASE_OUT_QUART
+    },
+    // 计算按钮的原始宽度
+    _initCachedMenus() {
+      this.cachedMenus = []
+      const len = this.$refs.menu.length
+      for (let i = 0; i < len; i++) {
+        let menu = this.$refs.menu[i]
+        this.cachedMenus.push({
+          width: getRect(menu).width
+        })
+        menu.style[TRANSITION_PROPERTY] = 'all'
+        menu.style[TRANSITION_TIMING_FUNCTION] = EASE_OUT_QUART
+      }
+    },
+    // 计算最大的滚动距离
+    _calculateMaxScrollX() {
+      let width = 0
+      const len = this.cachedMenus.length
+      for (let i = 0; i < len; i++) {
+        width += this.cachedMenus[i].width
+      }
+      this.maxScrollX = -width
+    },
+    genMenuStyl(menu) {
+      return menu.style
+    },
     touchstartHandler(e) {
+      if (!this.enable) {
+        return
+      }
+      this.swipe.activeItem(this.index)
+      this.$emit(EVENT_ACTIVE, this.index)
+      this.moved = false
+      this.movingDirectionX = 0
       const point = e.touches[0]
       this.pointX = point.pageX
+      this.pointY = point.pageY
+      this.distX = 0
+      this.distY = 0
       this.startX = this.x
       this.startTime = new Date().getTime()
-      this.distX = 0
     },
     touchmoveHandler(e) {
+      if (!this.enable) {
+        return
+      }
+      if (this.isInTransition) {
+        return
+      }
       const point = e.touches[0]
-      // 距离上一次位置的距离
       let deltaX = point.pageX - this.pointX
+      let deltaY = point.pageY - this.pointY
       this.pointX = point.pageX
-      // 从开始滚动到当前位置的位移
-      this.distX += deltaX
-      // 位移
-      let absDistX = Math.abs(this.distX)
+      this.pointY = point.pageY
 
-      if (deltaX > 0) {
-        this.movingDirectionX = DIRECTION_RIGHT
-      } else if (deltaX < 0) {
-        this.movingDirectionX = DIRECTION_LEFT
-      } else {
-        this.movingDirectionX = 0
+      this.distX += deltaX
+      this.distY += deltaY
+
+      let directionLockThreshold = Math.abs(this.distY / this.distX)
+
+      if (directionLockThreshold > this.directionLockThreshold) {
+        return
       }
 
       let newX = this.x + deltaX
@@ -96,75 +158,130 @@ export default {
         newX = 0
       }
       if (newX < this.maxScrollX) {
-        newX = this.maxScrollX
+        newX = this.x + deltaX / 3
       }
-      this._translate(newX)
+      if (!this.moved) {
+        this.moved = true
+        this.scrollerStyle[TRANSITION_DURATION] = `${0}ms`
+      }
 
       let timestamp = new Date().getTime()
-      // 如果在移动的过程中有停留,相当于重新开始
-      if (timestamp - this.startTime > momentumLimitTime) {
+      if (timestamp - this.startTime > MOMENTUMLIMITTIME) {
         this.startTime = timestamp
         this.startX = this.x
-        this.distX = 0
       }
+      this._translate(newX)
+      this._translateMenus(this.x)
+
+      this.$emit(EVENT_SCROLL, this.x)
     },
-    touchendHandler(e) {
+    touchendHandler() {
+      if (!this.enable) {
+        return
+      }
+      if (this.x <= this.maxScrollX) {
+        this.grow()
+        this.isInTransition = false
+        return
+      }
+      if (this.x >= 0) {
+        this.shrink()
+        this.isInTransition = false
+        return
+      }
       this.endTime = new Date().getTime()
-      this.distTime = (this.endTime - this.startTime)
-      console.log(this.distX / this.distTime)
-      if (this.distX / this.distTime < -this.threshold || this.x === this.maxScrollX) {
-        // 如果向左滑动,并且速度超过了1px / ms
-        // 左滑到底
-        this._translate(this.maxScrollX)
-        this.isShowMenu = true
+      let duration = this.endTime - this.startTime
+      let distX = this.x - this.startX
+      if (duration < MOMENTUMLIMITTIME && -distX > MOMENTUMLIMITDISTANCE) {
+        this.grow()
+      } else if (duration < MOMENTUMLIMITTIME && distX > MOMENTUMLIMITDISTANCE) {
+        this.shrink()
       } else {
-        this._translate(0)
-        this.isShowMenu = false
+        if (this.state === STATE_SHRINK) {
+          this.shrink()
+        } else {
+          this.grow()
+        }
       }
     },
-    _findScrollerStyle() {
-      this.scrollerStyle = this.$refs.swipeItem.style
+    _translateMenus(x, isUseTransition) {
+      if (this.menuList.length === 0) {
+        return
+      }
+      const len = this.$refs.menu.length
+      let delta = 0
+      let totalWidth = -this.maxScrollX
+      for (let i = 0; i < len; i++) {
+        const menu = this.$refs.menu[i]
+        let rate = (totalWidth - delta) / totalWidth
+        let width
+        let translate = (-delta / totalWidth) * x
+        if (x < this.maxScrollX) {
+          width = this.cachedMenus[i].width + rate * (this.maxScrollX - x)
+        } else {
+          width = this.cachedMenus[i].width
+        }
+        delta += this.cachedMenus[i].width
+
+        // 在滚动时,menu的位移不应该出现过渡效果
+        if (!isUseTransition) {
+          menu.style[TRANSITION_DURATION] = '0ms'
+          menu.style.width = `${width}px`
+          menu.style[TRANSFORM] = `translate(${translate}px)`
+        } else {
+          menu.style[TRANSITION_DURATION] = `${EASINGTIME}ms`
+          menu.style.width = `${this.cachedMenus[i].width}px`
+          menu.style[TRANSFORM] = `translate(${translate}px)`
+        }
+      }
     },
     _translate(x) {
-      this.scrollerStyle[TRANSFORM] = `translate(${x}px, 0)`
+      this.scrollerStyle[TRANSFORM] = `translate(${x}px,0)`
       this.x = x
     },
-    _calculateMaxScrollX() {
-      let children = this.$refs.menuWrapper.children
-      let len = children.length
-      let width = 0
-      for (let i = 0; i < len; i++) {
-        width += children[i].clientWidth
-      }
-      this.maxScrollX = -width
+    scrollTo(x) {
+      this.isInTransition = true
+      this.scrollerStyle[TRANSITION_DURATION] = `${EASINGTIME}ms`
+      this._translate(x)
+    },
+    grow() {
+      this.state = STATE_GROW
+      this.scrollTo(this.maxScrollX)
+      this._translateMenus(this.maxScrollX, true)
+    },
+    shrink() {
+      this.state = STATE_SHRINK
+      this.scrollTo(0)
+      this._translateMenus(0, true)
     },
     transitionendHandler() {
-      this._translate(this.x)
-    }
+      this.isInTransition = false
+    },
+    clickMenu(menu) {
+      this.$emit(EVENT_BTN_CLICK, menu, this.index, this.shrink)
+    },
+  },
+  beforeDestroy() {
+    this.swipe.removeItem(this)
   }
 }
 </script>
 
-<style lang="stylus">
-@import "../../common/stylus/variable.styl"
+<style lang="stylus" scoped>
+.vi-swipe-item
+  position: relative
 
-.vi-swipe-item-wrapper
-  overflow: hidden
-  .vi-swipe-item
-    position: relative
-    .vi-swipe-menu
-      display: flex
-      position: absolute
-      left: 100%
-      top: 0
-      height: 100%
-      .vi-swipe-menu-item
-        flex: 1
-        display: flex
-        align-items:center
-        padding: 0 20px
-        height: 100%
-        font-size: $font-size-medium-xxx
-        white-space: nowrap
-        background-color: red
+.vi-swipe-menu
+  display: flex
+  align-items: center
+  position: absolute
+  top: 0
+  left: 100%
+  margin-left: -1px
+  height: 100%
+  text-align: left
+  font-size: 20px
+  padding: 0 20px
+  white-space: nowrap
+  color: #fff
 </style>

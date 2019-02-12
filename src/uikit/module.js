@@ -1,7 +1,6 @@
 import Bscroll from 'better-scroll'
 import Style from './common/stylus/index.styl'
 
-import ViLoadListCon from './components/vi-load-list-con/index.js'
 import ViLoading from './components/vi-loading/index.js'
 import ViPopup from './components/vi-popup/index.js'
 import ViScroll from './components/vi-scroll/index.js'
@@ -22,7 +21,6 @@ import ViSwipe from './components/vi-swipe/index.js'
 export {
   Bscroll,
   Style,
-  ViLoadListCon,
   ViLoading,
   ViPopup,
   ViScroll,

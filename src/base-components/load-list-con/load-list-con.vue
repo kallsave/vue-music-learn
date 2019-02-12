@@ -1,15 +1,13 @@
-<!--load-list-con组件需要外部设置高度和 position:relative-->
 <template>
-  <!--封装组件要多加一个div,很烦-->
-  <div class="vi-load-list-con-wrapper">
+  <div class="base-load-list-con-wrapper">
     <slot>
-      <div class="vi-load-list-con"></div>
+      <div class="base-load-list-con"></div>
     </slot>
   </div>
 </template>
 
 <script>
-const COMPONENT_NAME = 'vi-load-list-con'
+const COMPONENT_NAME = 'base-load-list-con'
 export default {
   name: COMPONENT_NAME
 }
@@ -17,8 +15,8 @@ export default {
 
 <style lang="stylus">
 // TODO: 自定义颜色
-@import "../../common/stylus/variable.styl"
-.vi-load-list-con
+@import "~@/common/stylus/variable.styl"
+.base-load-list-con
   position: absolute
   bottom: 10px
   width: 100%

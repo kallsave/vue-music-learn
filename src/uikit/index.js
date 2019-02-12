@@ -1,7 +1,6 @@
 import {
   Bscroll,
   Style,
-  ViLoadListCon,
   ViLoading,
   ViPopup,
   ViScroll,
@@ -21,7 +20,6 @@ import {
 } from './module.js'
 
 const components = [
-  ViLoadListCon,
   ViLoading,
   ViPopup,
   ViScroll,

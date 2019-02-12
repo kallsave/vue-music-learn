@@ -57,3 +57,4 @@
 - vue-router源码
 - image-preview
 - sticky去掉scroll
+- render函数(https://cn.vuejs.org/v2/guide/render-function.html)

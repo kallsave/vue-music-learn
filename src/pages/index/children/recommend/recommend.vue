@@ -52,17 +52,8 @@
                 <img width="60" height="60" v-lazy="item.imgurl">
               </div>
               <div class="text">
-                <lazy-component @show="lazyComponentShow">
-                  <template slot="default">
-                    <h2 class="name" v-html="item.creator.name"></h2>
-                    <p class="desc" v-html="item.dissname"></p>
-                  </template>
-                  <template slot="loading">
-                    <vi-load-list-con>
-                      <div class="load-list-con"></div>
-                    </vi-load-list-con>
-                  </template>
-                </lazy-component>
+                <h2 class="name" v-html="item.creator.name"></h2>
+                <p class="desc" v-html="item.dissname"></p>
               </div>
             </li>
           </ul>
@@ -117,11 +108,11 @@ export default {
   mounted() {
     this._getData()
 
-    this.$refs.loading.show()
+    // this.$refs.loading.show()
 
-    setTimeout(() => {
-      this.$refs.loading.hide()
-    }, 2000)
+    // setTimeout(() => {
+    //   this.$refs.loading.hide()
+    // }, 2000)
 
     // this.$createViToast({
     //   icon: 'svg-correct'

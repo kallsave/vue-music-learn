@@ -7,6 +7,7 @@ import VueLazyLoad from 'vue-lazyload'
 import '@/common/stylus/index.styl'
 import Vi from '@/uikit/index.js'
 
+import BaseLoadListCon from '@/base-components/load-list-con/index.js'
 import BaseIndexList from '@/base-components/index-list/index.js'
 import BaseSearchBox from '@/base-components/search-box/index.js'
 import BaseProgressBar from '@/base-components/progress-bar/index.js'
@@ -18,6 +19,7 @@ import BaseProgressCircle from '@/base-components/progress-circle/index.js'
 // }
 
 Vue.use(Vi)
+Vue.use(BaseLoadListCon)
 Vue.use(BaseSearchBox)
 Vue.use(BaseIndexList)
 Vue.use(BaseProgressBar)
