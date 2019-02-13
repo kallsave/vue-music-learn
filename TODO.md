@@ -20,7 +20,6 @@
 - 音量播放器组建开发
 - range组件
 - pipe理念
-- recommend进入时触发pulldown
 - mand源码
 - 阅读better-scroll源码
 - 调研其他scroll库
@@ -43,9 +42,7 @@
 - 音乐列表页使用模糊效果
 - 完成剩余内容
 - 音乐播放不了的问题
-- swipe
 - 单元测试
-- 测试cube-ui所有组件的用法
 - 看黄老师的音乐列表页的transfrom产生的scroll效果一个上拉拖拽的组件
 - vuepress
 - 在各个浏览器上测试组件,z-index等
@@ -53,8 +50,12 @@
 - vi-toast支持自定义icon
 - Throttle和Dedounce支持首次执行和首次不执行
 - vi-popup增加是否可以穿透
-- touch研究
 - vue-router源码
 - image-preview
+- recommend进入时触发pulldown
 - sticky去掉scroll
-- render函数(https://cn.vuejs.org/v2/guide/render-function.html)
+- 深入svg
+- cube-ui的scroll做了新的更新,涉及到isInTransition
+- render函数
+(https://cn.vuejs.org/v2/guide/render-function.html)
+- render的slot,props,on,tag等等

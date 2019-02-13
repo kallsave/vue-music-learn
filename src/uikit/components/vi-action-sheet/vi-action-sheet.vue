@@ -94,9 +94,6 @@ export default {
       touchActiveStyle: {}
     }
   },
-  mounted() {
-    console.log(this._events)
-  },
   methods: {
     maskClick() {
       if (this.isMaskCloseAble) {

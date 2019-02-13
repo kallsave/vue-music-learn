@@ -1,9 +1,11 @@
 <!-- scroll需要一个父元素给高度,即scroll-wrapper -->
 <template>
-  <div ref="wrapper" class="vi-scroll-wrapper">
+  <div ref="wrapper"
+    class="vi-scroll-wrapper">
     <div class="vi-scroll-content">
       <slot></slot>
-      <div v-if="pullUpLoad" class="vi-scroll-pull-up">
+      <div class="vi-scroll-pull-up"
+        v-if="pullUpLoad">
         <slot name="pull-up"
           :is-pull-up-load="isPullUpLoad"
           :pull-up-txt="pullUpTxt"
@@ -11,7 +13,8 @@
           :no-nore-txt="noMoreTxt"
           :data="data">
             <div>scroll</div>
-            <div v-if="isPullUpLoad" class="vi-scroll-pull-up-trigger">
+            <div class="vi-scroll-pull-up-trigger"
+              v-if="isPullUpLoad">
               <div class="vi-scroll-pull-up-before-trigger">{{pullUpTxt}}</div>
               <div class="vi-scroll-pull-up-after-trigger">
                 <loading></loading>
@@ -22,27 +25,34 @@
         </slot>
       </div>
     </div>
-    <div ref="pullDown" v-if="pullDownRefresh" class="vi-scroll-pull-down">
-        <slot name="pull-down"
-          :pullDownRefresh="pullDownRefresh"
-          :pullDownStyle="pullDownStyle"
-          :beforePullDown="beforePullDown"
-          :isPullingDown="isPullingDown"
-          :afterPullDown="afterPullDown"
-          :bubbleY="bubbleY">
-          <div class="vi-scroll-pull-down-wrapper" :style="pullDownStyle">
-            <div v-show="beforePullDown && !afterPullDown" class="vi-scroll-pull-down-before-trigger">
-              <bubble class="bubble" :y="bubbleY"></bubble>
-            </div>
-            <div v-show="!beforePullDown" class="vi-scroll-pull-down-after-trigger">
-              <div v-show="isPullingDown && !afterPullDown" class="vi-scroll-loading">
-                <loading></loading>
-              </div>
-              <div v-show="isPullingDown && afterPullDown" class="vi-scroll-pull-down-loaded">{{refreshTxt}}</div>
-            </div>
+    <div ref="pullDown"
+      class="vi-scroll-pull-down"
+      v-if="pullDownRefresh">
+      <slot name="pull-down"
+        :pull-down-refresh="pullDownRefresh"
+        :pull-down-style="pullDownStyle"
+        :before-pull-down="beforePullDown"
+        :is-pulling-down="isPullingDown"
+        :after-pull-down="afterPullDown"
+        :bubble-y="bubbleY">
+        <div class="vi-scroll-pull-down-wrapper"
+          :style="pullDownStyle">
+          <div class="vi-scroll-pull-down-before-trigger"
+            v-show="beforePullDown && !afterPullDown">
+            <bubble class="bubble" :y="bubbleY"></bubble>
           </div>
-        </slot>
-      </div>
+          <div class="vi-scroll-pull-down-after-trigger"
+            v-show="!beforePullDown">
+            <div class="vi-scroll-loading"
+              v-show="isPullingDown && !afterPullDown">
+              <loading></loading>
+            </div>
+            <div class="vi-scroll-pull-down-loaded"
+              v-show="isPullingDown && afterPullDown">{{refreshTxt}}</div>
+          </div>
+        </div>
+      </slot>
+    </div>
   </div>
 </template>
 

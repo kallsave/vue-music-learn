@@ -3,7 +3,8 @@
     <div ref="scrollWrapper" class="scroll-wrapper">
       <vi-loading ref="loading"
         v-model="isShowLoading"
-        :scale="1"></vi-loading>
+        :scale="1"
+      ></vi-loading>
       <vi-scroll
         ref="scroll"
         style="color: #ffcd32"
@@ -46,8 +47,9 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <ul class="recommend-ul">
-            <li class="item" @click="selectItem($event, item)"
-              v-for="item in discList" :key="item.dissname">
+            <li class="item"
+              v-for="item in discList" :key="item.dissname"
+              @click="selectItem($event, item)">
               <div class="icon">
                 <img width="60" height="60" v-lazy="item.imgurl">
               </div>

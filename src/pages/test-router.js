@@ -13,6 +13,7 @@ const Quicklink = () => import(/* webpackChunkName: "Quicklink" */ './test/child
 const Popup = () => import(/* webpackChunkName: "Popup" */ './test/children/popup/popup.vue')
 const Swipe = () => import(/* webpackChunkName: "Swipe" */ './test/children/swipe/swipe.vue')
 const Touch = () => import(/* webpackChunkName: "Touch" */ './test/children/touch/touch.vue')
+const ScrollPullDown = () => import(/* webpackChunkName: "ScrollPullDown" */ './test/children/scroll-pull-down/scroll-pull-down.vue')
 
 export default {
   path: '/test',
@@ -70,5 +71,9 @@ export default {
       path: '/test/touch',
       component: Touch
     },
+    {
+      path: '/test/scroll-pull-down',
+      component: ScrollPullDown
+    }
   ]
 }
