@@ -3,18 +3,29 @@
     <slot name="collapse-header"
       :is-collapse="isCollapse"
       :toggle="toggle"></slot>
-    <vi-collapse-transition>
-      <template v-show="!isCollapse">
-        <slot name="collapse-content"
-          :is-collapse="isCollapse"
-          :toggle="toggle"></slot>
-      </template>
-    </vi-collapse-transition>
-    <template v-show="isCollapse">
-      <slot name="collapse-content-skeleton"
+    <template v-if="isUseTransition">
+      <vi-collapse-transition>
+        <div ref="collapseContent"
+          v-show="!isCollapse">
+          <slot name="collapse-content"
+            :is-collapse="isCollapse"
+            :toggle="toggle"></slot>
+        </div>
+      </vi-collapse-transition>
+    </template>
+    <template v-else>
+      <div ref="collapseContent"
+          v-show="!isCollapse">
+          <slot name="collapse-content"
+            :is-collapse="isCollapse"
+            :toggle="toggle"></slot>
+        </div>
+    </template>
+    <div v-show="isCollapse">
+      <slot name="collapse-skeleton"
         :is-collapse="isCollapse"
         :toggle="toggle"></slot>
-    </template>
+    </div>
     <slot name="collapse-footer"
       :is-collapse="isCollapse"
       :toggle="toggle"></slot>
@@ -41,6 +52,10 @@ export default {
       type: Boolean,
       default: false
     },
+    isUseTransition: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
@@ -52,14 +67,10 @@ export default {
   },
   methods: {
     _addEventListener() {
-      if (this.$slots['collapse-content']) {
-        this.$slots['collapse-content'][0].elm.addEventListener(TRANSITIONEND, this.transitionEndCallBack, false)
-      }
+      this.$refs.collapseContent && this.$refs.collapseContent.addEventListener(TRANSITIONEND, this.transitionEndCallBack, false)
     },
     _removeEventListener() {
-      if (this.$slots['collapse-content']) {
-        this.$slots['collapse-content'][0].elm.removeEventListener(TRANSITIONEND, this.transitionEndCallBack, false)
-      }
+      this.$refs.collapseContent && this.$refs.collapseContent.removeEventListener(TRANSITIONEND, this.transitionEndCallBack, false)
     },
     toggle() {
       this.isCollapse = !this.isCollapse

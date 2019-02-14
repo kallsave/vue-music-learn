@@ -3,8 +3,7 @@
     <div ref="scrollWrapper" class="scroll-wrapper">
       <vi-loading ref="loading"
         v-model="isShowLoading"
-        :scale="1"
-      ></vi-loading>
+        :scale="0.8"></vi-loading>
       <vi-scroll
         ref="scroll"
         style="color: #ffcd32"
@@ -46,19 +45,27 @@
         </div>
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
-          <ul class="recommend-ul">
-            <li class="item"
-              v-for="item in discList" :key="item.dissname"
-              @click="selectItem($event, item)">
-              <div class="icon">
-                <img width="60" height="60" v-lazy="item.imgurl">
-              </div>
-              <div class="text">
-                <h2 class="name" v-html="item.creator.name"></h2>
-                <p class="desc" v-html="item.dissname"></p>
-              </div>
-            </li>
-          </ul>
+          <vi-swipe-group>
+            <ul class="recommend-ul">
+              <li class="item"
+                v-for="(item, index) in discList" :key="item.dissname"
+                @click="selectItem($event, item)">
+                <vi-swipe
+                  :index="index"
+                  :menu-list="menuList">
+                  <div class="item-wrapper">
+                    <div class="icon">
+                      <img width="60" height="60" v-lazy="item.imgurl">
+                    </div>
+                    <div class="text">
+                      <h2 class="name" v-html="item.creator.name"></h2>
+                      <p class="desc" v-html="item.dissname"></p>
+                    </div>
+                  </div>
+                </vi-swipe>
+              </li>
+            </ul>
+          </vi-swipe-group>
         </div>
       </vi-scroll>
     </div>
@@ -104,7 +111,25 @@ export default {
         },
         eventPassthrough: 'vertical',
       },
-      isShowLoading: false
+      isShowLoading: true,
+      menuList: [
+        {
+          isAutoShrink: true,
+          content: '取消',
+          style: {
+            'background-color': '#c8c7cd',
+            'color': '#fff'
+          }
+        },
+        {
+          isAutoShrink: false,
+          content: '收藏',
+          style: {
+            'background-color': '#ffcd32',
+            'color': '#fff'
+          }
+        }
+      ]
     }
   },
   mounted() {
@@ -112,13 +137,15 @@ export default {
 
     // this.$refs.loading.show()
 
-    // setTimeout(() => {
-    //   this.$refs.loading.hide()
-    // }, 2000)
+    this.isShowLoading = true
+    setTimeout(() => {
+      this.isShowLoading = false
+    }, 2000)
 
-    // this.$createViToast({
-    //   icon: 'svg-correct'
-    // }).show()
+    this.$createViToast({
+      icon: 'svg-correct',
+      duration: 2000
+    }).show()
   },
   methods: {
     ...mapMutations({
@@ -162,6 +189,9 @@ export default {
       // console.log('handler')
     },
     selectItem(e, item) {
+      if (this.stopClick) {
+        return
+      }
       this.throttle.run(() => {
         this.setRecommendAlbum(item)
         // this.$router.push({
@@ -242,44 +272,47 @@ export default {
         color: $color-theme
       .recommend-ul
         .item
-          display: flex
           box-sizing: border-box
-          align-items: center
-          padding: 0 20px 20px 20px
-          .icon
-            flex: 0 0 60px
-            padding-right: 20px
-          .text
-            position: relative
+          margin: 0 0 20px 20px
+          .item-wrapper
             display: flex
-            flex-direction: column
-            // 轴上元素的位置,column方向设置上下
-            justify-content: center
-            flex: 1
-            line-height: 20px
-            overflow: hidden
-            font-size: $font-size-medium
-            height: 60px
-            .name
-              margin-bottom: 10px
-              color: $color-text
-            .desc
-              color: $color-text-d
-            .load-list-con
-              position: absolute
-              bottom: 10px
-              width: 100%
-              box-sizing: border-box
-              &:before,&:after
-                height: 15px
-                background: $color-highlight-background
-                content: ''
-                display: block
-              &:before
-                margin-top: 7px
-                width: 30%
-              &:after
-                margin-top: 12px
-                width: 60%
+            align-items: center
+            padding-right: 20px
+            box-sizing: border-box
+            .icon
+              flex: 0 0 60px
+              padding-right: 20px
+            .text
+              position: relative
+              display: flex
+              flex-direction: column
+              // 轴上元素的位置,column方向设置上下
+              justify-content: center
+              flex: 1
+              line-height: 20px
+              overflow: hidden
+              font-size: $font-size-medium
+              height: 60px
+              .name
+                margin-bottom: 10px
+                color: $color-text
+              .desc
+                color: $color-text-d
+              .load-list-con
+                position: absolute
+                bottom: 10px
+                width: 100%
+                box-sizing: border-box
+                &:before,&:after
+                  height: 15px
+                  background: $color-highlight-background
+                  content: ''
+                  display: block
+                &:before
+                  margin-top: 7px
+                  width: 30%
+                &:after
+                  margin-top: 12px
+                  width: 60%
 
 </style>

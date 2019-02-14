@@ -45,6 +45,7 @@ export default {
   data() {
     return {
       balde: 12,
+      isVisible: true
     }
   },
   computed: {
@@ -85,10 +86,10 @@ export default {
       return this.showPromise
     },
     _addEventListener() {
-      this.$refs.loading.addEventListener(TRANSITIONEND, this.transitionEndCallBack, false)
+      this.$refs.loading && this.$refs.loading.addEventListener(TRANSITIONEND, this.transitionEndCallBack, false)
     },
     _removeEventListener() {
-      this.$refs.loading.addEventListener(TRANSITIONEND, this.transitionEndCallBack, false)
+      this.$refs.loading && this.$refs.loading.addEventListener(TRANSITIONEND, this.transitionEndCallBack, false)
     },
     transitionEndCallBack() {
       if (this.isVisible) {

@@ -1,8 +1,8 @@
 <template>
   <vi-popup v-show="isVisible"
     :is-show-mask="isShowMask"
-    :z-index="zIndex"
-    :is-lock-scroll="isLockScroll">
+    :is-lock-scroll="isLockScroll"
+    :z-index="zIndex">
     <div class="vi-toast"
       :style="{'transform': `scale(${scale})`}">
       <div class="vi-toast-mask"
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import visibilityMixin from '../../common/mixins/visibility.js'
+import durationMixin from '../../common/mixins/duration.js'
 import ViPopup from '../vi-popup/vi-popup.vue'
 
 const COMPONENT_NAME = 'vi-toast'
@@ -61,7 +61,7 @@ export default {
   components: {
     ViPopup
   },
-  mixins: [visibilityMixin],
+  mixins: [durationMixin],
   props: {
     isShowMask: {
       type: Boolean,
@@ -91,10 +91,6 @@ export default {
       type: String,
       default: 'loading'
     },
-    time: {
-      type: Number,
-      default: 0
-    },
     zIndex: {
       type: Number,
       default: 100
@@ -109,30 +105,6 @@ export default {
       balde: 12
     }
   },
-  methods: {
-    show() {
-      this.isVisible = true
-      this.clearTimer()
-      this.$nextTick(() => {
-        if (this.time !== 0) {
-          this.timer = setTimeout(() => {
-            this.hide()
-          }, this.time)
-        }
-      })
-    },
-    hide() {
-      this.isVisible = false
-      this.clearTimer()
-    },
-    clearTimer() {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
-  },
-  destroyed() {
-    this.clearTimer()
-  }
 }
 </script>
 

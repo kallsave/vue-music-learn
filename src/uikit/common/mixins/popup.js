@@ -4,7 +4,7 @@ export default {
       type: Number,
       default: 100
     },
-    lock: {
+    isLockScroll: {
       type: Boolean,
       default: true
     }

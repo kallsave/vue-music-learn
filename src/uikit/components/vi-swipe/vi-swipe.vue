@@ -1,17 +1,18 @@
 <template>
   <div ref="swipeItem"
     class="vi-swipe-item"
-    @transitionend.stop="transitionendHandler"
-    @touchstart.stop="touchstartHandler"
-    @touchmove.stop="touchmoveHandler"
-    @touchend.stop="touchendHandler">
+    @touchstart="touchstartHandler"
+    @touchmove="touchmoveHandler"
+    @touchend="touchendHandler"
+    @transitionend="transitionendHandler">
     <slot></slot>
     <ul class="vi-swipe-menu-list">
       <li ref="menu"
         class="vi-swipe-menu"
         v-for="(menu, index) in menuList" :key="index"
+        v-html="menu.content"
         :style="genMenuStyl(menu)"
-        @click.prevent="clickMenu(menu)">{{menu.text}}</li>
+        @click.stop.prevent="clickMenu(menu)"></li>
     </ul>
   </div>
 </template>
@@ -28,9 +29,9 @@ import {
 
 const COMPONENT_NAME = 'vi-swipe'
 
-const EVENT_BTN_CLICK = 'menu-click'
+const EVENT_MENU_CLICK = 'menu-click'
+const EVENT_START = 'start'
 const EVENT_SCROLL = 'scroll'
-const EVENT_ACTIVE = 'active'
 
 const DIRECTION_LEFT = 1
 const DIRECTION_RIGHT = -1
@@ -46,6 +47,25 @@ const TRANSITION_PROPERTY = prefixStyle('transitionProperty')
 const TRANSITION_DURATION = prefixStyle('transitionDuration')
 const TRANSITION_TIMING_FUNCTION = prefixStyle('transitionTimingFunction')
 
+const DEFAULT_MENU_LIST = [
+  {
+    isAutoShrink: true,
+    content: '取消',
+    style: {
+      'background-color': '#c8c7cd',
+      'color': '#fff'
+    }
+  },
+  {
+    isAutoShrink: false,
+    content: '删除',
+    style: {
+      'background-color': '#ff3a32',
+      'color': '#fff'
+    }
+  }
+]
+
 export default {
   name: COMPONENT_NAME,
   inject: ['swipe'],
@@ -53,7 +73,7 @@ export default {
     menuList: {
       type: Array,
       default() {
-        return []
+        return DEFAULT_MENU_LIST
       }
     },
     index: {
@@ -120,7 +140,7 @@ export default {
         return
       }
       this.swipe.activeItem(this.index)
-      this.$emit(EVENT_ACTIVE, this.index)
+      this.$emit(EVENT_START, this.index)
       this.moved = false
       this.movingDirectionX = 0
       const point = e.touches[0]
@@ -137,6 +157,9 @@ export default {
       }
       if (this.isInTransition) {
         return
+      }
+      if (this.moved) {
+        e.stopPropagation()
       }
       const point = e.touches[0]
       let deltaX = point.pageX - this.pointX
@@ -170,12 +193,13 @@ export default {
         this.startTime = timestamp
         this.startX = this.x
       }
+
       this._translate(newX)
       this._translateMenus(this.x)
 
       this.$emit(EVENT_SCROLL, this.x)
     },
-    touchendHandler() {
+    touchendHandler(e) {
       if (!this.enable) {
         return
       }
@@ -258,7 +282,10 @@ export default {
       this.isInTransition = false
     },
     clickMenu(menu) {
-      this.$emit(EVENT_BTN_CLICK, menu, this.index, this.shrink)
+      if (menu.isAutoShrink) {
+        this.shrink()
+      }
+      this.$emit(EVENT_MENU_CLICK, menu, this.index, this.shrink)
     },
   },
   beforeDestroy() {
@@ -270,18 +297,17 @@ export default {
 <style lang="stylus" scoped>
 .vi-swipe-item
   position: relative
-
-.vi-swipe-menu
-  display: flex
-  align-items: center
-  position: absolute
-  top: 0
-  left: 100%
-  margin-left: -1px
-  height: 100%
-  text-align: left
-  font-size: 20px
-  padding: 0 20px
-  white-space: nowrap
-  color: #fff
+  .vi-swipe-menu-list
+    .vi-swipe-menu
+      display: flex
+      align-items: center
+      position: absolute
+      top: 0
+      left: 100%
+      height: 100%
+      text-align: left
+      font-size: 18px
+      padding: 0 20px
+      white-space: nowrap
+      color: #fff
 </style>

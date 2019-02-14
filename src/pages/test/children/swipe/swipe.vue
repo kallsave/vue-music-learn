@@ -28,14 +28,14 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: {
           'background-color': '#c8c7cd',
           'color': '#fff'
         }
       },
       {
-        text: '删除',
+        content: '删除',
         style: {
           'background-color': '#ff3a32',
           'color': '#fff'
@@ -52,11 +52,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: {
           'background-color': '#ff3a32',
           'color': '#fff'
@@ -73,11 +73,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -91,11 +91,11 @@ const customData = [
     },
     btns: [
       {
-
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -109,11 +109,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -127,11 +127,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -145,11 +145,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -163,11 +163,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -181,11 +181,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -199,11 +199,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -217,11 +217,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -235,11 +235,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -253,11 +253,11 @@ const customData = [
     },
     btns: [
       {
-        text: '不再关注',
+        content: '不再关注',
         style: { 'background-color': '#c8c7cd', 'color': '#fff' }
       },
       {
-        text: '删除',
+        content: '删除',
         style: { 'background-color': '#ff3a32', 'color': '#fff' }
       }
     ]
@@ -272,9 +272,9 @@ export default {
   },
   methods: {
     menuClick(item, index, shrink) {
-      if (item.text === '删除') {
+      if (item.content === '删除') {
         this.swipeData.splice(index, 1)
-      } else if (item.text === '不再关注') {
+      } else if (item.content === '不再关注') {
         shrink()
       }
     },
@@ -298,7 +298,7 @@ export default {
     height: 50px
     line-height: 50px
     color: #fff
-    text-align: center
+    content-align: center
     background: gold
     margin-bottom: 10px
   .delete
@@ -306,7 +306,7 @@ export default {
     height: 50px
     line-height: 50px
     color: #fff
-    text-align: center
+    content-align: center
     background: red
-    text-align: center
+    content-align: center
 </style>

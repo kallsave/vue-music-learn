@@ -1,10 +1,11 @@
 <template>
   <vi-popup v-show="isVisible"
     :is-show-mask="isShowMask"
-    :is-lock-scroll="isLockScroll">
+    :is-lock-scroll="isLockScroll"
+    :z-index="zIndex">
     <transition name="vi-toast-txt">
       <div class="vi-toast-txt"
-         v-show="isVisible"
+        v-show="isVisible"
         :style="{'z-index': zIndex}">
         {{txt}}
       </div>
@@ -28,10 +29,6 @@ export default {
       type: Number,
       default: 100
     },
-    time: {
-      type: Number,
-      default: 0
-    },
     isShowMask: {
       type: Boolean,
       default: false
@@ -40,30 +37,6 @@ export default {
       type: Boolean,
       default: true
     }
-  },
-  methods: {
-    show() {
-      this.isVisible = true
-      this.clearTimer()
-      this.$nextTick(() => {
-        if (this.time !== 0) {
-          this.timer = setTimeout(() => {
-            this.hide()
-          }, this.time)
-        }
-      })
-    },
-    hide() {
-      this.isVisible = false
-      this.clearTimer()
-    },
-    clearTimer() {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
-  },
-  deactivated() {
-    this.clearTimer()
   },
 }
 </script>
