@@ -1,17 +1,18 @@
 <template>
-  <div ref="swipeItem"
-    class="vi-swipe-item"
+  <div ref="swipe"
+    class="vi-swipe"
     @touchstart="touchstartHandler"
     @touchmove="touchmoveHandler"
     @touchend="touchendHandler"
-    @transitionend="transitionendHandler">
+    @transitionend="transitionendHandler"
+    @click="clickHandler">
     <slot></slot>
     <ul class="vi-swipe-menu-list">
       <li ref="menu"
         class="vi-swipe-menu"
         v-for="(menu, index) in menuList" :key="index"
         v-html="menu.content"
-        :style="genMenuStyl(menu)"
+        :style="setMenuStyle(menu)"
         @click.stop.prevent="clickMenu(menu)"></li>
     </ul>
   </div>
@@ -37,9 +38,10 @@ const DIRECTION_LEFT = 1
 const DIRECTION_RIGHT = -1
 const STATE_SHRINK = 0
 const STATE_GROW = 1
-const EASINGTIME = 600
-const MOMENTUMLIMITTIME = 300
-const MOMENTUMLIMITDISTANCE = 15
+const EASING_TIME = 600
+const MOMENTUMLIMIT_TIME = 300
+const MOMENTUMLIMIT_DISTANCE = 15
+const AFTER_SHRINK_TIME = 300
 
 const TRANSFORM = prefixStyle('transform')
 const TRANSITION = prefixStyle('transition')
@@ -68,7 +70,11 @@ const DEFAULT_MENU_LIST = [
 
 export default {
   name: COMPONENT_NAME,
-  inject: ['swipe'],
+  inject: {
+    swipeGroup: {
+      default: null
+    }
+  },
   props: {
     menuList: {
       type: Array,
@@ -78,11 +84,12 @@ export default {
     },
     index: {
       type: Number,
-      required: true
+      default: -1,
+      required: !!this.swipeGroup
     },
-    enable: {
+    disabled: {
       type: Boolean,
-      default: true
+      default: false
     },
     // 锁定方向
     // 1的时候是45度角
@@ -97,7 +104,7 @@ export default {
     this.x = 0
     // 收缩状态
     this.state = STATE_SHRINK
-    this.swipe.addItem(this)
+    this.swipeGroup && this.swipeGroup.addItem(this)
   },
   mounted() {
     this._initScroller()
@@ -106,7 +113,7 @@ export default {
   },
   methods: {
     _initScroller() {
-      this.scrollerStyle = this.$refs.swipeItem.style
+      this.scrollerStyle = this.$refs.swipe.style
       this.scrollerStyle[TRANSITION_PROPERTY] = 'transform'
       this.scrollerStyle[TRANSITION_TIMING_FUNCTION] = EASE_OUT_QUART
     },
@@ -132,14 +139,14 @@ export default {
       }
       this.maxScrollX = -width
     },
-    genMenuStyl(menu) {
+    setMenuStyle(menu) {
       return menu.style
     },
     touchstartHandler(e) {
-      if (!this.enable) {
+      if (this.disabled) {
         return
       }
-      this.swipe.activeItem(this.index)
+      this.swipeGroup && this.swipeGroup.activeItem(this.index)
       this.$emit(EVENT_START, this.index)
       this.moved = false
       this.movingDirectionX = 0
@@ -152,14 +159,15 @@ export default {
       this.startTime = new Date().getTime()
     },
     touchmoveHandler(e) {
-      if (!this.enable) {
+      if (this.moved) {
+        e.stopPropagation()
+        this.clearTimer()
+      }
+      if (this.disabled) {
         return
       }
       if (this.isInTransition) {
         return
-      }
-      if (this.moved) {
-        e.stopPropagation()
       }
       const point = e.touches[0]
       let deltaX = point.pageX - this.pointX
@@ -189,7 +197,7 @@ export default {
       }
 
       let timestamp = new Date().getTime()
-      if (timestamp - this.startTime > MOMENTUMLIMITTIME) {
+      if (timestamp - this.startTime > MOMENTUMLIMIT_TIME) {
         this.startTime = timestamp
         this.startX = this.x
       }
@@ -200,8 +208,11 @@ export default {
       this.$emit(EVENT_SCROLL, this.x)
     },
     touchendHandler(e) {
-      if (!this.enable) {
+      if (this.disabled) {
         return
+      }
+      if (this.moved) {
+        e.stopPropagation()
       }
       if (this.x <= this.maxScrollX) {
         this.grow()
@@ -216,9 +227,9 @@ export default {
       this.endTime = new Date().getTime()
       let duration = this.endTime - this.startTime
       let distX = this.x - this.startX
-      if (duration < MOMENTUMLIMITTIME && -distX > MOMENTUMLIMITDISTANCE) {
+      if (duration < MOMENTUMLIMIT_TIME && -distX > MOMENTUMLIMIT_DISTANCE) {
         this.grow()
-      } else if (duration < MOMENTUMLIMITTIME && distX > MOMENTUMLIMITDISTANCE) {
+      } else if (duration < MOMENTUMLIMIT_TIME && distX > MOMENTUMLIMIT_DISTANCE) {
         this.shrink()
       } else {
         if (this.state === STATE_SHRINK) {
@@ -226,6 +237,14 @@ export default {
         } else {
           this.grow()
         }
+      }
+    },
+    clickHandler(e) {
+      if (this.state === STATE_GROW) {
+        e.stopPropagation()
+        this.shrinkTimer = window.setTimeout(() => {
+          this.shrink()
+        }, AFTER_SHRINK_TIME)
       }
     },
     _translateMenus(x, isUseTransition) {
@@ -253,7 +272,7 @@ export default {
           menu.style.width = `${width}px`
           menu.style[TRANSFORM] = `translate(${translate}px)`
         } else {
-          menu.style[TRANSITION_DURATION] = `${EASINGTIME}ms`
+          menu.style[TRANSITION_DURATION] = `${EASING_TIME}ms`
           menu.style.width = `${this.cachedMenus[i].width}px`
           menu.style[TRANSFORM] = `translate(${translate}px)`
         }
@@ -265,7 +284,7 @@ export default {
     },
     scrollTo(x) {
       this.isInTransition = true
-      this.scrollerStyle[TRANSITION_DURATION] = `${EASINGTIME}ms`
+      this.scrollerStyle[TRANSITION_DURATION] = `${EASING_TIME}ms`
       this._translate(x)
     },
     grow() {
@@ -287,15 +306,20 @@ export default {
       }
       this.$emit(EVENT_MENU_CLICK, menu, this.index, this.shrink)
     },
+    clearTimer() {
+      window.clearTimeout(this.shrinkTimer)
+      this.shrinkTimer = null
+    }
   },
-  beforeDestroy() {
-    this.swipe.removeItem(this)
+  destroyed() {
+    this.swipeGroup && this.swipeGroup.removeItem(this)
+    this.clearTimer()
   }
 }
 </script>
 
-<style lang="stylus" scoped>
-.vi-swipe-item
+<style lang="stylus">
+.vi-swipe
   position: relative
   .vi-swipe-menu-list
     .vi-swipe-menu

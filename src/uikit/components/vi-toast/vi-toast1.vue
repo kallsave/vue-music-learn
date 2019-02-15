@@ -73,7 +73,7 @@ export default {
       this.clearTimer()
       this.$nextTick(() => {
         if (this.options.time !== 0) {
-          this.timer = setTimeout(() => {
+          this.timer = window.setTimeout(() => {
             this.hide()
           }, this.options.time)
         }
@@ -84,7 +84,7 @@ export default {
       this.clearTimer()
     },
     clearTimer() {
-      clearTimeout(this.timer)
+      window.clearTimeout(this.timer)
       this.timer = null
     },
     maskClick() {

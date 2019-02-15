@@ -366,6 +366,9 @@ export default {
 
   对于scroll,slide的组件设计,scroll事件比较消耗性能,其他better-scroll的原生事件性能消耗不大,scrollEvents有beforeScrollStart,scrollStart,scroll,scrollCancel,scrollEnd,touchEnd六个
 
+## touchstart,touchmove,touchend,click
+- touch系列的事件只要e.stopPropagation()都可以阻止他和他子元素的click的事件的触发,至于父元素的click因为stopPropagation阻止冒泡了,也不会触发
+
 ## 动画的过渡效果
 - 当机子的性能不好时,动画就会掉帧,其中动画开始和动画结束最容易掉帧,会出现闪屏,卡顿等,优化的思路是用贝塞尔曲线对动画的速率做调节,在动画开始和结束时,动画的速率最低,也就是ease-out-in,比较好的曲线参数是cubic-bezier(.61,0,.44,1)
 

@@ -19,7 +19,7 @@
             :data="recommends"
             :options="slideOptions"
             :show-dots="true"
-            :auto-play="false"
+            :auto-play="true"
             @load-image="loadImage">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->

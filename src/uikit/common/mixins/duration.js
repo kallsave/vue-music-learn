@@ -16,7 +16,7 @@ export default {
       this.clearTimer()
       this.$nextTick(() => {
         if (this.duration !== 0) {
-          this.timer = setTimeout(() => {
+          this.timer = window.setTimeout(() => {
             this.hide()
           }, this.duration)
         }
@@ -27,7 +27,7 @@ export default {
       this.clearTimer()
     },
     clearTimer() {
-      clearTimeout(this.timer)
+      window.clearTimeout(this.timer)
       this.timer = null
     }
   },

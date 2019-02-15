@@ -1,19 +1,25 @@
 <template>
   <div class="swipe">
-    <vi-swipe-group
-      :is-relative="false">
-      <vi-collapse-transition-group tag="ul">
-        <li class="swipe-item-wrapper"
-          v-for="(data, index) in swipeData" :key="data.item.name">
-          <vi-swipe
-            :menu-list="data.btns"
-            :index="index"
-            @menu-click="menuClick">
-            <div class="item-inner">{{data.item.name}}</div>
-          </vi-swipe>
-        </li>
-      </vi-collapse-transition-group>
-    </vi-swipe-group>
+    <div class="scroll-wrapper">
+      <vi-scroll
+        :options="options">
+        <vi-swipe-group
+          :is-relative="false"
+          @active-index-change="activeIndexChange">
+          <vi-collapse-transition-group tag="ul">
+            <li class="swipe-item-wrapper"
+              v-for="(data, index) in swipeData" :key="data.item.name">
+              <vi-swipe
+                :index="index"
+                :menu-list="data.btns"
+                @menu-click="menuClick">
+                <div class="item-inner" @click="clickHandler">{{data.item.name}}</div>
+              </vi-swipe>
+            </li>
+          </vi-collapse-transition-group>
+        </vi-swipe-group>
+      </vi-scroll>
+    </div>
   </div>
 </template>
 
@@ -267,7 +273,21 @@ const customData = [
 export default {
   data() {
     return {
-      swipeData: customData
+      swipeData: customData,
+      options: {
+        probeType: 3,
+        click: true,
+        pullDownRefresh: {
+          // 阀值
+          threshold: 80,
+          // 滞留的位置
+          stop: 60,
+          txt: '更新成功',
+          // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
+          stopTime: 1000
+        },
+        directionLockThreshold: 0,
+      }
     }
   },
   methods: {
@@ -278,35 +298,28 @@ export default {
         shrink()
       }
     },
+    clickHandler() {
+      console.log('click')
+    },
+    activeIndexChange(index) {
+      console.log(index)
+    }
   }
 }
 </script>
 
 <style lang="stylus" modules>
 .swipe
-  .swipe-item-wrapper
-    overflow: hidden
-    &.swipe-enter-active, &.swipe-leave-active
-      transition: all .3s
+  height: 100vh
+  .scroll-wrapper
+    height: 100%
+    .swipe-item-wrapper
       .item-inner
-        transition: all .3s
-    &.swipe-enter, &.swipe-leave-to
-      .item-inner
-        height: 0
-  .item-inner
-    width: 100%
-    height: 50px
-    line-height: 50px
-    color: #fff
-    content-align: center
-    background: gold
-    margin-bottom: 10px
-  .delete
-    width: 80px
-    height: 50px
-    line-height: 50px
-    color: #fff
-    content-align: center
-    background: red
-    content-align: center
+        width: 100%
+        height: 50px
+        line-height: 50px
+        color: #fff
+        content-align: center
+        background: gold
+        margin-bottom: 10px
 </style>

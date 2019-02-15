@@ -1,5 +1,5 @@
 <template>
-  <div class="vi-swipe">
+  <div class="vi-swipe-group">
     <slot></slot>
   </div>
 </template>
@@ -7,11 +7,13 @@
 <script>
 const COMPONENT_NAME = 'vi-swipe-group'
 
+const EVENT_ACTIVE_INDEX_CHANGE = 'active-index-change'
+
 export default {
   name: COMPONENT_NAME,
   provide() {
     return {
-      swipe: this
+      swipeGroup: this
     }
   },
   props: {
@@ -43,15 +45,11 @@ export default {
         const activeItem = this.items[this.activeIndex]
         if (this.isRelative) {
           activeItem.shrink()
+          this.activeIndex = index
+          this.$emit(EVENT_ACTIVE_INDEX_CHANGE, this.activeIndex)
         }
       }
-      this.activeIndex = index
-    }
+    },
   }
 }
 </script>
-
-<style lang="stylus">
-.vi-swipe
-  overflow: hidden
-</style>

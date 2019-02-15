@@ -6,9 +6,9 @@ export default {
   name: COMPONENT_NAME,
   functional: true,
   render(h, { children, data }) {
-    let tag
-    if (!data.attrs || !data.attrs.tag) {
-      tag = 'div'
+    let tag = 'div'
+    if (data.attrs && data.attrs.tag) {
+      tag = data.attrs.tag
     }
     return h('transition-group', {
       on: transitionEvent,
