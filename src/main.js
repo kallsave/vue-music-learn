@@ -12,6 +12,7 @@ import BaseIndexList from '@/base-components/index-list/index.js'
 import BaseSearchBox from '@/base-components/search-box/index.js'
 import BaseProgressBar from '@/base-components/progress-bar/index.js'
 import BaseProgressCircle from '@/base-components/progress-circle/index.js'
+import BaseConfirm from '@/base-components/confirm/index.js'
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const Vconsole = require('vconsole')
@@ -24,6 +25,7 @@ Vue.use(BaseSearchBox)
 Vue.use(BaseIndexList)
 Vue.use(BaseProgressBar)
 Vue.use(BaseProgressCircle)
+Vue.use(BaseConfirm)
 
 // 全局默认vue-lazyload配置,可以在局部组件自定义
 // VueLazyLoad是非常优秀的插件,可以让长列表的部分渲染

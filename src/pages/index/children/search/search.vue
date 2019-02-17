@@ -34,7 +34,7 @@
             <h1 class="search-history-title">
               <span class="search-history-text">搜索历史</span>
               <span class="clear-search-history"
-                @click="showConfirm" >
+                @click="clearSearchHistoryHandler" >
                 <i class="icon-clear"></i>
               </span>
             </h1>
@@ -66,14 +66,14 @@
           slot-scope="scope">
           <div class="vi-scroll-pullup">
             <div class="vi-scroll-pullup-trigger"
-              v-if="scope.pullUpScope.isPullUpLoad">
+              v-show="scope.pullUpScope.isPullUpLoad">
               <div class="vi-scroll-pullup-before-trigger">{{scope.pullUpScope.pullUpTxt}}</div>
               <div class="vi-scroll-pullup-after-trigger">
                 <loading></loading>
               </div>
             </div>
             <div class="vi-scroll-pullup-no-more"
-              v-if="isFetchSearch && scope.pullUpScope.isPullUpLoad && scope.pullUpScope.pullUpDirty && scope.pullUpScope.data.length && scope.pullUpScope.noMoreTxt"
+              v-show="isFetchSearch && scope.pullUpScope.isPullUpLoad && scope.pullUpScope.pullUpDirty && scope.pullUpScope.data.length && scope.pullUpScope.noMoreTxt"
               >{{scope.pullUpScope.noMoreTxt}}</div>
           </div>
         </template>
@@ -95,6 +95,7 @@ import NoResult from './components/no-result/no-result.vue'
 import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
 import SearchList from '@/components/search-list/search-list.vue'
 import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.js'
+import createDebounceInstanceMixin from '../../mixins/create-debounce-instance.js'
 
 const TYPE_SINGER = 'singer'
 const DEBOUNCE_TIME = 400
@@ -109,7 +110,12 @@ export default {
     Loading,
     SearchList
   },
-  mixins: [injectStickyMixin, playListMixin, createThrottleInstanceMixin],
+  mixins: [
+    injectStickyMixin,
+    playListMixin,
+    createThrottleInstanceMixin,
+    createDebounceInstanceMixin,
+  ],
   props: {
     isShowSinger: {
       type: Boolean,
@@ -147,11 +153,10 @@ export default {
     query: {
       handler(newVal) {
         this.isFetchSearch = false
-        this.debounceQueryHandler.run(() => {
+        this.debounce.run(() => {
           if (!newVal.trim()) {
             return
           }
-          console.log(newVal)
           this.saveSearchHistoryLocalStorage(newVal)
           this.page = 1
           // 第三个参数如果是缓动,会导致盒子被拖拽
@@ -166,8 +171,6 @@ export default {
   },
   mounted() {
     this._getHotKey()
-    this._createDebounceInstance()
-    this._createThrottleInstance()
   },
   methods: {
     ...mapMutations({
@@ -182,12 +185,6 @@ export default {
     handlePlayList() {
       this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
       this.$refs.scroll.refresh()
-    },
-    _createDebounceInstance() {
-      this.debounceQueryHandler = new Debounce(400)
-    },
-    _createThrottleInstance() {
-      this.throttle = new Throttle(1000)
     },
     _getHotKey() {
       getHotKey().then((res) => {
@@ -288,17 +285,21 @@ export default {
         this.insertSong(item)
       }
     },
-    showConfirm() {
-      this.clearSearchHistoryLocalStorage()
+    clearSearchHistoryHandler() {
+      this.$createBaseConfirm({
+        text: '确定要删除吗',
+        onConfirm: () => {
+          this.clearSearchHistoryLocalStorage()
+        }
+      }).show()
     },
-    addQuery() {
+    addQuery(history) {
       this.throttle.run(() => {
-        console.log('add')
+        this.query = history
       })
     },
     deleteSearchHistory(item) {
       this.throttle.run(() => {
-        console.log(item)
         this.deleteSearchHistoryLocalStorage(item)
       })
     }

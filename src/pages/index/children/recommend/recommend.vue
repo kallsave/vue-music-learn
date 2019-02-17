@@ -83,7 +83,11 @@ import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.j
 export default {
   // 可变keep-alive
   name: MUTABLE_KEEP_ALIVE_NAME,
-  mixins: [injectStickyMixin, playListMixin, createThrottleInstanceMixin],
+  mixins: [
+    injectStickyMixin,
+    playListMixin,
+    createThrottleInstanceMixin
+  ],
   data() {
     return {
       recommends: [],

@@ -60,3 +60,4 @@
 (https://cn.vuejs.org/v2/guide/render-function.html)
 - render的slot,props,on,tag等等
 - popup的mixin
+- keep-alive的个数限制

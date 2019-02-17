@@ -38,7 +38,11 @@ import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.j
 
 export default {
   name: IMMUTABLE_KEEP_ALIVE_NAME,
-  mixins: [injectStickyMixin, playListMixin, createThrottleInstanceMixin],
+  mixins: [
+    injectStickyMixin,
+    playListMixin,
+    createThrottleInstanceMixin
+  ],
   data() {
     return {
       rankList: [],
