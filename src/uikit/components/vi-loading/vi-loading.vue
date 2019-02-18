@@ -113,12 +113,12 @@ export default {
 </script>
 
 <style lang="stylus">
-// TODO: 去掉variable.styl依赖,可以自定义样式
 @import "~@/common/stylus/variable.styl"
 .vi-loading
   position: relative
-  overflow: hidden
   height: 50px
+  width: 100%
+  overflow: hidden
   .vi-loading-spinner-content
     position: absolute
     width: 50px
@@ -135,7 +135,7 @@ export default {
       height: 10px
       margin-top: -5px
       margin-left: -1.5px
-      border-radius: 3px
+      border-radius: 1000px
       opacity: .25
       background-color: currentColor
       animation: spinner-fade 1s linear infinite

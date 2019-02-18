@@ -1,9 +1,8 @@
 <template>
   <div class="recommend sticky-content" ref="recommend">
     <div ref="scrollWrapper" class="scroll-wrapper">
-      <vi-loading ref="loading"
-        v-model="isShowLoading"
-        :scale="0.8"></vi-loading>
+      <!-- <vi-loading ref="loading"
+        v-model="isShowLoading"></vi-loading> -->
       <vi-scroll
         ref="scroll"
         style="color: #ffcd32"
@@ -141,15 +140,15 @@ export default {
 
     // this.$refs.loading.show()
 
-    this.isShowLoading = true
-    setTimeout(() => {
-      this.isShowLoading = false
-    }, 2000)
+    // this.isShowLoading = true
+    // setTimeout(() => {
+    //   this.isShowLoading = false
+    // }, 2000)
 
-    this.$createViToast({
-      icon: 'svg-correct',
-      duration: 2000
-    }).show()
+    // this.$createViToast({
+    //   icon: 'svg-correct',
+    //   duration: 2000
+    // }).show()
   },
   methods: {
     ...mapMutations({

@@ -61,3 +61,4 @@
 - render的slot,props,on,tag等等
 - popup的mixin
 - keep-alive的个数限制
+- scroll横向滚动
