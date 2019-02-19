@@ -8,7 +8,7 @@
         :scroll-events="['scroll']"
         :options="scrollOptions"
         @scroll="scrollHandler"
-        @pulling-up="onPullingUp">
+        @pulling-up="pullingUpHandler">
         <vi-sticky-ele>
           <div class="search-box-wrapper">
             <base-search-box ref="searchBox"
@@ -254,7 +254,7 @@ export default {
     hotSearch(hotKey) {
       this.query = hotKey.k
     },
-    onPullingUp() {
+    pullingUpHandler() {
       if (this.hasMore) {
         this.page++
         this.search().then((res) => {

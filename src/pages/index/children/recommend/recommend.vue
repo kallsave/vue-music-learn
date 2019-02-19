@@ -1,8 +1,6 @@
 <template>
   <div class="recommend sticky-content" ref="recommend">
     <div ref="scrollWrapper" class="scroll-wrapper">
-      <!-- <vi-loading ref="loading"
-        v-model="isShowLoading"></vi-loading> -->
       <vi-scroll
         ref="scroll"
         style="color: #ffcd32"
@@ -13,7 +11,7 @@
         @pulling-down="onPullingDown">
         <div class="slide-wrapper">
           <vi-slide ref="slide"
-            v-if="recommends.length"
+            v-show="recommends.length"
             :init-page-index="2"
             :data="recommends"
             :options="slideOptions"
@@ -101,7 +99,7 @@ export default {
           stop: 60,
           txt: '更新成功',
           // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
-          stopTime: 1000
+          stopTime: 1500
         },
         directionLockThreshold: 0,
       },
@@ -114,7 +112,6 @@ export default {
         },
         eventPassthrough: 'vertical',
       },
-      isShowLoading: true,
       menuList: [
         {
           isAutoShrink: true,
@@ -136,14 +133,9 @@ export default {
     }
   },
   mounted() {
-    this._getData()
-
-    // this.$refs.loading.show()
-
-    // this.isShowLoading = true
-    // setTimeout(() => {
-    //   this.isShowLoading = false
-    // }, 2000)
+    this.$nextTick(() => {
+      this.$refs.scroll.autoPullDownRefresh()
+    })
 
     // this.$createViToast({
     //   icon: 'svg-correct',
@@ -187,9 +179,6 @@ export default {
           this.$refs.scroll.refresh()
         })
       }
-    },
-    lazyComponentShow() {
-      // console.log('handler')
     },
     selectItem(e, item) {
       if (this.stopClick) {

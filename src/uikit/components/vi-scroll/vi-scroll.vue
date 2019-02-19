@@ -12,15 +12,13 @@
           :pull-up-dirty="pullUpDirty"
           :no-nore-txt="noMoreTxt"
           :data="data">
-            <div>scroll</div>
-            <div class="vi-scroll-pull-up-trigger"
-              v-if="isPullUpLoad">
-              <div class="vi-scroll-pull-up-before-trigger">{{pullUpTxt}}</div>
-              <div class="vi-scroll-pull-up-after-trigger">
-                <loading></loading>
-              </div>
+            <div class="vi-scroll-pull-up-before-trigger"
+              v-show="pullUpState === pullUpStateList[0]">{{pullUpTxt + isPullUpLoad}}</div>
+            <div class="vi-scroll-pull-up-after-trigger"
+              v-show="pullUpState === pullUpStateList[1]">
+              <vi-loading :scale="0.8"></vi-loading>
             </div>
-            <div v-if="!isPullUpLoad && pullUpDirty && data.length && noMoreTxt"
+            <div v-show="pullUpState === pullUpStateList[0] && pullUpDirty && data.length && noMoreTxt"
               class="vi-scroll-pull-up-no-more">{{noMoreTxt}}</div>
         </slot>
       </div>
@@ -31,21 +29,23 @@
         :pull-down-refresh="pullDownRefresh"
         :pull-down-style="pullDownStyle"
         :pull-down-state="pullDownState"
-        :bubble-y="bubbleY">
+        :pull-down-state-list="pullDownStateList"
+        :pull-down-normal-top="pullDownNormalTop"
+        :pull-down-scroll-y="pullDownScrollY">
           <div class="vi-scroll-pull-down-content"
             v-if="pullDownRefresh"
             :style="pullDownStyle">
             <div class="vi-scroll-pull-down-normal"
-              v-show="pullDownState === PULL_DOWN_STATE[0]">
-              <bubble class="bubble" :y="bubbleY"></bubble>
+              v-show="pullDownState === pullDownStateList[0]">
+              <bubble class="bubble" :y="pullDownNormalTop"></bubble>
             </div>
             <div class="vi-scroll-pull-down-lock"
-              v-show="pullDownState === PULL_DOWN_STATE[1]">
+              v-show="pullDownState === pullDownStateList[1]">
               <vi-loading :scale="0.8"></vi-loading>
             </div>
-            <div class="vi-scroll-pull-down-refresh"
-              v-show="pullDownState === PULL_DOWN_STATE[2]"
-            >{{refreshTxt}}</div>
+            <div class="vi-scroll-pull-down-success"
+              v-show="pullDownState === pullDownStateList[2]"
+            >{{pullDownRefresh.txt}}</div>
           </div>
       </slot>
     </div>
@@ -70,8 +70,6 @@ const EVENT_PULLING_UP = 'pulling-up'
 
 const SCROLL_EVENTS = [EVENT_SCROLL, EVENT_BEFORE_SCROLL_START, EVENT_SCROLL_END]
 
-const DEFAULT_REFRESH_TXT = 'Refresh success'
-
 const DEFAULT_OPTIONS = {
   observeDOM: false,
   // 多层嵌套会触发多次,所以需要click的场景自主添加
@@ -88,13 +86,38 @@ const DEFAULT_OPTIONS = {
   // }
 }
 
-// finishPullDown后恢复原来状态的延迟时间
-const FINISH_PULLDOWN_STOP_TIME = 600
+// 开启pullDownRefresh的默认配置
+const PULL_DOWN_REFRESH_DEFAULT_OPTIONS = {
+  // 阀值
+  threshold: 80,
+  // 滞留的位置
+  stop: 56,
+  txt: '更新成功',
+  // 更新到数据,调用finishPullDown的延迟时间,
+  // 会影响到txt的显示持续时间
+  stopTime: 1000
+}
 
-const PULL_DOWN_STATE = [
+// 开启pullUpLoad的默认配置
+const PULL_UP_LOAD_DEFAULT_OPTIONS = {
+  threshold: 10000000,
+  txt: {
+    more: '加载更多',
+    // 不传则底部不会有空白
+    noMore: '没有更多的比赛啦'
+  }
+}
+
+const PULL_DOWN_STATE_LIST = [
   'normal',
   'lock',
-  'refresh',
+  'success',
+]
+
+const PULL_UP_STATE_LIST = [
+  'normal',
+  'lock',
+  'success',
 ]
 
 export default {
@@ -130,19 +153,19 @@ export default {
   },
   data() {
     return {
-      bubbleY: 0,
-      // 最终pullDownStop的值是由pull-down的dom的高度决定的
-      pullDownStop: 40,
-      pullDownHeight: 60,
-      // 提高pull-down-content或者pull-down插槽的top值
+      pullDownNormalTop: 0,
+      pullDownScrollY: 0,
+      // 提供pull-down-content或者pull-down插槽的top值
       pullDownStyle: {},
-      pullDownState: PULL_DOWN_STATE[0],
-      PULL_DOWN_STATE: PULL_DOWN_STATE,
+      pullDownState: PULL_DOWN_STATE_LIST[0],
+      pullDownStateList: PULL_DOWN_STATE_LIST,
       // 是否处于上拉状态
       isPullUpLoad: false,
       // 第一次noMore是不展示的,要data的指针发生变化后
       pullUpDirty: false,
       noMoreTxt: '',
+      pullUpState: PULL_UP_STATE_LIST[0],
+      pullUpStateList: PULL_UP_STATE_LIST
     }
   },
   mounted() {
@@ -150,21 +173,22 @@ export default {
   },
   computed: {
     pullDownRefresh() {
-      let pullDownRefresh = this.options.pullDownRefresh
-      if (!pullDownRefresh) {
-        return pullDownRefresh
+      if (this.options.pullDownRefresh === true) {
+        return mulitDeepClone({}, PULL_DOWN_REFRESH_DEFAULT_OPTIONS)
+      } else if (!this.options.pullDownRefresh) {
+        return false
+      } else {
+        return mulitDeepClone({}, PULL_DOWN_REFRESH_DEFAULT_OPTIONS, this.options.pullDownRefresh)
       }
-      if (pullDownRefresh === true) {
-        pullDownRefresh = {}
-      }
-      return mulitDeepClone({stop: this.pullDownStop}, pullDownRefresh)
-    },
-    refreshTxt() {
-      const pullDownRefresh = this.pullDownRefresh
-      return (pullDownRefresh && pullDownRefresh.txt) || DEFAULT_REFRESH_TXT
     },
     pullUpLoad() {
-      return this.options.pullUpLoad
+      if (this.options.pullUpLoad === true) {
+        return mulitDeepClone({}, PULL_UP_LOAD_DEFAULT_OPTIONS)
+      } else if (!this.options.pullUpLoad) {
+        return false
+      } else {
+        return mulitDeepClone({}, PULL_UP_LOAD_DEFAULT_OPTIONS, this.options.pullUpLoad)
+      }
     },
     pullUpTxt() {
       const pullUpLoad = this.pullUpLoad
@@ -185,62 +209,52 @@ export default {
       },
       deep: true
     },
-    pullDownRefresh: {
-      handler(newVal, oldVal) {
-        if (newVal) {
-          this.scroll.openPullDown(newVal)
-          if (!oldVal) {
-            this._initPullDownEle()
-          }
-        }
-        if (!newVal && oldVal) {
-          this.scroll.closePullDown()
-          this._offPullDown()
-        }
-      },
-      deep: true
-    },
+    // 去掉这种模式,使用方法自动关闭
     // 动态关闭下拉加载,有两种交互情形
     // 一种是没有数据后还是可以下拉
     // 一种是没有数据后关闭下拉功能,通过父组件this.scrollOptions.pullUpLoad = false
-    pullUpLoad: {
-      handler(newVal, oldVal) {
-        if (newVal) {
-          this.scroll.openPullUp(newVal)
-          if (!oldVal) {
-            this._onPullUpLoad()
-          }
-        }
-        if (!newVal && oldVal) {
-          this.isPullUpLoad = false
-          this.scroll.finishPullUp()
-          this.scroll.closePullUp()
-          this._offPullUpLoad()
-          this.$nextTick(() => {
-            this.refresh()
-          })
-        }
-      },
-      deep: true
-    }
+    // pullUpLoad: {
+    //   handler(newVal, oldVal) {
+    //     if (newVal) {
+    //       this.scroll.openPullUp(newVal)
+    //       if (!oldVal) {
+    //         this._onPullUpLoadEvent()
+    //       }
+    //     }
+    //     if (!newVal && oldVal) {
+    //       this.isPullUpLoad = false
+    //       this.scroll.finishPullUp()
+    //       this.scroll.closePullUp()
+    //       this._offPullUpLoadEvent()
+    //       this.$nextTick(() => {
+    //         this.refresh()
+    //       })
+    //     }
+    //   },
+    //   deep: true
+    // }
   },
   methods: {
     _initScroll() {
-      this.name = COMPONENT_NAME
-      let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-      this.scroll = new BScroll(this.$refs.wrapper, options)
-      this._listenScrollEvents()
-
-      // 如果开启了下拉更新的功能
+      let extraOptions = {}
       if (this.pullDownRefresh) {
-        this._getPullDownEleHeight()
-        this._initPullDownEle()
+        extraOptions.pullDownRefresh = this.pullDownRefresh
+      }
+      if (this.pullUpLoad) {
+        extraOptions.pullUpLoad = this.pullUpLoad
+      }
+      let options = mulitDeepClone({}, DEFAULT_OPTIONS, extraOptions, this.options)
+      this.scroll = new BScroll(this.$refs.wrapper, options)
+      if (this.pullDownRefresh) {
+        this._calculatelPullDownEleHeight()
+        this._onPullDownEvent()
       }
       // 如果开启了上拉加载
       if (this.pullUpLoad) {
-        this._onPullUpLoad()
+        this._onPullUpLoadEvent()
         this.noMoreTxt = this.pullUpLoad.txt.noMore
       }
+      this._listenScrollEvents()
     },
     enable() {
       this.scroll && this.scroll.enable()
@@ -265,58 +279,64 @@ export default {
         })
       })
     },
-    _initPullDownEle() {
-      // better-scroll的事件监听系统可以重复叠加
-      this.scroll.on('pullingDown', this._pullDownHandler)
-      this.scroll.on('scroll', this._pullDownScrollHandler)
-    },
-    _offPullDown() {
-      this.scroll.off('pullingDown', this._pullDownHandler)
-      this.scroll.off('scroll', this._pullDownScrollHandler)
-    },
     // 计算pull-down-content的高度,并且初始化它的top
-    _getPullDownEleHeight() {
+    _calculatelPullDownEleHeight() {
       const pullDown = this.$refs.pullDown.firstChild
       this.pullDownHeight = getRect(pullDown).height
-      console.log(this.pullDownHeight)
       this.pullDownStyle = {
         top: `${-this.pullDownHeight}px`
       }
     },
+    _onPullDownEvent() {
+      if (this.isUsePullDown) {
+        return
+      }
+      this.isUsePullDown = true
+      this.scroll.on('pullingDown', this._pullDownHandler)
+      this.scroll.on('scroll', this._pullDownScrollHandler)
+    },
+    _offPullDownEvent() {
+      if (!this.isUsePullDown) {
+        return
+      }
+      this.isUsePullDown = false
+      this.scroll.off('pullingDown', this._pullDownHandler)
+      this.scroll.off('scroll', this._pullDownScrollHandler)
+    },
     // 达到阀值只会一瞬间触发
     _pullDownHandler() {
       // 达到了阀值,松手后会处于卡死状态
-      this.pullDownState = PULL_DOWN_STATE[1]
+      this.pullDownState = PULL_DOWN_STATE_LIST[1]
       this.$emit(EVENT_PULLING_DOWN)
     },
-    // 下拉时,scroll会一直卡在pullDownStop高度的位置
-    // 只要没回到正常的位置,这个scrollHandlerr一直在触发
+    // 下拉超过阀值时会一直卡在stop高度的位置
     _pullDownScrollHandler(pos) {
       // 没有达到阀值的未触发pullDown
-      if (this.pullDownState === PULL_DOWN_STATE[0]) {
-        this.bubbleY = Math.max(0, pos.y - this.pullDownHeight)
+      this.pullDownScrollY = pos.y
+      if (this.pullDownState === PULL_DOWN_STATE_LIST[0]) {
+        this.pullDownNormalTop = Math.max(0, this.pullDownScrollY - this.pullDownHeight)
         this.pullDownStyle = {
-          top: `${Math.min(pos.y - this.pullDownHeight, 0)}px`
+          top: `${Math.min(this.pullDownScrollY - this.pullDownHeight, 0)}px`
         }
       } else {
-        if (this.pullDownState === PULL_DOWN_STATE[1] && this.bubbleY === 0) {
+        if (this.pullDownState === PULL_DOWN_STATE_LIST[1] && this.stopY === this.pullDownScrollY) {
           return
         }
-        this.bubbleY = 0
+        this.stopY = this.pullDownScrollY
+        this.pullDownNormalTop = 0
         this.pullDownStyle = {
-          top: `${Math.min(pos.y - this.pullDownStop, 0)}px`
+          top: `${Math.min(this.scrollY - this.pullDownHeight, 0)}px`
         }
       }
     },
-    // data更新就会触发forceUpdate, dirty如果是true则refresh
     // 如果data没更新,就要在外部手动触发forceUpdate恢复原来状态的方法
     forceUpdate(dirty = false) {
-      if (this.pullDownRefresh && this.pullDownState === PULL_DOWN_STATE[1]) {
+      if (this.pullDownRefresh && this.pullDownState === PULL_DOWN_STATE_LIST[1]) {
         this.refreshPullDown(() => {
           this.normalPullDown(dirty)
         })
-      } else if (this.pullUpLoad && this.isPullUpLoad) {
-        this.isPullUpLoad = false
+      } else if (this.pullUpLoad && this.pullUpState === PULL_UP_STATE_LIST[1]) {
+        this.pullUpState = PULL_UP_STATE_LIST[0]
         this.scroll.finishPullUp()
         if (dirty) {
           this.$nextTick(() => {
@@ -333,13 +353,11 @@ export default {
     },
     // 数据已经更新,stopTime后回弹finishPullDown
     refreshPullDown(next) {
-      this.pullDownState = PULL_DOWN_STATE[2]
-      // 如果pullDownRefresh没有设置stopTime,stopTime = FINISH_PULLDOWN_STOP_TIME
-      const { stopTime = FINISH_PULLDOWN_STOP_TIME } = this.pullDownRefresh
+      this.pullDownState = PULL_DOWN_STATE_LIST[2]
       this.refreshPullDownTimer = window.setTimeout(() => {
         this.scroll.finishPullDown()
         next()
-      }, stopTime)
+      }, this.pullDownRefresh.stopTime)
     },
     // 在finishPullDown回弹后,复原原始状态
     normalPullDown(dirty) {
@@ -349,7 +367,7 @@ export default {
           top: `-${this.pullDownHeight}px`
         }
         this.$nextTick(() => {
-          this.pullDownState = PULL_DOWN_STATE[0]
+          this.pullDownState = PULL_DOWN_STATE_LIST[0]
         })
         if (dirty) {
           this.$nextTick(() => {
@@ -358,16 +376,38 @@ export default {
         }
       }, this.scroll.options.bounceTime)
     },
-    _onPullUpLoad() {
-      this.scroll.on('pullingUp', this._pullUpHandler)
+    // 手动开启pullDown
+    openPullDown() {
+      this.scroll.openPullDown(this.pullDownRefresh)
+      this._onPullDownEvent()
     },
-    _offPullUpLoad() {
+    // 手动关闭pullDown
+    closePullDown() {
+      this.scroll.closePullDown()
+      this._offPullDownEvent()
+    },
+    // 自动触发下拉刷新
+    autoPullDownRefresh() {
+      if (!this.isUsePullDown) {
+        return
+      }
+      this.scroll.autoPullDownRefresh()
+    },
+    _onPullUpLoadEvent() {
+      this.scroll.on('pullingUp', this._pullUpHandler)
+      this.scroll.on('scroll', this._pullUpScrollHandler)
+    },
+    _offPullUpLoadEvent() {
       this.scroll.off('pullingUp', this._pullUpHandler)
     },
     _pullUpHandler() {
       // 处于上拉状态
-      this.isPullUpLoad = true
+      // this.isPullUpLoad = true
+      this.pullUpState = PULL_UP_STATE_LIST[1]
       this.$emit(EVENT_PULLING_UP)
+    },
+    _pullUpScrollHandler(pos) {
+      console.log('s', pos.y)
     },
     destroy() {
       this.scroll && this.scroll.destroy()
@@ -396,17 +436,13 @@ export default {
   z-index: 0
   .vi-scroll-content
     .vi-scroll-pull-up
-      .vi-scroll-pull-up-trigger
-        width: 100%
-        display: flex
-        justify-content: center
-        align-items: center
-        .vi-scroll-pull-up-before-trigger
-          padding: 22px 0
-          min-height: 1em
-          margin-right: 20px
-        .vi-scroll-pull-up-after-trigger
-          padding: 19px 0
+      text-align: center
+      .vi-scroll-pull-up-before-trigger
+        padding: 22px 0
+        min-height: 1em
+        margin-right: 20px
+      .vi-scroll-pull-up-after-trigger
+        padding: 19px 0
       .vi-scroll-pull-up-no-more
         width: 100%
         text-align: center
@@ -421,16 +457,18 @@ export default {
       display: flex
       justify-content: center
       align-items: center
-      transition: all
+      z-index: -1
       .vi-scroll-pull-down-normal
-        height: 54px
-        line-height: 0
-        padding-top: 6px
+        box-sizing: content-box
+        height: 48px
+        padding-top: 8px
       .vi-scroll-pull-down-lock
+        box-sizing: content-box
+        width: 100%
         padding: 8px 0
-      .vi-scroll-pull-down-refresh
-        box-sizing: border-box
-        padding: 12px 0
+      .vi-scroll-pull-down-success
+        box-sizing: content-box
+        padding: 8px 0
         line-height: 40px
 
 </style>

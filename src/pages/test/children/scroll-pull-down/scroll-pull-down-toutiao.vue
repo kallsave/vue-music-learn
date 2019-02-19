@@ -10,23 +10,25 @@
             :style="props.pullDownStyle">
             <div class="pull-down-normal"
               v-show="props.pullDownState == 'normal'"
-              :style="{paddingTop: props.bubbleY + 'px'}">
-              <span :class="{rotate: props.bubbleY > 0}">↓</span>
+              :style="{paddingTop: props.pullDownNormalTop + 'px'}">
+              <span :class="{rotate: props.pullDownNormalTop > 0}">↓</span>
             </div>
             <div class="pull-down-lock"
               v-show="props.pullDownState == 'lock'">
               <vi-loading :scale="0.8"></vi-loading>
             </div>
             <transition name="success">
-              <div class="pull-down-refresh"
-                v-show="props.pullDownState == 'refresh'">
+              <div class="pull-down-success"
+                v-show="props.pullDownState == 'success'">
                 <span class="refresh-text">今日头条推荐引擎有x条更新</span>
               </div>
             </transition>
           </div>
         </template>
-        <div class="item"
-          v-for="(item, index) in list" :key="index">{{item}}</div>
+        <div class="scroll-content">
+          <div class="item"
+            v-for="(item, index) in list" :key="index">{{item}}</div>
+        </div>
       </vi-scroll>
     </div>
   </div>
@@ -51,20 +53,26 @@ export default {
           // 阀值
           threshold: 80,
           // 滞留的位置
-          stop: 50,
-          txt: '更新成功',
+          stop: 56,
+          txt: '更新成功了',
           // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
-          stopTime: 1000
+          stopTime: 2000
         },
         directionLockThreshold: 0,
       }
     }
   },
+  mounted() {
+    this.$refs.scroll.autoPullDownRefresh()
+  },
   methods: {
     onPullingDown() {
       window.setTimeout(() => {
         this.$refs.scroll.forceUpdate()
-      }, 3000)
+        window.setTimeout(() => {
+          this.$refs.scroll.closePullDown()
+        }, 3000)
+      }, 2000)
     }
   }
 }
@@ -73,9 +81,11 @@ export default {
 <style lang="stylus" scoped>
 .scroll-pull-down
   height: 100vh
+  background: #f4f4f4
   .scroll-wrapper
     height: 100%
     position: relative
+    color: red
     .pull-down-content
       position: absolute
       left: 0
@@ -94,11 +104,10 @@ export default {
           &.rotate
             transform: rotate(180deg)
       .pull-down-lock
-        padding: 2px 0
-        margin: 0
-      .pull-down-refresh
-        margin: 0 auto
+        padding: 8px 0
+      .pull-down-success
         height: 40px
+        margin: 0 auto
         line-height: 40px
         padding: 5px 0
         color: #498ec2
@@ -106,16 +115,18 @@ export default {
         &.success-enter
           width: 70%
         &.success-enter-active
-          transition: width .5s
+          transition: all .5s
         &.success-enter-to
           width: 100%
-  .item
-    line-height: 50px
-    font-size: 18px
-    text-align: center
-    height: 50px
-    background: peru
-    margin-bottom: 20px
-    &:last-child
-      margin-bottom: 0
+    .scroll-content
+      background: #ccc
+      .item
+        line-height: 50px
+        font-size: 18px
+        text-align: center
+        height: 50px
+        background: peru
+        margin-bottom: 20px
+        &:last-child
+          margin-bottom: 0
 </style>
