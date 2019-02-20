@@ -14,12 +14,12 @@
               <span :class="{rotate: props.pullDownNormalTop > 0}">↓</span>
             </div>
             <div class="pull-down-lock"
-              v-show="props.pullDownState == 'lock'">
+              v-show="props.pullDownState == 'locking'">
               <vi-loading :scale="0.8"></vi-loading>
             </div>
-            <transition name="success">
-              <div class="pull-down-success"
-                v-show="props.pullDownState == 'success'">
+            <transition name="finish">
+              <div class="pull-down-finish"
+                v-show="props.pullDownState == 'finish'">
                 <span class="refresh-text">今日头条推荐引擎有x条更新</span>
               </div>
             </transition>
@@ -69,9 +69,9 @@ export default {
     onPullingDown() {
       window.setTimeout(() => {
         this.$refs.scroll.forceUpdate()
-        window.setTimeout(() => {
-          this.$refs.scroll.closePullDown()
-        }, 3000)
+        // window.setTimeout(() => {
+        //   this.$refs.scroll.closePullDown()
+        // }, 3000)
       }, 2000)
     }
   }
@@ -105,18 +105,18 @@ export default {
             transform: rotate(180deg)
       .pull-down-lock
         padding: 8px 0
-      .pull-down-success
+      .pull-down-finish
         height: 40px
         margin: 0 auto
         line-height: 40px
-        padding: 5px 0
+        padding: 8px 0
         color: #498ec2
         background-color: #d6eaf8
-        &.success-enter
+        &.finish-enter
           width: 70%
-        &.success-enter-active
+        &.finish-enter-active
           transition: all .5s
-        &.success-enter-to
+        &.finish-enter-to
           width: 100%
     .scroll-content
       background: #ccc

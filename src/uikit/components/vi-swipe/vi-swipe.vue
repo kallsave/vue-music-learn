@@ -122,12 +122,13 @@ export default {
       this.cachedMenus = []
       const len = this.$refs.menu.length
       for (let i = 0; i < len; i++) {
-        let menu = this.$refs.menu[i]
+        const menu = this.$refs.menu[i]
+        const menuStyle = menu.style
         this.cachedMenus.push({
           width: getRect(menu).width
         })
-        menu.style[TRANSITION_PROPERTY] = 'all'
-        menu.style[TRANSITION_TIMING_FUNCTION] = EASE_OUT_QUART
+        menuStyle[TRANSITION_PROPERTY] = 'all'
+        menuStyle[TRANSITION_TIMING_FUNCTION] = EASE_OUT_QUART
       }
     },
     // 计算最大的滚动距离
@@ -256,6 +257,7 @@ export default {
       let totalWidth = -this.maxScrollX
       for (let i = 0; i < len; i++) {
         const menu = this.$refs.menu[i]
+        const menuStyle = menu.style
         let rate = (totalWidth - delta) / totalWidth
         let width
         let translate = (-delta / totalWidth) * x
@@ -268,13 +270,13 @@ export default {
 
         // 在滚动时,menu的位移不应该出现过渡效果
         if (!isUseTransition) {
-          menu.style[TRANSITION_DURATION] = '0ms'
-          menu.style.width = `${width}px`
-          menu.style[TRANSFORM] = `translate(${translate}px)`
+          menuStyle.width = `${width}px`
+          menuStyle[TRANSITION_DURATION] = '0ms'
+          menuStyle[TRANSFORM] = `translate(${translate}px)`
         } else {
-          menu.style[TRANSITION_DURATION] = `${EASING_TIME}ms`
-          menu.style.width = `${this.cachedMenus[i].width}px`
-          menu.style[TRANSFORM] = `translate(${translate}px)`
+          menuStyle.width = `${this.cachedMenus[i].width}px`
+          menuStyle[TRANSITION_DURATION] = `${EASING_TIME}ms`
+          menuStyle[TRANSFORM] = `translate(${translate}px)`
         }
       }
     },

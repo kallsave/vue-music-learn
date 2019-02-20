@@ -4,7 +4,9 @@
       <vi-scroll
         ref="scroll"
         :options="options"
-        @pulling-down="onPullingDown">
+        :data="list"
+        @pulling-down="pullingDownHandler"
+        @pulling-up="pullingUpHandler">
         <!-- <template slot="pull-down" slot-scope="props">
           <div class="pull-down-content"
             :style="props.pullDownStyle">
@@ -14,20 +16,25 @@
               <span :class="{rotate: props.pullDownNormalTop > 0}">↓</span>
             </div>
             <div class="pull-down-lock"
-              v-show="props.pullDownState == 'lock'">
+              v-show="props.pullDownState == 'locking'">
               <vi-loading :scale="0.8"></vi-loading>
             </div>
-            <transition name="success">
-              <div class="pull-down-success"
-                v-show="props.pullDownState == 'success'">
+            <transition name="finish">
+              <div class="pull-down-finish"
+                v-show="props.pullDownState == 'finish'">
                 <span class="refresh-text">今日头条推荐引擎有x条更新</span>
               </div>
             </transition>
           </div>
         </template> -->
         <div class="scroll-content">
-          <div class="item"
-            v-for="(item, index) in list" :key="index">{{item}}</div>
+          <ul class="list">
+            <li class="item"
+              v-for="(item, index) in list" :key="index">
+              {{item}}
+            </li>
+          </ul>
+          <div class="no-more" v-if="noMore">没有更多的内容了</div>
         </div>
       </vi-scroll>
     </div>
@@ -57,27 +64,42 @@ export default {
         directionLockThreshold: 0,
         pullUpLoad: {
           // 距离底部threshold触发下拉加载事件
-          threshold: -100,
+          threshold: -50,
           txt: {
             more: '上拉加载更多',
             // 不传则底部不会有空白
-            noMore: '没有更多的比赛啦'
+            noMore: '没有更多啦'
           }
         }
-      }
+      },
+      number: 0,
+      noMore: false
     }
   },
   mounted() {
     this.$refs.scroll.autoPullDownRefresh()
   },
   methods: {
-    onPullingDown() {
+    pullingDownHandler() {
       window.setTimeout(() => {
         this.$refs.scroll.forceUpdate()
         window.setTimeout(() => {
           this.$refs.scroll.closePullDown()
         }, 3000)
       }, 2000)
+    },
+    pullingUpHandler() {
+      window.setTimeout(() => {
+        this.number++
+        if (this.number < 3) {
+          this.list = this.list.concat([16, 17, 18])
+        } else {
+          this.$refs.scroll.forceUpdate({
+            // isClosePullUpLoad: true,
+            isPullUpNoMore: true
+          })
+        }
+      }, 4000)
     }
   }
 }
@@ -110,28 +132,35 @@ export default {
             transform: rotate(180deg)
       .pull-down-lock
         padding: 8px 0
-      .pull-down-success
+      .pull-down-finish
         height: 40px
         margin: 0 auto
         line-height: 40px
         padding: 5px 0
         color: #498ec2
         background-color: #d6eaf8
-        &.success-enter
+        &.finish-enter
           width: 70%
-        &.success-enter-active
+        &.finish-enter-active
           transition: all .5s
-        &.success-enter-to
+        &.finish-enter-to
           width: 100%
     .scroll-content
-      background: #ccc
-      .item
+      .list
+        background: #ccc
+        .item
+          line-height: 50px
+          height: 50px
+          font-size: 18px
+          text-align: center
+          background: peru
+          margin-bottom: 20px
+          &:last-of-type
+            margin-bottom: 0
+      .no-more
         line-height: 50px
+        height: 50px
         font-size: 18px
         text-align: center
-        height: 50px
-        background: peru
-        margin-bottom: 20px
-        &:last-child
-          margin-bottom: 0
+        background: #f4f4f4
 </style>
