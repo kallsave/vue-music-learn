@@ -6,9 +6,6 @@
       :options="stickyOptions"
       @scroll="scrollHandle">
       <slot></slot>
-      <template slot="pull-up" slot-scope="pullUpScope">
-        <slot name="pull-up" :pull-up-scope="pullUpScope"></slot>
-      </template>
     </vi-scroll>
     <div ref="fixed"
       class="vi-sticky-box"

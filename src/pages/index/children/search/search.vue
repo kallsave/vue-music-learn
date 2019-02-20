@@ -62,21 +62,6 @@
           v-show="query && !result.length && isFetchSearch">
           <no-result :title="'抱歉，暂无搜索结果'"></no-result>
         </div>
-        <template slot="pull-up"
-          slot-scope="scope">
-          <div class="vi-scroll-pullup">
-            <div class="vi-scroll-pullup-trigger"
-              v-show="scope.pullUpScope.isPullUpLoad">
-              <div class="vi-scroll-pullup-before-trigger">{{scope.pullUpScope.pullUpTxt}}</div>
-              <div class="vi-scroll-pullup-after-trigger">
-                <loading></loading>
-              </div>
-            </div>
-            <div class="vi-scroll-pullup-no-more"
-              v-show="isFetchSearch && scope.pullUpScope.isPullUpLoad && scope.pullUpScope.pullUpDirty && scope.pullUpScope.data.length && scope.pullUpScope.noMoreTxt"
-              >{{scope.pullUpScope.noMoreTxt}}</div>
-          </div>
-        </template>
       </vi-sticky>
     </div>
   </div>
@@ -133,9 +118,9 @@ export default {
         click: true,
         // 下拉加载
         pullUpLoad: {
-          threshold: 100,
+          threshold: -50,
           txt: {
-            // more: '正在载入更多',
+            more: '下拉加载',
             noMore: '没有更多的结果啦'
           }
         },
@@ -257,11 +242,16 @@ export default {
     pullingUpHandler() {
       if (this.hasMore) {
         this.page++
-        this.search().then((res) => {
-          this.result = this.result.concat(this._genResult(res.data))
-        })
+        setTimeout(() => {
+          this.search().then((res) => {
+            this.result = this.result.concat(this._genResult(res.data))
+          })
+        }, 3000)
       } else {
-        this.$refs.scroll.forceUpdate()
+        console.log('noMore')
+        this.$refs.scroll.forceUpdate({
+          isPullUpNoMore: true
+        })
       }
     },
     focusHandler() {
@@ -327,7 +317,7 @@ export default {
 .search
   width: 100%
   height: calc(100vh - 44px)
-  overflow: hidden
+  // overflow: hidden
   background: $color-background
   // position: relative
   .search-scroll-wrapper

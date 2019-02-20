@@ -3,14 +3,15 @@
   <div ref="wrapper"
     class="vi-scroll-wrapper">
     <div class="vi-scroll-content">
-      <slot></slot>
+      <div>
+        <slot></slot>
+      </div>
       <div class="vi-scroll-pull-up"
         v-if="pullUpLoad && isOpenPullUpLoad">
         <slot name="pull-up"
           :pull-up-load="pullUpLoad"
           :pull-up-state="pullUpState"
-          :pull-up-state-list="pullUpStateList"
-          :data="data">
+          :pull-up-state-list="pullUpStateList">
             <div class="vi-scroll-pull-up-normal"
               v-show="pullUpState === pullUpStateList[0]">{{pullUpLoad.txt.more}}</div>
             <div class="vi-scroll-pull-up-lock"
@@ -23,7 +24,8 @@
       </div>
     </div>
     <div ref="pullDown"
-      class="vi-scroll-pull-down-wrapper">
+      class="vi-scroll-pull-down-wrapper"
+      v-if="pullDownRefresh">
       <slot name="pull-down"
         :pull-down-refresh="pullDownRefresh"
         :pull-down-style="pullDownStyle"
@@ -43,8 +45,7 @@
               <vi-loading :scale="0.8"></vi-loading>
             </div>
             <div class="vi-scroll-pull-down-finish"
-              v-show="pullDownState === pullDownStateList[2]"
-            >{{pullDownRefresh.txt}}</div>
+              v-show="pullDownState === pullDownStateList[2]">{{pullDownRefresh.txt}}</div>
           </div>
       </slot>
     </div>
@@ -215,7 +216,7 @@ export default {
     data: {
       handler() {
         this.$nextTick(() => {
-          this.forceUpdate(true)
+          this.forceUpdate()
         })
       },
     },
@@ -356,6 +357,8 @@ export default {
         this.$nextTick(() => {
           this.refresh()
         })
+      } else {
+        this.refresh()
       }
     },
     // 数据已经更新,stopTime后回弹finishPullDown
