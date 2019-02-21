@@ -3,9 +3,12 @@
     <vi-sticky ref="sticky">
       <m-header></m-header>
       <template v-if="slideRouterMode === slideRouterModeList[0]">
-        <vi-sticky-ele>
+        <!-- <vi-sticky-ele>
           <tab></tab>
-        </vi-sticky-ele>
+        </vi-sticky-ele> -->
+        <div style="position: sticky; top:0;">
+          <tab></tab>
+        </div>
       </template>
       <template v-if="slideRouterMode === slideRouterModeList[0]">
         <vi-slide-router-transition
@@ -18,15 +21,18 @@
         </vi-slide-router-transition>
       </template>
       <template v-else-if="slideRouterMode === slideRouterModeList[1]">
-        <vi-tab ref="tab"
-          :slider-style="sliderStyle">
-          <vi-tab-item
-            v-for="(item, index) in tabList"
-            :key="index"
-            :selected="index === currentIndex"
-            active-class="customer-color"
-            @click.native="tabItemClick(index)">{{item}}</vi-tab-item>
-        </vi-tab>
+        <vi-sticky-ele>
+          <vi-tab ref="tab"
+            style="background: #222"
+            :slider-style="sliderStyle">
+            <vi-tab-item
+              v-for="(item, index) in tabList"
+              :key="index"
+              :selected="index === currentIndex"
+              active-class="customer-color"
+              @click.native="tabItemClick(index)">{{item}}</vi-tab-item>
+          </vi-tab>
+        </vi-sticky-ele>
         <vi-slide-router-view
           class="slide-router-view"
           ref="viSlideRouterView"

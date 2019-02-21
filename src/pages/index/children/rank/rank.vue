@@ -104,6 +104,7 @@ export default {
 .rank
   width: 100%
   height: calc(100vh - 44px)
+  // height: 100vh
   overflow: hidden
   background: $color-background
   // position: relative
@@ -111,6 +112,7 @@ export default {
     box-sizing: border-box
     width: 100%
     height: calc(100vh - 44px)
+    // height: 100vh
     .rank-list
       .item
         display: flex

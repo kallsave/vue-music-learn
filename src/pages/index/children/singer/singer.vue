@@ -141,10 +141,12 @@ export default {
 .singer
   width: 100%
   height: calc(100vh - 44px)
+  // height: 100vh
   background: $color-background
   overflow: hidden
   .index-list-scroll-wrapper
     box-sizing: border-box
     width: 100%
     height: calc(100vh - 44px)
+    // height: 100vh
 </style>
