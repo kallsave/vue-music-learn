@@ -70,7 +70,6 @@ export default {
     align-items: center
     box-sizing: border-box
     height: 64px
-    font-size: $font-size-medium
     .song-list-rank
       flex: 0 0 25px
       width: 25px
@@ -96,9 +95,11 @@ export default {
       overflow: hidden
       .song-list-name
         no-wrap()
+        font-size: $font-size-medium
         color: $color-text
       .song-list-desc
         no-wrap()
         margin-top: 4px
+        font-size: $font-size-medium
         color: $color-text-d
 </style>

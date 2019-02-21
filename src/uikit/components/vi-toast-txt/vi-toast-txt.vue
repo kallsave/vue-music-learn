@@ -14,12 +14,14 @@
 </template>
 
 <script>
-import visibilityMixin from '../../common/mixins/visibility.js'
+import durationMixin from '../../common/mixins/duration.js'
 
 const COMPONENT_NAME = 'vi-toast-txt'
 export default {
   name: COMPONENT_NAME,
-  mixins: [visibilityMixin],
+  mixins: [
+    durationMixin
+  ],
   props: {
     txt: {
       type: String,

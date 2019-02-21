@@ -3,7 +3,7 @@
     <div ref="scrollWrapper" class="scroll-wrapper">
       <vi-scroll
         ref="scroll"
-        style="color: #ffcd32"
+        style="color: #ffcd32;"
         :options="scrollOptions"
         :data="discList"
         :scrollEvents="['scroll']"

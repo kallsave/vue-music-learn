@@ -3,9 +3,7 @@
   <div ref="wrapper"
     class="vi-scroll-wrapper">
     <div class="vi-scroll-content">
-      <div>
-        <slot></slot>
-      </div>
+      <slot></slot>
       <div class="vi-scroll-pull-up"
         v-if="pullUpLoad && isOpenPullUpLoad && data.length">
         <slot name="pull-up"
@@ -451,11 +449,14 @@ export default {
 </script>
 
 <style lang="stylus">
+@import "../../common/stylus/var/font-size.styl"
+
 .vi-scroll-wrapper
   position: relative
   height: 100%
   // 开启了下拉更新功能要设置overflow:hidden
   overflow: hidden
+  font-size: $font-size-medium
   z-index: 0
   .vi-scroll-content
     .vi-scroll-pull-up

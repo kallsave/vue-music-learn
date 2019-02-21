@@ -40,6 +40,7 @@ export default {
 </script>
 
 <style lang="stylus" modules>
+@import "~@/common/stylus/var/color.styl"
 @import "~@/common/stylus/mixin.styl"
 
 .search-list

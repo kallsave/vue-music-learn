@@ -61,7 +61,9 @@ export default {
   components: {
     ViPopup
   },
-  mixins: [durationMixin],
+  mixins: [
+    durationMixin
+  ],
   props: {
     isShowMask: {
       type: Boolean,

@@ -581,7 +581,7 @@ export default {
       this.isSongReady = false
       this.toast = this.$createViToastTxt({
         txt: '资源出错啦',
-        time: 3000,
+        duration: 3000,
       }).show()
     },
     updateTime(e) {

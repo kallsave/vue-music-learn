@@ -1,6 +1,6 @@
 <template>
   <div class="music">
-    <div class="header">
+    <div ref="header" class="header">
       <div class="back" @click="back">
         <i class="icon-back"></i>
       </div>
@@ -45,8 +45,7 @@ import { prefixStyle } from '@/common/helpers/dom.js'
 import { mapGetters, mapActions } from 'vuex'
 
 const TRANSFORM = prefixStyle('transform')
-const BACKDROP = prefixStyle('backdrop-filter')
-const FILTER = prefixStyle('filter')
+const BACKDROP_FILTER = prefixStyle('backdrop-filter')
 
 const RESERVED_HEIGHT = 40
 
@@ -113,12 +112,16 @@ export default {
       const percent = Math.abs(newVal / this.imageHeight)
       let scale = 1
       let blur = 0
+      let opacity = 0.2
       if (newVal > 0) {
         scale = 1 + percent
       } else {
         blur = Math.min(5, percent * 5)
+        opacity = Math.max(0.2, percent)
       }
       this.$refs.bgImage.style[TRANSFORM] = `scale(${scale})`
+      this.$refs.header.style['opacity'] = opacity
+      this.$refs.filter.style[BACKDROP_FILTER] = `blur(${blur}px)`
     },
     isFetchSongList(newVal) {
       if (newVal) {
@@ -192,6 +195,7 @@ export default {
     top: 0
     left: 0
     z-index: $z-index-page
+    opacity: 0.2
     .back
       position absolute
       top: 0
@@ -229,6 +233,7 @@ export default {
       width: 100%
       height: 100%
       background: rgba(7, 17, 27, 0.4)
+      z-index: -1
   .sticky-wrapper
     position: absolute
     box-sizing: border-box

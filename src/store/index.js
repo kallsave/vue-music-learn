@@ -15,9 +15,6 @@ import rankAlbum from './modules/rank-album/index.js'
 import recommendAlbum from './modules/recommend-album/index.js'
 import searchHistory from './modules/search-history/search-history.js'
 
-// const debug = process.env.NODE_ENV !== 'production'
-const debug = false
-
 // 不通过PersistedState插件做缓存的mutations
 // 用于不需要存储或者更自定义的功能
 const persistedstateIgnoreMutations = [
@@ -26,7 +23,7 @@ const persistedstateIgnoreMutations = [
 
 let timerSlice = 1000 * 60
 
-// localStore保存对象的prototype,需要注意
+// localStore保存有prototype的对象,需要注意
 const VuexPlugins = [
   createPersistedState({
     key: 'vue-music',
@@ -47,6 +44,14 @@ const VuexPlugins = [
   })
 ]
 
+const debug = process.env.NODE_ENV !== 'production'
+// const debug = false
+
+if (debug) {
+  const createLogger = require('vuex/dist/logger')()
+  VuexPlugins.push(createLogger)
+}
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -59,5 +64,5 @@ export default new Vuex.Store({
     searchHistory
   },
   strict: debug,
-  plugins: debug ? VuexPlugins.concat([createLogger()]) : VuexPlugins
+  plugins: VuexPlugins
 })

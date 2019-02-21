@@ -1,3 +1,5 @@
+import { camelize } from './utils.js'
+
 export function hasClass(el, className) {
   const reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
   return reg.test(el.className)
@@ -40,40 +42,24 @@ export function getRect(el) {
   }
 }
 
-let vendor = (() => {
-  let elementStyle = document.createElement('div').style
-  let transformNames = {
-    standard: 'transform',
-    webkit: 'webkitTransform',
-    Moz: 'MozTransform',
-    O: 'OTransform',
-    ms: 'msTransform'
-  }
+const elementStyle = document.createElement('div').style
 
-  for (let key in transformNames) {
-    if (elementStyle[transformNames[key]] !== undefined) {
-      return key
-    }
-  }
-
-  /* istanbul ignore next */
-  return false
-})()
+const browserPrefix = {
+  webkit: 'webkit',
+  Moz: 'Moz',
+  O: 'O',
+  ms: 'ms',
+  standard: ''
+}
 
 export function prefixStyle(style) {
-  /* istanbul ignore if */
-  if (vendor === false) {
-    return false
-  }
-
-  if (vendor === 'standard') {
-    if (style === 'transitionEnd') {
-      return 'transitionend'
+  for (let key in browserPrefix) {
+    let keyName = camelize(browserPrefix[key] + '-' + style)
+    if (elementStyle[keyName] !== undefined) {
+      return keyName
     }
-    return style
   }
-
-  return vendor + style.charAt(0).toUpperCase() + style.substr(1)
+  return ''
 }
 
 export function getMatchedTarget(e, targetClassName) {
