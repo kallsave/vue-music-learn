@@ -11,7 +11,7 @@
 
 <script>
 import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import Player from '@/components/player/player.vue'
 
 export default {
@@ -29,22 +29,32 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'mutableKeepAliveName'
+      'mutableKeepAliveName',
+      'routerTransitionName'
     ])
   },
   watch: {
     $route: {
       handler(to, from) {
+        if (this.routerTransitionName) {
+          this.transitionName = this.routerTransitionName
+          this.mode = ''
+          this.setRouterTransitionName('')
+          return
+        }
+
         if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
           this.transitionName = ''
           this.mode = ''
         } else {
           if (to.fullPath === this.routerHistory[1]) {
             this.transitionName = 'move-left'
+            this.mode = ''
             // 返回到一个页面,相当于新打开一个页面
             this.routerHistory = []
           } else {
             this.transitionName = 'move-right'
+            this.mode = ''
           }
         }
 
@@ -58,6 +68,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setRouterTransitionName: 'SET_ROUTER_TRANSITION_NAME'
+    }),
     insertArray({ arr, val, compare = (item) => {
       return item === val
     }, maxLength } = {}) {

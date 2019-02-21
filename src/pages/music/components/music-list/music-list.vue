@@ -42,7 +42,7 @@
 import SongList from '@/components/song-list/song-list.vue'
 import { playListMixin } from '@/common/mixins/player.js'
 import { prefixStyle } from '@/common/helpers/dom.js'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 const TRANSFORM = prefixStyle('transform')
 const BACKDROP_FILTER = prefixStyle('backdrop-filter')
@@ -130,6 +130,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setRouterTransitionName: 'SET_ROUTER_TRANSITION_NAME'
+    }),
     ...mapActions([
       'selectPlay',
       'randomPlay',
@@ -139,6 +142,7 @@ export default {
       this.$refs.sticky.refresh()
     },
     back() {
+      this.setRouterTransitionName('move-left')
       this.$router.back()
     },
     scrollHandler({ y }) {

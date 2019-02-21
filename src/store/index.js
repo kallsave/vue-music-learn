@@ -14,6 +14,7 @@ import player from './modules/player/index.js'
 import rankAlbum from './modules/rank-album/index.js'
 import recommendAlbum from './modules/recommend-album/index.js'
 import searchHistory from './modules/search-history/search-history.js'
+import routerTransitionName from './modules/router-transition-name/router-transition-name.js'
 
 // 不通过PersistedState插件做缓存的mutations
 // 用于不需要存储或者更自定义的功能
@@ -61,7 +62,8 @@ export default new Vuex.Store({
     player,
     rankAlbum,
     recommendAlbum,
-    searchHistory
+    searchHistory,
+    routerTransitionName
   },
   strict: debug,
   plugins: VuexPlugins
