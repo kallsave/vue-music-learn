@@ -688,8 +688,10 @@ export default {
 </script>
 
 <style lang="stylus" modules>
-@import "~@/common/stylus/variable"
-@import "~@/common/stylus/mixin"
+@import "~@/common/stylus/var/color.styl"
+@import "~@/common/stylus/var/font-size.styl"
+@import "~@/common/stylus/var/z-index.styl"
+@import "~@/common/stylus/mixin.styl"
 
 .player
   .normal-player

@@ -17,8 +17,9 @@ export default {
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "~@/common/stylus/variable"
-  @import "~@/common/stylus/mixin"
+  @import "~@/common/stylus/var/font-size.styl"
+  @import "~@/common/stylus/var/color.styl"
+  @import "~@/common/stylus/mixin.styl"
 
   .no-result
     text-align: center

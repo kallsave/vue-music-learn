@@ -109,7 +109,8 @@ export default {
 </script>
 
 <style lang="stylus">
-@import "../../common/stylus/variable.styl"
+@import "~@/common/stylus/var/color.styl"
+@import "~@/common/stylus/var/font-size.styl"
 @import "./fonts/vi-toast-icon.css"
 
 .vi-toast

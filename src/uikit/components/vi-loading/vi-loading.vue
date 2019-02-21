@@ -113,7 +113,6 @@ export default {
 </script>
 
 <style lang="stylus">
-@import "~@/common/stylus/variable.styl"
 .vi-loading
   position: relative
   height: 50px

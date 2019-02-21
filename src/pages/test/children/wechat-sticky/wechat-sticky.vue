@@ -89,7 +89,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 .needsclick
   touch-action: none;
 .sticky-view-container

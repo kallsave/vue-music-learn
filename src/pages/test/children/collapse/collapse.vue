@@ -24,7 +24,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 .collapse
   width: 100%
   height: 100vh

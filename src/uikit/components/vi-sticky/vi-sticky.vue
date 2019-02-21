@@ -245,6 +245,12 @@ export default {
       }
       this.fixedElement = this.$refs.fixed
     },
+    _findScroll() {
+      if (!this.$refs.scroll) {
+        return
+      }
+      this.scroll = this.$refs.scroll.scroll
+    },
     calculateAllStickyEleTop() {
       for (let key in this.stickyMap) {
         this.stickyMap[key].calculate()
@@ -264,12 +270,6 @@ export default {
       this.listHeight = result.sort((a, b) => {
         return a.stickyTop - b.stickyTop
       })
-    },
-    _findScroll() {
-      if (!this.$refs.scroll) {
-        return
-      }
-      this.scroll = this.$refs.scroll.scroll
     },
     refresh() {
       this.$refs.scroll && this.$refs.scroll.refresh()

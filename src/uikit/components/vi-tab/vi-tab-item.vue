@@ -46,7 +46,8 @@ export default {
 </script>
 
 <style lang="stylus">
-@import "../../common/stylus/variable.styl"
+@import "../../common/stylus/var/color.styl"
+@import "../../common/stylus/var/font-size.styl"
 
 .vi-tab-item
   flex: 1

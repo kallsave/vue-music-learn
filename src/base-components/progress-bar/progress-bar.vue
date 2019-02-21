@@ -90,7 +90,7 @@ export default {
 </script>
 
 <style lang="stylus">
-@import "~@/common/stylus/variable"
+@import "~@/common/stylus/var/color.styl"
 
 .vi-progress-bar
   height: 30px

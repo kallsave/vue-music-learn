@@ -46,7 +46,7 @@ export default {
       getSongList({
         disstid: this.recommendAlbum.dissid
       }).then((res) => {
-        setTimeout(() => {
+        window.setTimeout(() => {
           this.songList = this._normalizeSongList(res.cdlist[0].songlist)
           this.isFetchSongList = true
         }, 500)
@@ -64,7 +64,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-@import "~@/common/stylus/transition.styl"
-</style>

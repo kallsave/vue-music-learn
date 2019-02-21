@@ -18,7 +18,8 @@
         </vi-slide-router-transition>
       </template>
       <template v-else-if="slideRouterMode === slideRouterModeList[1]">
-        <vi-tab ref="tab" :slider-style="sliderStyle">
+        <vi-tab ref="tab"
+          :slider-style="sliderStyle">
           <vi-tab-item
             v-for="(item, index) in tabList"
             :key="index"
@@ -103,7 +104,7 @@ export default {
 </script>
 
 <style lang="stylus">
-@import "~@/common/stylus/variable.styl"
+@import "~@/common/stylus/var/color.styl"
 .index
   .customer-color
     color: $color-theme!important

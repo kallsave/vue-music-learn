@@ -7,7 +7,7 @@
         <slot></slot>
       </div>
       <div class="vi-scroll-pull-up"
-        v-if="pullUpLoad && isOpenPullUpLoad">
+        v-if="pullUpLoad && isOpenPullUpLoad && data.length">
         <slot name="pull-up"
           :pull-up-load="pullUpLoad"
           :pull-up-state="pullUpState"
@@ -424,7 +424,7 @@ export default {
     },
     // 手动开启pullUpLoad
     openPullUpLoad() {
-      this.scroll(this.pullUpLoad)
+      this.scroll.openPullUp(this.pullUpLoad)
       this._onPullUpLoadEvent()
     },
     // 手动关闭pullUpLoad

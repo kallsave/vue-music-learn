@@ -10,10 +10,10 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-// ~是stylus配合webpack的alias的特有语法
-@import "~@/common/stylus/variable"
-@import "~@/common/stylus/mixin"
+<style lang="stylus" modules>
+@import "~@/common/stylus/var/color.styl"
+@import "~@/common/stylus/var/font-size.styl"
+@import "~@/common/stylus/mixin.styl"
 
 .m-header
   position: relative
@@ -21,6 +21,7 @@ export default {
   text-align: center
   color: $color-theme
   font-size: 0
+  background: $color-background
   .icon
     display: inline-block
     vertical-align: top

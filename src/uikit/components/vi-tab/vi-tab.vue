@@ -96,8 +96,6 @@ export default {
 </script>
 
 <style lang="stylus">
-@import "../../common/stylus/variable.styl"
-
 .vi-tab
   position: relative
   .vi-tab-list

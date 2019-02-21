@@ -23,7 +23,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped >
-@import "~@/common/stylus/variable"
+@import "~@/common/stylus/var/font-size.styl"
+@import "~@/common/stylus/var/color.styl"
+
 .tab
   display: flex
   height: 44px

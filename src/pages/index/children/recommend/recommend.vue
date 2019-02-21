@@ -205,7 +205,8 @@ export default {
 </script>
 
 <style lang="stylus" modules>
-@import "~@/common/stylus/variable.styl"
+@import "~@/common/stylus/var/color.styl"
+@import "~@/common/stylus/var/font-size.styl"
 
 .recommend
   width: 100%

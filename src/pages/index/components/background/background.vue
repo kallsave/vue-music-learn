@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 .background
   height: 100vh
 

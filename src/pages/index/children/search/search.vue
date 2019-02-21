@@ -101,18 +101,13 @@ export default {
     createThrottleInstanceMixin,
     createDebounceInstanceMixin,
   ],
-  props: {
-    isShowSinger: {
-      type: Boolean,
-      default: true
-    }
-  },
   data() {
     return {
       hotKey: [],
       page: 1,
       query: '',
       result: [],
+      isShowSinger: true,
       scrollOptions: {
         probeType: 3,
         click: true,
@@ -138,10 +133,13 @@ export default {
     query: {
       handler(newVal) {
         this.isFetchSearch = false
+        if (!newVal.trim()) {
+          this.$refs.scroll.$refs.scroll.closePullUpLoad()
+          this.result = []
+          return
+        }
         this.debounce.run(() => {
-          if (!newVal.trim()) {
-            return
-          }
+          this.$refs.scroll.$refs.scroll.openPullUpLoad()
           this.saveSearchHistoryLocalStorage(newVal)
           this.page = 1
           // 第三个参数如果是缓动,会导致盒子被拖拽
@@ -151,11 +149,15 @@ export default {
             this.result = this._genResult(res.data)
           })
         })
-      },
+      }
     }
   },
   mounted() {
     this._getHotKey()
+    this.$nextTick(() => {
+      // console.log(this.$refs.scroll.scroll)
+      this.$refs.scroll.$refs.scroll.closePullUpLoad()
+    })
   },
   methods: {
     ...mapMutations({
@@ -298,8 +300,9 @@ export default {
 </script>
 
 <style lang="stylus" modules>
-@import "~@/common/stylus/variable"
-@import "~@/common/stylus/mixin"
+@import "~@/common/stylus/var/color.styl"
+@import "~@/common/stylus/var/font-size.styl"
+@import "~@/common/stylus/mixin.styl"
 
 .search-box-wrapper
   box-sizing: border-box

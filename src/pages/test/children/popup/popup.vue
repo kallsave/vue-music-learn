@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style lang="stylus" modules>
-@import "~@/common/stylus/variable.styl"
+@import "~@/common/stylus/var/ease.styl"
 
 .dialog-fade-enter-active
   animation-name: popup-in

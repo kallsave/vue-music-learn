@@ -78,7 +78,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 .scroll-pull-down
   height: 100vh
   background: #f4f4f4

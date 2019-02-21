@@ -138,8 +138,6 @@ export default {
 </script>
 
 <style lang="stylus" modules>
-@import "~@/common/stylus/variable"
-
 .singer
   width: 100%
   height: calc(100vh - 44px)

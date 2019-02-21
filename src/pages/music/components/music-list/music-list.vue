@@ -54,7 +54,9 @@ export default {
   components: {
     SongList
   },
-  mixins: [playListMixin],
+  mixins: [
+    playListMixin
+  ],
   props: {
     title: {
       type: String,
@@ -168,9 +170,11 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-@import "~@/common/stylus/variable"
-@import "~@/common/stylus/mixin"
+<style lang="stylus" modules>
+@import "~@/common/stylus/var/font-size.styl"
+@import "~@/common/stylus/var/z-index.styl"
+@import "~@/common/stylus/var/color.styl"
+@import "~@/common/stylus/mixin.styl"
 
 .music
   position: absolute

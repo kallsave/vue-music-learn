@@ -60,7 +60,8 @@ export default {
 </script>
 
 <style lang="stylus" modules>
-@import "~@/common/stylus/variable.styl"
+@import "~@/common/stylus/var/color.styl"
+@import "~@/common/stylus/var/font-size.styl"
 @import "~@/common/stylus/mixin.styl"
 
 .song-list

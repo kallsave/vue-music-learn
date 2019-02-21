@@ -3,8 +3,7 @@
     v-show="searches.length">
     <transition-group name="list" tag="ul">
       <li class="search-item"
-        :key="item"
-        v-for="item in searches"
+        v-for="item in searches" :key="item"
         @click="selectItem(item)">
         <span class="text">{{item}}</span>
         <span class="icon"

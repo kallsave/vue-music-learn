@@ -82,7 +82,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 .sticky-view-container
   height: 100vh
   .scroll-wrapper

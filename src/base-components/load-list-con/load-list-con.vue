@@ -15,7 +15,7 @@ export default {
 
 <style lang="stylus">
 // TODO: 自定义颜色
-@import "~@/common/stylus/variable.styl"
+@import "~@/common/stylus/var/color.styl"
 .base-load-list-con
   position: absolute
   bottom: 10px

@@ -169,6 +169,8 @@ async function updateAllImg () {
 
   这样可以减少变量,降低ui组件嵌套的复杂度,提高代码的可读性
 
+- css modules优于 css scoped
+
 ## 关于keep-alive
   keep-alive是实现原生交互效果(缓存页面)的很强大的组件,但是过多页面keep-alive也会造成页面卡顿
   >keep-alive场景:
@@ -294,7 +296,7 @@ export default {
 
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 .router-view
   &.move-right-enter
     will-change: transform

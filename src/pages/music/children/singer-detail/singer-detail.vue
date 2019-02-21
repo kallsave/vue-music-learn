@@ -46,7 +46,7 @@ export default {
       getSingerDetail({
         singermid: this.singer.id
       }).then((res) => {
-        setTimeout(() => {
+        window.setTimeout(() => {
           this.songList = this._normalizeSongList(res.data.list)
           this.isFetchSongList = true
         }, 500)
@@ -68,6 +68,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-</style>

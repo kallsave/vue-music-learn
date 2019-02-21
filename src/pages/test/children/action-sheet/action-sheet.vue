@@ -49,7 +49,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" modules>
 .gold
   color: gold
 .action-sheet

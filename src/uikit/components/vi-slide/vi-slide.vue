@@ -314,7 +314,8 @@ export default {
 </script>
 
 <style lang="stylus">
-@import "../../common/stylus/variable.styl"
+@import "../../common/stylus/var/color.styl"
+
 .vi-slide-wrapper
   position: relative
   // 这个很重要,better-scroll会根据wrapper的高宽做判断

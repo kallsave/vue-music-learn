@@ -79,43 +79,48 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-.router-view
-  &.move-right-enter
-    will-change: transform
-    transform: translate3d(100%, 0, 0)
-  &.move-right-enter-active
-    will-change: transform
-    transition: transform 0.3s cubic-bezier(.61,0,.44,1)
-  &.move-right-enter-to
-    will-change: auto
-    transform: none
+<style lang="stylus" modules>
+@import "~@/common/stylus/var/color.styl"
+@import "~@/common/stylus/var/ease.styl"
 
-  &.move-right-leave
-    will-change: transform
-  &.move-right-leave-active
-    transform: translate3d(-30%, 0, 0)
-    transition: transform 0.28s cubic-bezier(.61,0,.44,1)
-  &.move-right-leave-to
-    will-change: auto
-    transform: translate3d(-30%, 0, 0)
+.app
+  background: $color-background
+  .router-view
+    &.move-right-enter
+      will-change: transform
+      transform: translate3d(100%, 0, 0)
+    &.move-right-enter-active
+      will-change: transform
+      transition: transform 0.3s $ease-out-in
+    &.move-right-enter-to
+      will-change: auto
+      transform: none
 
-  &.move-left-enter
-    transform: translate3d(-30%, 0, 0)
-    will-change: transform
-  &.move-left-enter-active
-    will-change: transform
-    transition: transform 0.3s cubic-bezier(.61,0,.44,1)
-  &.move-left-enter-to
-    will-change: auto
-    transform: none
+    &.move-right-leave
+      will-change: transform
+    &.move-right-leave-active
+      transform: translate3d(-30%, 0, 0)
+      transition: transform 0.28s $ease-out-in
+    &.move-right-leave-to
+      will-change: auto
+      transform: translate3d(-30%, 0, 0)
 
-  &.move-left-leave
-    will-change: transform
-  &.move-left-leave-active
-    transform: translate3d(100%, 0, 0)
-    transition: transform 0.28s cubic-bezier(.61,0,.44,1)
-  &.move-left-leave-to
-    will-change: auto
-    transform: translate3d(100%, 0, 0)
+    &.move-left-enter
+      transform: translate3d(-30%, 0, 0)
+      will-change: transform
+    &.move-left-enter-active
+      will-change: transform
+      transition: transform 0.3s $ease-out-in
+    &.move-left-enter-to
+      will-change: auto
+      transform: none
+
+    &.move-left-leave
+      will-change: transform
+    &.move-left-leave-active
+      transform: translate3d(100%, 0, 0)
+      transition: transform 0.28s $ease-out-in
+    &.move-left-leave-to
+      will-change: auto
+      transform: translate3d(100%, 0, 0)
 </style>
