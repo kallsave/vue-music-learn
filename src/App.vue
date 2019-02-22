@@ -36,25 +36,26 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
-        if (this.routerTransitionName) {
-          this.transitionName = this.routerTransitionName
-          this.mode = ''
-          this.setRouterTransitionName('')
-          return
-        }
-
         if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
           this.transitionName = ''
           this.mode = ''
         } else {
-          if (to.fullPath === this.routerHistory[1]) {
-            this.transitionName = 'move-left'
+          if (this.routerTransitionName) {
+            this.transitionName = this.routerTransitionName
             this.mode = ''
+            this.setRouterTransitionName('')
             // 返回到一个页面,相当于新打开一个页面
             this.routerHistory = []
           } else {
-            this.transitionName = 'move-right'
-            this.mode = ''
+            if (to.fullPath === this.routerHistory[1]) {
+              this.transitionName = 'move-left'
+              this.mode = ''
+              // 返回到一个页面,相当于新打开一个页面
+              this.routerHistory = []
+            } else {
+              this.transitionName = 'move-right'
+              this.mode = ''
+            }
           }
         }
 
