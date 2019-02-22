@@ -197,7 +197,7 @@ export default {
         'top': `${this.fixedY}px`,
         'z-index': this.zIndex,
         'width': `${this.currentSticky.clientWidth}px`,
-        'height': `${this.currentSticky.clientHeight}px`,
+        'height': `${this.currentSticky.clientHeight + 1}px`,
       }
       this.reset()
       const element = this.currentSticky.$el

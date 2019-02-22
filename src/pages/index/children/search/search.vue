@@ -322,13 +322,15 @@ export default {
 .search
   width: 100%
   height: calc(100vh - 44px)
+  // height: 100vh
   // overflow: hidden
   background: $color-background
   // position: relative
   .search-scroll-wrapper
     box-sizing: border-box
     width: 100%
-    height: calc(100vh - 44px)
+    // height: calc(100vh - 44px)
+    height: 100vh
     font-size: $font-size-medium
     .shortcut-wrapper
       position: relative
