@@ -3,7 +3,7 @@
     <div ref="scrollWrapper" class="scroll-wrapper">
       <vi-scroll
         ref="scroll"
-        style="color: #ffcd32;"
+        style="color: gold;"
         :options="scrollOptions"
         :data="discList"
         :scrollEvents="['scroll']"
@@ -257,6 +257,7 @@ export default {
             border-radius: 5px
             background: $color-theme
     .recommend-list
+      background: $color-background
       .list-title
         height: 65px
         line-height: 65px

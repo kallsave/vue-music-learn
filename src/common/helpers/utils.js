@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-02-04 11:32:11
+ * @Last Modified time: 2019-02-22 13:19:40
  */
 
 /**
@@ -107,6 +107,10 @@ export class Debounce {
       this.timer = window.setTimeout(func, this.timeSlice)
     }
   }
+  destroy() {
+    window.clearTimeout(this.timer)
+    this.timeSlice = null
+  }
 }
 
 export class Throttle {
@@ -125,6 +129,10 @@ export class Throttle {
         overload()
       }
     }
+  }
+  destroy() {
+    this.timeSlice = null
+    this.lastTime = null
   }
 }
 

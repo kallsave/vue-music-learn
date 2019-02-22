@@ -9,4 +9,7 @@ export default {
       this.throttle = new Throttle(1000)
     },
   },
+  destroyed() {
+    this.debounce.destroy()
+  },
 }

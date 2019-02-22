@@ -8,7 +8,7 @@
         <span class="text">{{item}}</span>
         <span class="icon"
           @click.stop="deleteOne(item)">
-          <i class="icon-delete"></i>
+          <i class="icon-delete delete"></i>
         </span>
       </li>
     </transition-group>
@@ -41,6 +41,7 @@ export default {
 
 <style lang="stylus" modules>
 @import "~@/common/stylus/var/color.styl"
+@import "~@/common/stylus/var/font-size.styl"
 @import "~@/common/stylus/mixin.styl"
 
 .search-list
@@ -56,6 +57,7 @@ export default {
     .text
       flex: 1
       color: $color-text-l
+      font-size: $font-size-medium
     .icon
       extend-click()
       .icon-delete

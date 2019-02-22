@@ -9,4 +9,7 @@ export default {
       this.debounce = new Debounce(400)
     },
   },
+  destroyed() {
+    this.debounce.destroy()
+  },
 }

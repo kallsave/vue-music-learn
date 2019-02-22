@@ -62,3 +62,4 @@
 - keep-alive的个数限制
 - scroll横向滚动
 - ease函数原理
+- 修复searchHistory的bug
