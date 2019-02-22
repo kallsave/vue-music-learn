@@ -34,8 +34,9 @@
 
 <script>
 import ViCollapseTransition from './vi-collapse-transition.js'
+import { prefixStyle } from '../../common/helpers/dom.js'
 
-const TRANSITIONEND = 'transitionend'
+const TRANSITIONEND = prefixStyle('transitionend')
 
 const COMPONENT_NAME = 'vi-collapse'
 
@@ -75,6 +76,7 @@ export default {
       this.isCollapse = !this.isCollapse
     },
     transitionEndCallBack() {
+      console.log(8989)
       this.$emit(EVENT_TRANSITION_END, this.isCollapse)
     }
   },

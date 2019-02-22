@@ -12,10 +12,13 @@ export const injectStickyMixin = {
         this.ViSticky.$disY = STICKY_TOP_BAR
         this.ViSticky.scroll.enable()
       } else if (pos.y > -STICKY_TOP_BAR) {
-        if (this.ViSticky.scroll.y >= 0) {
+        if (pos.y >= 0) {
+          this.ViSticky.scroll.scrollTo(0, 0, 100)
+          this.ViSticky.scroll.disable()
           return
         }
-        this.ViSticky.scroll.scrollTo(0, pos.y, 0)
+        this.ViSticky.scroll.enable()
+        this.ViSticky.scroll.scrollTo(0, pos.y, 100)
       }
     },
   }

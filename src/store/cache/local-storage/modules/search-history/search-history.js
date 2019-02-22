@@ -2,7 +2,7 @@ import local from '../../index.js'
 
 const SEARCH_KEY = '__search__'
 
-const SEARCH_MAX_LENGTH = 8
+const SEARCH_MAX_LENGTH = 6
 
 function insertArray({ arr, val, compare = (item) => {
   return item === val

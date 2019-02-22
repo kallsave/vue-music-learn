@@ -44,19 +44,52 @@ export function getRect(el) {
 
 const elementStyle = document.createElement('div').style
 
+const endEventListenerList = ['transitionend', 'animationend']
+
 const browserPrefix = {
+  standard: '',
   webkit: 'webkit',
   Moz: 'Moz',
   O: 'O',
   ms: 'ms',
-  standard: ''
 }
 
-export function prefixStyle(style) {
+const endEventListenerPrefixList = {
+  transition: {
+    transition: 'transitionend',
+    webkitTransition: 'webkitTransitionEnd',
+    MozTransition: 'transitionend',
+    OTransition: 'oTransitionEnd',
+    msTransition: 'msTransitionEnd'
+  },
+  animation: {
+    animation: 'animationend',
+    webkitAnimation: 'webkitAnimationEnd',
+    MozAnimation: 'animationend',
+    OAnimation: 'oAnimationEnd',
+    msAnimation: 'msAnimationEnd'
+  }
+}
+
+export function prefixStyle(style, a) {
+  let baseStyle = ''
+  if (endEventListenerList.indexOf(style) !== -1) {
+    baseStyle = style.replace(/end/i, '')
+  }
+
   for (let key in browserPrefix) {
-    let keyName = camelize(browserPrefix[key] + '-' + style)
-    if (elementStyle[keyName] !== undefined) {
-      return keyName
+    if (baseStyle) {
+      let cssPrefixStyle = browserPrefix[key] ? browserPrefix[key] + '-' + baseStyle : baseStyle
+      let keyName = camelize(cssPrefixStyle)
+      if (elementStyle[keyName] !== undefined) {
+        return endEventListenerPrefixList[baseStyle][keyName]
+      }
+    } else {
+      let cssPrefixStyle = browserPrefix[key] ? browserPrefix[key] + '-' + style : style
+      let keyName = camelize(cssPrefixStyle)
+      if (elementStyle[keyName] !== undefined) {
+        return keyName
+      }
     }
   }
   return ''

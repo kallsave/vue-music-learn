@@ -17,8 +17,9 @@
 import ViCollapseTransition from '../vi-collapse/vi-collapse-transition.js'
 import ViCollapse from '../vi-collapse/vi-collapse.vue'
 import visibilityMixin from '../../common/mixins/visibility.js'
+import { prefixStyle } from '../../common/helpers/dom.js'
 
-const TRANSITIONEND = 'transitionend'
+const TRANSITIONEND = prefixStyle('transitionend')
 
 const COMPONENT_NAME = 'vi-loading'
 

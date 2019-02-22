@@ -89,7 +89,7 @@ export default {
       scrollY: 0,
       stickyData: {
         isFetchSongList: false
-      }
+      },
     }
   },
   created() {

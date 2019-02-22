@@ -8,7 +8,8 @@
         :scroll-events="['scroll']"
         :options="scrollOptions"
         @scroll="scrollHandler"
-        @pulling-up="pullingUpHandler">
+        @pulling-up="pullingUpHandler"
+        style="color: gold;">
         <vi-sticky-ele>
           <div class="search-box-wrapper">
             <base-search-box ref="searchBox"
@@ -153,6 +154,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.searchHistory)
     this._getHotKey()
     this.$nextTick(() => {
       // console.log(this.$refs.scroll.scroll)
