@@ -112,7 +112,7 @@ export default {
           }
         } else {
           // data没更新,要手动恢复到正常状态
-          this.$refs.scroll.forceUpdate()
+          this.$refs.scroll.deblocking()
           // 如果是下拉刷新,关闭下拉刷新功能
           if (type === UP) {
             this.$nextTick(() => {

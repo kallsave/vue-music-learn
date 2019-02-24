@@ -9,7 +9,7 @@
         :options="scrollOptions"
         @scroll="scrollHandler"
         @pulling-up="pullingUpHandler"
-        style="color: gold;">
+        style="color: rgba(255, 255, 255, 0.5);">
         <vi-sticky-ele>
           <div class="search-box-wrapper">
             <base-search-box ref="searchBox"
@@ -80,8 +80,8 @@ import { mapMutations, mapActions, mapGetters } from 'vuex'
 import NoResult from './components/no-result/no-result.vue'
 import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
 import SearchList from '@/components/search-list/search-list.vue'
-import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.js'
-import createDebounceInstanceMixin from '../../mixins/create-debounce-instance.js'
+import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
+import createDebounceInstanceMixin from '@/common/mixins/create-debounce-instance.js'
 
 const TYPE_SINGER = 'singer'
 const DEBOUNCE_TIME = 400
@@ -135,12 +135,12 @@ export default {
       handler(newVal) {
         this.isFetchSearch = false
         if (!newVal.trim()) {
-          this.$refs.scroll.$refs.scroll.closePullUpLoad()
+          // this.$refs.scroll.$refs.scroll.closePullUpLoad()
           this.result = []
           return
         }
         this.debounce.run(() => {
-          this.$refs.scroll.$refs.scroll.openPullUpLoad()
+          // this.$refs.scroll.$refs.scroll.openPullUpLoad()
           this.saveSearchHistoryLocalStorage(newVal)
           this.page = 1
           // 第三个参数如果是缓动,会导致盒子被拖拽
@@ -151,14 +151,13 @@ export default {
           })
         })
       }
-    }
+    },
   },
   mounted() {
-    console.log(this.searchHistory)
     this._getHotKey()
     this.$nextTick(() => {
       // console.log(this.$refs.scroll.scroll)
-      this.$refs.scroll.$refs.scroll.closePullUpLoad()
+      // this.$refs.scroll.$refs.scroll.closePullUpLoad()
     })
   },
   methods: {
@@ -246,14 +245,12 @@ export default {
     pullingUpHandler() {
       if (this.hasMore) {
         this.page++
-        setTimeout(() => {
-          this.search().then((res) => {
-            this.result = this.result.concat(this._genResult(res.data))
-          })
-        }, 3000)
+        this.search().then((res) => {
+          this.result = this.result.concat(this._genResult(res.data))
+        })
       } else {
-        console.log('noMore')
-        this.$refs.scroll.forceUpdate({
+        console.log('没有了')
+        this.$refs.scroll.deblocking({
           isPullUpNoMore: true
         })
       }
@@ -399,21 +396,4 @@ export default {
         width: 100%
         top: 50%
         transform: translateY(-50%)
-
-.vi-scroll-pullup
-  .vi-scroll-pullup-trigger
-    width: 100%
-    display: flex
-    justify-content: center
-    align-items: center
-    .vi-scroll-pullup-before-trigger
-      padding: 22px 0
-      min-height: 1em
-      margin-right: 20px
-    .vi-scroll-pullup-after-trigger
-      padding: 19px 0
-  .vi-scroll-pullup-no-more
-    width: 100%
-    text-align: center
-    line-height: 80px
 </style>

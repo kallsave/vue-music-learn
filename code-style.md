@@ -92,6 +92,8 @@ async function updateAllImg () {
   })()
 })()
 ```
+- arguments语法
+  arguments适用于多参数的函数,使用...arguments而不是arguments
 
 ## Css代码规范
 - 不使用active,content,left,right等容易被命名使用的全局样式

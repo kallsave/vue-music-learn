@@ -82,7 +82,7 @@ export default {
   methods: {
     pullingDownHandler() {
       window.setTimeout(() => {
-        this.$refs.scroll.forceUpdate()
+        this.$refs.scroll.deblocking()
         window.setTimeout(() => {
           this.$refs.scroll.closePullDown()
         }, 3000)
@@ -94,7 +94,7 @@ export default {
         if (this.number < 3) {
           this.list = this.list.concat([16, 17, 18])
         } else {
-          this.$refs.scroll.forceUpdate({
+          this.$refs.scroll.deblocking({
             // isClosePullUpLoad: true,
             isPullUpNoMore: true
           })

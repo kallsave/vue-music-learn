@@ -34,7 +34,7 @@ import { getTopList } from '@/api/rank.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
-import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.js'
+import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
 
 export default {
   name: IMMUTABLE_KEEP_ALIVE_NAME,

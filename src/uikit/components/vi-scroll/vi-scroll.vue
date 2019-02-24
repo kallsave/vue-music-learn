@@ -181,7 +181,6 @@ export default {
       // 第一次noMore是不展示的,要data的指针发生变化后
       pullUpState: PULL_UP_STATE_LIST[0],
       pullUpStateList: PULL_UP_STATE_LIST,
-      isPullUpNoMore: false,
       isOpenPullUpLoad: false
     }
   },
@@ -214,7 +213,7 @@ export default {
     data: {
       handler() {
         this.$nextTick(() => {
-          this.forceUpdate()
+          this.deblocking()
         })
       },
     },
@@ -331,8 +330,8 @@ export default {
         }
       }
     },
-    // 如果data没更新,就要在外部手动触发forceUpdate恢复原来状态的方法
-    forceUpdate({
+    // 如果data没更新,就要在外部手动触发deblocking恢复原来状态的方法
+    deblocking({
       isClosePullDownRefresh = false,
       isClosePullUpLoad = false,
       isPullUpNoMore = false
@@ -343,10 +342,11 @@ export default {
         })
       } else if (this.pullUpLoad && this.pullUpState === PULL_UP_STATE_LIST[1]) {
         this.isPullUpNoMore = isPullUpNoMore
-        if (!this.isPullUpNoMore) {
-          this.pullUpState = PULL_UP_STATE_LIST[0]
-        } else {
+        console.log(isPullUpNoMore)
+        if (this.isPullUpNoMore) {
           this.pullUpState = PULL_UP_STATE_LIST[2]
+        } else {
+          this.pullUpState = PULL_UP_STATE_LIST[0]
         }
         this.scroll.finishPullUp()
         if (isClosePullUpLoad) {
@@ -357,6 +357,11 @@ export default {
         })
       } else {
         this.refresh()
+      }
+    },
+    forceSetPullUpState(state) {
+      if (PULL_UP_STATE_LIST.index(state) !== -1) {
+        this.pullUpState = state
       }
     },
     // 数据已经更新,stopTime后回弹finishPullDown

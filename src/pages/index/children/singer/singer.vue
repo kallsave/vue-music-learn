@@ -19,7 +19,7 @@ import { playListMixin } from '@/common/mixins/player.js'
 import { getSingerList } from '@/api/singer.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
-import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.js'
+import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
 
 const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'

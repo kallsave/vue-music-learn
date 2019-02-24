@@ -10,6 +10,6 @@ export default {
     },
   },
   destroyed() {
-    this.debounce.destroy()
+    this.throttle.destroy()
   },
 }

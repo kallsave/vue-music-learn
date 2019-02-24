@@ -75,7 +75,7 @@ import { getRecommend, getDiscList } from '@/api/recommend.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
-import createThrottleInstanceMixin from '../../mixins/create-throttle-instance.js'
+import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
 
 export default {
   // 可变keep-alive

@@ -68,7 +68,7 @@ export default {
   methods: {
     onPullingDown() {
       window.setTimeout(() => {
-        this.$refs.scroll.forceUpdate()
+        this.$refs.scroll.deblocking()
         // window.setTimeout(() => {
         //   this.$refs.scroll.closePullDown()
         // }, 3000)

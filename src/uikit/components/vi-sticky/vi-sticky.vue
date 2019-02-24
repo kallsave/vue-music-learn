@@ -221,12 +221,12 @@ export default {
     this._findScroll()
     if (this.pullDownRefresh) {
       this.$refs.scroll.$on(EVENT_PULLING_DOWN, () => {
-        this.$emit(EVENT_PULLING_DOWN, arguments)
+        this.$emit(EVENT_PULLING_DOWN, ...arguments)
       })
     }
     if (this.pullUpLoad) {
       this.$refs.scroll.$on(EVENT_PULLING_UP, () => {
-        this.$emit(EVENT_PULLING_UP, arguments)
+        this.$emit(EVENT_PULLING_UP, ...arguments)
       })
     }
   },
@@ -292,10 +292,10 @@ export default {
       this.refresh()
     },
     scrollTo() {
-      this.$refs.scroll.scrollTo(arguments)
+      this.$refs.scroll.scrollTo(...arguments)
     },
-    forceUpdate() {
-      this.$refs.scroll.forceUpdate(arguments)
+    deblocking(options) {
+      this.$refs.scroll.deblocking(...arguments)
     },
     forceCalculateStickyTop() {
       this.scrollTop()

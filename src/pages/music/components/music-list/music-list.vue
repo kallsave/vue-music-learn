@@ -1,10 +1,10 @@
 <template>
   <div class="music">
-    <div ref="header" class="header">
+    <div class="header">
       <div class="back" @click="back">
         <i class="icon-back"></i>
       </div>
-      <h1 class="title">{{title}}</h1>
+      <h1 ref="title" class="title">{{title}}</h1>
     </div>
     <div ref="bgImage" class="bg-image" :style="bgStyle">
       <div ref="filter" class="filter"></div>
@@ -43,6 +43,7 @@ import SongList from '@/components/song-list/song-list.vue'
 import { playListMixin } from '@/common/mixins/player.js'
 import { prefixStyle } from '@/common/helpers/dom.js'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
+import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
 
 const TRANSFORM = prefixStyle('transform')
 const BACKDROP_FILTER = prefixStyle('backdrop-filter')
@@ -54,7 +55,8 @@ export default {
     SongList
   },
   mixins: [
-    playListMixin
+    playListMixin,
+    createThrottleInstanceMixin
   ],
   props: {
     title: {
@@ -112,15 +114,15 @@ export default {
       const percent = Math.abs(newVal / this.imageHeight)
       let scale = 1
       let blur = 0
-      let opacity = 0.2
+      let opacity = 0
       if (newVal > 0) {
         scale = 1 + percent
       } else {
-        blur = Math.min(5, percent * 5)
-        opacity = Math.max(0.2, percent)
+        blur = Math.min(10, percent * 10)
+        opacity = Math.max(0, percent - 0.2)
       }
       this.$refs.bgImage.style[TRANSFORM] = `scale(${scale})`
-      this.$refs.header.style['opacity'] = opacity
+      this.$refs.title.style['opacity'] = opacity
       this.$refs.filter.style[BACKDROP_FILTER] = `blur(${blur}px)`
     },
     isFetchSongList(newVal) {
@@ -157,20 +159,18 @@ export default {
       this.$refs.bgImage.style.zIndex = 0
     },
     selectItem(e, item, index) {
-      if (!e._constructed) {
-        return
-      }
-      this.selectPlay({
-        list: this.songList,
-        index: index
+      this.throttle.run(() => {
+        this.selectPlay({
+          list: this.songList,
+          index: index
+        })
       })
     },
     random(e) {
-      if (!e._constructed) {
-        return
-      }
-      this.randomPlay({
-        list: this.songList
+      this.throttle.run(() => {
+        this.randomPlay({
+          list: this.songList
+        })
       })
     }
   },
@@ -199,7 +199,6 @@ export default {
     top: 0
     left: 0
     z-index: $z-index-page
-    opacity: 0.2
     .back
       position absolute
       top: 0
@@ -221,6 +220,7 @@ export default {
       line-height: 40px
       font-size: $font-size-large
       color: $color-text
+      opacity: 0
   .bg-image
     position: absolute
     width: 100%
