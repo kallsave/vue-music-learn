@@ -122,9 +122,9 @@ const PULL_UP_LOAD_DEFAULT_OPTIONS = {
   threshold: 0,
   txt: {
     more: '下拉加载更多',
-    // 不传则底部不会有空白
     noMore: '没有更多啦'
-  }
+  },
+  size: 10
 }
 
 const PULL_DOWN_STATE_LIST = [
@@ -174,11 +174,9 @@ export default {
     return {
       pullDownNormalTop: 0,
       pullDownScrollY: 0,
-      // 提供pull-down-content或者pull-down插槽的top值
       pullDownStyle: {},
       pullDownState: PULL_DOWN_STATE_LIST[0],
       pullDownStateList: PULL_DOWN_STATE_LIST,
-      // 第一次noMore是不展示的,要data的指针发生变化后
       pullUpState: PULL_UP_STATE_LIST[0],
       pullUpStateList: PULL_UP_STATE_LIST,
       isOpenPullUpLoad: false
@@ -208,13 +206,18 @@ export default {
     },
   },
   watch: {
-    // 父组件数据更新===子组件传递的props更新
-    // watch也是基于promiseA+的异步,watch执行,但是是优先于DOM更新执行的
     data: {
-      handler() {
+      handler(newVal) {
         this.$nextTick(() => {
           this.deblocking()
         })
+        if (this.pullUpLoad) {
+          if (newVal.length < this.pullUpLoad.size) {
+            this.closePullUpLoad()
+          } else {
+            this.openPullUpLoad()
+          }
+        }
       },
     },
     isOpenPullUpLoad: {
@@ -342,7 +345,6 @@ export default {
         })
       } else if (this.pullUpLoad && this.pullUpState === PULL_UP_STATE_LIST[1]) {
         this.isPullUpNoMore = isPullUpNoMore
-        console.log(isPullUpNoMore)
         if (this.isPullUpNoMore) {
           this.pullUpState = PULL_UP_STATE_LIST[2]
         } else {

@@ -10,14 +10,20 @@
         @scroll="scrollHandler"
         @pulling-up="pullingUpHandler"
         style="color: rgba(255, 255, 255, 0.5);">
-        <vi-sticky-ele>
+        <div class="search-box-wrapper">
+          <base-search-box ref="searchBox"
+            v-model="query"
+            @clear="clearHandler"
+            @focus="focusHandler"></base-search-box>
+        </div>
+        <!-- <vi-sticky-ele>
           <div class="search-box-wrapper">
             <base-search-box ref="searchBox"
               v-model="query"
               @clear="clearHandler"
               @focus="focusHandler"></base-search-box>
           </div>
-        </vi-sticky-ele>
+        </vi-sticky-ele> -->
         <div class="shortcut-wrapper"
           v-show="!query">
           <div class="hot-key">
@@ -114,11 +120,12 @@ export default {
         click: true,
         // 下拉加载
         pullUpLoad: {
-          threshold: -50,
+          threshold: -100,
           txt: {
             more: '下拉加载',
             noMore: '没有更多的结果啦'
-          }
+          },
+          size: 14
         },
         directionLockThreshold: 0,
       },
@@ -135,12 +142,10 @@ export default {
       handler(newVal) {
         this.isFetchSearch = false
         if (!newVal.trim()) {
-          // this.$refs.scroll.$refs.scroll.closePullUpLoad()
           this.result = []
           return
         }
         this.debounce.run(() => {
-          // this.$refs.scroll.$refs.scroll.openPullUpLoad()
           this.saveSearchHistoryLocalStorage(newVal)
           this.page = 1
           // 第三个参数如果是缓动,会导致盒子被拖拽
@@ -155,10 +160,6 @@ export default {
   },
   mounted() {
     this._getHotKey()
-    this.$nextTick(() => {
-      // console.log(this.$refs.scroll.scroll)
-      // this.$refs.scroll.$refs.scroll.closePullUpLoad()
-    })
   },
   methods: {
     ...mapMutations({
@@ -248,11 +249,6 @@ export default {
         this.search().then((res) => {
           this.result = this.result.concat(this._genResult(res.data))
         })
-      } else {
-        console.log('没有了')
-        this.$refs.scroll.deblocking({
-          isPullUpNoMore: true
-        })
       }
     },
     focusHandler() {
@@ -318,7 +314,7 @@ export default {
 
 .search
   width: 100%
-  height: calc(100vh - 44px)
+  height: calc(100vh + 44px)
   // height: 100vh
   // overflow: hidden
   background: $color-background
@@ -326,8 +322,8 @@ export default {
   .search-scroll-wrapper
     box-sizing: border-box
     width: 100%
-    // height: calc(100vh - 44px)
-    height: 100vh
+    height: calc(100vh - 44px)
+    // height: 100vh
     font-size: $font-size-medium
     .shortcut-wrapper
       position: relative

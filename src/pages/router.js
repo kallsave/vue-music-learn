@@ -15,6 +15,9 @@ const SingerDetail = () => import(/* webpackChunkName: "SingerDetail" */ './musi
 const RecommendDetail = () => import(/* webpackChunkName: "RecommendDetail" */ './music/children/recommend-detail/recommend-detail.vue')
 const RankDetail = () => import(/* webpackChunkName: "RankDetail" */ './music/children/rank-detail/rank-detail.vue')
 
+// search路由
+const NewSearch = () => import(/* webpackChunkName: "NewSearch" */ './search/index.vue')
+
 // 404路由
 const NotFoundComponent = () => import(/* webpackChunkName: "404" */ './404/index.vue')
 
@@ -62,6 +65,14 @@ const router = new Router({
           },
         },
       ]
+    },
+    {
+      path: '/new-search',
+      component: NewSearch,
+      meta: {
+        isUseRouterTransition: true,
+        title: '搜索'
+      },
     },
     {
       path: '/music',

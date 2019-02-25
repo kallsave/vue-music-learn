@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 const EVENT_SELECT = 'select'
 const EVENT_DELETE = 'delete'
 
