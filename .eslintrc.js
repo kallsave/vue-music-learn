@@ -22,7 +22,6 @@ module.exports = {
   // add your custom rules here
   rules: {
     'arrow-parens': 'off',
-    // 对象的属性逗号不做限制
     'comma-dangle': ['off'],
     'eol-last': 'off',
     // allow async-await

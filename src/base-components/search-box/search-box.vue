@@ -1,13 +1,17 @@
 <template>
   <div class="search-box">
-    <button class="icon-search" @click="a"></button>
-    <input ref="query" class="input-box"
+    <button class="icon-search"></button>
+    <input ref="input"
+      class="input-box"
       v-model="query"
       :placeholder="placeholder"
       @focus="focusHandler"
       @input="inputHandler"
-      @change="changeHandler"/>
-    <button class="icon-dismiss" v-show="query"
+      @change="changeHandler"
+      @blur="blurHandler"
+      @focusout="focusoutHandler" />
+    <button class="icon-dismiss"
+      v-show="query"
       @click="clear"></button>
   </div>
 </template>
@@ -19,13 +23,15 @@ const EVENT_CHANGE = 'change'
 const EVENT_INPUT = 'input'
 const EVENT_CLEAR = 'clear'
 const EVENT_FOCUS = 'focus'
+const EVENT_BLUR = 'blur'
+const EVENT_FOCUSOUT = 'focusout'
 
 export default {
   name: COMPONENT_NAME,
   props: {
     placeholder: {
       type: String,
-      default: '搜索歌曲、歌手'
+      default: ''
     },
     value: {
       type: String,
@@ -52,16 +58,19 @@ export default {
     focusHandler(e) {
       this.$emit(EVENT_FOCUS)
     },
+    blurHandler() {
+      this.$emit(EVENT_BLUR)
+    },
+    focusoutHandler() {
+      this.$emit(EVENT_FOCUSOUT)
+    },
     clear() {
       this.$emit(EVENT_CLEAR)
     },
     // 主动获得焦点
     focus() {
-      this.$refs.query.focus()
+      this.$refs.input.focus()
     },
-    a() {
-      console.log('a')
-    }
   }
 }
 </script>

@@ -1,20 +1,21 @@
 // 测试组件路由
-const Test = () => import(/* webpackChunkName: "Test" */ './test/index.vue')
-const WechatSticky = () => import(/* webpackChunkName: "WechatSticky" */ './test/children/wechat-sticky/wechat-sticky.vue')
-const ScrollTest = () => import(/* webpackChunkName: "ScrollTest" */ './test/children/scroll-test/scroll-test.vue')
-const Functional = () => import(/* webpackChunkName: "Funcitonal" */ './test/children/functional/functional.vue')
-const Inject = () => import(/* webpackChunkName: "Funcitonal" */ './test/children/inject/inject.vue')
-const NativeSticky = () => import(/* webpackChunkName: "NativeSticky" */ './test/children/native-sticky/native-sticky.vue')
-const Sticky = () => import(/* webpackChunkName: "Sticky" */ './test/children/sticky/sticky.vue')
-const Collapse = () => import(/* webpackChunkName: "Sticky" */ './test/children/collapse/collapse.vue')
-const ActionSheet = () => import(/* webpackChunkName: "ActionSheet" */ './test/children/action-sheet/action-sheet.vue')
-const Picker = () => import(/* webpackChunkName: "ActionSheet" */ './test/children/picker/picker.vue')
-const Quicklink = () => import(/* webpackChunkName: "Quicklink" */ './test/children/quicklink/quicklink.vue')
-const Popup = () => import(/* webpackChunkName: "Popup" */ './test/children/popup/popup.vue')
-const Swipe = () => import(/* webpackChunkName: "Swipe" */ './test/children/swipe/swipe.vue')
-const Touch = () => import(/* webpackChunkName: "Touch" */ './test/children/touch/touch.vue')
-const ScrollPullDownToutiao = () => import(/* webpackChunkName: "ScrollPullDown" */ './test/children/scroll-pull-down/scroll-pull-down-toutiao.vue')
-const ScrollPullUp = () => import(/* webpackChunkName: "ScrollPullUp" */ './test/children/scroll-pull-up/scroll-pull-up.vue')
+const Test = () => import('./test/index.vue')
+const WechatSticky = () => import('./test/children/wechat-sticky/wechat-sticky.vue')
+const ScrollTest = () => import('./test/children/scroll-test/scroll-test.vue')
+const Functional = () => import('./test/children/functional/functional.vue')
+const Inject = () => import('./test/children/inject/inject.vue')
+const NativeSticky = () => import('./test/children/native-sticky/native-sticky.vue')
+const Sticky = () => import('./test/children/sticky/sticky.vue')
+const Collapse = () => import('./test/children/collapse/collapse.vue')
+const ActionSheet = () => import('./test/children/action-sheet/action-sheet.vue')
+const Picker = () => import('./test/children/picker/picker.vue')
+const Quicklink = () => import('./test/children/quicklink/quicklink.vue')
+const Popup = () => import('./test/children/popup/popup.vue')
+const Swipe = () => import('./test/children/swipe/swipe.vue')
+const Touch = () => import('./test/children/touch/touch.vue')
+const ScrollPullDownToutiao = () => import('./test/children/scroll-pull-down/scroll-pull-down-toutiao.vue')
+const ScrollPullUp = () => import('./test/children/scroll-pull-up/scroll-pull-up.vue')
+const Input = () => import('./test/children/input/input.vue')
 
 export default {
   path: '/test',
@@ -79,6 +80,10 @@ export default {
     {
       path: '/test/scroll-pull-up',
       component: ScrollPullUp
+    },
+    {
+      path: '/test/input',
+      component: Input
     }
   ]
 }

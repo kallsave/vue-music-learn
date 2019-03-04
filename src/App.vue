@@ -100,41 +100,31 @@ export default {
 .app
   background: $color-background
   .router-view
+    will-change: transform
     &.move-right-enter
-      will-change: transform
       transform: translate3d(100%, 0, 0)
     &.move-right-enter-active
-      will-change: transform
       transition: transform 0.3s $ease-out-in
     &.move-right-enter-to
-      will-change: auto
       transform: none
 
     &.move-right-leave
-      will-change: transform
     &.move-right-leave-active
-      transform: translate3d(-30%, 0, 0)
       transition: transform 0.28s $ease-out-in
     &.move-right-leave-to
-      will-change: auto
-      transform: translate3d(-30%, 0, 0)
+      transform: translate3d(-200%, 0, 0)
 
     &.move-left-enter
       transform: translate3d(-30%, 0, 0)
-      will-change: transform
     &.move-left-enter-active
-      will-change: transform
       transition: transform 0.3s $ease-out-in
     &.move-left-enter-to
-      will-change: auto
       transform: none
 
     &.move-left-leave
-      will-change: transform
     &.move-left-leave-active
       transform: translate3d(100%, 0, 0)
       transition: transform 0.28s $ease-out-in
     &.move-left-leave-to
-      will-change: auto
       transform: translate3d(100%, 0, 0)
 </style>

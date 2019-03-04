@@ -13,6 +13,7 @@
         <div class="search-box-wrapper">
           <base-search-box ref="searchBox"
             v-model="query"
+            placeholder="搜索歌曲、歌手"
             @clear="clearHandler"
             @focus="focusHandler"></base-search-box>
         </div>
@@ -20,6 +21,7 @@
           <div class="search-box-wrapper">
             <base-search-box ref="searchBox"
               v-model="query"
+              placeholder="搜索歌曲、歌手"
               @clear="clearHandler"
               @focus="focusHandler"></base-search-box>
           </div>
