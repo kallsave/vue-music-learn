@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-02-22 13:20:36
+ * @Last Modified time: 2019-03-08 14:51:44
  */
 
 /**
@@ -115,20 +115,16 @@ export function deepClone(o) {
     ret = []
   } else if (instance === 'Object') {
     ret = {}
+  } else if (instance === 'Function') {
+    /* eslint-disable no-eval */
+    return eval('(' + o.toString() + ')')
   } else {
     return o
   }
 
   for (let key in o) {
     let copy = o[key]
-    let instance = checkClass(copy)
-    if (instance === 'Object') {
-      ret[key] = deepClone(copy)
-    } else if (instance === 'Array') {
-      ret[key] = deepClone(copy)
-    } else {
-      ret[key] = copy
-    }
+    ret[key] = deepClone(copy)
   }
 
   return ret

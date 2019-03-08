@@ -16,6 +16,7 @@ const Touch = () => import('./test/children/touch/touch.vue')
 const ScrollPullDownToutiao = () => import('./test/children/scroll-pull-down/scroll-pull-down-toutiao.vue')
 const ScrollPullUp = () => import('./test/children/scroll-pull-up/scroll-pull-up.vue')
 const Input = () => import('./test/children/input/input.vue')
+const BoundaryScroll = () => import('./test/children/boundary-scroll/boundary-scroll.vue')
 
 export default {
   path: '/test',
@@ -84,6 +85,10 @@ export default {
     {
       path: '/test/input',
       component: Input
+    },
+    {
+      path: '/test/boundary-scroll',
+      component: BoundaryScroll
     }
   ]
 }
