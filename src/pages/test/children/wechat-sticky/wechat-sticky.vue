@@ -6,29 +6,41 @@
         :z-index="50"
         :sticky-data="[items1, items2]"
         @change="stickyChange">
-        <ul>
-          <li v-for="(item, index) in items1" :key="index">{{item}}</li>
-        </ul>
         <img @load="imgLoad" src="https://ss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/6.jpg">
         <!-- 需要做吸顶处理的元素 -->
-        <vi-sticky-ele v-if="first" merge-ele-key="55">
+        <vi-sticky-ele v-if="first" merge-ele-key="1">
           <div class="title1">256</div>
         </vi-sticky-ele>
         <ul>
           <li v-for="(item, index) in items2" :key="index">{{item}}</li>
         </ul>
-        <vi-sticky-ele merge-ele-key="55">
+        <vi-sticky-ele merge-ele-key="1">
           <div class="title2 needsclick" @click="clickHandle">999</div>
         </vi-sticky-ele>
         <ul>
           <li v-for="(item, index) in items4" :key="index">{{item}}</li>
         </ul>
-        <vi-sticky-ele  merge-ele-key="55">
+        <vi-sticky-ele  merge-ele-key="3">
           <div class="title2 needsclick" @click="clickHandle">3669</div>
         </vi-sticky-ele>
         <ul>
           <li v-for="(item, index) in items3" :key="index">{{item}}</li>
         </ul>
+        <ul>
+          <li v-for="(item, index) in items4" :key="index">{{item}}</li>
+        </ul>
+        <ul>
+          <li v-for="(item, index) in items4" :key="index">{{item}}</li>
+        </ul>
+        <vi-sticky-ele  merge-ele-key="4">
+          <div class="title2 needsclick" @click="clickHandle">4</div>
+        </vi-sticky-ele>
+        <ul>
+          <li v-for="(item, index) in items4" :key="index">{{item}}</li>
+        </ul>
+        <vi-sticky-ele  merge-ele-key="5">
+          <div class="title2 needsclick" @click="clickHandle">5</div>
+        </vi-sticky-ele>
         <ul>
           <li v-for="(item, index) in items4" :key="index">{{item}}</li>
         </ul>
@@ -63,22 +75,20 @@ export default {
       items2: [],
       items3: _data.concat(),
       items4: _data.concat(),
-      first: false,
+      first: true,
     }
   },
   created() {
-    setTimeout(() => {
-      this.items1 = _data.concat()
-      this.items2 = _data.concat()
-      this.first = true
-    }, 2000)
+    this.items1 = _data.concat()
+    this.items2 = _data.concat()
+    // this.first = true
   },
   mounted() {
 
   },
   methods: {
     imgLoad() {
-      this.$refs.sticky && this.$refs.sticky.scrollTop()
+      this.$refs.sticky && this.$refs.sticky.calculateAllStickyEleTop()
     },
     stickyChange(key) {
     },

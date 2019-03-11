@@ -14,10 +14,10 @@ import BaseProgressBar from '@/base-components/progress-bar/index.js'
 import BaseProgressCircle from '@/base-components/progress-circle/index.js'
 import BaseConfirm from '@/base-components/confirm/index.js'
 
-if (process.env.NODE_ENV !== 'production') {
-  const Vconsole = require('vconsole')
-  const vConsole = new Vconsole()
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   const Vconsole = require('vconsole')
+//   const vConsole = new Vconsole()
+// }
 
 Vue.use(Vi)
 Vue.use(BaseLoadListCon)

@@ -1,5 +1,5 @@
 <template>
-  <div class="vi-native-sticky-ele">
+  <div class="better-sticky-ele">
     <slot></slot>
   </div>
 </template>
@@ -7,22 +7,22 @@
 <script>
 import { mulitDeepClone } from '../../common/helpers/utils.js'
 
-const COMPONENT_NAME = 'vi-native-sticky-ele'
+const COMPONENT_NAME = 'better-sticky-ele'
 
 export default {
   name: COMPONENT_NAME,
-  inject: ['ViNativeSticky'],
+  inject: ['BetterSticky'],
   mounted() {
     // 在父组件的所有子组件渲染完成后
     this.$nextTick(() => {
       this.init()
-      this.ViNativeSticky.calculateAllStickyEleTop()
+      this.BetterSticky.calculateAllStickyEleTop()
     })
   },
   methods: {
     init() {
       const firstElementChild = this.$el.firstElementChild
-      const stickyTop = firstElementChild.getBoundingClientRect().top - this.ViNativeSticky.fixedTop
+      const stickyTop = firstElementChild.getBoundingClientRect().top - this.BetterSticky.fixedTop
       this.eleKey = stickyTop
       const clientWidth = firstElementChild.clientWidth
       const clientHeight = firstElementChild.clientHeight
@@ -31,7 +31,7 @@ export default {
       this.$el.style.width = `${clientWidth}px`
       this.$el.style.height = `${clientHeight}px`
       this.$el.style.boxSizing = boxSizing
-      this.ViNativeSticky.stickyMap[this.eleKey] = {
+      this.BetterSticky.stickyMap[this.eleKey] = {
         eleComponent: this,
         $el: firstElementChild,
         calculate: this.calculate,
@@ -44,13 +44,13 @@ export default {
     // 计算一些stickyTop的数值,异步的场景需要在sticky组件调用这个方法重新刷新stickyTop
     calculate(key) {
       const firstElementChild = this.$el.firstElementChild
-      const stickyTop = firstElementChild.getBoundingClientRect().top - this.ViNativeSticky.fixedTop
-      mulitDeepClone(this.ViNativeSticky.stickyMap[this.eleKey], {
+      const stickyTop = firstElementChild.getBoundingClientRect().top - this.BetterSticky.fixedTop
+      mulitDeepClone(this.BetterSticky.stickyMap[this.eleKey], {
         stickyTop
       })
     },
     _deleteEleKey() {
-      delete this.ViNativeSticky.stickyMap[this.eleKey]
+      delete this.BetterSticky.stickyMap[this.eleKey]
     },
   },
   destroyed() {

@@ -1,21 +1,14 @@
 <template>
-  <div class="vi-sticky">
-    <vi-scroll ref="scroll"
-      :data="data"
-      :scroll-events="scrollEvents"
-      :options="stickyOptions"
-      @scroll="scrollHandle">
-      <slot></slot>
-    </vi-scroll>
+  <div class="better-sticky">
+    <slot></slot>
     <div ref="fixed"
-      class="vi-sticky-box"
+      class="better-sticky-box"
       v-show="fixedVisable"
       :style="fixedStyle"></div>
   </div>
 </template>
 
 <script>
-import ViScroll from '../vi-scroll/vi-scroll.vue'
 import {
   getRect,
   prefixStyle
@@ -24,97 +17,41 @@ import { mulitDeepClone } from '../../common/helpers/utils.js'
 
 const TRANSFORM = prefixStyle('transform')
 
-const COMPONENT_NAME = 'vi-sticky'
+const COMPONENT_NAME = 'better-sticky'
 
 const EVENT_STICKY_CHANGE = 'sticky-change'
 const EVENT_STICKY_CANCEL = 'sticky-cancel'
 const EVENT_STICKY_REMOVE_MERGE = 'sticky-remove-merge'
-const EVENT_SCROLL = 'scroll'
-const EVENT_PULLING_DOWN = 'pulling-down'
-const EVENT_PULLING_UP = 'pulling-up'
-
-const DEFAULT_OPTIONS = {
-  click: true
-}
-
-const BIND_OPTIONS = {
-  probeType: 3,
-}
 
 export default {
   name: COMPONENT_NAME,
-  components: {
-    ViScroll
-  },
   provide() {
     return {
-      ViSticky: this
+      BetterSticky: this
     }
   },
   props: {
+    scrollY: {
+      type: Number,
+      default: 0
+    },
     zIndex: {
       type: Number,
       default: 1000
     },
-    // refresh
-    data: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    // 重新计算位置
-    stickyData: {
-      type: [Object, Array],
-      default() {
-        return {}
-      }
-    },
-    options: {
-      type: Object,
-      default() {
-        return {}
-      }
-    },
-    scrollEvents: {
-      type: Array,
-      default() {
-        return ['scroll']
-      }
-    },
   },
   data() {
     return {
-      scrollY: 0,
       fixedStyle: {},
       fixedVisable: false,
       stickyMap: {},
       diff: 0,
       transformTop: 0,
       listHeight: [],
-      stickyOptions: {},
     }
   },
-  computed: {
-    pullDownRefresh() {
-      return this.options.pullDownRefresh
-    },
-    pullUpLoad() {
-      return this.options.pullUpLoad
-    },
-  },
   watch: {
-    // 影响sticky位置计算的data
-    stickyData: {
-      deep: true,
-      handler() {
-        this.forceCalculateStickyTop()
-      }
-    },
     scrollY(newVal) {
-      if (newVal > 0) {
-        return
-      }
       let length = this.listHeight.length
       if (!length) {
         return
@@ -164,8 +101,8 @@ export default {
       this.current = this.currentSticky
       this.fixedVisable = true
       this.fixedStyle = {
-        'position': 'absolute',
-        'top': `${0}px`,
+        'position': 'fixed',
+        'top': `${this.fixedTop}px`,
         'z-index': this.zIndex,
         'width': `${this.currentSticky.clientWidth}px`,
         'height': `${this.currentSticky.clientHeight + 1}px`,
@@ -184,33 +121,11 @@ export default {
       this.fixedElement.style[TRANSFORM] = `translateY(${fixTransformTop}px)`
     }
   },
-  created() {
-    this._propChildren()
-  },
   mounted() {
     this._findFixedElement()
     this._calculateFixedTop()
-    this._findScroll()
-    if (this.pullDownRefresh) {
-      this.$refs.scroll.$on(EVENT_PULLING_DOWN, () => {
-        this.$emit(EVENT_PULLING_DOWN, ...arguments)
-      })
-    }
-    if (this.pullUpLoad) {
-      this.$refs.scroll.$on(EVENT_PULLING_UP, () => {
-        this.$emit(EVENT_PULLING_UP, ...arguments)
-      })
-    }
   },
   methods: {
-    _propChildren() {
-      // created => children.props => children.data => children.created
-      this.stickyOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options, BIND_OPTIONS)
-    },
-    scrollHandle(pos) {
-      this.scrollY = pos.y
-      this.$emit(EVENT_SCROLL, pos, this.scroll)
-    },
     _findFixedElement() {
       if (!this.$refs.fixed) {
         return
@@ -219,12 +134,6 @@ export default {
     },
     _calculateFixedTop() {
       this.fixedTop = this.$el.getBoundingClientRect().top
-    },
-    _findScroll() {
-      if (!this.$refs.scroll) {
-        return
-      }
-      this.scroll = this.$refs.scroll.scroll
     },
     calculateAllStickyEleTop() {
       for (let key in this.stickyMap) {
@@ -246,14 +155,6 @@ export default {
         return a.stickyTop - b.stickyTop
       })
     },
-    refresh() {
-      this.$refs.scroll && this.$refs.scroll.refresh()
-    },
-    scrollTop() {
-      this.reset()
-      this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0, 0)
-    },
-    // 吸顶元素复位
     reset() {
       if (this.fixedElement.firstElementChild) {
         const remove = this.fixedElement.removeChild(this.fixedElement.firstElementChild)
@@ -264,27 +165,14 @@ export default {
           }
         }
       }
-      this.refresh()
-    },
-    scrollTo() {
-      this.$refs.scroll.scrollTo(...arguments)
-    },
-    deblocking(options) {
-      this.$refs.scroll.deblocking(...arguments)
-    },
-    forceCalculateStickyTop() {
-      this.scrollTop()
-      this.$nextTick(() => {
-        this.calculateAllStickyEleTop()
-        this.refresh()
-      })
     },
   }
 }
 </script>
 
 <style lang="stylus">
-.vi-sticky
-  position: relative
+.better-sticky
   height: 100%
+  position: relative
+  overflow: scroll
 </style>

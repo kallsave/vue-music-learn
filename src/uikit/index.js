@@ -17,6 +17,7 @@ import {
   ViTab,
   ViActionSheet,
   ViSwipe,
+  BetterSticky
 } from './module.js'
 
 const components = [
@@ -36,6 +37,7 @@ const components = [
   ViTab,
   ViActionSheet,
   ViSwipe,
+  BetterSticky
 ]
 
 function install(Vue) {

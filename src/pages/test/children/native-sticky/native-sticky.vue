@@ -1,31 +1,60 @@
 <template>
-  <div class="sticky-view-container">
-    <div class="scroll-wrapper">
-      <vi-native-sticky
-        ref="sticky"
-        :z-index="50"
-        :sticky-data="[items1, items2]"
-        @change="stickyChange">
-        <ul>
-          <li v-for="(item, index) in items1" :key="index">{{item}}</li>
-        </ul>
-        <img @load="imgLoad" src="https://ss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/6.jpg">
-        <vi-native-sticky-ele v-if="first" ele-key="55">
-          <div class="title1">256</div>
-        </vi-native-sticky-ele>
-        <ul>
-          <li v-for="(item, index) in items2" :key="index">{{item}}</li>
-        </ul>
-        <vi-native-sticky-ele>
-          <div class="title2" ele-key="56" @click="clickHandle">999</div>
-        </vi-native-sticky-ele>
-        <ul>
-          <li v-for="(item, index) in items3" :key="index">{{item}}</li>
-        </ul>
-        <ul>
-          <li v-for="(item, index) in items4" :key="index">{{item}}</li>
-        </ul>
-      </vi-native-sticky>
+  <div class="vi-native-sticky-page">
+    <div style="height: 300px; background: gold"></div>
+    <div ref="scroll"
+      style="height: calc(100vh - 300px)"
+      class="scroll-wrapper">
+      <template v-if="isNative">
+        <vi-native-sticky
+          ref="sticky"
+          :data="stickyData">
+          <div class="scroll-content">
+            <img @load="imgLoad" src="https://ss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/6.jpg">
+            <ul>
+              <li v-for="(item, index) in items1" :key="index">{{item}}</li>
+            </ul>
+            <vi-native-sticky-ele>
+              <div class="title1">256</div>
+            </vi-native-sticky-ele>
+            <ul>
+              <li v-for="(item, index) in items2" :key="index">{{item}}</li>
+            </ul>
+            <vi-native-sticky-ele>
+              <div class="title1">789</div>
+            </vi-native-sticky-ele>
+            <ul>
+              <li v-for="(item, index) in items2" :key="index">{{item}}</li>
+            </ul>
+            <div>结尾</div>
+          </div>
+        </vi-native-sticky>
+      </template>
+      <template v-else>
+        <vi-scroll
+          ref="scroll"
+          :options="options"
+          :scrollEvents="['scroll']"
+          @scroll="scrollHandler">
+          <div class="scroll-content">
+            <img @load="imgLoad" src="https://ss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/6.jpg">
+            <ul>
+              <li v-for="(item, index) in items1" :key="index">{{item}}</li>
+            </ul>
+            <vi-native-sticky-ele>
+              <div class="title1">257</div>
+            </vi-native-sticky-ele>
+            <ul>
+              <li v-for="(item, index) in items2" :key="index">{{item}}</li>
+            </ul>
+            <vi-native-sticky-ele>
+              <div class="title1">789</div>
+            </vi-native-sticky-ele>
+            <ul>
+              <li v-for="(item, index) in items2" :key="index">{{item}}</li>
+            </ul>
+          </div>
+        </vi-scroll>
+      </template>
     </div>
   </div>
 </template>
@@ -52,58 +81,69 @@ const _data = [
 export default {
   data() {
     return {
-      items1: [],
-      items2: [],
-      items3: _data.concat(),
-      items4: _data.concat(),
-      first: false,
+      options: {
+        probeType: 3,
+      },
+      scrollEvents: ['scroll'],
+      scrollY: 0,
+      items1: _data.concat(),
+      items2: _data.concat(),
+      isNative: true,
+      stickyData: []
     }
-  },
-  created() {
-    // setTimeout(() => {
-    this.items1 = _data.concat()
-    this.items2 = _data.concat()
-    this.first = true
-    // }, 2000)
   },
   mounted() {
-
+    setTimeout(() => {
+      window.addEventListener('scroll', (e) => {
+        console.log('w')
+      }, false)
+    }, 200)
   },
   methods: {
+    scrollHandler(pos) {
+      this.scrollY = pos.y
+    },
     imgLoad() {
-      this.$refs.sticky && this.$refs.sticky.scrollTop()
-    },
-    stickyChange(key) {
-    },
-    clickHandle() {
-      this.eleNumber = 1
+      if (!this.isNative) {
+        this.$refs.scroll.refresh()
+        this.$refs.sticky.calculateAllStickyEleTop()
+      } else {
+        this.stickyData.push(0)
+      }
     }
-  }
+  },
 }
 </script>
 
+<style lang="stylus">
+.title1
+  background: gold
+  color: #fff
+  font-size: 20px
+  text-align: center
+  line-height: 30px
+.title2
+  background: peru
+  color: #fff
+  font-size: 20px
+  text-align: center
+  line-height: 60px
+</style>
+
 <style lang="stylus" modules>
-.sticky-view-container
+.vi-native-sticky-page
   height: 100vh
+  color: #fff
+  overflow: hidden
+  img
+    vertical-align: top
+    width: 100%
+    transform: rotate(180deg)
   .scroll-wrapper
     height: 100%
-    .title1
-      background: gold
-      color: #fff
-      font-size: 20px
-      text-align: center
-      line-height: 30px
-    .title2
-      background: peru
-      color: #fff
-      font-size: 20px
-      text-align: center
-      line-height: 60px
-    img
-      vertical-align: top
-      width: 100%
-      transform: rotate(180deg)
-    ul
-      li
-        padding: 20px 10px
+    .scroll-content
+      font-size: 14px
+      ul
+        li
+          padding: 20px 10px
 </style>

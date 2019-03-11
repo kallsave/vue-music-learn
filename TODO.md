@@ -12,7 +12,6 @@
 - vi-slide-router-view支持各种场景的$route参数(query参数未完成)
 - vi-slide-router-transition支持各种场景的$route参数
 - 网易严选nav组件
-- scroll组件暴露自动开启关闭上下拉功能的方法
 - native-sticky
 - 阅读createAPI源码
 - 更深入vue源码,阅读vue源码
@@ -51,7 +50,6 @@
 - vi-popup增加是否可以穿透
 - vue-router源码
 - image-preview
-- recommend进入时触发pulldown
 - sticky去掉scroll
 - 深入svg
 - cube-ui的scroll做了新的更新,涉及到isInTransition
@@ -64,3 +62,5 @@
 - ease函数原理
 - 修复searchHistory的bug
 - scroll的边界问题
+- popup用absolute替代fixed,并总是阻止scroll
+- css modules的问题

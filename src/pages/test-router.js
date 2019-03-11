@@ -9,7 +9,6 @@ const Sticky = () => import('./test/children/sticky/sticky.vue')
 const Collapse = () => import('./test/children/collapse/collapse.vue')
 const ActionSheet = () => import('./test/children/action-sheet/action-sheet.vue')
 const Picker = () => import('./test/children/picker/picker.vue')
-const Quicklink = () => import('./test/children/quicklink/quicklink.vue')
 const Popup = () => import('./test/children/popup/popup.vue')
 const Swipe = () => import('./test/children/swipe/swipe.vue')
 const Touch = () => import('./test/children/touch/touch.vue')
@@ -17,6 +16,7 @@ const ScrollPullDownToutiao = () => import('./test/children/scroll-pull-down/scr
 const ScrollPullUp = () => import('./test/children/scroll-pull-up/scroll-pull-up.vue')
 const Input = () => import('./test/children/input/input.vue')
 const BoundaryScroll = () => import('./test/children/boundary-scroll/boundary-scroll.vue')
+const BetterSticky = () => import('./test/children/better-sticky/better-sticky.vue')
 
 export default {
   path: '/test',
@@ -59,10 +59,6 @@ export default {
       component: Picker
     },
     {
-      path: '/test/quicklink',
-      component: Quicklink
-    },
-    {
       path: '/test/popup',
       component: Popup
     },
@@ -89,6 +85,10 @@ export default {
     {
       path: '/test/boundary-scroll',
       component: BoundaryScroll
+    },
+    {
+      path: '/test/better-sticky',
+      component: BetterSticky
     }
   ]
 }
