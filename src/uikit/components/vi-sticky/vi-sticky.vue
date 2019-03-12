@@ -106,9 +106,8 @@ export default {
   watch: {
     // 影响sticky位置计算的data
     stickyData: {
-      deep: true,
       handler() {
-        this.forceCalculateStickyTop()
+        this.recalculate()
       }
     },
     scrollY(newVal) {
@@ -272,7 +271,7 @@ export default {
     deblocking(options) {
       this.$refs.scroll.deblocking(...arguments)
     },
-    forceCalculateStickyTop() {
+    recalculate() {
       this.scrollTop()
       this.$nextTick(() => {
         this.calculateAllStickyEleTop()

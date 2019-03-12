@@ -22,7 +22,7 @@ const persistedstateIgnoreMutations = [
   'SET_SEARCH_HISTORY'
 ]
 
-let timerSlice = 1000 * 60
+let timerSlice = 1000 * 60 * 60
 
 // localStore保存有prototype的对象,需要注意
 const VuexPlugins = [

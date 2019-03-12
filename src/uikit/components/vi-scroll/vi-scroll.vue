@@ -145,6 +145,11 @@ export default {
     Bubble,
     ViLoading
   },
+  provide() {
+    return {
+      ViScroll: this
+    }
+  },
   props: {
     options: {
       type: Object,

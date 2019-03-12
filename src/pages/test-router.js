@@ -16,7 +16,7 @@ const ScrollPullDownToutiao = () => import('./test/children/scroll-pull-down/scr
 const ScrollPullUp = () => import('./test/children/scroll-pull-up/scroll-pull-up.vue')
 const Input = () => import('./test/children/input/input.vue')
 const BoundaryScroll = () => import('./test/children/boundary-scroll/boundary-scroll.vue')
-const BetterSticky = () => import('./test/children/better-sticky/better-sticky.vue')
+const NativeScroll = () => import('./test/children/native-scroll/native-scroll.vue')
 
 export default {
   path: '/test',
@@ -87,8 +87,8 @@ export default {
       component: BoundaryScroll
     },
     {
-      path: '/test/better-sticky',
-      component: BetterSticky
+      path: '/test/native-scroll',
+      component: NativeScroll
     }
   ]
 }

@@ -10,22 +10,26 @@
       <div ref="filter" class="filter"></div>
     </div>
     <div ref="stickyWrapper" class="sticky-wrapper">
-        <vi-sticky
-          ref="sticky"
+      <vi-native-sticky
+        ref="sticky"
+        @sticky-change="stickyChange"
+        @sticky-cancel="stickyCancel">
+        <vi-scroll
+          ref="scroll"
+          :data="[songList]"
           :options="scrollOptions"
-          :sticky-data="songList"
-          @sticky-change="stickyChange"
-          @scroll="scrollHandler"
-          @sticky-cancel="stickyCancel">
-          <div class="scroll-blank" ref="scrollBlank">
-            <vi-sticky-ele v-if="isFetchSongList">
+          :scrollEvents="['scroll']"
+          @scroll="scrollHandler">
+          <div ref="scrollBlank" class="scroll-blank">
+            <vi-native-sticky-ele v-if="isFetchSongList">
               <div class="play-wrapper">
-                <div ref="playBtn" class="play" @click="random($event)">
+                <div ref="playBtn" class="play"
+                  @click="random($event)">
                   <i class="icon-play"></i>
                   <span class="text">随机播放全部</span>
                 </div>
               </div>
-            </vi-sticky-ele>
+            </vi-native-sticky-ele>
           </div>
           <div class="song-list-wrapper">
             <song-list
@@ -33,7 +37,8 @@
               :song-list="songList"
               @select="selectItem"></song-list>
           </div>
-        </vi-sticky>
+        </vi-scroll>
+      </vi-native-sticky>
     </div>
   </div>
 </template>
@@ -89,9 +94,6 @@ export default {
         click: true
       },
       scrollY: 0,
-      stickyData: {
-        isFetchSongList: false
-      },
     }
   },
   created() {
@@ -109,27 +111,30 @@ export default {
     }
   },
   watch: {
-    scrollY(newVal) {
-      // 契合滚动的图片放大公式
-      const percent = Math.abs(newVal / this.imageHeight)
-      let scale = 1
-      let blur = 0
-      let opacity = 0
-      if (newVal > 0) {
-        scale = 1 + percent
-      } else {
-        blur = Math.min(10, percent * 10)
-        opacity = Math.max(0, percent - 0.2)
-      }
-      this.$refs.bgImage.style[TRANSFORM] = `scale(${scale})`
-      this.$refs.title.style['opacity'] = opacity
-      this.$refs.filter.style[BACKDROP_FILTER] = `blur(${blur}px)`
-    },
-    isFetchSongList(newVal) {
-      if (newVal) {
-        this.$refs.sticky.forceCalculateStickyTop()
+    scrollY: {
+      handler(newVal) {
+        // 契合滚动的图片放大公式
+        const percent = Math.abs(newVal / this.imageHeight)
+        let scale = 1
+        let blur = 0
+        let opacity = 0
+        if (newVal > 0) {
+          scale = 1 + percent
+        } else {
+          blur = Math.min(10, percent * 10)
+          opacity = Math.max(0, percent - 0.2)
+        }
+        this.$refs.bgImage.style[TRANSFORM] = `scale(${scale})`
+        this.$refs.title.style['opacity'] = opacity
+        this.$refs.filter.style[BACKDROP_FILTER] = `blur(${blur}px)`
+        this.$refs.sticky.watchScrollY(newVal)
       }
     },
+    isFetchSongList: {
+      handler(newVal) {
+        this.$refs.scroll.refresh()
+      }
+    }
   },
   methods: {
     ...mapMutations({

@@ -17,7 +17,7 @@ import ViCollapse from './components/vi-collapse/index.js'
 import ViTab from './components/vi-tab/index.js'
 import ViActionSheet from './components/vi-action-sheet/index.js'
 import ViSwipe from './components/vi-swipe/index.js'
-import BetterSticky from './components/better-sticky/index.js'
+import ViNativeScroll from './components/vi-native-scroll/index.js'
 
 export {
   Bscroll,
@@ -38,5 +38,5 @@ export {
   ViTab,
   ViActionSheet,
   ViSwipe,
-  BetterSticky
+  ViNativeScroll,
 }

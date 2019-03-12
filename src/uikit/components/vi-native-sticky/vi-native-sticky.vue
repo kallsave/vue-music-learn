@@ -1,5 +1,6 @@
 <template>
-  <div class="vi-native-sticky">
+  <div ref="sticky"
+    class="vi-native-sticky">
     <slot></slot>
     <div ref="fixed"
       class="vi-native-sticky-box"
@@ -31,6 +32,10 @@ export default {
     }
   },
   props: {
+    scrollY: {
+      type: Number,
+      default: 0
+    },
     zIndex: {
       type: Number,
       default: 1000
@@ -40,6 +45,10 @@ export default {
       default() {
         return []
       }
+    },
+    isUseAbsolute: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -50,59 +59,19 @@ export default {
       diff: 0,
       transformTop: 0,
       listHeight: [],
-      scrollY: 0,
     }
   },
   watch: {
     data: {
       handler(newVal) {
-        console.log(newVal)
-        this._calculateFixedTop()
-        this.calculateAllStickyEleTop()
+        this.$nextTick(() => {
+          this.recalculate()
+        })
       },
     },
     scrollY: {
       handler(newVal) {
-        let length = this.listHeight.length
-        if (!length) {
-          return
-        }
-        newVal = Math.abs(newVal)
-        for (let i = 0; i < length; i++) {
-          let item1 = this.listHeight[i]
-          let item2 = this.listHeight[i + 1]
-          let item3 = this.listHeight[i + 2]
-          if (!item2 && newVal >= item1.stickyTop) {
-          // 如果只有一个sticky-ele并且滚动到了stikcy的位置
-            this.currentSticky = this.stickyMap[item1.eleKey]
-            this.diff = newVal - item1.stickyTop
-            return
-          } else if (item2 && newVal > item1.stickyTop && newVal <= item2.stickyTop) {
-          // 如果有多个sticky-ele并且滚动的位置处于两者中间
-            this.currentSticky = this.stickyMap[item1.eleKey]
-            this.diff = newVal - item1.stickyTop
-            let nextDiff = item2.stickyTop - newVal
-            // transformTop > 0表示两者已经碰上了
-            this.transformTop = item1.clientHeight - nextDiff
-            return
-          } else if (item2 && newVal >= item2.stickyTop) {
-            let nextDiff = item2.stickyTop - newVal
-            let transformTop = item1.clientHeight - nextDiff
-            if (!item3) {
-            // 如果后面再没有了
-              this.currentSticky = this.stickyMap[item2.eleKey]
-              this.transformTop = 0
-              this.diff = newVal - item2.stickyTop
-              return
-            } else {
-              continue
-            }
-          } else {
-            this.reset()
-          }
-        }
-        this.fixedStyle = {}
-        this.fixedVisable = false
+        this.watchScrollY(newVal)
       }
     },
     diff: {
@@ -113,12 +82,22 @@ export default {
         }
         this.current = this.currentSticky
         this.fixedVisable = true
-        this.fixedStyle = {
-          'position': 'fixed',
-          'top': `${this.fixedTop}px`,
-          'z-index': this.zIndex,
-          'width': `${this.currentSticky.clientWidth}px`,
-          'height': `${this.currentSticky.clientHeight + 1}px`,
+        if (this.isUseAbsolute) {
+          this.fixedStyle = {
+            'position': 'absolute',
+            'top': `${0}px`,
+            'z-index': this.zIndex,
+            'width': `${this.currentSticky.clientWidth}px`,
+            'height': `${this.currentSticky.clientHeight + 1}px`,
+          }
+        } else {
+          this.fixedStyle = {
+            'position': 'fixed',
+            'top': `${this.fixedTop}px`,
+            'z-index': this.zIndex,
+            'width': `${this.currentSticky.clientWidth}px`,
+            'height': `${this.currentSticky.clientHeight + 1}px`,
+          }
         }
         this.reset()
         const element = this.currentSticky.$el
@@ -138,11 +117,55 @@ export default {
     }
   },
   mounted() {
-    this._findFixedElement()
-    this._calculateFixedTop()
-    this._addEventListenerScroll()
+    this.recalculate()
   },
   methods: {
+    watchScrollY(newVal) {
+      let length = this.listHeight.length
+      if (!length) {
+        return
+      }
+      newVal = Math.abs(newVal)
+      for (let i = 0; i < length; i++) {
+        let item1 = this.listHeight[i]
+        let item2 = this.listHeight[i + 1]
+        let item3 = this.listHeight[i + 2]
+        if (!item2 && newVal >= item1.stickyTop) {
+          // 如果只有一个sticky-ele并且滚动到了stikcy的位置
+          this.currentSticky = this.stickyMap[item1.eleKey]
+          this.diff = newVal - item1.stickyTop
+          return
+        } else if (item2 && newVal > item1.stickyTop && newVal <= item2.stickyTop) {
+          // 如果有多个sticky-ele并且滚动的位置处于两者中间
+          this.currentSticky = this.stickyMap[item1.eleKey]
+          this.diff = newVal - item1.stickyTop
+          let nextDiff = item2.stickyTop - newVal
+          // transformTop > 0表示两者已经碰上了
+          this.transformTop = item1.clientHeight - nextDiff
+          return
+        } else if (item2 && newVal >= item2.stickyTop) {
+          let nextDiff = item2.stickyTop - newVal
+          let transformTop = item1.clientHeight - nextDiff
+          if (!item3) {
+            // 如果后面再没有了
+            this.currentSticky = this.stickyMap[item2.eleKey]
+            this.transformTop = 0
+            this.diff = newVal - item2.stickyTop
+            return
+          } else {
+            continue
+          }
+        } else {
+          this.reset()
+        }
+      }
+      this.fixedStyle = {}
+      this.fixedVisable = false
+    },
+    recalculate() {
+      this._findFixedElement()
+      this._calculateFixedTop()
+    },
     _findFixedElement() {
       if (!this.$refs.fixed) {
         return
@@ -150,16 +173,7 @@ export default {
       this.fixedElement = this.$refs.fixed
     },
     _calculateFixedTop() {
-      this.fixedTop = this.$el.getBoundingClientRect().top
-    },
-    _addEventListenerScroll() {
-      if (window.scrollY) {
-        window.scrollTo(0, 0)
-      }
-      this.$el.addEventListener('scroll', (e) => {
-        this.scrollY = e.target.scrollTop
-        console.log(this.scrollY)
-      }, false)
+      this.fixedTop = this.$refs.sticky.getBoundingClientRect().top
     },
     calculateAllStickyEleTop() {
       for (let key in this.stickyMap) {
@@ -200,5 +214,4 @@ export default {
 .vi-native-sticky
   height: 100%
   position: relative
-  overflow: scroll
 </style>

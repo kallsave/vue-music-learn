@@ -3,21 +3,16 @@
     class="search">
     <div ref="scrollWrapper"
       class="search-scroll-wrapper">
-      <vi-sticky ref="scroll"
+      <vi-native-sticky ref="sticky">
+      <vi-scroll
+        ref="scroll"
         :data="result"
         :scroll-events="['scroll']"
         :options="scrollOptions"
         @scroll="scrollHandler"
         @pulling-up="pullingUpHandler"
         style="color: rgba(255, 255, 255, 0.5);">
-        <div class="search-box-wrapper">
-          <base-search-box ref="searchBox"
-            v-model="query"
-            placeholder="搜索歌曲、歌手"
-            @clear="clearHandler"
-            @focus="focusHandler"></base-search-box>
-        </div>
-        <!-- <vi-sticky-ele>
+        <vi-native-sticky-ele>
           <div class="search-box-wrapper">
             <base-search-box ref="searchBox"
               v-model="query"
@@ -25,7 +20,7 @@
               @clear="clearHandler"
               @focus="focusHandler"></base-search-box>
           </div>
-        </vi-sticky-ele> -->
+        </vi-native-sticky-ele>
         <div class="shortcut-wrapper"
           v-show="!query">
           <div class="hot-key">
@@ -71,25 +66,50 @@
           v-show="query && !result.length && isFetchSearch">
           <no-result :title="'抱歉，暂无搜索结果'"></no-result>
         </div>
-      </vi-sticky>
+      </vi-scroll>
+      </vi-native-sticky>
     </div>
   </div>
 </template>
 
 <script>
-import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
-import { getHotKey, search } from '@/api/search.js'
-import { injectStickyMixin } from '../../mixins/inject-sticky.js'
+import {
+  MUTABLE_KEEP_ALIVE_NAME,
+  IMMUTABLE_KEEP_ALIVE_NAME,
+  NO_KEEP_ALIVE_NAME
+} from '@/common/config/keep-alive-name.js'
+
+import {
+  getHotKey,
+  search
+} from '@/api/search.js'
+
+import {
+  injectStickyMixin,
+  scrollHandler
+} from '../../mixins/inject-sticky.js'
+
 import { createSong } from '@/common/class/song.js'
-import { Debounce, Throttle } from '@/common/helpers/utils.js'
+
+import {
+  Debounce,
+  Throttle
+} from '@/common/helpers/utils.js'
+
 import { playListMixin } from '@/common/mixins/player.js'
 import Singer from '@/common/class/singer.js'
-import { mapMutations, mapActions, mapGetters } from 'vuex'
+
 import NoResult from './components/no-result/no-result.vue'
 import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
 import SearchList from '@/components/search-list/search-list.vue'
 import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
 import createDebounceInstanceMixin from '@/common/mixins/create-debounce-instance.js'
+
+import {
+  mapMutations,
+  mapActions,
+  mapGetters
+} from 'vuex'
 
 const TYPE_SINGER = 'singer'
 const DEBOUNCE_TIME = 400
@@ -176,6 +196,10 @@ export default {
     handlePlayList() {
       this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
       this.$refs.scroll.refresh()
+    },
+    scrollHandler(pos) {
+      this.$refs.sticky.watchScrollY(pos.y)
+      scrollHandler.call(this, pos)
     },
     _getHotKey() {
       getHotKey().then((res) => {

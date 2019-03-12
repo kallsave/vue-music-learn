@@ -1,6 +1,10 @@
 <template>
   <div class="index">
-    <vi-sticky ref="sticky">
+    <vi-scroll
+      ref="sticky"
+      :options="scrollOptions"
+      :scroll-events="['scroll']"
+      @scroll="scrollHandler">
       <m-header></m-header>
       <template v-if="slideRouterMode === slideRouterModeList[0]">
         <!-- <vi-sticky-ele>
@@ -21,27 +25,25 @@
         </vi-slide-router-transition>
       </template>
       <template v-else-if="slideRouterMode === slideRouterModeList[1]">
-        <vi-sticky-ele>
-          <vi-tab ref="tab"
-            style="background: #222"
-            :slider-style="sliderStyle">
-            <vi-tab-item
-              v-for="(item, index) in tabList"
-              :key="index"
-              :selected="index === currentIndex"
-              active-class="customer-color"
-              @click.native="tabItemClick(index)">{{item}}</vi-tab-item>
-          </vi-tab>
-        </vi-sticky-ele>
+        <vi-tab ref="tab"
+          style="background: #222"
+          :slider-style="sliderStyle">
+          <vi-tab-item
+            v-for="(item, index) in tabList"
+            :key="index"
+            :selected="index === currentIndex"
+            active-class="customer-color"
+            @click.native="tabItemClick(index)">{{item}}</vi-tab-item>
+        </vi-tab>
         <vi-slide-router-view
           class="slide-router-view"
           ref="viSlideRouterView"
           :scroll-events="['scroll']"
           @index-change="indexChange"
-          @scroll="scroll"
+          @scroll="slideScrollHander"
         ></vi-slide-router-view>
       </template>
-    </vi-sticky>
+    </vi-scroll>
   </div>
 </template>
 
@@ -76,18 +78,19 @@ export default {
         '搜索'
       ],
       currentIndex: 0,
+      scrollOptions: {
+        probeType: 3,
+        click: true,
+      },
       sliderStyle: {
         transition: 'none'
-      }
+      },
     }
   },
   computed: {
     ...mapGetters([
       'mutableKeepAliveName'
     ])
-  },
-  mounted() {
-
   },
   methods: {
     indexChange(index) {
@@ -96,14 +99,17 @@ export default {
     tabItemClick(index) {
       this.$refs.viSlideRouterView.changePage(index)
     },
-    scroll({x, y}) {
-      let scrollX = Math.abs(x)
+    slideScrollHander(pos) {
+      let scrollX = Math.abs(pos.x)
       let tabWidth = this.$refs.tab.$el.clientWidth
       let slideGroupWidth = this.$refs.viSlideRouterView.getSlideWidth()
       let rate = tabWidth / slideGroupWidth
       let translateX = rate * scrollX
       let remainder = this.$refs.tab.getRemainder()
       this.$refs.tab.translateSliderTo(translateX + remainder)
+    },
+    scrollHandler(pos) {
+      this.scrollY = pos.y
     }
   }
 }
