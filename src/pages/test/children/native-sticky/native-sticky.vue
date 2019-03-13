@@ -96,7 +96,7 @@ export default {
       scrollY: 0,
       items1: _data.concat(),
       items2: _data.concat(),
-      isNativeScroll: false,
+      isNativeScroll: true,
       stickyData: []
     }
   },
@@ -109,14 +109,18 @@ export default {
   },
   methods: {
     scrollHandler(pos) {
-      this.scrollY = pos.y
+      if (this.isNativeScroll) {
+        this.scrollY = -pos.y
+      } else {
+        this.scrollY = pos.y
+      }
     },
     imgLoad() {
-      if (!this.isNativeScroll) {
-        this.$refs.scroll.refresh()
-        this.$refs.sticky.calculateAllStickyEleTop()
+      if (this.isNativeScroll) {
+        this.$refs.sticky.recalculate()
       } else {
-        this.stickyData.push(0)
+        this.$refs.scroll.refresh()
+        this.$refs.sticky.recalculate()
       }
     }
   },

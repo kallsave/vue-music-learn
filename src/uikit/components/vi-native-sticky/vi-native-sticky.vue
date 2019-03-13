@@ -117,10 +117,15 @@ export default {
     }
   },
   mounted() {
+    this._findFixedElement()
     this.recalculate()
   },
   methods: {
     watchScrollY(newVal) {
+      console.log(newVal)
+      if (newVal > 0) {
+        return
+      }
       let length = this.listHeight.length
       if (!length) {
         return
@@ -134,6 +139,7 @@ export default {
           // 如果只有一个sticky-ele并且滚动到了stikcy的位置
           this.currentSticky = this.stickyMap[item1.eleKey]
           this.diff = newVal - item1.stickyTop
+          console.log(newVal, item1.stickyTop)
           return
         } else if (item2 && newVal > item1.stickyTop && newVal <= item2.stickyTop) {
           // 如果有多个sticky-ele并且滚动的位置处于两者中间
@@ -163,8 +169,8 @@ export default {
       this.fixedVisable = false
     },
     recalculate() {
-      this._findFixedElement()
       this._calculateFixedTop()
+      this.calculateAllStickyEleTop()
     },
     _findFixedElement() {
       if (!this.$refs.fixed) {

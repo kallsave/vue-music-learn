@@ -16,7 +16,7 @@
 - 阅读createAPI源码
 - 更深入vue源码,阅读vue源码
 - go语言开发后台系统
-- 音量播放器组建开发
+- 音量播放器组件开发
 - range组件
 - pipe理念
 - mand源码
@@ -29,10 +29,10 @@
 - sticky目前mergeEleKey只能支持两个,mergeEleKey的场景不支持切换
 - svg的viewport
 - easy-html-webpack-plugin增加模板替换功能
-- search新页面
-- 初始化时自动下拉
 - 打包部署
 - 调研css和js统一
+- 拖拽指令
+- 上传文件
 
 # 优先
 - index-list支持slot

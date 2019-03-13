@@ -89,6 +89,6 @@ export default {
     {
       path: '/test/native-scroll',
       component: NativeScroll
-    }
+    },
   ]
 }
