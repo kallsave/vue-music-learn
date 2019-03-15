@@ -122,15 +122,13 @@ export default {
   },
   methods: {
     watchScrollY(newVal) {
-      console.log(newVal)
-      if (newVal > 0) {
+      if (newVal < 0) {
         return
       }
       let length = this.listHeight.length
       if (!length) {
         return
       }
-      newVal = Math.abs(newVal)
       for (let i = 0; i < length; i++) {
         let item1 = this.listHeight[i]
         let item2 = this.listHeight[i + 1]
@@ -139,7 +137,6 @@ export default {
           // 如果只有一个sticky-ele并且滚动到了stikcy的位置
           this.currentSticky = this.stickyMap[item1.eleKey]
           this.diff = newVal - item1.stickyTop
-          console.log(newVal, item1.stickyTop)
           return
         } else if (item2 && newVal > item1.stickyTop && newVal <= item2.stickyTop) {
           // 如果有多个sticky-ele并且滚动的位置处于两者中间

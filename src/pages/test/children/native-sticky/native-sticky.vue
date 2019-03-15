@@ -46,7 +46,7 @@
                 <ul>
                   <li v-for="(item, index) in items1" :key="index">{{item}}</li>
                 </ul>
-                <vi-native-sticky-ele>
+                <vi-native-sticky-ele v-if="first">
                   <div class="title1">257</div>
                 </vi-native-sticky-ele>
                 <ul>
@@ -96,23 +96,29 @@ export default {
       scrollY: 0,
       items1: _data.concat(),
       items2: _data.concat(),
-      isNativeScroll: true,
-      stickyData: []
+      isNativeScroll: false,
+      stickyData: [],
+      first: false
     }
   },
   mounted() {
-    setTimeout(() => {
-      window.addEventListener('scroll', (e) => {
-        console.log('w')
-      }, false)
-    }, 200)
+    window.addEventListener('scroll', (e) => {
+      console.log('w')
+    }, false)
+    window.setTimeout(() => {
+      this.first = true
+      this.$nextTick(() => {
+        this.$refs.sticky.recalculate()
+        this.$refs.scroll.refresh()
+      })
+    }, 2000)
   },
   methods: {
     scrollHandler(pos) {
       if (this.isNativeScroll) {
-        this.scrollY = -pos.y
-      } else {
         this.scrollY = pos.y
+      } else {
+        this.scrollY = -pos.y
       }
     },
     imgLoad() {

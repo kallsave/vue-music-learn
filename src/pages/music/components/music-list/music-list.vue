@@ -127,7 +127,7 @@ export default {
         this.$refs.bgImage.style[TRANSFORM] = `scale(${scale})`
         this.$refs.title.style['opacity'] = opacity
         this.$refs.filter.style[BACKDROP_FILTER] = `blur(${blur}px)`
-        this.$refs.sticky.watchScrollY(newVal)
+        this.$refs.sticky.watchScrollY(-newVal)
       }
     },
     isFetchSongList: {

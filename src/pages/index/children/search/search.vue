@@ -198,7 +198,7 @@ export default {
       this.$refs.scroll.refresh()
     },
     scrollHandler(pos) {
-      this.$refs.sticky.watchScrollY(pos.y)
+      this.$refs.sticky.watchScrollY(-pos.y)
       scrollHandler.call(this, pos)
     },
     _getHotKey() {

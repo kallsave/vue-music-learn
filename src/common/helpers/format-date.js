@@ -1,7 +1,7 @@
 // 很强大的转化格式,核心是把y,m,d,h,m,s替换成正确的数字,其他符号保留
-export function formatDate (date, fmt) {
+export function formatDate(date, fmt) {
   // 如果有年份需求,可能是YYYY-MM-DD也可能是YY-MM-DD
-  if (/(y+)/.test(fmt)) {
+  if (/(Y+)/.test(fmt)) {
     // RegExp内存指向/(y+)/
     fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
   }
@@ -25,13 +25,13 @@ export function formatDate (date, fmt) {
   return fmt
 }
 
-function padLeftZero (str) {
+function padLeftZero(str) {
   str = str + ''
   return ('00' + str).substr(str.length)
 }
 
 // 倒计时,最大时间单位:天
-export function getDHMS (interval) {
+export function getDHMS(interval) {
   let seconds = interval % 60
   let minutes = (interval - seconds) % (60 * 60) / 60
   let hours = (interval - seconds - minutes * 60) % (60 * 60 * 24) / (60 * 60)

@@ -46,7 +46,6 @@
 - 在各个浏览器上测试组件,z-index等
 - svg的viewport
 - vi-toast支持自定义icon
-- Throttle和Dedounce支持首次执行和首次不执行
 - vi-popup增加是否可以穿透
 - vue-router源码
 - image-preview
@@ -63,4 +62,4 @@
 - 修复searchHistory的bug
 - scroll的边界问题
 - popup用absolute替代fixed,并总是阻止scroll
-- css modules的问题
+- 所有组件,工具函数都要有单元测试
