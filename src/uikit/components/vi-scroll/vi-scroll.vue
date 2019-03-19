@@ -1,8 +1,8 @@
-<!-- scroll需要一个父元素给高度,即scroll-wrapper -->
 <template>
   <div ref="wrapper"
     class="vi-scroll-wrapper">
-    <div class="vi-scroll-content">
+    <div ref="content"
+      class="vi-scroll-content">
       <slot></slot>
       <div class="vi-scroll-pull-up"
         v-if="pullUpLoad && isOpenPullUpLoad && data.length">
@@ -61,7 +61,8 @@ import {
 
 import {
   getRect,
-  prefixStyle
+  prefixStyle,
+  addClass
 } from '../../common/helpers/dom.js'
 
 import {
@@ -89,6 +90,8 @@ const SCROLL_EVENTS = [
 ]
 
 const DEFAULT_OPTIONS = {
+  scrollX: false,
+  scrollY: true,
   observeDOM: false,
   // 多层嵌套会触发多次,所以需要click的场景自主添加
   click: false,
@@ -250,6 +253,11 @@ export default {
         extraOptions.pullUpLoad = this.pullUpLoad
       }
       let options = mulitDeepClone({}, DEFAULT_OPTIONS, extraOptions, this.options)
+
+      if (options.scrollX && !options.scrollY) {
+        addClass(this.$refs.content, 'vi-scroll-x')
+      }
+
       this.scroll = new BScroll(this.$refs.wrapper, options)
       if (this.pullDownRefresh) {
         this._calculatelPullDownContentHeight()
@@ -466,11 +474,14 @@ export default {
 .vi-scroll-wrapper
   position: relative
   height: 100%
-  // 开启了下拉更新功能要设置overflow:hidden
   overflow: hidden
   font-size: $font-size-medium
   z-index: 0
+  line-height: 0
+  vertical-align: text-top
   .vi-scroll-content
+    &.vi-scroll-x
+      display: inline-block
     .vi-scroll-pull-up
       text-align: center
       .vi-scroll-pull-up-normal

@@ -29,7 +29,7 @@
               <li class="item"
                 :key="index" v-for="(item, index) in hotKey"
                 @click="hotSearch(item)">
-                <span>{{item.k}}</span>
+                <span class="text">{{item.k}}</span>
               </li>
             </ul>
           </div>
@@ -372,8 +372,10 @@ export default {
             margin: 0 10px 10px 0
             border-radius: 6px
             background: $color-highlight-background
-            font-size: $font-size-medium
-            color: $color-text-d
+            .text
+              font-size: $font-size-medium
+              color: $color-text-d
+              line-height: 16px
       .search-history
         position: relative
         margin: 0 20px

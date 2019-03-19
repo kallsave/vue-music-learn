@@ -1,49 +1,55 @@
 <template>
   <div class="index">
-    <vi-scroll
-      ref="sticky"
-      :options="scrollOptions"
-      :scroll-events="['scroll']"
-      @scroll="scrollHandler">
-      <m-header></m-header>
-      <template v-if="slideRouterMode === slideRouterModeList[0]">
-        <!-- <vi-sticky-ele>
-          <tab></tab>
-        </vi-sticky-ele> -->
-        <div style="position: sticky; top:0;">
-          <tab></tab>
-        </div>
-      </template>
-      <template v-if="slideRouterMode === slideRouterModeList[0]">
-        <vi-slide-router-transition
-          slide-right-class="scroll-right"
-          slide-left-class="scroll-left"
-          mode="in-out">
-          <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
-            <router-view></router-view>
-          </keep-alive>
-        </vi-slide-router-transition>
-      </template>
-      <template v-else-if="slideRouterMode === slideRouterModeList[1]">
-        <vi-tab ref="tab"
-          style="background: #222"
-          :slider-style="sliderStyle">
-          <vi-tab-item
-            v-for="(item, index) in tabList"
-            :key="index"
-            :selected="index === currentIndex"
-            active-class="customer-color"
-            @click.native="tabItemClick(index)">{{item}}</vi-tab-item>
-        </vi-tab>
-        <vi-slide-router-view
-          class="slide-router-view"
-          ref="viSlideRouterView"
-          :scroll-events="['scroll']"
-          @index-change="indexChange"
-          @scroll="slideScrollHander"
-        ></vi-slide-router-view>
-      </template>
-    </vi-scroll>
+    <vi-native-sticky
+      :scroll-y="-scrollY"
+      @sticky-change="stickyChange">
+      <vi-scroll
+        ref="sticky"
+        :options="scrollOptions"
+        :scroll-events="['scroll']"
+        @scroll="scrollHandler">
+        <m-header></m-header>
+        <template v-if="slideRouterMode === slideRouterModeList[0]">
+          <!-- <vi-sticky-ele>
+            <tab></tab>
+          </vi-sticky-ele> -->
+          <div style="position: sticky; top:0;">
+            <tab></tab>
+          </div>
+        </template>
+        <template v-if="slideRouterMode === slideRouterModeList[0]">
+          <vi-slide-router-transition
+            slide-right-class="scroll-right"
+            slide-left-class="scroll-left"
+            mode="in-out">
+            <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
+              <router-view></router-view>
+            </keep-alive>
+          </vi-slide-router-transition>
+        </template>
+        <template v-else-if="slideRouterMode === slideRouterModeList[1]">
+          <vi-native-sticky-ele>
+            <vi-tab ref="tab"
+              style="background: #222"
+              :slider-style="sliderStyle">
+              <vi-tab-item
+                v-for="(item, index) in tabList"
+                :key="index"
+                :selected="index === currentIndex"
+                active-class="customer-color"
+                @click.native="tabItemClick(index)">{{item}}</vi-tab-item>
+            </vi-tab>
+           </vi-native-sticky-ele>
+          <vi-slide-router-view
+            class="slide-router-view"
+            ref="viSlideRouterView"
+            :scroll-events="['scroll']"
+            @index-change="indexChange"
+            @scroll="slideScrollHander"
+          ></vi-slide-router-view>
+        </template>
+      </vi-scroll>
+    </vi-native-sticky>
   </div>
 </template>
 
@@ -85,6 +91,7 @@ export default {
       sliderStyle: {
         transition: 'none'
       },
+      scrollY: 0
     }
   },
   computed: {
@@ -110,6 +117,11 @@ export default {
     },
     scrollHandler(pos) {
       this.scrollY = pos.y
+    },
+    stickyChange() {
+      this.$nextTick(() => {
+        this.$refs.sticky.refresh()
+      })
     }
   }
 }

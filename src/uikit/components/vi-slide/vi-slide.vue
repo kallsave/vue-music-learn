@@ -1,4 +1,3 @@
- <!-- slide外围必须有一个父元素,因为slide的高度是由外围父元素决定的 -->
 <template>
   <div ref="slide"
     class="vi-slide-wrapper"
@@ -6,15 +5,12 @@
     <div ref="slideGroup"
       class="vi-slide-group">
       <slot>
-        <!-- 默认的场景 -->
-        <!-- 进来的数据要对好格式 -->
         <vi-slide-item
           v-for="(item, index) in data" :key="index"
           :item="item"
           @load-image=loadImage></vi-slide-item>
       </slot>
     </div>
-    <!-- 默认的dots样式 -->
     <template v-if="showDots">
       <slot name="dots"
         :go-to-page="goToPage"
@@ -39,12 +35,9 @@ import ViSlideItem from './vi-slide-item.vue'
 
 const COMPONENT_NAME = 'vi-slide'
 
-// better-scroll原始的事件(不推荐在父组件中使用,会存在嵌套事件触发多次的,主动触发的问题)
 const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
 const EVENT_SCROLL_END = 'scroll-end'
-// 需要传scrollEvents = ['scroll-start']
 const EVENT_SCROLL_START = 'scroll-start'
-// 需要传scrollEvents = ['scroll']
 const EVENT_SCROLL = 'scroll'
 
 // better-scroll原始的scrollEvents事件集合
@@ -55,12 +48,6 @@ const SCROLL_EVENTS = [
   EVENT_SCROLL_START
 ]
 
-// before-scroll-start,scroll-end,touch-end事件是必须监听的
-// before-scroll-start只会在touchstart触发(主动触发的标志)
-// 并且考虑到slide如果外围有slide
-// 需要before-scroll-start时disable外围所有的slide
-// 在scroll-end时enable外围所有的slide
-// scroll-end产生新的change事件判断处于哪一页
 const BIND_SCROLL_EVENTS = [
   EVENT_SCROLL_END,
   EVENT_BEFORE_SCROLL_START,
@@ -73,7 +60,6 @@ const EVENT_TOUCH_SCROLL = 'touch-scroll'
 const SCROLL_STOP_TIME = 2500
 
 const DEFAULT_OPTIONS = {
-  // 多层嵌套会触发多次,所以需要click的场景自主添加
   click: false,
   probeType: 1,
   scrollX: true,
@@ -88,6 +74,7 @@ const DEFAULT_OPTIONS = {
   useTransition: true,
   stopPropagation: false,
   bounceTime: 800,
+  eventPassthrough: 'vertical',
 }
 
 export default {

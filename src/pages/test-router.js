@@ -17,6 +17,7 @@ const ScrollPullUp = () => import('./test/children/scroll-pull-up/scroll-pull-up
 const Input = () => import('./test/children/input/input.vue')
 const BoundaryScroll = () => import('./test/children/boundary-scroll/boundary-scroll.vue')
 const NativeScroll = () => import('./test/children/native-scroll/native-scroll.vue')
+const ScrollHorizontal = () => import('./test/children/scroll-horizontal/scroll-horizontal.vue')
 
 export default {
   path: '/test',
@@ -89,6 +90,10 @@ export default {
     {
       path: '/test/native-scroll',
       component: NativeScroll
+    },
+    {
+      path: '/test/scroll-horizontal',
+      component: ScrollHorizontal
     },
   ]
 }

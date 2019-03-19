@@ -41,7 +41,7 @@ const STATE_GROW = 1
 const EASING_TIME = 600
 const MOMENTUMLIMIT_TIME = 300
 const MOMENTUMLIMIT_DISTANCE = 15
-const AFTER_SHRINK_TIME = 300
+const AFTER_SHRINK_TIME = 100
 
 const TRANSFORM = prefixStyle('transform')
 const TRANSITION = prefixStyle('transition')

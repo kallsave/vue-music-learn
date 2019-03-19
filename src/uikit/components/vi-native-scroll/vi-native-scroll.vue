@@ -39,6 +39,12 @@ export default {
     this._addEventListenerScroll()
   },
   methods: {
+    enable() {
+
+    },
+    disable() {
+
+    },
     _findScroll() {
       this.scroll = this.$refs.scroll
     },
@@ -46,17 +52,27 @@ export default {
       if (window.scrollY) {
         window.scrollTo(0, 0)
       }
-      this.scroll.addEventListener('scroll', (e) => {
-        let position = {
-          x: 0,
-          y: e.target.scrollTop
-        }
-        this.$emit(EVENT_SCROLL, position)
-      }, false)
+      this.scroll.addEventListener('scroll', this._scrollHandler, false)
+    },
+    _removeEventListenerScroll() {
+      this.scroll.removeEventListener('scroll', this._scrollHandler, false)
+    },
+    _scrollHandler(e) {
+      let position = {
+        x: 0,
+        y: e.target.scrollTop
+      }
+      this.$emit(EVENT_SCROLL, position)
     },
     scrollTo(y) {
       this.scroll.scrollTop = y
     },
+    _destroy() {
+      this._removeEventListenerScroll()
+    },
+  },
+  beforeDestroy() {
+    this._destroy()
   }
 }
 </script>
@@ -68,4 +84,5 @@ export default {
   .vi-native-scroll
     height: 100%
     overflow: scroll
+    -webkit-overflow-scrolling: touch
 </style>

@@ -91,7 +91,7 @@ export default {
           path: `/new-music/rank-detail/${item.id}`
         })
       })
-    }
+    },
   }
 }
 </script>

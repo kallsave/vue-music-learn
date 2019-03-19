@@ -4,7 +4,8 @@
       ref="scroll">
       <div class="scroll-content">
         <ul class="list">
-          <li class="item" @click="scrollTo(index)"
+          <li class="item"
+            @click="scrollTo(index)"
             v-for="(item, index) in list" :key="index">{{item}}</li>
         </ul>
       </div>

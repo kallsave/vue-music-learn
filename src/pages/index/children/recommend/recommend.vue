@@ -110,7 +110,6 @@ export default {
           loop: true,
           threshold: 0.5
         },
-        eventPassthrough: 'vertical',
       },
       menuList: [
         {
@@ -198,9 +197,6 @@ export default {
       this._getData(true)
     },
   },
-  destroyed() {
-
-  }
 }
 </script>
 

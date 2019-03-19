@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-03-08 14:51:44
+ * @Last Modified time: 2019-03-18 10:32:58
  */
 
 /**
@@ -180,6 +180,7 @@ export class Debounce {
   }
   destroy() {
     window.clearTimeout(this.timer)
+    this.timer = null
     this.timeSlice = null
   }
 }
