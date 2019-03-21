@@ -12,7 +12,6 @@
 - vi-slide-router-view支持各种场景的$route参数(query参数未完成)
 - vi-slide-router-transition支持各种场景的$route参数
 - 网易严选nav组件
-- native-sticky
 - 阅读createAPI源码
 - 更深入vue源码,阅读vue源码
 - go语言开发后台系统

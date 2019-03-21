@@ -8,14 +8,6 @@
 </template>
 
 <script>
-import {
-  getRect,
-  prefixStyle
-} from '@/common/helpers/dom.js'
-import { mulitDeepClone } from '../../common/helpers/utils.js'
-
-const TRANSFORM = prefixStyle('transform')
-
 const COMPONENT_NAME = 'vi-native-scroll'
 
 const EVENT_SCROLL = 'scroll'

@@ -11,10 +11,8 @@
 
 <script>
 import {
-  getRect,
   prefixStyle
-} from '@/common/helpers/dom.js'
-import { mulitDeepClone } from '../../common/helpers/utils.js'
+} from '../../common/helpers/dom.js'
 
 const TRANSFORM = prefixStyle('transform')
 
