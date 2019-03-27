@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { MUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
+import { MUTABLE_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 export default {
   name: 'MUTABLE_KEEP_ALIVE_NAME',
   data() {

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
+import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { mapGetters, mapMutations } from 'vuex'
 import Player from '@/components/player/player.vue'
 
@@ -112,10 +112,10 @@ export default {
     &.move-right-leave-active
       transition: transform 0.28s $ease-out-in
     &.move-right-leave-to
-      transform: translate3d(-200%, 0, 0)
+      transform: translate3d(-50%, 0, 0)
 
     &.move-left-enter
-      transform: translate3d(-30%, 0, 0)
+      transform: translate3d(-20%, 0, 0)
     &.move-left-enter-active
       transition: transform 0.3s $ease-out-in
     &.move-left-enter-to

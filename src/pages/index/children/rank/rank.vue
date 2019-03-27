@@ -10,7 +10,7 @@
         <ul class="rank-list">
           <li class="item" :key="index"
             v-for="(item, index) in rankList"
-            @click="selectItem($event, item)">
+            @touchstart="selectItem($event, item)">
             <div class="icon">
               <img width="100" height="100" v-lazy="item.picUrl"/>
             </div>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
+import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { getTopList } from '@/api/rank.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'

@@ -25,7 +25,7 @@
             <ul class="hot-key-list">
               <li class="item"
                 :key="index" v-for="(item, index) in hotKey"
-                @click="hotSearch(item)">
+                @touchstart="hotSearch(item)">
                 <span>{{item.k}}</span>
               </li>
             </ul>
@@ -35,7 +35,7 @@
             <h1 class="search-history-title">
               <span class="search-history-text">搜索历史</span>
               <span class="clear-search-history"
-                @click="clearSearchHistoryHandler" >
+                @touchstart="clearSearchHistoryHandler" >
                 <i class="icon-clear"></i>
               </span>
             </h1>
@@ -49,7 +49,7 @@
           <ul class="suggest-list">
             <li class="suggest-item"
               :key="index" v-for="(item, index) in result"
-              @click="selectItem(item)">
+              @touchstart="selectItem(item)">
               <div class="icon">
                 <i :class="getIconClass(item)"></i>
               </div>
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
+import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { getHotKey, search } from '@/api/search.js'
 import { createSong } from '@/common/class/song.js'
 import { Debounce, Throttle } from '@/common/helpers/utils.js'

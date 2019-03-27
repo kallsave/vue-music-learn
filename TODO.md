@@ -60,3 +60,7 @@
 - scroll的边界问题
 - popup用absolute替代fixed,并总是阻止scroll
 - 所有组件,工具函数都要有单元测试
+- 增加登录机制,增加个人中心页面
+- 检查下vi-swipe外部dom使用touchstart
+- .capture
+- 原生scroll长列表下阻止弹窗外部滚动

@@ -6,7 +6,8 @@
       <div class="vi-popup-mask"
         @click="maskClick"
         @touchmove="touchmove($event)">
-        <div class="vi-popup-mask-gray" v-show="isShowMask && !$slots.mask"></div>
+        <div class="vi-popup-mask-gray"
+          v-show="isShowMask && !$slots.mask"></div>
         <!-- 自定义背景板 -->
         <!-- slot的局限性在于只在两级组件中使用,不能多级组件传递 -->
         <slot name="mask"></slot>

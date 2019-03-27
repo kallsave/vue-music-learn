@@ -26,12 +26,12 @@
             v-if="icon === 'svg-correct' && isVisible">
             <svg>
               <path class="vi-toast-svg-correct"
-                transform="scale(0.25),translate(150 90)"
+                transform="scale(0.25)"
                 fill="transparent"
                 :stroke="iconColor"
                 stroke-width="25"
                 stroke-linecap="round"
-                d="M10 80 L62.5 137.5 A5 5, 0 0,0 70 140 L190 20"></path>
+                d="M160 160 L212.5 217.5 A5 5, 0 0,0 220 220 L340 100"></path>
             </svg>
           </div>
         </transition>
@@ -111,8 +111,8 @@ export default {
 </script>
 
 <style lang="stylus">
-@import "~@/common/stylus/var/color.styl"
-@import "~@/common/stylus/var/font-size.styl"
+@import "../../common/stylus/var/color.styl"
+@import "../../common/stylus/var/font-size.styl"
 @import "./fonts/vi-toast-icon.css"
 
 .vi-toast
@@ -153,7 +153,7 @@ export default {
     i[class^="vi-toast-icon"]
       box-sizing: border-box
       text-align: center
-      display: bisLockScroll
+      display: block
       color: #fff
     .vi-toast-correct-contain
       .vi-toast-correct
@@ -163,8 +163,7 @@ export default {
       height: 80px
       position: relative
       svg
-        display: bisLockScroll
-        height: 100%
+        display: block
         margin: 0
         padding: 0
     .vi-toast-error-contain

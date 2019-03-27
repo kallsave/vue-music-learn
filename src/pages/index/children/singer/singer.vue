@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
+import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import Singer from '@/common/class/singer.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { getSingerList } from '@/api/singer.js'

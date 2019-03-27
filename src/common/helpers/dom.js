@@ -31,6 +31,11 @@ export function getData(el, name) {
   return el.getAttribute(prefix + name)
 }
 
+export function setData(el, value) {
+  const prefix = 'data-'
+  el.setAttribute(prefix + name, value)
+}
+
 // getRect是获取相对父元素的位置,如果想获取相对页面的位置
 // 请使用getBoundingClientRect
 export function getRect(el) {

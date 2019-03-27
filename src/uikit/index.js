@@ -18,7 +18,6 @@ import {
   ViActionSheet,
   ViSwipe,
   ViNativeScroll,
-  BetterSticky
 } from './module.js'
 
 const components = [

@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
+import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { mapGetters } from 'vuex'
 import MHeader from './components/m-header/m-header.vue'
 import Tab from './components/tab/tab.vue'

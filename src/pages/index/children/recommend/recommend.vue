@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { MUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/common/config/keep-alive-name.js'
+import { MUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { getRecommend, getDiscList } from '@/api/recommend.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
@@ -132,14 +132,13 @@ export default {
     }
   },
   mounted() {
+    this.$createViToast({
+      icon: 'correct',
+      scale: 0.8
+    }).show()
     this.$nextTick(() => {
       this.$refs.scroll.autoPullDownRefresh()
     })
-
-    // this.$createViToast({
-    //   icon: 'svg-correct',
-    //   duration: 2000
-    // }).show()
   },
   methods: {
     ...mapMutations({
