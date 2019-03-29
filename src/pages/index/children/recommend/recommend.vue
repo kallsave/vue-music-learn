@@ -132,10 +132,11 @@ export default {
     }
   },
   mounted() {
-    this.$createViToast({
-      icon: 'correct',
-      scale: 0.8
-    }).show()
+    this.$toast.show()
+    // this.$createViToast({
+    //   icon: 'correct',
+    //   scale: 0.8
+    // }).show()
     this.$nextTick(() => {
       this.$refs.scroll.autoPullDownRefresh()
     })

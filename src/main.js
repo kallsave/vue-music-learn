@@ -49,4 +49,10 @@ new Vue({
   router: router,
   store: store,
   render: h => h(App),
+  beforeMount() {
+    Vue.prototype.$toast = this.$createViToast({
+      icon: 'loading',
+      scale: 0.8
+    })
+  }
 })

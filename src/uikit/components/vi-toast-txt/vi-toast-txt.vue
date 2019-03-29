@@ -6,7 +6,7 @@
     <transition name="vi-toast-txt">
       <div class="vi-toast-txt"
         v-show="isVisible"
-        :style="{'z-index': zIndex}">
+        :style="txtStyle">
         {{txt}}
       </div>
     </transition>
@@ -38,6 +38,12 @@ export default {
     isLockScroll: {
       type: Boolean,
       default: true
+    },
+    txtStyle: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
 }
@@ -45,10 +51,10 @@ export default {
 
 <style lang="stylus">
 .vi-toast-txt
-  border-box: border-box
-  padding: 0 20px
+  box-sizing: border-box
+  padding: 4px 20px
   color: #fff
-  line-height: 42px
+  line-height: 30px
   border-radius: 9px
   background: rgba(0, 0, 0, .7)
   text-align: center

@@ -25,10 +25,10 @@
         <slot></slot>
       </div>
       <!-- 不是居中的content,自定义样式,或者可以做关闭按钮小组件插槽 -->
-      <template v-if="$slots.customContent">
+      <template v-if="$slots['custom-content']">
         <div class="vi-popup-custom-content"
           @touchmove.prevent>
-          <slot name="customContent"></slot>
+          <slot name="custom-content"></slot>
         </div>
       </template>
     </div>

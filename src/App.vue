@@ -100,7 +100,6 @@ export default {
 .app
   background: $color-background
   .router-view
-    will-change: transform
     &.move-right-enter
       transform: translate3d(100%, 0, 0)
     &.move-right-enter-active

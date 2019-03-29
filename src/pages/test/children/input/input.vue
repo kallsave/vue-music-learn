@@ -1,17 +1,16 @@
 <template>
   <div class="input-page">
+    <div class="box"
+      v-for="(item, index) in list"
+      :key="index">{{item}}</div>
+    <div class="fixed-bottom" @click="clickHandler"></div>
     <vi-popup ref="popup" @mask-click="hidePopup"></vi-popup>
     <div ref="inputWrapper"
-      class="input-wrapper">
+        class="input-wrapper">
       <search-box ref="input"
         placeholder="输入"
         @focusout="blurHandler"></search-box>
     </div>
-    <div class="box"
-      v-for="(item, index) in list"
-      :key="index"
-      @touchend="clickHandler($event, item)">{{item}}</div>
-    <!-- <div class="fixed-bottom"></div> -->
   </div>
 </template>
 
@@ -24,7 +23,7 @@ export default {
   },
   data() {
     return {
-      list: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      list: [0, 1, 2, 3, 4, 5, 6, 7, 8],
       query: '',
       isShowInput: true
     }
@@ -44,14 +43,13 @@ export default {
   methods: {
     clickHandler(e, item) {
       e.preventDefault()
-      if (item === 2) {
-        this.$refs.popup.show()
-        this.$refs.inputWrapper.style.bottom = `${0}px`
-        this.$refs.input.$refs.input.focus()
-      }
+      this.$refs.popup.show()
+      this.$refs.inputWrapper.style.bottom = `${0}px`
+      // this.$refs.input.$refs.input.focus()
     },
     blurHandler() {
       this.$refs.inputWrapper.style.bottom = `${-100}px`
+      this.$refs.popup.hide()
     },
     hidePopup() {
       this.$refs.popup.hide()
@@ -64,7 +62,7 @@ export default {
 .input-page
   background: #f4f4f4
   padding-bottom: 60px
-  position: relative
+  overflow: hidden
   .box
     line-height: 100px
     height: 100px
@@ -74,7 +72,7 @@ export default {
     margin-bottom: 20px
   .input-wrapper
     position: fixed
-    width: 100%
+    width: 100vw
     bottom: -100px
     transition: all 300ms
     z-index: 10000

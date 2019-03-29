@@ -17,17 +17,10 @@
 - go语言开发后台系统
 - 音量播放器组件开发
 - range组件
-- pipe理念
-- mand源码
-- 阅读better-scroll源码
-- 调研其他scroll库
-- 自己写一个scroll库
 - 用anime.js重写动画
 - sticky-ele增加mergeEleKey
-- weui源码
 - sticky目前mergeEleKey只能支持两个,mergeEleKey的场景不支持切换
 - svg的viewport
-- easy-html-webpack-plugin增加模板替换功能
 - 打包部署
 - 调研css和js统一
 - 拖拽指令
@@ -51,9 +44,6 @@
 - sticky去掉scroll
 - 深入svg
 - cube-ui的scroll做了新的更新,涉及到isInTransition
-- render函数
-(https://cn.vuejs.org/v2/guide/render-function.html)
-- render的slot,props,on,tag等等
 - popup的mixin
 - ease函数原理
 - 修复searchHistory的bug
@@ -64,3 +54,4 @@
 - 检查下vi-swipe外部dom使用touchstart
 - .capture
 - 原生scroll长列表下阻止弹窗外部滚动
+- 自适应高度textarea
