@@ -19,7 +19,6 @@
 - range组件
 - 用anime.js重写动画
 - sticky-ele增加mergeEleKey
-- sticky目前mergeEleKey只能支持两个,mergeEleKey的场景不支持切换
 - svg的viewport
 - 打包部署
 - 调研css和js统一
@@ -55,3 +54,4 @@
 - .capture
 - 原生scroll长列表下阻止弹窗外部滚动
 - 自适应高度textarea
+- scroll-down-refresh用箭头做默认slot

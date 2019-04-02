@@ -31,7 +31,7 @@ export default {
       this.timer = null
     }
   },
-  destroyed() {
+  beforeDestroy() {
     this.clearTimer()
   }
 }

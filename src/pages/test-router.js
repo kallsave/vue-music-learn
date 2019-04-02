@@ -13,6 +13,7 @@ const Popup = () => import('./test/children/popup/popup.vue')
 const Swipe = () => import('./test/children/swipe/swipe.vue')
 const Touch = () => import('./test/children/touch/touch.vue')
 const ScrollPullDownToutiao = () => import('./test/children/scroll-pull-down/scroll-pull-down-toutiao.vue')
+const ScrollPullDownBubble = () => import('./test/children/scroll-pull-down/scroll-pull-down-bubble.vue')
 const ScrollPullUp = () => import('./test/children/scroll-pull-up/scroll-pull-up.vue')
 const Input = () => import('./test/children/input/input.vue')
 const BoundaryScroll = () => import('./test/children/boundary-scroll/boundary-scroll.vue')
@@ -74,6 +75,10 @@ export default {
     {
       path: '/test/scroll-pull-down-toutiao',
       component: ScrollPullDownToutiao
+    },
+    {
+      path: '/test/scroll-pull-down-bubble',
+      component: ScrollPullDownBubble
     },
     {
       path: '/test/scroll-pull-up',

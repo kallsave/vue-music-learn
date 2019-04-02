@@ -313,7 +313,7 @@ export default {
       this.shrinkTimer = null
     }
   },
-  destroyed() {
+  beforeDestroy() {
     this.swipeGroup && this.swipeGroup.removeItem(this)
     this.clearTimer()
   }

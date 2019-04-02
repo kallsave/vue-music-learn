@@ -2,12 +2,12 @@
   <div class="collapse">
     <vi-collapse
       @transition-end="transitionEnd">
-      <template slot="collapse-content" slot-scope="scoped">
-        <div class="content" @click="scoped.toggle"></div>
+      <template slot="collapse-content" slot-scope="props">
+        <div class="content" @click="props.toggle"></div>
       </template>
-      <template slot="collapse-footer" slot-scope="scoped">
+      <template slot="collapse-footer" slot-scope="props">
         <div class="box"
-          @click="scoped.toggle">{{scoped.isCollapse}}</div>
+          @click="props.toggle">{{props.isCollapse}}</div>
       </template>
     </vi-collapse>
   </div>

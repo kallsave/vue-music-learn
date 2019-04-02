@@ -1,5 +1,5 @@
 <template>
-  <div class="scroll-pull-down">
+  <div class="scroll-pull-up">
     <div class="scroll-wrapper">
       <vi-scroll
         ref="scroll"
@@ -7,26 +7,24 @@
         :data="list"
         @pulling-down="pullingDownHandler"
         @pulling-up="pullingUpHandler">
-        <!-- <template slot="pull-down" slot-scope="props">
-          <div class="pull-down-content"
-            :style="props.pullDownStyle">
-            <div class="pull-down-normal"
-              v-show="props.pullDownState == 'normal'"
-              :style="{paddingTop: props.pullDownNormalTop + 'px'}">
-              <span :class="{rotate: props.pullDownNormalTop > 0}">↓</span>
-            </div>
-            <div class="pull-down-lock"
-              v-show="props.pullDownState == 'locking'">
-              <vi-loading :scale="0.8"></vi-loading>
-            </div>
-            <transition name="finish">
-              <div class="pull-down-finish"
-                v-show="props.pullDownState == 'finish'">
-                <span class="refresh-text">今日头条推荐引擎有x条更新</span>
-              </div>
-            </transition>
+        <template slot="pull-down" slot-scope="props">
+          :style="props.pullDownStyle">
+          <div class="pull-down-normal"
+            v-show="props.pullDownState == 'normal'"
+            :style="{paddingTop: props.pullDownNormalTop + 'px'}">
+            <span :class="{rotate: props.pullDownNormalTop > 0}">↓</span>
           </div>
-        </template> -->
+          <div class="pull-down-lock"
+            v-show="props.pullDownState == 'locking'">
+            <vi-loading :scale="0.8"></vi-loading>
+          </div>
+          <transition name="finish">
+            <div class="pull-down-finish"
+              v-show="props.pullDownState == 'finish'">
+              <span class="refresh-text">今日头条推荐引擎有x条更新</span>
+            </div>
+          </transition>
+        </template>
         <div class="scroll-content">
           <ul class="list">
             <li class="item"
@@ -51,16 +49,16 @@ export default {
         probeType: 3,
         click: true,
         scrollbar: true,
-        pullDownRefresh: false,
-        // pullDownRefresh: {
-        //   // 阀值
-        //   threshold: 80,
-        //   // 滞留的位置
-        //   stop: 56,
-        //   txt: '更新成功了',
-        //   // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
-        //   stopTime: 2000
-        // },
+        // pullDownRefresh: false,
+        pullDownRefresh: {
+          // 阀值
+          threshold: 80,
+          // 滞留的位置
+          stop: 50,
+          txt: '更新成功了',
+          // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
+          stopTime: 2000
+        },
         directionLockThreshold: 0,
         pullUpLoad: {
           // 距离底部threshold触发下拉加载事件
@@ -77,14 +75,14 @@ export default {
     }
   },
   mounted() {
-    this.$refs.scroll.autoPullDownRefresh()
+    // this.$refs.scroll.autoPullDownRefresh()
   },
   methods: {
     pullingDownHandler() {
       window.setTimeout(() => {
         this.$refs.scroll.deblocking()
         window.setTimeout(() => {
-          this.$refs.scroll.closePullDown()
+          this.$refs.scroll.closePullDownRefresh()
         }, 3000)
       }, 2000)
     },
@@ -106,45 +104,40 @@ export default {
 </script>
 
 <style lang="stylus" modules>
-.scroll-pull-down
+.scroll-pull-up
   height: 100vh
   background: #f4f4f4
   .scroll-wrapper
     height: 100%
     position: relative
     color: red
-    .pull-down-content
-      position: absolute
-      left: 0
-      right: 0
-      z-index: -1
-      .pull-down-normal
-        font-size: 30px
-        line-height: 40px
-        height: 40px
-        span
-          display: inline-block
-          line-height: 1
-          transition: all 0.3s
-          color: #666
-          padding: 5px 0
-          &.rotate
-            transform: rotate(180deg)
-      .pull-down-lock
-        padding: 8px 0
-      .pull-down-finish
-        height: 40px
-        margin: 0 auto
-        line-height: 40px
+    .pull-down-normal
+      font-size: 30px
+      line-height: 40px
+      height: 40px
+      span
+        display: inline-block
+        line-height: 1
+        transition: all 0.3s
+        color: #666
         padding: 5px 0
-        color: #498ec2
-        background-color: #d6eaf8
-        &.finish-enter
-          width: 70%
-        &.finish-enter-active
-          transition: all .5s
-        &.finish-enter-to
-          width: 100%
+        &.rotate
+          transform: rotate(180deg)
+    .pull-down-lock
+      padding: 8px 0
+    .pull-down-finish
+      height: 40px
+      margin: 0 auto
+      line-height: 40px
+      padding: 5px 0
+      color: #498ec2
+      background-color: #d6eaf8
+      &.finish-enter
+        width: 70%
+      &.finish-enter-active
+        transition: all .5s
+      &.finish-enter-to
+        width: 100%
     .scroll-content
       .list
         background: #ccc

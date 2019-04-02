@@ -76,11 +76,10 @@ export default {
       this.isCollapse = !this.isCollapse
     },
     transitionEndCallBack() {
-      console.log(8989)
       this.$emit(EVENT_TRANSITION_END, this.isCollapse)
     }
   },
-  destroyed() {
+  beforeDestroy() {
     this._removeEventListener()
   }
 }

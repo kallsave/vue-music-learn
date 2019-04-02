@@ -130,7 +130,7 @@ export default {
       this.enabled = false
     },
   },
-  destroyed() {
+  beforeDestroy() {
     this.$el.removeEventListener('touchstart', this.listenerTouchstartHandler, false)
     this.$el.removeEventListener('touchend', this.listenerTouchendHandler, false)
   },

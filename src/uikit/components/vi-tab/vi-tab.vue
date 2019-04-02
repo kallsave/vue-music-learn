@@ -89,7 +89,7 @@ export default {
       }
     },
   },
-  destroyed() {
+  beforeDestroy() {
     window.removeEventListener('resize', this._resizeHandler, false)
   },
 }

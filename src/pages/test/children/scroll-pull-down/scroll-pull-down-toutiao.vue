@@ -6,24 +6,21 @@
         :options="options"
         @pulling-down="onPullingDown">
         <template slot="pull-down" slot-scope="props">
-          <div class="pull-down-content"
-            :style="props.pullDownStyle">
-            <div class="pull-down-normal"
-              v-show="props.pullDownState == 'normal'"
-              :style="{paddingTop: props.pullDownNormalTop + 'px'}">
-              <span :class="{rotate: props.pullDownNormalTop > 0}">↓</span>
-            </div>
-            <div class="pull-down-lock"
-              v-show="props.pullDownState == 'locking'">
-              <vi-loading :scale="0.8"></vi-loading>
-            </div>
-            <transition name="finish">
-              <div class="pull-down-finish"
-                v-show="props.pullDownState == 'finish'">
-                <span class="refresh-text">今日头条推荐引擎有x条更新</span>
-              </div>
-            </transition>
+          <div class="pull-down-normal"
+            v-show="props.pullDownState == 'normal'"
+            :style="{paddingTop: props.pullDownNormalTop + 'px'}">
+            <span :class="{rotate: props.pullDownNormalTop > 0}">↓</span>
           </div>
+          <div class="pull-down-lock"
+            v-show="props.pullDownState == 'locking'">
+            <vi-loading :scale="0.8"></vi-loading>
+          </div>
+          <transition name="finish">
+            <div class="pull-down-finish"
+              v-show="props.pullDownState == 'finish'">
+              <span class="refresh-text">今日头条推荐引擎有x条更新</span>
+            </div>
+          </transition>
         </template>
         <div class="scroll-content">
           <div class="item"
@@ -35,14 +32,8 @@
 </template>
 
 <script>
-import Bubble from './components/vi-scroll-bubble.vue'
-import loading from './components/vi-scroll-loading'
 
 export default {
-  components: {
-    Bubble,
-    loading
-  },
   data() {
     return {
       list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
@@ -86,38 +77,33 @@ export default {
     height: 100%
     position: relative
     color: red
-    .pull-down-content
-      position: absolute
-      left: 0
-      right: 0
-      z-index: -1
-      .pull-down-normal
-        font-size: 30px
-        line-height: 40px
-        height: 40px
-        span
-          display: inline-block
-          line-height: 1
-          transition: all 0.3s
-          color: #666
-          padding: 5px 0
-          &.rotate
-            transform: rotate(180deg)
-      .pull-down-lock
-        padding: 8px 0
-      .pull-down-finish
-        height: 40px
-        margin: 0 auto
-        line-height: 40px
-        padding: 8px 0
-        color: #498ec2
-        background-color: #d6eaf8
-        &.finish-enter
-          width: 70%
-        &.finish-enter-active
-          transition: all .5s
-        &.finish-enter-to
-          width: 100%
+    .pull-down-normal
+      font-size: 30px
+      line-height: 40px
+      height: 40px
+      span
+        display: inline-block
+        line-height: 1
+        transition: all 0.3s
+        color: #666
+        padding: 5px 0
+        &.rotate
+          transform: rotate(180deg)
+    .pull-down-lock
+      padding: 8px 0
+    .pull-down-finish
+      height: 40px
+      margin: 0 auto
+      line-height: 40px
+      padding: 8px 0
+      color: #498ec2
+      background-color: #d6eaf8
+      &.finish-enter
+        width: 70%
+      &.finish-enter-active
+        transition: all .5s
+      &.finish-enter-to
+        width: 100%
     .scroll-content
       background: #ccc
       .item

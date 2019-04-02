@@ -3,10 +3,14 @@
     <div class="box"
       v-for="(item, index) in list"
       :key="index">{{item}}</div>
-    <div class="fixed-bottom" @click="clickHandler"></div>
+    <div class="fixed-bottom"
+      @click="clickHandler"></div>
+    <search-box ref="input"
+      placeholder="输入"
+      @focusout="blurHandler"></search-box>
     <vi-popup ref="popup" @mask-click="hidePopup"></vi-popup>
     <div ref="inputWrapper"
-        class="input-wrapper">
+      class="input-wrapper">
       <search-box ref="input"
         placeholder="输入"
         @focusout="blurHandler"></search-box>
@@ -45,7 +49,7 @@ export default {
       e.preventDefault()
       this.$refs.popup.show()
       this.$refs.inputWrapper.style.bottom = `${0}px`
-      // this.$refs.input.$refs.input.focus()
+      this.$refs.input.$refs.input.focus()
     },
     blurHandler() {
       this.$refs.inputWrapper.style.bottom = `${-100}px`
@@ -60,9 +64,11 @@ export default {
 
 <style lang="stylus" modules>
 .input-page
+  height: calc(100vh - 60px)
   background: #f4f4f4
   padding-bottom: 60px
-  overflow: hidden
+  overflow: scroll
+  -webkit-overflow-scrolling: touch
   .box
     line-height: 100px
     height: 100px
@@ -94,5 +100,6 @@ export default {
     width: 100%
     height: 60px
     background: red
+    z-index: 100
 
 </style>

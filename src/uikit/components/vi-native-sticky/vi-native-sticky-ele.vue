@@ -53,7 +53,7 @@ export default {
       delete this.ViNativeSticky.stickyMap[this.eleKey]
     },
   },
-  destroyed() {
+  beforeDestroy() {
     this._deleteEleKey()
   }
 }

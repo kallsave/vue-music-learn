@@ -28,7 +28,7 @@
   "dependencies": {
     "assign-deep": "^1.0.0",
     "axios": "^0.18.0",
-    "better-scroll": "^1.14.1",
+    "better-scroll": "^1.15.1",
     "create-keyframe-animation": "^0.1.0",
     "cube-ui": "^1.12.6",
     "js-base64": "^2.5.0",
@@ -80,6 +80,7 @@
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.2.1",
+    "preload-webpack-plugin": "^2.3.0",
     "rimraf": "^2.6.0",
     "semver": "^5.6.0",
     "shelljs": "^0.7.6",

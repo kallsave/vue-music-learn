@@ -292,7 +292,7 @@ export default {
       this.slide.refresh()
     }
   },
-  destroyed() {
+  beforeDestroy() {
     this.timer = null
     this._destroySlide()
     window.removeEventListener('resize', this._resizeHandler, false)

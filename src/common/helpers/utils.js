@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-03-18 10:32:37
+ * @Last Modified time: 2019-04-02 15:34:22
  */
 
 /**
@@ -30,8 +30,12 @@ export function padZero(num, n = 2) {
  * @returns
  */
 function getRandomInt(min, max) {
+  if (min - max > 0) {
+    var temp = min
+    min = max
+    max = temp
+  }
   // Math.random()不包括1,有缺陷
-  // Matho.random的作用
   return Math.random() * (max - min + 1) + min | 0
 }
 

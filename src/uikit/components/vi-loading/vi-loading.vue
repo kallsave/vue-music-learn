@@ -101,7 +101,7 @@ export default {
       }
     }
   },
-  destroyed() {
+  beforeDestroy() {
     this._removeEventListener()
     this.showPromise = null
     this.hidePromise = null

@@ -61,7 +61,7 @@ export default {
       delete this.ViSticky.stickyMap[this.eleKey]
     },
   },
-  destroyed() {
+  beforeDestroy() {
     this._deleteEleKey()
   }
 }

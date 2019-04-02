@@ -20,12 +20,12 @@
             @load-image="loadImage">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->
-            <template slot="dots" slot-scope="scope">
+            <template slot="dots" slot-scope="props">
               <div class="slide-dots">
                 <span class="slide-dot"
-                  :class="{active: scope.currentPageIndex === index }"
+                  :class="{active: props.currentPageIndex === index }"
                   v-for="(item, index) in recommends" :key="index"
-                  @click.stop="scope.goToPage(index)"></span>
+                  @click.stop="props.goToPage(index)"></span>
               </div>
             </template>
             <div v-for="(item, index) in recommends" :key="index">
@@ -132,11 +132,6 @@ export default {
     }
   },
   mounted() {
-    this.$toast.show()
-    // this.$createViToast({
-    //   icon: 'correct',
-    //   scale: 0.8
-    // }).show()
     this.$nextTick(() => {
       this.$refs.scroll.autoPullDownRefresh()
     })

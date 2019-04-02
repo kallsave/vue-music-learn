@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const PreloadWebpackPlugin = require('preload-webpack-plugin')
 // cube-ui的使用的插件
 // const TransformModulesPlugin = require('webpack-transform-modules-plugin')
 
@@ -90,6 +91,21 @@ module.exports = {
   },
   plugins: [
     // new TransformModulesPlugin()
+    new PreloadWebpackPlugin({
+      rel: 'prefetch',
+      as(entry) {
+        if (/\.css$/.test(entry)) {
+          return 'style'
+        }
+        if (/\.woff$/.test(entry)) {
+          return 'font'
+        }
+        if (/\.png$/.test(entry)) {
+          return 'image'
+        }
+        return 'script'
+      }
+    }),
   ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue

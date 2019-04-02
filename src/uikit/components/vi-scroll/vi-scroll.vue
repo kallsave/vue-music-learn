@@ -22,29 +22,25 @@
       </div>
     </div>
     <div ref="pullDown"
-      class="vi-scroll-pull-down-wrapper"
-      v-if="pullDownRefresh">
+      class="vi-scroll-pull-down"
+      v-if="pullDownRefresh"
+      :style="pullDownStyle">
       <slot name="pull-down"
         :pull-down-refresh="pullDownRefresh"
-        :pull-down-style="pullDownStyle"
         :pull-down-state="pullDownState"
         :pull-down-state-list="pullDownStateList"
         :pull-down-normal-top="pullDownNormalTop"
         :pull-down-scroll-y="pullDownScrollY">
-          <div class="vi-scroll-pull-down-content"
-            v-if="pullDownRefresh"
-            :style="pullDownStyle">
-            <div class="vi-scroll-pull-down-normal"
-              v-show="pullDownState === pullDownStateList[0]">
-              <bubble class="bubble" :y="pullDownNormalTop"></bubble>
-            </div>
-            <div class="vi-scroll-pull-down-lock"
-              v-show="pullDownState === pullDownStateList[1]">
-              <vi-loading :scale="0.8"></vi-loading>
-            </div>
-            <div class="vi-scroll-pull-down-finish"
-              v-show="pullDownState === pullDownStateList[2]">{{pullDownRefresh.txt}}</div>
+          <div class="vi-scroll-pull-down-normal"
+            v-show="pullDownState === pullDownStateList[0]">
+            <bubble class="bubble" :y="pullDownNormalTop"></bubble>
           </div>
+          <div class="vi-scroll-pull-down-lock"
+            v-show="pullDownState === pullDownStateList[1]">
+            <vi-loading :scale="0.8"></vi-loading>
+          </div>
+          <div class="vi-scroll-pull-down-finish"
+            v-show="pullDownState === pullDownStateList[2]">{{pullDownRefresh.txt}}</div>
       </slot>
     </div>
   </div>
@@ -253,7 +249,6 @@ export default {
         extraOptions.pullUpLoad = this.pullUpLoad
       }
       let options = mulitDeepClone({}, DEFAULT_OPTIONS, extraOptions, this.options)
-
       if (options.scrollX && !options.scrollY) {
         addClass(this.$refs.content, 'vi-scroll-x')
       }
@@ -294,7 +289,7 @@ export default {
     },
     // 计算pull-down-content的高度,并且初始化它的top
     _calculatelPullDownContentHeight() {
-      const pullDownContent = this.$refs.pullDown.firstChild
+      const pullDownContent = this.$refs.pullDown
       this.pullDownHeight = getRect(pullDownContent).height
       this.pullDownContentStyle = pullDownContent.style
       this.pullDownContentStyle[TRANSITION_PROPERTY] = 'top'
@@ -499,28 +494,24 @@ export default {
         height: 40px
         line-height: 40px
         padding: 5px 0
-  .vi-scroll-pull-down-wrapper
+  .vi-scroll-pull-down
     text-align: center
-    .vi-scroll-pull-down-content
-      position: absolute
-      left: 0
-      right: 0
-      top: 0
-      display: flex
-      justify-content: center
-      align-items: center
-      z-index: -1
-      .vi-scroll-pull-down-normal
-        box-sizing: content-box
-        height: 48px
-        padding-top: 8px
-      .vi-scroll-pull-down-lock
-        box-sizing: content-box
-        width: 100%
-        padding: 8px 0
-      .vi-scroll-pull-down-finish
-        box-sizing: content-box
-        padding: 8px 0
-        line-height: 40px
+    position: absolute
+    left: 0
+    right: 0
+    top: 0
+    z-index: -1
+    .vi-scroll-pull-down-normal
+      box-sizing: content-box
+      height: 48px
+      padding-top: 8px
+    .vi-scroll-pull-down-lock
+      box-sizing: content-box
+      width: 100%
+      padding: 8px 0
+    .vi-scroll-pull-down-finish
+      box-sizing: content-box
+      padding: 8px 0
+      line-height: 40px
 
 </style>
