@@ -19,3 +19,11 @@
 - 抓包
 - pipe理念
 - ArrayBuffer
+- gitlab自动化部署
+- Node.js线上服务器部署与发布
+- 基于websocket的火拼俄罗斯
+- fastclick实现原理
+- hammer.js
+- 慕课网轮播图
+- Jenkins+Ansible+Gitlab自动化部署三剑客
+- 响应式

@@ -55,3 +55,4 @@
 - 原生scroll长列表下阻止弹窗外部滚动
 - 自适应高度textarea
 - scroll-down-refresh用箭头做默认slot
+- 触发transition的条件: if,show,动态组件,

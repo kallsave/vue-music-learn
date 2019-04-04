@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-04-02 15:34:22
+ * @Last Modified time: 2019-04-04 08:22:54
  */
 
 /**
@@ -149,10 +149,10 @@ export class Throttle {
  * @returns
  */
 export function getUrlParam(currentUrl = window.location.href) {
-  if (currentUrl.indexOf('?') === -1) {
-    return {}
-  }
   let result = {}
+  if (currentUrl.indexOf('?') === -1) {
+    return result
+  }
   currentUrl = currentUrl.replace(/.*\?/g, '')
   if (currentUrl.length === 0) {
     return result

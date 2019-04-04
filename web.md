@@ -51,7 +51,6 @@ better-scroll文档
 
 部署工具
 ------------
-
 [gitlab-ci.yml配置任务](https://fennay.github.io/gitlab-ci-cn/gitlab-ci-yaml.html)
 
 [gitlab文档](https://docs.gitlab.com.cn)

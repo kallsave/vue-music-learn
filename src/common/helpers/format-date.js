@@ -31,15 +31,15 @@ function padLeftZero(str) {
 }
 
 // 倒计时,最大时间单位:天
-export function getDHMS(interval) {
-  let seconds = interval % 60
-  let minutes = (interval - seconds) % (60 * 60) / 60
-  let hours = (interval - seconds - minutes * 60) % (60 * 60 * 24) / (60 * 60)
-  let days = interval / (60 * 60 * 24) | 0
-  return {
-    days: padLeftZero(days),
-    hours: padLeftZero(hours),
-    minutes: padLeftZero(minutes),
-    seconds: padLeftZero(seconds)
+function getCountDownDHMS(secondsDifference) {
+  if (secondsDifference < 0) {
+    return '00:00:00:00'
   }
+
+  let seconds = secondsDifference % 60
+  let minutes = (secondsDifference - seconds) % (60 * 60) / 60
+  let hours = (secondsDifference - seconds - minutes * 60) % (60 * 60 * 24) / (60 * 60)
+  let days = secondsDifference / (60 * 60 * 24) | 0
+
+  return `${padLeftZero(days)}:${padLeftZero(hours)}:${padLeftZero(minutes)}:${padLeftZero(seconds)}`
 }
