@@ -1,0 +1,8 @@
+// https://my.vultr.com/subs/?SUBID=23885272
+// https://www.lcgod.com/atc_91
+ip: 96.30.199.199
+port: 9404
+password:
+加密方式： aes-256-cfb
+
+
