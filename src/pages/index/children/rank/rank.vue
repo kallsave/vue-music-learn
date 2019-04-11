@@ -10,7 +10,7 @@
         <ul class="rank-list">
           <li class="item" :key="index"
             v-for="(item, index) in rankList"
-            @touchstart="selectItem($event, item)">
+            @click="selectItem($event, item)">
             <div class="icon">
               <img width="100" height="100" v-lazy="item.picUrl"/>
             </div>

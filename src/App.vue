@@ -109,7 +109,7 @@ export default {
 
     &.move-right-leave
     &.move-right-leave-active
-      transition: transform 0.28s $ease-out-in
+      transition: transform 0.3s $ease-out-in
     &.move-right-leave-to
       transform: translate3d(-50%, 0, 0)
 
@@ -123,7 +123,7 @@ export default {
     &.move-left-leave
     &.move-left-leave-active
       transform: translate3d(100%, 0, 0)
-      transition: transform 0.28s $ease-out-in
+      transition: transform 0.3s $ease-out-in
     &.move-left-leave-to
       transform: translate3d(100%, 0, 0)
 </style>

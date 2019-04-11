@@ -4,5 +4,7 @@ ip: 96.30.199.199
 port: 9404
 password:
 加密方式： aes-256-cfb
+协议: auth_sha1_v4
+混淆: tls.2_ticket_auth
 
 

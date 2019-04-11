@@ -44,9 +44,44 @@
             class="slide-router-view"
             ref="viSlideRouterView"
             :scroll-events="['scroll']"
-            @index-change="indexChange"
+            @index-change="changePage"
             @scroll="slideScrollHander"
           ></vi-slide-router-view>
+        </template>
+        <template v-else-if="slideRouterMode === slideRouterModeList[2]">
+          <vi-native-sticky-ele>
+            <vi-tab ref="tab"
+              style="background: #222"
+              :slider-style="sliderStyle">
+              <vi-tab-item
+                v-for="(item, index) in tabList"
+                :key="index"
+                :selected="index === currentIndex"
+                active-class="customer-color"
+                @click.native="tabItemClick(index)">{{item}}</vi-tab-item>
+            </vi-tab>
+           </vi-native-sticky-ele>
+          <vi-slide
+            class="slide-view"
+            ref="viSlideRouterView"
+            :options="slideViewOptions"
+            :scroll-events="['scroll']"
+            @change-page="changePage"
+            @scroll="slideScrollHander"
+          >
+          <vi-slide-item>
+            <recommend></recommend>
+          </vi-slide-item>
+          <vi-slide-item>
+            <singer></singer>
+          </vi-slide-item>
+          <vi-slide-item>
+            <rank></rank>
+          </vi-slide-item>
+          <vi-slide-item>
+            <search></search>
+          </vi-slide-item>
+          </vi-slide>
         </template>
       </vi-scroll>
     </vi-native-sticky>
@@ -64,13 +99,17 @@ const Singer = () => import(/* webpackChunkName: "Singer" */ './children/singer/
 const Rank = () => import(/* webpackChunkName: "Rank" */ './children/rank/rank.vue')
 const Search = () => import(/* webpackChunkName: "Search" */ './children/search/search.vue')
 
-const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view']
+const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view', 'vi-slide-view']
 
 export default {
   name: MUTABLE_KEEP_ALIVE_NAME,
   components: {
     MHeader,
     Tab,
+    Recommend,
+    Singer,
+    Rank,
+    Search
   },
   data() {
     return {
@@ -88,6 +127,10 @@ export default {
         probeType: 3,
         click: true,
       },
+      slideViewOptions: {
+        probeType: 3,
+        click: true,
+      },
       sliderStyle: {
         transition: 'none'
       },
@@ -100,11 +143,12 @@ export default {
     ])
   },
   methods: {
-    indexChange(index) {
+    changePage(index) {
       this.currentIndex = index
     },
     tabItemClick(index) {
-      this.$refs.viSlideRouterView.changePage(index)
+      // this.$refs.viSlideRouterView.goToPage(index)
+      this.$refs.viSlideRouterView.goToPage(index)
     },
     slideScrollHander(pos) {
       let scrollX = Math.abs(pos.x)

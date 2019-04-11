@@ -32,6 +32,8 @@ created => children.props => children.data => children.created =>
 
   fixed布局的弹窗如果有输入框,在ios上输入光标偏移
 
+- transform的scale要写在translate之后
+
 ## 语法建议
 - Promise的catch语法建议
 

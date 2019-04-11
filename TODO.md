@@ -40,7 +40,6 @@
 - vi-popup增加是否可以穿透
 - vue-router源码
 - image-preview
-- sticky去掉scroll
 - 深入svg
 - cube-ui的scroll做了新的更新,涉及到isInTransition
 - popup的mixin
@@ -55,4 +54,6 @@
 - 原生scroll长列表下阻止弹窗外部滚动
 - 自适应高度textarea
 - scroll-down-refresh用箭头做默认slot
-- 触发transition的条件: if,show,动态组件,
+- 实验触发transition的条件: if,show,动态组件
+- 第三方登录
+- switch组件

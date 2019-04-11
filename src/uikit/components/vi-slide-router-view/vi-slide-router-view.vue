@@ -8,7 +8,7 @@
       @scroll="scroll"
       @before-scroll-start="beforeScrollStart"
       @touch-scroll="touchScroll"
-      @change-page="changePage">
+      @change-page="goToPage">
       <vi-slide-item v-for="(item, index) in siblingsRoute" :key="index">
         <template v-if="$route.matched[$route.matched.length - 1].regex.test(item.path)">
           <component :is="item.component"></component>
@@ -175,7 +175,7 @@ export default {
     scrollEnd(pos, slide) {
       this.$emit(EVENT_SCROLL_END)
     },
-    changePage(index) {
+    goToPage(index) {
       this.$emit(EVENT_CHANGE_PAGE, index)
       let siblingsRouteMatchedPath = ''
 

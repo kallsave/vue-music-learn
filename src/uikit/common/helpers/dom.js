@@ -76,7 +76,7 @@ const endEventListenerPrefixList = {
   }
 }
 
-export function prefixStyle(style, a) {
+export function prefixStyle(style) {
   let baseStyle = ''
   if (endEventListenerList.indexOf(style) !== -1) {
     baseStyle = style.replace(/end/i, '')
@@ -111,10 +111,10 @@ export function getMatchedTarget(e, targetClassName) {
   return el
 }
 
-export function dispatchEvent(ele, name, { type = 'Event', bubbles = true, cancelable = true } = {}) {
+export function dispatchEvent(el, name, { type = 'Event', bubbles = true, cancelable = true } = {}) {
   const e = document.createEvent(type)
   e.initEvent(name, bubbles, cancelable)
-  ele.dispatchEvent(e)
+  el.dispatchEvent(e)
 }
 
 // 得到transform上的rotate,其他值不准确

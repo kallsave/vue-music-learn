@@ -31,6 +31,9 @@ const router = new Router({
     {
       path: '/',
       component: Index,
+      meta: {
+        isUseRouterTransition: true,
+      },
       redirect: '/recommend',
       children: [
         {

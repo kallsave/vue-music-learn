@@ -256,7 +256,10 @@ export default {
     goToPage(index, time = 400) {
       clearTimeout(this.timer)
       this.slide.goToPage(index, 0, time)
-      this.currentPageIndex = index
+      if (this.currentPageIndex !== index) {
+        this.currentPageIndex = index
+        this.$emit(EVENT_CHANGE_PAGE, index)
+      }
     },
     loadImage() {
       if (!this.checkLoaded) {
@@ -290,12 +293,16 @@ export default {
     },
     refresh() {
       this.slide.refresh()
+    },
+    _destroy() {
+      window.clearTimeout(this.timer)
+      this.timer = null
+      this._destroySlide()
+      window.removeEventListener('resize', this._resizeHandler, false)
     }
   },
   beforeDestroy() {
-    this.timer = null
-    this._destroySlide()
-    window.removeEventListener('resize', this._resizeHandler, false)
+    this._destroy()
   },
 }
 </script>
