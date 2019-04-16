@@ -146,7 +146,7 @@ export default {
     ]),
     handlePlayList() {
       this.$refs.stickyWrapper.style.paddingBottom = `${60}px`
-      this.$refs.sticky.refresh()
+      this.$refs.scroll.refresh()
     },
     back() {
       this.setRouterTransitionName('move-left')

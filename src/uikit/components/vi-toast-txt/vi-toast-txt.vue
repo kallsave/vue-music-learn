@@ -6,8 +6,8 @@
     <transition name="vi-toast-txt">
       <div class="vi-toast-txt"
         v-show="isVisible"
-        :style="txtStyle">
-        {{txt}}
+        :style="titleStyle">
+        {{title}}
       </div>
     </transition>
   </vi-popup>
@@ -23,7 +23,7 @@ export default {
     durationMixin
   ],
   props: {
-    txt: {
+    title: {
       type: String,
       require: true
     },
@@ -39,7 +39,7 @@ export default {
       type: Boolean,
       default: true
     },
-    txtStyle: {
+    titleStyle: {
       type: Object,
       default() {
         return {}

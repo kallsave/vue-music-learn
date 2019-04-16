@@ -60,27 +60,26 @@
                 active-class="customer-color"
                 @click.native="tabItemClick(index)">{{item}}</vi-tab-item>
             </vi-tab>
-           </vi-native-sticky-ele>
+          </vi-native-sticky-ele>
           <vi-slide
             class="slide-view"
             ref="viSlideRouterView"
             :options="slideViewOptions"
             :scroll-events="['scroll']"
             @change-page="changePage"
-            @scroll="slideScrollHander"
-          >
-          <vi-slide-item>
-            <recommend></recommend>
-          </vi-slide-item>
-          <vi-slide-item>
-            <singer></singer>
-          </vi-slide-item>
-          <vi-slide-item>
-            <rank></rank>
-          </vi-slide-item>
-          <vi-slide-item>
-            <search></search>
-          </vi-slide-item>
+            @scroll="slideScrollHander">
+            <vi-slide-item>
+              <recommend></recommend>
+            </vi-slide-item>
+            <vi-slide-item>
+              <singer></singer>
+            </vi-slide-item>
+            <vi-slide-item>
+              <rank></rank>
+            </vi-slide-item>
+            <vi-slide-item>
+              <search></search>
+            </vi-slide-item>
           </vi-slide>
         </template>
       </vi-scroll>
@@ -147,8 +146,11 @@ export default {
       this.currentIndex = index
     },
     tabItemClick(index) {
-      // this.$refs.viSlideRouterView.goToPage(index)
-      this.$refs.viSlideRouterView.goToPage(index)
+      if (this.slideRouterMode === this.slideRouterModeList[1]) {
+        this.$refs.viSlideRouterView.goToPage(index)
+      } else {
+        this.$refs.viSlideRouterView.goToPage(index)
+      }
     },
     slideScrollHander(pos) {
       let scrollX = Math.abs(pos.x)

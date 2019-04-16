@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import TestRouter from './test-router.js'
 
 // index路由
-const Index = () => import(/* webpackChunkName: "Index" */ './index/index.vue')
+// const Index = () => import(/* webpackChunkName: "Index" */ './index/index.vue')
+import Index from './index/index.vue'
 
 const Recommend = () => import(/* webpackChunkName: "Recommend" */ './index/children/recommend/recommend.vue')
 const Singer = () => import(/* webpackChunkName: "Singer" */ './index/children/singer/singer.vue')
@@ -34,6 +35,7 @@ const router = new Router({
       meta: {
         isUseRouterTransition: true,
       },
+      // 改成slide-view模式需要去掉
       redirect: '/recommend',
       children: [
         {

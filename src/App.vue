@@ -1,6 +1,8 @@
 <template>
-  <div id="app" class="app">
-    <transition :name="transitionName" :mode="mode">
+  <div ref="app" id="app" class="app">
+    <transition
+      :name="transitionName"
+      :mode="mode">
       <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
         <router-view class="router-view"></router-view>
       </keep-alive>
@@ -13,6 +15,9 @@
 import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { mapGetters, mapMutations } from 'vuex'
 import Player from '@/components/player/player.vue'
+import { prefixStyle } from '@/common/helpers/dom.js'
+
+const TRANSITIONEND = prefixStyle('transitionend')
 
 export default {
   name: 'App',
@@ -88,7 +93,7 @@ export default {
       if (maxLength && arr.length > maxLength) {
         arr.pop()
       }
-    }
+    },
   }
 }
 </script>

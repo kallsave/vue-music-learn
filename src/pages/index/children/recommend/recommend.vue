@@ -202,18 +202,12 @@ export default {
 .recommend
   width: 100%
   height: calc(100vh - 44px)
-  // height: 100vh
   overflow: hidden
   background: $color-background
-  // position: relative
   .scroll-wrapper
     box-sizing: border-box
     width: 100%
     height: calc(100vh - 44px)
-    // height: 100vh
-    // position: absolute
-    // top: 88px
-    // bottom: 0
     .slide-wrapper
       overflow: hidden
       .slide-item

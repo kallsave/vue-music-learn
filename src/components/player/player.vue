@@ -580,7 +580,7 @@ export default {
     error() {
       this.isSongReady = false
       this.toast = this.$createViToastTxt({
-        txt: '资源出错啦',
+        title: '资源出错啦',
         duration: 3000,
       }).show()
     },

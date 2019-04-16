@@ -240,7 +240,7 @@ export default {
       this.dots = new Array(this.$refs.slideGroup.children.length)
     },
     _play() {
-      clearTimeout(this.timer)
+      window.clearTimeout(this.timer)
       this.timer = setTimeout(() => {
         this.slide && this.slide.next(500)
       }, this.interval)
@@ -254,7 +254,7 @@ export default {
       this.slide.refresh()
     },
     goToPage(index, time = 400) {
-      clearTimeout(this.timer)
+      window.clearTimeout(this.timer)
       this.slide.goToPage(index, 0, time)
       if (this.currentPageIndex !== index) {
         this.currentPageIndex = index

@@ -57,3 +57,6 @@
 - 实验触发transition的条件: if,show,动态组件
 - 第三方登录
 - switch组件
+- sticky弃用appendChild的方式
+- keep-alive做更细致的管理方案
+-
