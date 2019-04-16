@@ -145,6 +145,12 @@ export default {
       this.$refs.scroll.refresh()
     },
     _getData(forceUpdate) {
+      this.$toast.show({
+        icon: 'loading',
+      })
+      window.setTimeout(() => {
+        this.$toast.hide()
+      }, 2000)
       Promise.all([this._getRecommend(forceUpdate), this._getDiscList(forceUpdate)]).then((res) => {
         // 两个接口都拿到数据的操作
         // promise在组件销毁后还是会执行的

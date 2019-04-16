@@ -1,53 +1,62 @@
 <template>
-  <vi-popup v-show="isVisible"
-    :is-show-mask="isShowMask"
-    :is-lock-scroll="isLockScroll"
-    :z-index="zIndex">
-    <div class="vi-toast"
-      :style="{'transform': `scale(${scale})`}">
-      <div class="vi-toast-mask"
-        :class="{'vi-toast-mask-active': isShowToastMask}"></div>
-      <div class="vi-toast-content">
-        <div class="vi-toast-spinner-contain"
-          v-if="icon === 'loading'" >
-          <i class="vi-toast-spinner"
-            :style="{'background-color': iconColor}"
-            v-for="(item, index) in balde" :key="index"></i>
+  <transition :duration="{enter: 400, leave: 400}">
+    <vi-popup v-show="isVisible"
+      :is-show-mask="isShowMask"
+      :is-lock-scroll="isLockScroll"
+      :z-index="zIndex">
+      <transition name="vi-toast-fade">
+        <div class="vi-toast"
+          v-show="isVisible"
+          :style="{'transform': `scale(${scale})`}">
+          <div class="vi-toast-mask"
+            :class="{'vi-toast-mask-active': isShowToastMask}"></div>
+          <div class="vi-toast-content">
+            <transition :duration="{enter: 400, leave: 400}">
+              <div class="vi-toast-spinner-contain"
+                v-if="icon === 'loading' && isVisible">
+                <i class="vi-toast-spinner"
+                  :style="{'background-color': iconColor}"
+                  v-for="(item, index) in balde" :key="index"></i>
+              </div>
+            </transition>
+            <transition name="vi-toast-zoom"
+              :duration="{enter: 400, leave: 400}">
+              <div class="vi-toast-correct-contain"
+                v-if="icon === 'correct' && isVisible">
+                <i class="vi-toast-icon-correct vi-toast-correct"
+                  :style="{'color': iconColor}"></i>
+              </div>
+            </transition>
+            <transition name="vi-svg-path"
+              :duration="{enter: 1000, leave: 400}">
+              <div class="vi-toast-svg-correct-contain"
+                v-if="icon === 'svg-correct' && isVisible">
+                <svg>
+                  <path class="vi-toast-svg-correct"
+                    transform="scale(0.25)"
+                    fill="transparent"
+                    :stroke="iconColor"
+                    stroke-width="25"
+                    stroke-linecap="round"
+                    d="M160 160 L212.5 217.5 A5 5, 0 0,0 220 220 L340 100"></path>
+                </svg>
+              </div>
+            </transition>
+            <transition name="vi-toast-zoom">
+              <div class="vi-toast-error-contain"
+                  v-if="icon === 'error' && isVisible">
+                <i class="vi-toast-icon-error vi-toast-error"
+                  :style="{'color': iconColor}"></i>
+              </div>
+            </transition>
+            <slot name="icon"></slot>
+            <p class="vi-toast-title"
+              :style="{'color': titleColor}">{{title}}</p>
+          </div>
         </div>
-        <transition name="vi-zoom">
-          <div class="vi-toast-correct-contain"
-            v-if="icon === 'correct'">
-            <i class="vi-toast-icon-correct vi-toast-correct"
-              :style="{'color': iconColor}"></i>
-          </div>
-        </transition>
-        <transition name="vi-svg-path">
-          <div class="vi-toast-svg-correct-contain"
-            v-if="icon === 'svg-correct' && isVisible">
-            <svg>
-              <path class="vi-toast-svg-correct"
-                transform="scale(0.25)"
-                fill="transparent"
-                :stroke="iconColor"
-                stroke-width="25"
-                stroke-linecap="round"
-                d="M160 160 L212.5 217.5 A5 5, 0 0,0 220 220 L340 100"></path>
-            </svg>
-          </div>
-        </transition>
-        <transition name="vi-zoom">
-          <div class="vi-toast-error-contain"
-              v-if="icon === 'error'">
-            <i class="vi-toast-icon-error vi-toast-error"
-              :style="{'color': iconColor}"></i>
-          </div>
-        </transition>
-        <slot name="icon"></slot>
-        <p class="vi-toast-title"
-          :style="{'color': titleColor}">{{title}}</p>
-      </div>
-    </div>
-  </vi-popup>
+      </transition>
+    </vi-popup>
+  </transition>
 </template>
 
 <script>
@@ -145,7 +154,7 @@ export default {
         border-radius: 3px
         opacity: .25
         background-color: #fff
-        animation: spinner-fade 1s linear infinite
+        animation: vi-toast-spinner-fade 1s linear infinite
         for num in (1..12)
           &:nth-child({num})
             animation-delay: ((num - 1) / 12)s
@@ -177,32 +186,18 @@ export default {
       width: 100px
       margin: 0 auto
 
-@keyframes spinner-fade
-    0%
-      opacity: .85
-    50%
-      opacity: .25
-    100%
-      opacity: .25
+.vi-toast-fade-leave
+  opacity: 1
 
-.vi-zoom-enter-active
-  animation-name: vi-zoom
-  animation-duration: 1s
+.vi-toast-fade-leave-active
+  transition: opacity 400ms
 
-// vue中做动画transtion下的根元素必须的动画时间
-@keyframes vi-csstime
-  0%
-    opacity: 1
-  100%
-    opacity: 1
+.vi-toast-fade-leave-to
+  opacity: 0
 
-@keyframes vi-zoom
-  0%
-    transform: scale(0)
-  50%
-    transform: scale(1.1)
-  100%
-    transform: scale(1)
+.vi-toast-zoom-enter-active
+  animation-name: vi-toast-zoom
+  animation-duration: 1000ms
 
 .vi-toast-svg-correct
   stroke-dasharray: 1000
@@ -210,17 +205,30 @@ export default {
   animation-fill-mode: forwards
   // 或者直接写样式
   // stroke-dashoffset: 0
-
 .vi-svg-path-enter-active
-  animation-name: vi-csstime
-  animation-duration: 1s
-  animation-name: vi-svg-dash
-  animation-delay: 0.2s
-  animation-duration: 1s
+  animation-name: vi-toast-svg-dash
+  animation-delay: 400ms
+  animation-duration: 1000ms
   stroke-dasharray: 1000
   stroke-dashoffset: 1000
 
-@keyframes vi-svg-dash
+@keyframes vi-toast-spinner-fade
+  0%
+    opacity: .85
+  50%
+    opacity: .25
+  100%
+    opacity: .25
+
+@keyframes vi-toast-zoom
+  0%
+    transform: scale(0)
+  50%
+    transform: scale(1.1)
+  100%
+    transform: scale(1)
+
+@keyframes vi-toast-svg-dash
   0%
     stroke-dashoffset: 1000
   100%
