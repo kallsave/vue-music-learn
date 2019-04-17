@@ -2,7 +2,9 @@
   <div ref="app" id="app" class="app">
     <transition
       :name="transitionName"
-      :mode="mode">
+      :mode="mode"
+      :duration="{enter: 300, leave: 300}"
+      @after-enter="afterEnter">
       <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
         <router-view class="router-view"></router-view>
       </keep-alive>
@@ -13,11 +15,14 @@
 
 <script>
 import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
+import { AFTER_ENTER, FINISH } from '@/store/modules/router-transition-state/config.js'
 import { mapGetters, mapMutations } from 'vuex'
 import Player from '@/components/player/player.vue'
 import { prefixStyle } from '@/common/helpers/dom.js'
 
 const TRANSITIONEND = prefixStyle('transitionend')
+
+const EVENT_ROUTER_TRANSITION_ENTER_END = 'router-transition-enter-end'
 
 export default {
   name: 'App',
@@ -35,7 +40,6 @@ export default {
   computed: {
     ...mapGetters([
       'mutableKeepAliveName',
-      'routerTransitionName'
     ])
   },
   watch: {
@@ -75,7 +79,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setRouterTransitionName: 'SET_ROUTER_TRANSITION_NAME'
+      setRouterTransitionName: 'SET_ROUTER_TRANSITION_NAME',
+      setRouterTransitionState: 'SET_ROUTER_TRANSITION_STATE'
     }),
     insertArray({ arr, val, compare = (item) => {
       return item === val
@@ -94,6 +99,12 @@ export default {
         arr.pop()
       }
     },
+    afterEnter() {
+      this.setRouterTransitionState(AFTER_ENTER)
+      window.setTimeout(() => {
+        this.setRouterTransitionState(FINISH)
+      }, 100)
+    }
   }
 }
 </script>
@@ -108,27 +119,27 @@ export default {
     &.move-right-enter
       transform: translate3d(100%, 0, 0)
     &.move-right-enter-active
-      transition: transform 0.3s $ease-out-in
+      transition: transform 300ms $ease-out-in
     &.move-right-enter-to
       transform: none
 
     &.move-right-leave
     &.move-right-leave-active
-      transition: transform 0.3s $ease-out-in
+      transition: transform 300ms $ease-out-in
     &.move-right-leave-to
       transform: translate3d(-50%, 0, 0)
 
     &.move-left-enter
       transform: translate3d(-20%, 0, 0)
     &.move-left-enter-active
-      transition: transform 0.3s $ease-out-in
+      transition: transform 300ms $ease-out-in
     &.move-left-enter-to
       transform: none
 
     &.move-left-leave
     &.move-left-leave-active
       transform: translate3d(100%, 0, 0)
-      transition: transform 0.3s $ease-out-in
+      transition: transform 300ms $ease-out-in
     &.move-left-leave-to
       transform: translate3d(100%, 0, 0)
 </style>

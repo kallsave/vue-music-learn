@@ -59,4 +59,3 @@
 - switch组件
 - sticky弃用appendChild的方式
 - keep-alive做更细致的管理方案
--
