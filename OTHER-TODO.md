@@ -27,3 +27,5 @@
 - 慕课网轮播图
 - Jenkins+Ansible+Gitlab自动化部署三剑客
 - 响应式
+- 博客
+- live2d

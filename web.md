@@ -57,3 +57,5 @@ better-scroll文档
 
 [github的travis.yml配置任务](https://www.travis-ci.org/)
 
+[canvas文档](https://www.w3.org/TR/2dcontext/)
+
