@@ -1,3 +1,4 @@
+import './common/jmeter/vconsole.js'
 import Vue from 'vue'
 import App from './App'
 import router from './pages/router.js'
@@ -13,11 +14,6 @@ import BaseSearchBox from '@/base-components/search-box/index.js'
 import BaseProgressBar from '@/base-components/progress-bar/index.js'
 import BaseProgressCircle from '@/base-components/progress-circle/index.js'
 import BaseConfirm from '@/base-components/confirm/index.js'
-
-// if (process.env.NODE_ENV !== 'production') {
-//   const Vconsole = require('vconsole')
-//   const vConsole = new Vconsole()
-// }
 
 Vue.use(Vi)
 Vue.use(BaseLoadListCon)

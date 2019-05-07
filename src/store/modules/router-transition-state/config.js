@@ -9,3 +9,15 @@ export const AFTER_LEAVE = 'afterLEAVE'
 export const LEAVE_CANCELLED = 'leaveCancelled'
 
 export const FINISH = 'finish'
+
+export const ROUTER_TRANSITION_STATE_LIST = [
+  BEFORE_ENTER,
+  ENTER,
+  AFTER_ENTER,
+  ENTER_CANCELLED,
+  BEFORE_LEAVE,
+  LEAVE,
+  AFTER_LEAVE,
+  LEAVE_CANCELLED,
+  FINISH
+]

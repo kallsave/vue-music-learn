@@ -40,6 +40,7 @@ export default {
   computed: {
     ...mapGetters([
       'mutableKeepAliveName',
+      'routerTransition',
     ])
   },
   watch: {
@@ -49,10 +50,13 @@ export default {
           this.transitionName = ''
           this.mode = ''
         } else {
-          if (this.routerTransitionName) {
-            this.transitionName = this.routerTransitionName
-            this.mode = ''
-            this.setRouterTransitionName('')
+          if (this.routerTransition.name) {
+            this.transitionName = this.routerTransition.name
+            this.mode = this.routerTransition.mode
+            this.setRouterTransition({
+              name: '',
+              mode: ''
+            })
             // 返回到一个页面,相当于新打开一个页面
             this.routerHistory = []
           } else {
@@ -79,7 +83,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setRouterTransitionName: 'SET_ROUTER_TRANSITION_NAME',
+      setRouterTransition: 'SET_ROUTER_TRANSITION',
       setRouterTransitionState: 'SET_ROUTER_TRANSITION_STATE'
     }),
     insertArray({ arr, val, compare = (item) => {

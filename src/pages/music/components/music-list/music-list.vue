@@ -138,7 +138,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setRouterTransitionName: 'SET_ROUTER_TRANSITION_NAME'
+      setRouterTransition: 'SET_ROUTER_TRANSITION'
     }),
     ...mapActions([
       'selectPlay',
@@ -149,7 +149,10 @@ export default {
       this.$refs.scroll.refresh()
     },
     back() {
-      this.setRouterTransitionName('move-left')
+      this.setRouterTransition({
+        name: 'move-left',
+        mode: ''
+      })
       this.$router.back()
     },
     scrollHandler({ y }) {

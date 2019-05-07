@@ -1,3 +1,5 @@
+import { ROUTER_TRANSITION_STATE_LIST } from './config.js'
+
 const types = {
   SET_ROUTER_TRANSITION_STATE: 'SET_ROUTER_TRANSITION_STATE',
 }
@@ -11,6 +13,9 @@ const routerTransitionState = {
   },
   mutations: {
     [types.SET_ROUTER_TRANSITION_STATE](state, routerTransitionState) {
+      if (ROUTER_TRANSITION_STATE_LIST.indexOf(routerTransitionState) === -1) {
+        throw new Error('argument is unavailable')
+      }
       state.routerTransitionState = routerTransitionState
     },
   },

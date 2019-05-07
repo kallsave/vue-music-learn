@@ -24,6 +24,7 @@
 - 调研css和js统一
 - 拖拽指令
 - 上传文件
+- 深入svg
 
 # 优先
 - index-list支持slot
@@ -40,7 +41,6 @@
 - vi-popup增加是否可以穿透
 - vue-router源码
 - image-preview
-- 深入svg
 - cube-ui的scroll做了新的更新,涉及到isInTransition
 - popup的mixin
 - ease函数原理
@@ -49,8 +49,6 @@
 - popup用absolute替代fixed,并总是阻止scroll
 - 所有组件,工具函数都要有单元测试
 - 增加登录机制,增加个人中心页面
-- 检查下vi-swipe外部dom使用touchstart
-- .capture
 - 原生scroll长列表下阻止弹窗外部滚动
 - 自适应高度textarea
 - scroll-down-refresh用箭头做默认slot
@@ -59,3 +57,4 @@
 - switch组件
 - sticky弃用appendChild的方式
 - keep-alive做更细致的管理方案
+- 图片,视频上传组件

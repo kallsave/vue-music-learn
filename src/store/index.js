@@ -12,7 +12,7 @@ import rankAlbum from './modules/rank-album/index.js'
 import recommendAlbum from './modules/recommend-album/index.js'
 import keepAliveName from './modules/keep-alive-name/keep-alive-name.js'
 import searchHistory from './modules/search-history/search-history.js'
-import routerTransitionName from './modules/router-transition-name/router-transition-name.js'
+import routerTransition from './modules/router-transition/router-transition.js'
 import routerTransitionState from './modules/router-transition-state/router-transition-state.js'
 
 // 不通过PersistedState插件做缓存的mutations
@@ -24,7 +24,7 @@ const persistedstateIgnoreMutations = [
   // 搜索历史纪录用独立的可持续化时间
   'SET_SEARCH_HISTORY',
   // 路由过渡动画实现不需要做可持续化
-  'SET_ROUTER_TRANSITION_NAME',
+  'SET_ROUTER_TRANSITION',
   // 路由过渡动画的状态不需要做可持续化
   'SET_ROUTER_TRANSITION_STATE'
 ]
@@ -70,7 +70,7 @@ export default new Vuex.Store({
     recommendAlbum,
     keepAliveName,
     searchHistory,
-    routerTransitionName,
+    routerTransition,
     routerTransitionState
   },
   strict: debug,

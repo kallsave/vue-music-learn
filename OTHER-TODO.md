@@ -29,3 +29,6 @@
 - 响应式
 - 博客
 - live2d
+- canvas流星雨逼真优化(真实的流星, clip隐藏)
+- vue实现原理,setter,getter更深层的理解
+- live2d
