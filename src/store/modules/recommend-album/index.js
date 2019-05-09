@@ -1,3 +1,5 @@
+// 推荐的详情
+
 const types = {
   SET_RECOMMEND_ALBUM: 'SET_RECOMMEND_ALBUM'
 }

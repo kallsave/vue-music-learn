@@ -1,3 +1,5 @@
+// 歌手详情
+
 const types = {
   SET_SINGER: 'SET_SINGER',
 }

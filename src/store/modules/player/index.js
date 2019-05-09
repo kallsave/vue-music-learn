@@ -1,3 +1,5 @@
+// 播放器的各种数据
+
 import { playMode } from './config.js'
 import { shuffle } from '@/common/helpers/utils.js'
 import { Song } from '@/common/class/song.js'

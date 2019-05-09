@@ -49,7 +49,8 @@
                 @click="selectItem($event, item)">
                 <vi-swipe
                   :index="index"
-                  :menu-list="menuList">
+                  :menu-list="menuList"
+                  @menu-click="menuClick">
                   <div class="item-wrapper">
                     <div class="icon">
                       <img width="60" height="60" v-lazy="item.imgurl">
@@ -113,7 +114,6 @@ export default {
       },
       menuList: [
         {
-          isAutoShrink: true,
           content: '取消',
           style: {
             'background-color': '#c8c7cd',
@@ -121,7 +121,6 @@ export default {
           }
         },
         {
-          isAutoShrink: false,
           content: '收藏',
           style: {
             'background-color': '#ffcd32',
@@ -197,6 +196,13 @@ export default {
     onPullingDown() {
       this._getData(true)
     },
+    menuClick(menu, index, shrink, toggleConfirmMenu) {
+      if (menu.content === '取消') {
+        shrink()
+      } else {
+        toggleConfirmMenu(true)
+      }
+    }
   },
 }
 </script>

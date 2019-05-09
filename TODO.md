@@ -25,6 +25,7 @@
 - 拖拽指令
 - 上传文件
 - 深入svg
+- swipe的confirm做成回弹效果
 
 # 优先
 - index-list支持slot

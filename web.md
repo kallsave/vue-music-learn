@@ -23,6 +23,10 @@ svg学习
 ------------
 [svgtrick](http://svgtrick.com/)
 
+canvas学习
+------------
+[canvas文档](https://www.w3.org/TR/2dcontext/)
+
 animejs文档
 ------------
 [animejs](http://animejs.com/documentation/#basicTimeline)
@@ -36,8 +40,6 @@ better-scroll文档
 抓包工具
 ------------
 [charles](https://pan.baidu.com/s/1nQgt1LBEj7WNLY48nc6eBQ)
-
-可以阻止原生浏览器的各种事件,很强大。可以看下源码
 
 科学上网
 ------------
@@ -56,6 +58,4 @@ better-scroll文档
 [gitlab文档](https://docs.gitlab.com.cn)
 
 [github的travis.yml配置任务](https://www.travis-ci.org/)
-
-[canvas文档](https://www.w3.org/TR/2dcontext/)
 

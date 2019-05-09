@@ -12,8 +12,10 @@
               <vi-swipe
                 :index="index"
                 :menu-list="data.btns"
-                @menu-click="menuClick">
-                <div class="item-inner" @click="clickHandler">{{data.item.name}}</div>
+                @menu-click="menuClick"
+                @confirm="confirm">
+                <div class="item-inner"
+                  @click="clickHandler">{{data.item.name}}</div>
               </vi-swipe>
             </li>
           </vi-collapse-transition-group>
@@ -45,7 +47,7 @@ const customData = [
         style: {
           'background-color': '#ff3a32',
           'color': '#fff'
-        }
+        },
       }
     ]
   },
@@ -291,10 +293,11 @@ export default {
     }
   },
   methods: {
-    menuClick(item, index, shrink) {
-      if (item.content === '删除') {
-        this.swipeData.splice(index, 1)
-      } else if (item.content === '不再关注') {
+    menuClick(menu, index, shrink, toggleConfirmMenus) {
+      if (menu.content === '删除') {
+        // this.swipeData.splice(index, 1)
+        toggleConfirmMenus(true)
+      } else if (menu.content === '不再关注') {
         shrink()
       }
     },
@@ -303,6 +306,9 @@ export default {
     },
     activeIndexChange(index) {
       console.log(index)
+    },
+    confirm(index, shrink) {
+      // shrink()
     }
   }
 }

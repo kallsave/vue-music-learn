@@ -1,4 +1,5 @@
-// mutations.type
+// 排行的详情
+
 const types = {
   SET_RANK_ALBUM: 'SET_RANK_ALBUM'
 }

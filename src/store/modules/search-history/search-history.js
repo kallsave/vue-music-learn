@@ -1,3 +1,5 @@
+// 搜索历史
+
 import { saveSearch, loadSearch, deleteSearch, clearSearch } from '../../cache/local-storage/modules/search-history/search-history.js'
 
 const types = {

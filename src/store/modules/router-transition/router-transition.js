@@ -1,4 +1,4 @@
-// 路由过渡动画
+// 路由过渡动画的名字和模式
 
 const types = {
   SET_ROUTER_TRANSITION: 'SET_ROUTER_TRANSITION',

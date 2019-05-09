@@ -193,10 +193,13 @@ async function updateAllImg () {
   keep-alive的命名在common/config/keep-alive-name.js中定义,给组件使用keep-alive需要import这个文件的变量
 
   ```javascript
-  <keep-alive :include="['immutable-keep-alive', mutableKeepAliveName]">
-    <router-view></router-view>
-  </keep-alive>
-  ...
+  <template>
+    <keep-alive :include="['immutable-keep-alive', mutableKeepAliveName]">
+      <router-view></router-view>
+    </keep-alive>
+    ...
+  </template>
+
   <script>
   import { mapGetters } from 'vuex'
   export default {

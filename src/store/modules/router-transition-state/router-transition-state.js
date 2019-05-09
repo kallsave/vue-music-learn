@@ -1,3 +1,5 @@
+// 路由过渡动画的执行状态
+
 import { ROUTER_TRANSITION_STATE_LIST } from './config.js'
 
 const types = {
