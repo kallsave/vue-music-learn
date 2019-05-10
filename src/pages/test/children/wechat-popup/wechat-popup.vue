@@ -5,7 +5,6 @@
     <vi-popup ref="popup"
       transitionName="dialog-fade"
       :transitionDuration="transitionDuration"
-      :isUseFixed="isUseFixed"
       @mask-click="maskClick">
       <!-- <template slot="mask">
         <div class="custom-mask"></div>
@@ -18,7 +17,10 @@
           <search-box></search-box>
         </div>
         <div style="margin-bottom: 30px">
-          <search-box @blur="blur" @focus="focus"></search-box>
+          <search-box></search-box>
+        </div>
+        <div style="margin-bottom: 30px">
+          <textarea></textarea>
         </div>
         <div class="close" @click="close"></div>
       </div>
@@ -41,7 +43,6 @@ export default {
         enter: 500,
         leave: 500
       },
-      isUseFixed: false
     }
   },
   methods: {
@@ -54,10 +55,6 @@ export default {
     close() {
       this.$refs.popup.hide()
     },
-    blur() {
-    },
-    focus() {
-    }
   }
 }
 </script>

@@ -38,15 +38,8 @@
 </template>
 
 <script>
-import SearchBox from '@/base-components/search-box/search-box.vue'
-
 import visibilityMixin from '../../common/mixins/visibility.js'
 import popupMixin from '../../common/mixins/popup.js'
-import {
-  mulitDeepClone,
-  Debounce,
-  Throttle
-} from '@/common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-popup'
 
@@ -55,9 +48,6 @@ const EVENT_MASK_CLICK = 'mask-click'
 export default {
   name: COMPONENT_NAME,
   mixins: [visibilityMixin, popupMixin],
-  components: {
-    SearchBox
-  },
   props: {
     isShowMask: {
       type: Boolean,
@@ -88,74 +78,22 @@ export default {
         }
       }
     },
-    isUseFixed: {
-      type: Boolean,
-      default: true
-    },
   },
   data() {
     return {
-      popupStyle: {},
-      isFixed: this.isUseFixed
-    }
-  },
-  watch: {
-    isFixed: {
-      handler(newVal, oldVal) {
-        if (newVal === oldVal) {
-          return
-        }
-        this.$nextTick(() => {
-          this.throttleInstance.run(() => {
-            console.log(this.isFixed)
-            let height = document.documentElement.clientHeight
-            let top = document.documentElement.scrollTop || document.body.scrollTop
-            let popupStyle = mulitDeepClone({}, {
-              'height': `${height}px`,
-              'z-index': this.zIndex
-            })
-            if (newVal) {
-              popupStyle['position'] = 'fixed'
-              popupStyle['top'] = '0'
-              this.$nextTick(() => {
-                this.isFixed = false
-              })
-            } else {
-              popupStyle['position'] = 'absolute'
-              popupStyle['top'] = `${top}px`
-            }
-            this.popupStyle = popupStyle
-          })
-        })
+      popupStyle: {
+        'z-index': this.zIndex
       },
-      immediate: true
     }
-  },
-  created() {
-    this.debounceInstance = new Debounce(100)
-    this.throttleInstance = new Throttle(100)
   },
   mounted() {
-    if (!this.isUseFixed) {
-      let input = this.$refs.popop.getElementsByTagName('input')
-      Array.apply(null, input).forEach((item) => {
-        item.addEventListener('blur', () => {
-          this.isFixed = true
-        }, false)
-      })
-      Array.apply(null, input).forEach((item) => {
-        item.addEventListener('focus', () => {
-          this.isFixed = false
-        }, false)
-      })
-    }
+    this._findInput()
+    this._addEventListenerBlur()
   },
   methods: {
     show() {
-      if (!this.isUseFixed && !this.isFixed) {
-        let top = document.documentElement.scrollTop || document.body.scrollTop
-        this.popupStyle['top'] = `${top}px`
-      }
+      let top = document.documentElement.scrollTop || document.body.scrollTop
+      this._cachedTop = top
       this.isVisible = true
     },
     touchstart(e) {
@@ -164,10 +102,33 @@ export default {
       }
       this.$emit(EVENT_MASK_CLICK)
     },
+    _findInput() {
+      let popop = this.$refs.popop
+      this.input = popop.getElementsByTagName('input')
+      this.textarea = popop.getElementsByTagName('textarea')
+    },
+    _addEventListenerBlur() {
+      Array.apply(null, this.input).forEach((item) => {
+        item.addEventListener('blur', this.recoverTop, false)
+      })
+      Array.apply(null, this.textarea).forEach((item) => {
+        item.addEventListener('blur', this.recoverTop, false)
+      })
+    },
+    _removeEventListenerBlur() {
+      Array.apply(null, this.input).forEach((item) => {
+        item.removeEventListener('blur', this.recoverTop, false)
+      })
+      Array.apply(null, this.textarea).forEach((item) => {
+        item.removeEventListener('blur', this.recoverTop, false)
+      })
+    },
+    recoverTop() {
+      window.scrollTo(0, this._cachedTop)
+    }
   },
   beforeDestroy() {
-    this.debounceInstance.destory()
-    this.throttleInstance.destory()
+    this._removeEventListenerBlur()
   }
 }
 </script>
@@ -181,6 +142,8 @@ export default {
   top: 0
   left: 0
   right: 0
+  bottom: 0
+  z-index: $z-index-popup
   .vi-popup-mask
     position: absolute
     width: 100%
