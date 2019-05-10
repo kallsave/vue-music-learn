@@ -13,24 +13,11 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
-  "transformModules": {
-    "cube-ui": {
-      "transform": "cube-ui/lib/${member}",
-      "kebabCase": true,
-      "style": {
-        "ignore": [
-          "create-api",
-          "better-scroll"
-        ]
-      }
-    }
-  },
   "dependencies": {
     "assign-deep": "^1.0.0",
     "axios": "^0.18.0",
     "better-scroll": "^1.15.1",
     "create-keyframe-animation": "^0.1.0",
-    "cube-ui": "^1.12.6",
     "js-base64": "^2.5.0",
     "jsonp": "^0.2.1",
     "lyric-parser": "^1.0.1",

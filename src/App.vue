@@ -123,27 +123,28 @@ export default {
     &.move-right-enter
       transform: translate3d(100%, 0, 0)
     &.move-right-enter-active
-      transition: transform 300ms $ease-out-in
+      transition: transform 300ms $ease-in
     &.move-right-enter-to
       transform: none
 
     &.move-right-leave
     &.move-right-leave-active
-      transition: transform 300ms $ease-out-in
+      transition: transform 280ms $ease-out-in
     &.move-right-leave-to
-      transform: translate3d(-50%, 0, 0)
+      transform: translate3d(-20%, 0, 0)
 
     &.move-left-enter
       transform: translate3d(-20%, 0, 0)
     &.move-left-enter-active
-      transition: transform 300ms $ease-out-in
+      transition: transform 300ms $ease-in
     &.move-left-enter-to
       transform: none
 
     &.move-left-leave
     &.move-left-leave-active
       transform: translate3d(100%, 0, 0)
-      transition: transform 300ms $ease-out-in
+      transition: transform 280ms $ease-out-in
     &.move-left-leave-to
       transform: translate3d(100%, 0, 0)
+
 </style>

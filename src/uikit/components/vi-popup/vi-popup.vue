@@ -1,8 +1,10 @@
 <template>
-  <transition>
+  <transition
+    :name="transitionName"
+    :duration="transitionDuration">
     <div class="vi-popup"
       v-show="isVisible"
-      :style="{'z-index': zIndex}">
+      :style="popupStyle">
       <div class="vi-popup-mask"
         @click="maskClick"
         @touchmove="touchmove($event)">
@@ -38,6 +40,9 @@
 <script>
 import visibilityMixin from '../../common/mixins/visibility.js'
 import popupMixin from '../../common/mixins/popup.js'
+import {
+  mulitDeepClone
+} from '@/common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-popup'
 
@@ -63,11 +68,53 @@ export default {
       type: Boolean,
       default: true
     },
+    transitionName: {
+      type: String,
+      default: ''
+    },
+    transitionDuration: {
+      type: Object,
+      default() {
+        return {
+          enter: 0,
+          leave: 0
+        }
+      }
+    },
+    isUsefixed: {
+      type: Boolean,
+      default: true
+    },
+  },
+  data() {
+    return {
+      popupStyle: {}
+    }
+  },
+  mounted() {
+    let popupStyle = mulitDeepClone({}, {
+      'position': 'fixed',
+      'top': 0,
+      'right': 0,
+      'left': 0,
+      'bottom': 0,
+      'z-index': this.zIndex
+    })
+    this.popupStyle = popupStyle
   },
   methods: {
+    show() {
+      if (!this.isUsefixed) {
+        let top = document.documentElement.scrollTop || document.body.scrollTop
+        let height = document.documentElement.clientHeight
+        this.popupStyle['position'] = 'absolute'
+        this.popupStyle['top'] = `${top}px`
+        this.popupStyle['bottom'] = ``
+        this.popupStyle['height'] = `${height}px`
+      }
+      this.isVisible = true
+    },
     maskClick() {
-      // 考虑到popup外层要做transition
-      // 不对最底层的maskClick自动关闭的功能
       this.$emit(EVENT_MASK_CLICK)
     },
     touchmove(e) {
@@ -84,12 +131,6 @@ export default {
 @import "../../common/stylus/var/z-index.styl"
 
 .vi-popup
-  position: fixed
-  top: 0
-  right: 0
-  left: 0
-  bottom: 0
-  z-index: $z-index-popup
   .vi-popup-mask
     position: absolute
     width: 100%

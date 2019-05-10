@@ -1,29 +1,41 @@
 <template>
-  <div class="popup">
+  <div class="wechat-popup">
     <div style="width: 50px;height: 50px;background:red"
-      @click="show"></div>
-      <transition name="dialog-fade"
-        :duration="transitionDuration">
-        <vi-popup ref="popup"
-          v-show="isVisible"
-          @mask-click="maskClick">
-          <!-- <template slot="mask">
-            <div class="custom-mask"></div>
-          </template> -->
-          <div class="popup-content">
-            <img class="image" src="./images/dialog.jpg" />
-            <div class="close" @click="close"></div>
+      @click="show($event)"></div>
+      <vi-popup ref="popup"
+        transitionName="dialog-fade"
+        :transitionDuration="transitionDuration"
+        @mask-click="maskClick">
+        <!-- <template slot="mask">
+          <div class="custom-mask"></div>
+        </template> -->
+        <div class="popup-content">
+          <div style="margin-bottom: 30px">
+            <search-box></search-box>
           </div>
-        </vi-popup>
-    </transition>
+          <div style="margin-bottom: 30px">
+            <search-box></search-box>
+          </div>
+          <div style="margin-bottom: 30px">
+            <search-box></search-box>
+          </div>
+          <div class="close" @click="close"></div>
+        </div>
+      </vi-popup>
+    <div style="width: 50px;height: 50px;background:red;position:absolute;top:1000px"
+      @click="show($event)"></div>
   </div>
 </template>
 
 <script>
+import SearchBox from '@/base-components/search-box/search-box.vue'
+
 export default {
+  components: {
+    SearchBox
+  },
   data() {
     return {
-      isVisible: false,
       transitionDuration: {
         enter: 500,
         leave: 500
@@ -31,35 +43,24 @@ export default {
     }
   },
   methods: {
-    show() {
-      console.log(6)
-      this.isVisible = true
+    maskClick() {
+
+    },
+    show(e) {
+      this.$refs.popup.show()
     },
     close() {
-      this.isVisible = false
-    },
-    maskClick() {
-      // this.close()
+      this.$refs.popup.hide()
     }
   }
 }
 </script>
 
 <style lang="stylus" modules>
-@import "~@/common/stylus/var/ease.styl"
-
-.popup
+.wechat-popup
   width: 100%
   height: 200vh
   background: #fff
-  .custom-mask
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    background-image: url('./images/bg.jpg')
-    background-size: cover
   .popup-content
     position: relative
     .image
@@ -94,13 +95,6 @@ export default {
         border-radius: 6px
         background-color: #fff
         transform: translate(-50%, -50%) rotate(-135deg)
-    .more
-      position: absolute
-      width: 105px
-      height: 41px
-      bottom: 21px
-      right: 14px
-      background: peru
 
 .dialog-fade-enter-active
   animation-name: popup-in
@@ -108,12 +102,6 @@ export default {
   animation-timing-function: $ease-out-in
   animation-direction: normal
   animation-fill-mode: forwards
-  // .popup-content
-  //   animation-name: popup-in
-  //   animation-duration: .5s
-  //   animation-timing-function: $ease-out-in
-  //   animation-direction: normal
-  //   animation-fill-mode: forwards
 
 .dialog-fade-leave-active
   .popup-content
@@ -122,8 +110,7 @@ export default {
     animation-timing-function: $ease-out-in
     animation-direction: normal
     animation-fill-mode: forwards
-  .vi-popup-mask-gray,
-  .custom-mask
+  .vi-popup-mask-gray
     animation-name: popup-in
     animation-duration: .5s
     animation-timing-function: $ease-out-in

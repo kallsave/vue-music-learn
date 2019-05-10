@@ -4,8 +4,6 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
-// cube-ui的使用的插件
-// const TransformModulesPlugin = require('webpack-transform-modules-plugin')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -90,7 +88,6 @@ module.exports = {
     ]
   },
   plugins: [
-    // new TransformModulesPlugin()
     new PreloadWebpackPlugin({
       rel: 'prefetch',
       as(entry) {
