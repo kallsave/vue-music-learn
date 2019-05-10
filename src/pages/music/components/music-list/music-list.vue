@@ -96,12 +96,6 @@ export default {
       scrollY: 0,
     }
   },
-  created() {
-    this.imageHeight = document.body.clientWidth * 0.7
-  },
-  mounted() {
-    this.$refs.scrollBlank.style.height = `${this.imageHeight - RESERVED_HEIGHT}px`
-  },
   computed: {
     ...mapGetters([
       'fullScreen',
@@ -135,6 +129,12 @@ export default {
         this.$refs.scroll.refresh()
       }
     }
+  },
+  created() {
+    this.imageHeight = document.body.clientWidth * 0.7
+  },
+  mounted() {
+    this.$refs.scrollBlank.style.height = `${this.imageHeight - RESERVED_HEIGHT}px`
   },
   methods: {
     ...mapMutations({

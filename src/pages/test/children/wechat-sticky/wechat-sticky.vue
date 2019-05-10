@@ -83,9 +83,6 @@ export default {
     this.items2 = _data.concat()
     // this.first = true
   },
-  mounted() {
-
-  },
   methods: {
     imgLoad() {
       this.$refs.sticky && this.$refs.sticky.calculateAllStickyEleTop()

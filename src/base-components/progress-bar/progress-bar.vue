@@ -31,9 +31,6 @@ export default {
       default: 0
     }
   },
-  created() {
-    this.touch = {}
-  },
   watch: {
     percent(newVal) {
       if (newVal >= 0 && !this.touch.initiated) {
@@ -42,6 +39,9 @@ export default {
         this._offset(offsetWidth)
       }
     }
+  },
+  created() {
+    this.touch = {}
   },
   methods: {
     _offset(offsetWidth) {

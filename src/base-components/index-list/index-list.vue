@@ -77,10 +77,6 @@ export default {
       diff: 0
     }
   },
-  created() {
-    this.touch = {}
-    this.listHeight = []
-  },
   computed: {
     shortcutList() {
       return this.data.map((group) => {
@@ -134,6 +130,10 @@ export default {
       let fixedTop = (newVal > 0 && newVal < this.listTitleHeight) ? newVal - this.listTitleHeight : 0
       this.$refs.fixed.style[TRANSFORM] = `translate3d(0,${fixedTop}px,0)`
     }
+  },
+  created() {
+    this.touch = {}
+    this.listHeight = []
   },
   methods: {
     onShortcutTouchStart(e) {

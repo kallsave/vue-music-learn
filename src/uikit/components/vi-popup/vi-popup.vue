@@ -2,12 +2,12 @@
   <transition
     :name="transitionName"
     :duration="transitionDuration">
-    <div class="vi-popup"
+    <div ref="popop"
+      class="vi-popup"
       v-show="isVisible"
       :style="popupStyle">
       <div class="vi-popup-mask"
-        @click="maskClick"
-        @touchmove="touchmove($event)">
+        @touchstart="touchstart($event)">
         <div class="vi-popup-mask-gray"
           v-show="isShowMask && !$slots.mask"></div>
         <!-- 自定义背景板 -->
@@ -38,10 +38,14 @@
 </template>
 
 <script>
+import SearchBox from '@/base-components/search-box/search-box.vue'
+
 import visibilityMixin from '../../common/mixins/visibility.js'
 import popupMixin from '../../common/mixins/popup.js'
 import {
-  mulitDeepClone
+  mulitDeepClone,
+  Debounce,
+  Throttle
 } from '@/common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-popup'
@@ -51,6 +55,9 @@ const EVENT_MASK_CLICK = 'mask-click'
 export default {
   name: COMPONENT_NAME,
   mixins: [visibilityMixin, popupMixin],
+  components: {
+    SearchBox
+  },
   props: {
     isShowMask: {
       type: Boolean,
@@ -81,47 +88,86 @@ export default {
         }
       }
     },
-    isUsefixed: {
+    isUseFixed: {
       type: Boolean,
       default: true
     },
   },
   data() {
     return {
-      popupStyle: {}
+      popupStyle: {},
+      isFixed: this.isUseFixed
     }
   },
+  watch: {
+    isFixed: {
+      handler(newVal, oldVal) {
+        if (newVal === oldVal) {
+          return
+        }
+        this.$nextTick(() => {
+          this.throttleInstance.run(() => {
+            console.log(this.isFixed)
+            let height = document.documentElement.clientHeight
+            let top = document.documentElement.scrollTop || document.body.scrollTop
+            let popupStyle = mulitDeepClone({}, {
+              'height': `${height}px`,
+              'z-index': this.zIndex
+            })
+            if (newVal) {
+              popupStyle['position'] = 'fixed'
+              popupStyle['top'] = '0'
+              this.$nextTick(() => {
+                this.isFixed = false
+              })
+            } else {
+              popupStyle['position'] = 'absolute'
+              popupStyle['top'] = `${top}px`
+            }
+            this.popupStyle = popupStyle
+          })
+        })
+      },
+      immediate: true
+    }
+  },
+  created() {
+    this.debounceInstance = new Debounce(100)
+    this.throttleInstance = new Throttle(100)
+  },
   mounted() {
-    let popupStyle = mulitDeepClone({}, {
-      'position': 'fixed',
-      'top': 0,
-      'right': 0,
-      'left': 0,
-      'bottom': 0,
-      'z-index': this.zIndex
-    })
-    this.popupStyle = popupStyle
+    if (!this.isUseFixed) {
+      let input = this.$refs.popop.getElementsByTagName('input')
+      Array.apply(null, input).forEach((item) => {
+        item.addEventListener('blur', () => {
+          this.isFixed = true
+        }, false)
+      })
+      Array.apply(null, input).forEach((item) => {
+        item.addEventListener('focus', () => {
+          this.isFixed = false
+        }, false)
+      })
+    }
   },
   methods: {
     show() {
-      if (!this.isUsefixed) {
+      if (!this.isUseFixed && !this.isFixed) {
         let top = document.documentElement.scrollTop || document.body.scrollTop
-        let height = document.documentElement.clientHeight
-        this.popupStyle['position'] = 'absolute'
         this.popupStyle['top'] = `${top}px`
-        this.popupStyle['bottom'] = ``
-        this.popupStyle['height'] = `${height}px`
       }
       this.isVisible = true
     },
-    maskClick() {
-      this.$emit(EVENT_MASK_CLICK)
-    },
-    touchmove(e) {
+    touchstart(e) {
       if (this.isLockScroll) {
         e.preventDefault()
       }
-    }
+      this.$emit(EVENT_MASK_CLICK)
+    },
+  },
+  beforeDestroy() {
+    this.debounceInstance.destory()
+    this.throttleInstance.destory()
   }
 }
 </script>
@@ -131,6 +177,10 @@ export default {
 @import "../../common/stylus/var/z-index.styl"
 
 .vi-popup
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
   .vi-popup-mask
     position: absolute
     width: 100%

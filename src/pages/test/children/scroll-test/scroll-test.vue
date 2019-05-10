@@ -85,8 +85,6 @@ export default {
       matchListRefreshCount: 4,
     }
   },
-  created() {
-  },
   methods: {
     onPullDown() {
       this.loadMatch('down')

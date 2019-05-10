@@ -1,27 +1,28 @@
 <template>
-  <div class="wechat-popup">
+  <div ref="wechatPopup" class="wechat-popup">
     <div style="width: 50px;height: 50px;background:red"
       @click="show($event)"></div>
-      <vi-popup ref="popup"
-        transitionName="dialog-fade"
-        :transitionDuration="transitionDuration"
-        @mask-click="maskClick">
-        <!-- <template slot="mask">
-          <div class="custom-mask"></div>
-        </template> -->
-        <div class="popup-content">
-          <div style="margin-bottom: 30px">
-            <search-box></search-box>
-          </div>
-          <div style="margin-bottom: 30px">
-            <search-box></search-box>
-          </div>
-          <div style="margin-bottom: 30px">
-            <search-box></search-box>
-          </div>
-          <div class="close" @click="close"></div>
+    <vi-popup ref="popup"
+      transitionName="dialog-fade"
+      :transitionDuration="transitionDuration"
+      :isUseFixed="isUseFixed"
+      @mask-click="maskClick">
+      <!-- <template slot="mask">
+        <div class="custom-mask"></div>
+      </template> -->
+      <div class="popup-content">
+        <div style="margin-bottom: 30px">
+          <search-box></search-box>
         </div>
-      </vi-popup>
+        <div style="margin-bottom: 30px">
+          <search-box></search-box>
+        </div>
+        <div style="margin-bottom: 30px">
+          <search-box @blur="blur" @focus="focus"></search-box>
+        </div>
+        <div class="close" @click="close"></div>
+      </div>
+    </vi-popup>
     <div style="width: 50px;height: 50px;background:red;position:absolute;top:1000px"
       @click="show($event)"></div>
   </div>
@@ -39,18 +40,23 @@ export default {
       transitionDuration: {
         enter: 500,
         leave: 500
-      }
+      },
+      isUseFixed: false
     }
   },
   methods: {
     maskClick() {
-
+      // this.$refs.popup.hide()
     },
     show(e) {
       this.$refs.popup.show()
     },
     close() {
       this.$refs.popup.hide()
+    },
+    blur() {
+    },
+    focus() {
     }
   }
 }
@@ -59,7 +65,7 @@ export default {
 <style lang="stylus" modules>
 .wechat-popup
   width: 100%
-  height: 200vh
+  height: 300vh
   background: #fff
   .popup-content
     position: relative
