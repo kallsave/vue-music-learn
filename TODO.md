@@ -26,8 +26,7 @@
 - 上传文件
 - 深入svg
 - swipe的confirm做成回弹效果
-
-# 优先
+- vue-router源码
 - index-list支持slot
 - dialog组件开发
 - confirm组件开发
@@ -39,23 +38,20 @@
 - 在各个浏览器上测试组件,z-index等
 - svg的viewport
 - vi-toast支持自定义icon
-- vi-popup增加是否可以穿透
-- vue-router源码
 - image-preview
 - cube-ui的scroll做了新的更新,涉及到isInTransition
-- popup的mixin
 - ease函数原理
 - 修复searchHistory的bug
 - scroll的边界问题
-- popup用absolute替代fixed,并总是阻止scroll
 - 所有组件,工具函数都要有单元测试
 - 增加登录机制,增加个人中心页面
-- 原生scroll长列表下阻止弹窗外部滚动
-- 自适应高度textarea
-- scroll-down-refresh用箭头做默认slot
-- 实验触发transition的条件: if,show,动态组件
 - 第三方登录
 - switch组件
+
+# 优先
 - sticky弃用appendChild的方式
-- keep-alive做更细致的管理方案
+- 自适应高度textarea
+- scroll-down-refresh用箭头做默认slot
 - 图片,视频上传组件
+- keep-alive做更细致的管理方案
+

@@ -42,7 +42,6 @@ export default {
     //     document.body.scrollTop = document.body.scrollHeight
     //   }
     // })
-    console.log()
   },
   methods: {
     clickHandler(e, item) {

@@ -20,7 +20,8 @@ const BoundaryScroll = () => import('./test/children/boundary-scroll/boundary-sc
 const NativeScroll = () => import('./test/children/native-scroll/native-scroll.vue')
 const ScrollHorizontal = () => import('./test/children/scroll-horizontal/scroll-horizontal.vue')
 const Exends = () => import('./test/children/extends/extends.vue')
-const wechatPopup = () => import('./test/children/wechat-popup/wechat-popup.vue')
+const WechatPopup = () => import('./test/children/wechat-popup/wechat-popup.vue')
+const AutoSize = () => import('./test/children/autosize/autosize.vue')
 
 export default {
   path: '/test',
@@ -108,7 +109,11 @@ export default {
     },
     {
       path: '/test/wechat-popup',
-      component: wechatPopup
+      component: WechatPopup
+    },
+    {
+      path: '/test/autosize',
+      component: AutoSize
     }
   ]
 }

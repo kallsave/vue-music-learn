@@ -118,7 +118,7 @@ export default {
 @import "~@/common/stylus/var/ease.styl"
 
 .app
-  background: $color-background
+  // background: $color-background
   .router-view
     &.move-right-enter
       transform: translate3d(100%, 0, 0)

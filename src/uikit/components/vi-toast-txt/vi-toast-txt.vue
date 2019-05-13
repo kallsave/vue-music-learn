@@ -1,5 +1,5 @@
 <template>
-  <vi-popup v-show="isVisible"
+  <vi-popup v-model="isVisible"
     :is-show-mask="isShowMask"
     :is-lock-scroll="isLockScroll"
     :z-index="zIndex">

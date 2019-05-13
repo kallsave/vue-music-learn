@@ -1,4 +1,3 @@
-import { showVConsole } from './common/jmeter/vconsole.js'
 import Vue from 'vue'
 import App from './App'
 import router from './pages/router.js'
@@ -106,5 +105,3 @@ new Vue({
     }
   }
 })
-
-showVConsole()

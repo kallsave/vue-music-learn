@@ -1,9 +1,10 @@
 <template>
-  <transition :duration="{enter: 400, leave: 400}">
-    <vi-popup v-show="isVisible"
+  <transition>
+    <vi-popup v-model="isVisible"
       :is-show-mask="isShowMask"
       :is-lock-scroll="isLockScroll"
-      :z-index="zIndex">
+      :z-index="zIndex"
+      :transitionDuration="{enter: 400, leave: 400}">
       <transition name="vi-toast-fade">
         <div class="vi-toast"
           v-show="isVisible"

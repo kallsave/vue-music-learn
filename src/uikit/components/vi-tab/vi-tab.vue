@@ -8,7 +8,7 @@
     </slot>
     <div ref="tabSlider"
       class="vi-tab-slider"
-      :style="styleForSlider">
+      :style="calcSliderStyle">
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@ export default {
     },
   },
   computed: {
-    styleForSlider() {
+    calcSliderStyle() {
       return mulitDeepClone({}, DEFAULT_TAB_SLIDER_STYLE, stylePadPx(this.sliderStyle))
     }
   },

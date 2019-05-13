@@ -2,7 +2,7 @@
   <transition
     :name="transitionName"
     :duration="transitionDuration">
-    <div ref="popop"
+    <div ref="popup"
       class="vi-popup"
       v-show="isVisible"
       :style="popupStyle">
@@ -47,7 +47,10 @@ const EVENT_MASK_CLICK = 'mask-click'
 
 export default {
   name: COMPONENT_NAME,
-  mixins: [visibilityMixin, popupMixin],
+  mixins: [
+    visibilityMixin,
+    popupMixin
+  ],
   props: {
     isShowMask: {
       type: Boolean,
@@ -60,10 +63,6 @@ export default {
     zIndex: {
       type: Number,
       default: 200
-    },
-    isLockScroll: {
-      type: Boolean,
-      default: true
     },
     transitionName: {
       type: String,
@@ -78,6 +77,11 @@ export default {
         }
       }
     },
+    // 有input框推荐开启
+    isUseAbsolute: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -87,13 +91,43 @@ export default {
     }
   },
   mounted() {
-    this._findInput()
     this._addEventListenerBlur()
   },
   methods: {
-    show() {
+    _addEventListenerBlur() {
+      let popup = this.$refs.popup
+      popup.addEventListener('blur', this._recoverTop, true)
+    },
+    _removeEventListenerBlur() {
+      let popup = this.$refs.popup
+      popup.removeEventListener('blur', this._recoverTop, true)
+    },
+    _recoverTop(event) {
+      const tagNameList = ['INPUT', 'TEXTAREA']
+      if (tagNameList.indexOf(event.target.tagName) !== -1) {
+        window.scrollTo(0, this.top)
+      }
+    },
+    _cachedTop() {
       let top = document.documentElement.scrollTop || document.body.scrollTop
-      this._cachedTop = top
+      this.top = top
+    },
+    _setPopupStyle() {
+      this._cachedTop()
+      if (this.isUseAbsolute) {
+        this.popupStyle['position'] = 'absolute'
+        this.popupStyle['top'] = `${this.top}px`
+        this.popupStyle['bottom'] = ''
+        this.popupStyle['height'] = `100vh`
+      } else {
+        this.popupStyle['position'] = 'fixed'
+        this.popupStyle['top'] = `0`
+        this.popupStyle['bottom'] = `0`
+        this.popupStyle['height'] = `100vh`
+      }
+    },
+    show() {
+      this._setPopupStyle()
       this.isVisible = true
     },
     touchstart(e) {
@@ -102,30 +136,6 @@ export default {
       }
       this.$emit(EVENT_MASK_CLICK)
     },
-    _findInput() {
-      let popop = this.$refs.popop
-      this.input = popop.getElementsByTagName('input')
-      this.textarea = popop.getElementsByTagName('textarea')
-    },
-    _addEventListenerBlur() {
-      Array.apply(null, this.input).forEach((item) => {
-        item.addEventListener('blur', this.recoverTop, false)
-      })
-      Array.apply(null, this.textarea).forEach((item) => {
-        item.addEventListener('blur', this.recoverTop, false)
-      })
-    },
-    _removeEventListenerBlur() {
-      Array.apply(null, this.input).forEach((item) => {
-        item.removeEventListener('blur', this.recoverTop, false)
-      })
-      Array.apply(null, this.textarea).forEach((item) => {
-        item.removeEventListener('blur', this.recoverTop, false)
-      })
-    },
-    recoverTop() {
-      window.scrollTo(0, this._cachedTop)
-    }
   },
   beforeDestroy() {
     this._removeEventListenerBlur()
@@ -140,9 +150,9 @@ export default {
 .vi-popup
   position: fixed
   top: 0
+  bottom: 0
   left: 0
   right: 0
-  bottom: 0
   z-index: $z-index-popup
   .vi-popup-mask
     position: absolute
