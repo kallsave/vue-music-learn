@@ -32,9 +32,9 @@ export default {
     handleInput(event) {
       const value = event.target.value
       this.setCurrentValue(value)
+      console.log(this.currentVal)
     },
     setCurrentValue(value) {
-      this.currentVal = value
       this.$nextTick(this.resizeTextarea)
     },
     resizeTextarea() {

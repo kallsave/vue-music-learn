@@ -169,28 +169,27 @@ async function updateAllImg () {
 
 - 因为.sync和update:使用有点绕,如果没有必要,减少.sync的使用:
 
-  组件的显示和隐藏可以通过this.$refs.xxx.show()/hide()来控制
+  组件的显示和隐藏可以通过this.$refs.xxx.show()/hide(),v-model(嵌套组件里用)来控制
 
   这样可以减少变量,降低ui组件嵌套的复杂度,提高代码的可读性
 
 - css modules优于 css scoped
 
 ## 关于keep-alive
-  keep-alive是实现原生交互效果(缓存页面)的很强大的组件,但是过多页面keep-alive也会造成页面卡顿
+  keep-alive是实现原生交互效果(缓存页面)的很强大的组件,但是过多页面keep-alive也会造成页面卡顿,所以要提供临时清除所有keep-alive的功能。
+  不用$destory的原因是$destory这个功能有缺陷,一旦一个组件调用这个方法,后面都不会再被keep-alive。
+
   >keep-alive场景:
   >1. 列表页 => 详情页最经典的方式是列表页keep-alive,详情页不做keep-alive处理
   >2. router-tab => 各个页面类似slide做keep-alive
   >3. 表单页跳转到其他页面,返回表单页填写的信息还保留在页面上
   >4. keep-alive还有更复杂的场景,有的页面既需要keep-alive又需要不keep-alive,即keep-alive的规则是动态的,比如表单既需要跳到个别页面(选择卡之类的页面)保持keep-alive,又需要在提交后不keep-alive,重新进来时不keep-alive
   >5. 没有数据变更的静态页面
-
+  > keep-alive管理方案1:
   考虑到一个项目可能就几个页面有动态的keep-alive需求,本项目把keep-alive分为始终不变的keep-alive和动态变更的keep-alive(通过vuex控制),这种简洁的方案只是一种折中的处理,对哪个页面keep-alive或者不keep-alive不能细粒化(或者说做到细粒化管理很麻烦)。需要考虑好的场景是如果详情页下面还有更多的跳转分支,比如
-
   > 用户列表 => 用户详情 => 备注列表 => 备注详情
     期望的效果是对备注列表页做keep-alive,那么首先用户详情页的name是no-keep-alive的,并且在跳转到用户详情页mounted钩子中清除所有immutable-keep-alive,因为备注列表是keep-alive的
-
-
-  keep-alive的命名在common/config/keep-alive-name.js中定义,给组件使用keep-alive需要import这个文件的变量
+  >keep-alive的命名在common/config/keep-alive-name.js中定义,给组件使用keep-alive需要import这个文件的变量
 
   ```javascript
   <template>
@@ -231,16 +230,126 @@ async function updateAllImg () {
     ...
   }
   ```
-  不用$destory的原因是
-  $destory这个功能有缺陷,一旦一个组件调用这个方法,后面都不会再被keep-alive
-
- keep-alive是会占用内存的,所以提供临时清除所有keep-alive的功能
-
  keep-alive和滚动位置
 
- - 当keep-alive和页面跳转过渡动画在一起使用时,如果leave(比如列表页)的页面在过渡动画中改变了视图高度,那么返回到原来的页面时,页面的滚动位置不是原来切换到详情页的位置。vue-router提供scrollBehavior这个api,但是因为有过渡动画的缓动时间,所以不好选择时机操作滚动条做"无感知"的效果。正确的做法是去掉leave的页面过渡,有enter的过渡效果就行了,这样效果是无感知而且代码是最少的
+ - 当keep-alive和页面跳转过渡动画在一起使用时,如果leave(比如列表页)的页面在过渡动画中改变了视图高度,那么返回到原来的页面时,页面的滚动位置不是原来切换到详情页的位置。vue-router提供scrollBehavior这个api,但是因为有过渡动画的缓动时间,所以不好选择时机操作滚动条做"无感知"的效果。正确的做法是需要keep-alive的leave不用改变高度,不需要keep-alive的enter可以改变高度,这样效果是无感知而且代码是最少的。并且要使用this.$router.back()才有效果。
 
- - 当keep-alive和第三方scroll库一起使用,页面的高度是100vh,滚动只发生在容器内部,所以也是很好的"无感知"效果
+ ```javascript
+ <style lang="less">
+  @easeInOut: cubic-bezier(.61,0,.44,1);
+  @easeIn: cubic-bezier(.2,0,0,1);
+
+  .router-view {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    // 防止布局溢出导致动画抖动
+    overflow-x: hidden;
+    background-color: #f4f4f4;
+    &.move-right-enter {
+      position: fixed;
+      z-index: 20;
+      height: 100vh;
+      left: 100%;
+      .vux-header {
+        .vux-header-title {
+          transform: translateX(200%);
+        }
+      }
+    }
+    &.move-right-enter-active {
+      position: fixed;
+      z-index: 20;
+      height: 100vh;
+      transition: left 300ms @easeIn;
+      .vux-header {
+        .vux-header-title {
+          transition: transform 300ms @easeInOut;
+        }
+      }
+    }
+    &.move-right-enter-to {
+      position: fixed;
+      z-index: 20;
+      height: 100vh;
+    }
+    &.move-right-leave {
+      z-index: 10;
+      .vux-header {
+        z-index: 10;
+      }
+    }
+    &.move-right-leave-active {
+      z-index: 10;
+      transition: left 280ms @easeInOut;
+    }
+    &.move-right-leave-to {
+      z-index: 10;
+      left: -50%;
+      .vux-header {
+        z-index: 10;
+      }
+    }
+    &.move-left-enter {
+      z-index: 10;
+      left: -30%;
+      .vux-header {
+        z-index: 10;
+        left: -30%;
+      }
+    }
+    &.move-left-enter-active {
+      z-index: 10;
+      transition: left 300ms @easeIn;
+      .vux-header {
+        z-index: 10;
+        transition: left 300ms @easeIn;
+      }
+    }
+    &.move-left-enter-to {
+      z-index: 10;
+      .vux-header {
+        z-index: 10;
+      }
+    }
+    &.move-left-leave {
+      position: fixed;
+      z-index: 20;
+      height: 100vh;
+      left: 0%;
+      .vux-header {
+        z-index: 20;
+        left: 0%;
+      }
+    }
+    &.move-left-leave-active {
+      position: fixed;
+      z-index: 20;
+      height: 100vh;
+      left: 100%;
+      transition: left 280ms @easeInOut;
+      .vux-header {
+        z-index: 20;
+        left: 100%;
+        transition: left 280ms @easeInOut;
+      }
+    }
+    &.move-left-leave-to {
+      position: fixed;
+      z-index: 20;
+      height: 100vh;
+      left: 100%;
+      .vux-header {
+        z-index: 20;
+        left: 100%;
+      }
+    }
+  }
+  </style>
+ ```
+
+  -当keep-alive和第三方scroll库一起使用,页面的高度是100vh,滚动只发生在容器内部,所以也是很好的"无感知"效果
 
 
 ## 关于vue-router的参数
@@ -264,7 +373,7 @@ params无法和path配合使用
 - 路由过渡动画有loading的作用,过渡enter开始时,页面的生命周期已经开始,接口也开始请求,然后过来的时候显得接口特别快
 - transform让fixed降级为absolute,如果页面有导航头是fixed的话,应该使用left而不是transform
 
-- 通过meta.index控制全局的路由跳转代码:
+- 通过maxLength为2的shift/unshift栈控制全局的路由跳转代码:
 App.vue
 ```javascript
 <template>
@@ -276,73 +385,10 @@ App.vue
 </template>
 
 <script>
-export default {
-  name: 'App',
-  data() {
-    return {
-      transitionName: '',
-    }
-  },
-  watch: {
-    $route(to, from) {
-      if (!to.meta || !to.meta.index || !from.meta || !from.meta.index) {
-        this.transitionName = ''
-        this.mode = ''
-        return
-      }
-      if (to.meta.index >= from.meta.index) {
-        this.transitionName = 'move-right'
-        this.mode = ''
-      } else {
-        this.transitionName = 'move-left'
-        this.mode = ''
-      }
-    }
-  },
-}
+
 
 </script>
 
-<style lang="stylus" modules>
-.router-view
-  &.move-right-enter
-    will-change: transform
-    transform: translate3d(100%, 0, 0)
-  &.move-right-enter-active
-    will-change: transform
-    transition: transform 0.3s cubic-bezier(.61,0,.44,1)
-  &.move-right-enter-to
-    will-change: auto
-    transform: none
-
-  &.move-right-leave
-    will-change: transform
-  &.move-right-leave-active
-    transform: translate3d(-30%, 0, 0)
-    transition: transform 0.28s cubic-bezier(.61,0,.44,1)
-  &.move-right-leave-to
-    will-change: auto
-    transform: translate3d(-30%, 0, 0)
-
-  &.move-left-enter
-    transform: translate3d(-30%, 0, 0)
-    will-change: transform
-  &.move-left-enter-active
-    will-change: transform
-    transition: transform 0.3s cubic-bezier(.61,0,.44,1)
-  &.move-left-enter-to
-    will-change: auto
-    transform: none
-
-  &.move-left-leave
-    will-change: transform
-  &.move-left-leave-active
-    transform: translate3d(100%, 0, 0)
-    transition: transform 0.28s cubic-bezier(.61,0,.44,1)
-  &.move-left-leave-to
-    will-change: auto
-    transform: translate3d(100%, 0, 0)
-</style>
 ```
 
 ## 关于better-scroll

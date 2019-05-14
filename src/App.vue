@@ -19,10 +19,9 @@ import { AFTER_ENTER, FINISH } from '@/store/modules/router-transition-state/con
 import { mapGetters, mapMutations } from 'vuex'
 import Player from '@/components/player/player.vue'
 import { prefixStyle } from '@/common/helpers/dom.js'
+import Stack from '@/common/class/stack.js'
 
-const TRANSITIONEND = prefixStyle('transitionend')
-
-const EVENT_ROUTER_TRANSITION_ENTER_END = 'router-transition-enter-end'
+const forwardBackCache = new Stack(2)
 
 export default {
   name: 'App',
@@ -34,7 +33,7 @@ export default {
       IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME,
       transitionName: '',
       mode: '',
-      routerHistory: []
+      forwardBackCache: forwardBackCache
     }
   },
   computed: {
@@ -57,26 +56,21 @@ export default {
               name: '',
               mode: ''
             })
-            // 返回到一个页面,相当于新打开一个页面
-            this.routerHistory = []
+            // 有特定非默认的前进后退动画设置,相当于重新清空了前进和后退的关系
+            this.forwardBackCache.clearData()
           } else {
-            if (to.fullPath === this.routerHistory[1]) {
+            if (to.fullPath === this.forwardBackCache.getSecond()) {
               this.transitionName = 'move-left'
               this.mode = ''
-              // 返回到一个页面,相当于新打开一个页面
-              this.routerHistory = []
+              // 返回到一个页面,相当于重新清空了前进和后退的关系
+              this.forwardBackCache.clearData()
             } else {
               this.transitionName = 'move-right'
               this.mode = ''
             }
           }
         }
-
-        this.insertArray({
-          arr: this.routerHistory,
-          val: to.fullPath,
-          maxLength: 2
-        })
+        this.forwardBackCache.add(to.fullPath)
       },
       immediate: true
     },
