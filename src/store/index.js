@@ -14,9 +14,9 @@ import keepAliveName from './modules/keep-alive-name/keep-alive-name.js'
 import searchHistory from './modules/search-history/search-history.js'
 import routerTransition from './modules/router-transition/router-transition.js'
 import routerTransitionState from './modules/router-transition-state/router-transition-state.js'
+import keepAliveRouteList from './modules/keep-alive-route-list/keep-alive-route-list.js'
 
-// 不通过PersistedState插件做缓存的mutations
-// 用于不需要存储或者更自定义的功能
+// 不需要vuex-persistedstate做可持续化的mutations
 const persistedstateIgnoreMutations = [
   // keep-alive的组件不需要做可持续化
   'SET_MUTABLE_KEEP_ALIVE_NAME',
@@ -26,12 +26,13 @@ const persistedstateIgnoreMutations = [
   // 路由过渡动画实现不需要做可持续化
   'SET_ROUTER_TRANSITION',
   // 路由过渡动画的状态不需要做可持续化
-  'SET_ROUTER_TRANSITION_STATE'
+  'SET_ROUTER_TRANSITION_STATE',
+  // 路由缓存记录不需要做可持续化
+  'SET_KEEP_ALIVE_LIST'
 ]
 
 let timerSlice = 1000 * 60 * 60
 
-// localStore保存有prototype的对象,需要注意
 const VuexPlugins = [
   createPersistedState({
     key: 'vue-music',
@@ -71,7 +72,8 @@ export default new Vuex.Store({
     keepAliveName,
     searchHistory,
     routerTransition,
-    routerTransitionState
+    routerTransitionState,
+    keepAliveRouteList
   },
   strict: debug,
   plugins: VuexPlugins

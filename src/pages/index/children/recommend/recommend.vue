@@ -79,7 +79,6 @@ import { injectStickyMixin } from '../../mixins/inject-sticky.js'
 import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
 
 export default {
-  // 可变keep-alive
   name: MUTABLE_KEEP_ALIVE_NAME,
   mixins: [
     injectStickyMixin,

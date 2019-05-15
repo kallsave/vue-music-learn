@@ -54,4 +54,5 @@
 - scroll-down-refresh用箭头做默认slot
 - 图片,视频上传组件
 - keep-alive做更细致的管理方案
+- 实现原生的下拉加载
 

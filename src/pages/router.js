@@ -31,40 +31,49 @@ const router = new Router({
     TestRouter,
     {
       path: '/',
+      redirect: '/index'
+    },
+    {
+      path: '/index',
       component: Index,
+      name: 'index',
+      // 改成slide-view模式需要去掉
+      redirect: '/index/recommend',
       meta: {
         isUseRouterTransition: true,
       },
-      // 改成slide-view模式需要去掉
-      redirect: '/recommend',
       children: [
         {
-          path: '/recommend',
+          path: '/index/recommend',
           component: Recommend,
+          name: 'recommend',
           meta: {
             isUseRouterTransition: true,
             title: '推荐',
           },
         },
         {
-          path: '/singer',
+          path: '/index/singer',
           component: Singer,
+          name: 'singer',
           meta: {
             isUseRouterTransition: true,
             title: '歌手'
           },
         },
         {
-          path: '/rank',
+          path: '/index/rank',
           component: Rank,
+          name: 'rank',
           meta: {
             isUseRouterTransition: true,
             title: '排行'
           },
         },
         {
-          path: '/search',
+          path: '/index/search',
           component: Search,
+          name: 'search',
           meta: {
             isUseRouterTransition: true,
             title: '搜索'
@@ -75,33 +84,39 @@ const router = new Router({
     {
       path: '/new-search',
       component: NewSearch,
+      name: 'new-search',
       meta: {
         isUseRouterTransition: true,
         title: '搜索'
       },
     },
-    {
-      path: '/music',
-      component: MusicList,
-      children: [
-        {
-          path: '/music/recommend-detail/:id',
-          component: RecommendDetail,
-        },
-        {
-          path: '/music/singer-detail/:id',
-          component: SingerDetail,
-        },
-        {
-          path: '/music/rank-detail/:id',
-          component: RankDetail,
-        }
-      ]
-    },
+    // {
+    //   path: '/music',
+    //   component: MusicList,
+    //   name: 'music',
+    //   children: [
+    //     {
+    //       path: '/music/recommend-detail/:id',
+    //       component: RecommendDetail,
+    //       name: 'recommend-detail',
+    //     },
+    //     {
+    //       path: '/music/singer-detail/:id',
+    //       component: SingerDetail,
+    //       name: 'singer-detail',
+    //     },
+    //     {
+    //       path: '/music/rank-detail/:id',
+    //       component: RankDetail,
+    //       name: 'rank-detail',
+    //     }
+    //   ]
+    // },
     // 新的路由动效
     {
       path: '/new-music/recommend-detail/:id',
       component: RecommendDetail,
+      name: 'recommend-detail',
       meta: {
         isUseRouterTransition: true,
         title: '推荐歌单详情'
@@ -110,6 +125,7 @@ const router = new Router({
     {
       path: '/new-music/singer-detail/:id',
       component: SingerDetail,
+      name: 'singer-detail',
       meta: {
         isUseRouterTransition: true,
         title: '歌手歌单详情'
@@ -118,6 +134,7 @@ const router = new Router({
     {
       path: '/new-music/rank-detail/:id',
       component: RankDetail,
+      name: 'rank-detail',
       meta: {
         isUseRouterTransition: true,
         title: '排行歌单详情'
@@ -125,6 +142,7 @@ const router = new Router({
     },
     { path: '*',
       component: NotFoundComponent,
+      name: '404',
       meta: {
         isUseRouterTransition: true,
         title: '页面丢失了'
