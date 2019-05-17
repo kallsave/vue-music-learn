@@ -57,13 +57,13 @@ export default {
               mode: ''
             })
             // 有特定非默认的前进后退动画设置,相当于重新清空了前进和后退的关系
-            this.forwardBackCache.clear()
+            this.forwardBackCache.clearAll()
           } else {
             if (to.fullPath === this.forwardBackCache.getSecond()) {
               this.transitionName = 'move-left'
               this.mode = ''
               // 返回到一个页面,相当于重新清空了前进和后退的关系
-              this.forwardBackCache.clear()
+              this.forwardBackCache.clearAll()
             } else {
               this.transitionName = 'move-right'
               this.mode = ''

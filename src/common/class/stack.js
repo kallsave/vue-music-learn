@@ -2,6 +2,7 @@
 
 export default class Stack {
   // 设置最大存储
+  // 设置最大存储
   constructor(maxLength) {
     this.maxLength = maxLength
     this.init()
@@ -10,7 +11,7 @@ export default class Stack {
     this.list = []
   }
   // 添加已存在元素时添加无效,原元素位置置顶
-  add(element) {
+  _add(element) {
     const index = this.list.findIndex((item) => {
       return item === element
     })
@@ -20,6 +21,13 @@ export default class Stack {
     this.list.unshift(element)
     if (this.list.length > this.maxLength) {
       this.list.pop()
+    }
+  }
+  // _add支持多参数版
+  add() {
+    for (let i = 0; i < arguments.length; i++) {
+      let element = arguments[i]
+      this._add(element)
     }
   }
   // 快捷删除头元素,相当于backToByIndex(1)
@@ -50,8 +58,18 @@ export default class Stack {
     return this.list.splice(index, 1)
   }
   // 清除所有数据
-  clear() {
+  clearAll() {
     return this.list.splice(0)
+  }
+  // 清除除了参数以外的数据
+  clearExclude() {
+    for (let i = 0; i < this.list.length; i++) {
+      let item = this.list[i]
+      if (Array.prototype.indexOf.call(arguments, item) === -1) {
+        this.list.splice(i, 1)
+        i--
+      }
+    }
   }
   // 删除在这个元素后面添加的元素
   backTo(element) {

@@ -176,16 +176,16 @@ async function updateAllImg () {
 - css modules优于 css scoped
 
 ## 关于keep-alive
-  keep-alive是实现原生交互效果(缓存页面)的很强大的组件,但是过多页面keep-alive也会造成页面卡顿,所以要提供临时清除所有keep-alive的功能。
+  keep-alive是实现原生交互效果(缓存页面)的很强大的组件,keep-alive页面的生命周期没有停止,过多页面keep-alive会造成页面卡顿,所以要提供清除keep-alive,减少keep-alive页面的功能。
   不用$destory的原因是$destory这个功能有缺陷,一旦一个组件调用这个方法,后面都不会再被keep-alive。
 
   >keep-alive场景:
   >1. 列表页 => 详情页最经典的方式是列表页keep-alive,详情页不做keep-alive处理
-  >2. router-tab => 各个页面类似slide做keep-alive
+  >2. tab => 各个页面类似slide做keep-alive(使用component组件,使用动态props,动态component)
   >3. 表单页跳转到其他页面,返回表单页填写的信息还保留在页面上
-  >4. keep-alive还有更复杂的场景,有的页面既需要keep-alive又需要不keep-alive,即keep-alive的规则是动态的,比如表单既需要跳到个别页面(选择卡之类的页面)保持keep-alive,又需要在提交后不keep-alive,重新进来时不keep-alive
-  >5. 没有数据变更的静态页面
-  > keep-alive管理方案1:
+  >4. 没有数据变更的静态页面
+
+  > 路由keep-alive管理方案1:
   考虑到一个项目可能就几个页面有动态的keep-alive需求,本项目把keep-alive分为始终不变的keep-alive和动态变更的keep-alive(通过vuex控制),这种简洁的方案只是一种折中的处理,对哪个页面keep-alive或者不keep-alive不能细粒化(或者说做到细粒化管理很麻烦)。需要考虑好的场景是如果详情页下面还有更多的跳转分支,比如
   > 用户列表 => 用户详情 => 备注列表 => 备注详情
     期望的效果是对备注列表页做keep-alive,那么首先用户详情页的name是no-keep-alive的,并且在跳转到用户详情页mounted钩子中清除所有immutable-keep-alive,因为备注列表是keep-alive的
@@ -230,9 +230,31 @@ async function updateAllImg () {
     ...
   }
   ```
- keep-alive和滚动位置
 
- - 当keep-alive和页面跳转过渡动画在一起使用时,如果leave(比如列表页)的页面在过渡动画中改变了视图高度,那么返回到原来的页面时,页面的滚动位置不是原来切换到详情页的位置。vue-router提供scrollBehavior这个api,但是因为有过渡动画的缓动时间,所以不好选择时机操作滚动条做"无感知"的效果。正确的做法是需要keep-alive的leave不用改变高度,不需要keep-alive的enter可以改变高度,这样效果是无感知而且代码是最少的。并且要使用this.$router.back()才有效果。
+ > 路由keep-alive管理方案2:
+ > 这个方案好管理,应该是最佳方案
+ > 实现前进刷新,后退不刷新
+ > 为了方便使用,route.name和componentName要对应起来,这样compoentName===this.$route.name
+ > 为了全局使用,管理keepAlive的数组用vuex来组织
+ > 原理:
+
+ > 跑在浏览器的页面:
+ > 1.每进入一个页面用管理keepAlive的数组存当前页面的componentName
+ > 2.跳转到新页面时,管理keepAlive的数组先删除即将去的页面的componentName,保证了浏览器反复(跳转+浏览器的返回)也不会导致将去的页面的keepAlive。保存按钮返回到原来页面前管理keepAlive的数组删除当前页面的componentName
+ > 3.如果前进页面的数据更新会导致缓存页面的数据需要做刷新处理,如果是相邻的两个页面,使用vuex让列表页和详情页关联起来.如果是相差N(N>2)个页面,可以用vuex也可以数据更新后管理keepAlive的数组删除这个缓存页面的componentName
+
+ > 嵌套在app的页面:
+ > 0.对于嵌套在app的页面,有顶部导航返回按钮,封装这个page组件统一处理减少代码
+ > 1.page组件进来时用管理keepAlive的数组存当前页面的componentName,
+ > 2.page组件点击返回按钮删除当前页面的componentName(保持按钮等操作类似)
+ > 3.如果前进页面的数据更新会导致缓存页面的数据需要做刷新处理,如果是相邻的两个页面(比如列表和详情)),使用vuex让列表页和详情页关联起来.如果是相差N(N>2)个页面,可以用vuex也可以数据更新后管理keepAlive的数组删除这个缓存页面的componentName
+ > 4.保持按钮删除当前页面的componentName要引入vuex的代码,更简便的做法是调用this.$refs.page.back(),相当于点击了返回按钮
+
+ > 遇到的问题:
+ > 当用户可操作改变的数据过多时,要具体删除哪个页面的缓存成了一个问题(通常是保存提交按钮后检查这些数据都有哪些页面涉及,然后删除)
+
+ > 路由keep-alive和滚动位置
+ > 当keep-alive和页面跳转过渡动画在一起使用时,如果leave(比如列表页)的页面在过渡动画中改变了视图高度,那么返回到原来的页面时,页面的滚动位置不是原来切换到详情页的位置。vue-router提供scrollBehavior这个api,但是因为有过渡动画的缓动时间,所以不好选择时机操作滚动条做"无感知"的效果。正确的做法是需要keep-alive的leave不用改变高度,不需要keep-alive的enter可以改变高度,这样效果是无感知而且代码是最少的。并且要使用this.$router.back()才有效果。
 
  ```javascript
  <style lang="less">
@@ -361,6 +383,7 @@ this.$route.push({
 
 - query和params
 >query和params两者都可以传参
+query是key=value格式,params如果匹配上是/value的格式(key是顺序)
 query是经典的url参数,但是必须通过vue-router的使用方式才能获取到$route.query,拼接url是不能获取query的
 params如果匹配上路由表的:key规则的会暴露在url中,不匹配上不会暴露在url上。
 params无法和path配合使用

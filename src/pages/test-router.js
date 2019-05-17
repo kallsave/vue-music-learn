@@ -22,6 +22,7 @@ const ScrollHorizontal = () => import('./test/children/scroll-horizontal/scroll-
 const Exends = () => import('./test/children/extends/extends.vue')
 const WechatPopup = () => import('./test/children/wechat-popup/wechat-popup.vue')
 const AutoSize = () => import('./test/children/autosize/autosize.vue')
+const Component = () => import('./test/children/component/component.vue')
 
 export default {
   path: '/test',
@@ -114,6 +115,10 @@ export default {
     {
       path: '/test/autosize',
       component: AutoSize
-    }
+    },
+    {
+      path: '/test/component',
+      component: Component
+    },
   ]
 }

@@ -2,7 +2,7 @@
 
 import Stack from '@/common/class/stack.js'
 
-const keepAliveStack = new Stack(5)
+const keepAliveStack = new Stack(8)
 
 const types = {
   SET_KEEP_ALIVE_LIST: 'SET_KEEP_ALIVE_LIST',
@@ -22,43 +22,49 @@ const keepAliveRouteList = {
   },
   actions: {
     // 添加已存在缓存路由时添加无效,原缓存路由位置置顶
-    addKeepAliveRoute({ commit }, componentName) {
-      keepAliveStack.add(componentName)
+    keepAliveRouteAdd({ commit }, ...componentNameList) {
+      keepAliveStack.add(...componentNameList)
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
     // 快捷删除上一个缓存路由,相当于backToByIndex(1)
-    reduceKeepAliveRoute({ commit }, componentName) {
+    keepAliveRouteReduce({ commit }, componentName) {
       keepAliveStack.reduce(componentName)
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
     // 删除从这个缓存路由连同比这个缓存路由先缓存的路由
-    removeFromKeepAliveRoute({ commit }, element) {
+    keepAliveRouteRemoveFrom({ commit }, element) {
       keepAliveStack.removeFrom(element)
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
     // 删除指定的缓存路由
-    removeKeepAliveRoute({ commit }, componentName) {
+    keepAliveRouteRemove({ commit }, componentName) {
       keepAliveStack.remove(componentName)
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
     // 清除所有缓存路由
-    clearKeepAliveRoute({ commit }) {
-      keepAliveStack.clearData()
+    keepAliveRouteClearAll({ commit }) {
+      keepAliveStack.clearAll()
+      let keepAliveRouteList = keepAliveStack.getList().slice()
+      commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
+    },
+    // 清除出了参数以外的其他缓存路由
+    keepAliveRouteClearExclude({ commit }, ...componentNameList) {
+      keepAliveStack.clearExclude(...componentNameList)
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
     // 缓存路由清除到这个缓存路由为止
-    backToKeepAliveRoute({ commit }, componentName) {
+    keepAliveRouteBackTo({ commit }, componentName) {
       keepAliveStack.backTo(componentName)
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
     // 缓存路由清除index步
-    backToByIndexKeepAliveRoute({ commit }, index) {
+    keepAliveRouteBackToByIndex({ commit }, index) {
       keepAliveStack.backToByIndex(index)
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
