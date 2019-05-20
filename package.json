@@ -16,7 +16,7 @@
   "dependencies": {
     "assign-deep": "^1.0.0",
     "axios": "^0.18.0",
-    "better-scroll": "^1.15.1",
+    "better-scroll": "^1.15.2",
     "create-keyframe-animation": "^0.1.0",
     "js-base64": "^2.5.0",
     "jsonp": "^0.2.1",

@@ -291,7 +291,7 @@ export default {
     redirectToRecommend() {
       this.tempDisableMutableKeepAliveName()
       this.$router.push({
-        path: '/recommend'
+        path: '/index/recommend'
       })
     },
     close() {

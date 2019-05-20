@@ -5,7 +5,7 @@
       :mode="mode"
       :duration="{enter: 300, leave: 300}"
       @after-enter="afterEnter">
-      <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
+      <keep-alive :include="keepAliveRouteList">
         <router-view class="router-view"></router-view>
       </keep-alive>
     </transition>
@@ -14,11 +14,9 @@
 </template>
 
 <script>
-import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { AFTER_ENTER, FINISH } from '@/store/modules/router-transition-state/config.js'
 import { mapGetters, mapMutations } from 'vuex'
 import Player from '@/components/player/player.vue'
-import { prefixStyle } from '@/common/helpers/dom.js'
 import Stack from '@/common/class/stack.js'
 
 const forwardBackCache = new Stack(2)
@@ -30,7 +28,6 @@ export default {
   },
   data() {
     return {
-      IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME,
       transitionName: '',
       mode: '',
       forwardBackCache: forwardBackCache
@@ -38,8 +35,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'mutableKeepAliveName',
       'routerTransition',
+      'keepAliveRouteList',
     ])
   },
   watch: {
@@ -80,23 +77,6 @@ export default {
       setRouterTransition: 'SET_ROUTER_TRANSITION',
       setRouterTransitionState: 'SET_ROUTER_TRANSITION_STATE'
     }),
-    insertArray({ arr, val, compare = (item) => {
-      return item === val
-    }, maxLength } = {}) {
-      const index = arr.findIndex(compare)
-
-      if (index === 0) {
-        return
-      }
-
-      if (index > 0) {
-        arr.splice(index, 1)
-      }
-      arr.unshift(val)
-      if (maxLength && arr.length > maxLength) {
-        arr.pop()
-      }
-    },
     afterEnter() {
       this.setRouterTransitionState(AFTER_ENTER)
       window.setTimeout(() => {
@@ -112,7 +92,7 @@ export default {
 @import "~@/common/stylus/var/ease.styl"
 
 .app
-  // background: $color-background
+  background: $color-background
   .router-view
     &.move-right-enter
       transform: translate3d(100%, 0, 0)

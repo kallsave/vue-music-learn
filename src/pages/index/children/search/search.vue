@@ -104,12 +104,8 @@ import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
 import SearchList from '@/components/search-list/search-list.vue'
 import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
 import createDebounceInstanceMixin from '@/common/mixins/create-debounce-instance.js'
-
-import {
-  mapMutations,
-  mapActions,
-  mapGetters
-} from 'vuex'
+import keepAliveRouteManagerMixin from '@/common/mixins/keep-alive-route-manager.js'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 const TYPE_SINGER = 'singer'
 const DEBOUNCE_TIME = 400
@@ -129,6 +125,7 @@ export default {
     playListMixin,
     createThrottleInstanceMixin,
     createDebounceInstanceMixin,
+    keepAliveRouteManagerMixin,
   ],
   data() {
     return {
@@ -198,7 +195,7 @@ export default {
       this.$refs.scroll.refresh()
     },
     scrollHandler(pos) {
-      this.$refs.sticky.watchScrollY(-pos.y)
+      this.$refs.sticky.listenScrollY(-pos.y)
       scrollHandler.call(this, pos)
     },
     _getHotKey() {
@@ -281,22 +278,27 @@ export default {
       this.isFetchSearch = false
     },
     selectItem(item) {
-      if (item.type === TYPE_SINGER) {
-        const singer = new Singer({
-          id: item.singermid,
-          name: item.singername
-        })
-        this.setSinger(singer)
-        // this.$router.push({
-        //   path: `/music/singer-detail/${singer.id}`
-        // })
-        this.$router.push({
-          path: `/new-music/singer-detail/${singer.id}`
-        })
-      } else {
-        // 插入歌曲在当前页播放
-        this.insertSong(item)
-      }
+      this.throttle.run(() => {
+        if (item.type === TYPE_SINGER) {
+          const singer = new Singer({
+            id: item.singermid,
+            name: item.singername
+          })
+          this.setSinger(singer)
+          // this.$router.push({
+          //   path: `/music/singer-detail/${singer.id}`
+          // })
+          this.$router.push({
+            name: 'detail-singer',
+            params: {
+              id: singer.id
+            }
+          })
+        } else {
+          // 插入歌曲在当前页播放
+          this.insertSong(item)
+        }
+      })
     },
     clearSearchHistoryHandler() {
       this.$createBaseConfirm({

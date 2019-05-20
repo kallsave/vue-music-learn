@@ -2,6 +2,7 @@
 // 和可能会在数据变更需要临时不keep-alive的mutable-keep-alive
 // 这个vuex模块是提供在跳转到需要keep-alive可变更的页面的简洁方案
 
+// 这种管理keep-alive太粗糙,废弃
 import { IMMUTABLE_KEEP_ALIVE_NAME, MUTABLE_KEEP_ALIVE_NAME, TEMP_KEEP_ALIVE_NAME } from './config.js'
 
 const DEFAULT_TEMP_TIME = 1000

@@ -1,24 +1,14 @@
 <template>
-  <div class="background" :style="setStyle"></div>
+  <div class="background"></div>
 </template>
 
 <script>
 export default {
-  props: {
-    setStyle: {
-      type: Object,
-      default() {
-        return {
-          height: '100vh'
-        }
-      }
-    }
-  }
 }
 </script>
 
 <style lang="stylus" modules>
+@import "~@/common/stylus/var/color.styl"
 .background
   height: 100vh
-
 </style>

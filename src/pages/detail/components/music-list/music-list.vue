@@ -121,7 +121,6 @@ export default {
         this.$refs.bgImage.style[TRANSFORM] = `scale(${scale})`
         this.$refs.title.style['opacity'] = opacity
         this.$refs.filter.style[BACKDROP_FILTER] = `blur(${blur}px)`
-        this.$refs.sticky.watchScrollY(-newVal)
       }
     },
     isFetchSongList: {
@@ -157,6 +156,7 @@ export default {
     },
     scrollHandler({ y }) {
       this.scrollY = y
+      this.$refs.sticky.listenScrollY(-y)
     },
     stickyChange(currentSticky) {
       this.$refs.bgImage.style.paddingTop = `${currentSticky.clientHeight + RESERVED_HEIGHT}px`
@@ -167,12 +167,12 @@ export default {
       this.$refs.bgImage.style.zIndex = 0
     },
     selectItem(e, item, index) {
-      this.throttle.run(() => {
-        this.selectPlay({
-          list: this.songList,
-          index: index
-        })
-      })
+      // this.throttle.run(() => {
+      //   this.selectPlay({
+      //     list: this.songList,
+      //     index: index
+      //   })
+      // })
     },
     random(e) {
       this.throttle.run(() => {

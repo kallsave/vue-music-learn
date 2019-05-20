@@ -11,11 +11,11 @@ const Singer = () => import(/* webpackChunkName: "Singer" */ './index/children/s
 const Search = () => import(/* webpackChunkName: "Search" */ './index/children/search/search.vue')
 const Rank = () => import(/* webpackChunkName: "Rank" */ './index/children/rank/rank.vue')
 
-// music路由
-const MusicList = () => import(/* webpackChunkName: "MusicList" */ './music/index.vue')
-const SingerDetail = () => import(/* webpackChunkName: "SingerDetail" */ './music/children/singer-detail/singer-detail.vue')
-const RecommendDetail = () => import(/* webpackChunkName: "RecommendDetail" */ './music/children/recommend-detail/recommend-detail.vue')
-const RankDetail = () => import(/* webpackChunkName: "RankDetail" */ './music/children/rank-detail/rank-detail.vue')
+// detail路由
+// const MusicList = () => import(/* webpackChunkName: "MusicList" */ './detail/index.vue')
+const DetailSinger = () => import(/* webpackChunkName: "SingerDetail" */ './detail/children/detail-singer/detail-singer.vue')
+const DetailRecommend = () => import(/* webpackChunkName: "RecommendDetail" */ './detail/children/detail-recommend/detail-recommend.vue')
+const DetailRank = () => import(/* webpackChunkName: "RankDetail" */ './detail/children/detail-rank/detail-rank.vue')
 
 // search路由
 const NewSearch = () => import(/* webpackChunkName: "NewSearch" */ './search/index.vue')
@@ -46,7 +46,7 @@ const router = new Router({
         {
           path: '/index/recommend',
           component: Recommend,
-          name: 'recommend',
+          name: 'index-recommend',
           meta: {
             isUseRouterTransition: true,
             title: '推荐',
@@ -55,7 +55,7 @@ const router = new Router({
         {
           path: '/index/singer',
           component: Singer,
-          name: 'singer',
+          name: 'index-singer',
           meta: {
             isUseRouterTransition: true,
             title: '歌手'
@@ -64,7 +64,7 @@ const router = new Router({
         {
           path: '/index/rank',
           component: Rank,
-          name: 'rank',
+          name: 'index-rank',
           meta: {
             isUseRouterTransition: true,
             title: '排行'
@@ -73,7 +73,7 @@ const router = new Router({
         {
           path: '/index/search',
           component: Search,
-          name: 'search',
+          name: 'index-search',
           meta: {
             isUseRouterTransition: true,
             title: '搜索'
@@ -114,27 +114,27 @@ const router = new Router({
     // },
     // 新的路由动效
     {
-      path: '/new-music/recommend-detail/:id',
-      component: RecommendDetail,
-      name: 'recommend-detail',
+      path: '/detail/recommend/:id',
+      component: DetailRecommend,
+      name: 'detail-recommend',
       meta: {
         isUseRouterTransition: true,
         title: '推荐歌单详情'
       }
     },
     {
-      path: '/new-music/singer-detail/:id',
-      component: SingerDetail,
-      name: 'singer-detail',
+      path: '/detail/singer/:id',
+      component: DetailSinger,
+      name: 'detail-singer',
       meta: {
         isUseRouterTransition: true,
         title: '歌手歌单详情'
       }
     },
     {
-      path: '/new-music/rank-detail/:id',
-      component: RankDetail,
-      name: 'rank-detail',
+      path: '/detail/rank/:id',
+      component: DetailRank,
+      name: 'detail-rank',
       meta: {
         isUseRouterTransition: true,
         title: '排行歌单详情'

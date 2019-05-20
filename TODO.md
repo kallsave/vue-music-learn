@@ -49,7 +49,6 @@
 - switch组件
 
 # 优先
-- sticky弃用appendChild的方式
 - 自适应高度textarea
 - scroll-down-refresh用箭头做默认slot
 - 图片,视频上传组件

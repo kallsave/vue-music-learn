@@ -71,7 +71,8 @@ const DEFAULT_OPTIONS = {
     threshold: 0.3,
     speed: 400
   },
-  useTransition: true,
+  // 不用transition而是requestAnimationFrame帧滚动,这样不会出现白屏
+  useTransition: false,
   stopPropagation: false,
   bounceTime: 800,
   eventPassthrough: 'vertical',

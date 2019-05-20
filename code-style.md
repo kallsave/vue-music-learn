@@ -178,6 +178,7 @@ async function updateAllImg () {
 ## 关于keep-alive
   keep-alive是实现原生交互效果(缓存页面)的很强大的组件,keep-alive页面的生命周期没有停止,过多页面keep-alive会造成页面卡顿,所以要提供清除keep-alive,减少keep-alive页面的功能。
   不用$destory的原因是$destory这个功能有缺陷,一旦一个组件调用这个方法,后面都不会再被keep-alive。
+  这个项目的路由层级只有两级,体现不了太多keep-alive的使用
 
   >keep-alive场景:
   >1. 列表页 => 详情页最经典的方式是列表页keep-alive,详情页不做keep-alive处理
@@ -222,9 +223,9 @@ async function updateAllImg () {
     ]),
     redirectToRecommend() {
       this.tempDisableMutableKeepAliveName()
-      // /recommend页面是动态keep-alive的
+      // /index/recommend页面是动态keep-alive的
       this.$router.push({
-        path: '/recommend'
+        path: '/index/recommend'
       })
     },
     ...
@@ -239,6 +240,7 @@ async function updateAllImg () {
  > 原理:
 
  > 跑在浏览器的页面:
+ > 0.可以在每一个页面引入一个没有html模板的管理keepAlive的组件或者mixin,方便调用
  > 1.每进入一个页面用管理keepAlive的数组存当前页面的componentName
  > 2.跳转到新页面时,管理keepAlive的数组先删除即将去的页面的componentName,保证了浏览器反复(跳转+浏览器的返回)也不会导致将去的页面的keepAlive。保存按钮返回到原来页面前管理keepAlive的数组删除当前页面的componentName
  > 3.如果前进页面的数据更新会导致缓存页面的数据需要做刷新处理,如果是相邻的两个页面,使用vuex让列表页和详情页关联起来.如果是相差N(N>2)个页面,可以用vuex也可以数据更新后管理keepAlive的数组删除这个缓存页面的componentName

@@ -29,19 +29,20 @@
 </template>
 
 <script>
-import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { getTopList } from '@/api/rank.js'
 import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
 import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
+import keepAliveRouteManagerMixin from '@/common/mixins/keep-alive-route-manager.js'
 
 export default {
-  name: IMMUTABLE_KEEP_ALIVE_NAME,
+  name: 'index-rank',
   mixins: [
     injectStickyMixin,
     playListMixin,
-    createThrottleInstanceMixin
+    createThrottleInstanceMixin,
+    keepAliveRouteManagerMixin
   ],
   data() {
     return {
@@ -88,7 +89,10 @@ export default {
         //   path: `/music/rank-detail/${item.id}`
         // })
         this.$router.push({
-          path: `/new-music/rank-detail/${item.id}`
+          name: 'detail-rank',
+          params: {
+            id: item.id
+          }
         })
       })
     },

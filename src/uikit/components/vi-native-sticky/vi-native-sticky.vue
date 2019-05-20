@@ -69,57 +69,17 @@ export default {
     },
     scrollY: {
       handler(newVal) {
-        this.watchScrollY(newVal)
+        // 不推荐用watch的方式,因为是异步的,不能及时更新dom动效,并且有场景有bug
+        this.listenScrollY(newVal)
       }
     },
-    diff: {
-      handler(newVal) {
-        // 如果已经在吸顶了
-        if (this.current === this.currentSticky && this.fixedVisable) {
-          return
-        }
-        this.current = this.currentSticky
-        this.fixedVisable = true
-        if (this.isUseAbsolute) {
-          this.fixedStyle = {
-            'position': 'absolute',
-            'top': `${0}px`,
-            'z-index': this.zIndex,
-            'width': `${this.currentSticky.clientWidth}px`,
-            'height': `${this.currentSticky.clientHeight + 1}px`,
-          }
-        } else {
-          this.fixedStyle = {
-            'position': 'fixed',
-            'top': `${this.fixedTop}px`,
-            'z-index': this.zIndex,
-            'width': `${this.currentSticky.clientWidth}px`,
-            'height': `${this.currentSticky.clientHeight + 1}px`,
-          }
-        }
-        this.reset()
-        const element = this.currentSticky.$el
-        this.fixedElement.appendChild(element)
-        this.$emit(EVENT_STICKY_CHANGE, this.currentSticky)
-      }
-    },
-    transformTop: {
-      handler(newVal) {
-        let fixTransformTop = newVal > 0 ? -newVal : 0
-        if (this.fixTransformTop === fixTransformTop) {
-          return
-        }
-        this.fixTransformTop = fixTransformTop
-        this.fixedElement.style[TRANSFORM] = `translateY(${fixTransformTop}px)`
-      }
-    }
   },
   mounted() {
     this._findFixedElement()
     this.recalculate()
   },
   methods: {
-    watchScrollY(newVal) {
+    listenScrollY(newVal) {
       if (newVal < 0) {
         return
       }
@@ -135,14 +95,17 @@ export default {
           // 如果只有一个sticky-ele并且滚动到了stikcy的位置
           this.currentSticky = this.stickyMap[item1.eleKey]
           this.diff = newVal - item1.stickyTop
+          this.listenDiff(this.diff)
           return
         } else if (item2 && newVal > item1.stickyTop && newVal <= item2.stickyTop) {
           // 如果有多个sticky-ele并且滚动的位置处于两者中间
           this.currentSticky = this.stickyMap[item1.eleKey]
           this.diff = newVal - item1.stickyTop
+          this.listenDiff(this.diff)
           let nextDiff = item2.stickyTop - newVal
           // transformTop > 0表示两者已经碰上了
           this.transformTop = item1.clientHeight - nextDiff
+          this.listenTransformTop(this.transformTop)
           return
         } else if (item2 && newVal >= item2.stickyTop) {
           let nextDiff = item2.stickyTop - newVal
@@ -151,7 +114,9 @@ export default {
             // 如果后面再没有了
             this.currentSticky = this.stickyMap[item2.eleKey]
             this.transformTop = 0
+            this.listenTransformTop(this.transformTop)
             this.diff = newVal - item2.stickyTop
+            this.listenDiff(this.diff)
             return
           } else {
             continue
@@ -162,6 +127,43 @@ export default {
       }
       this.fixedStyle = {}
       this.fixedVisable = false
+    },
+    listenDiff(newVal) {
+      // 如果已经在吸顶了
+      if (this.current === this.currentSticky && this.fixedVisable) {
+        return
+      }
+      this.current = this.currentSticky
+      this.fixedVisable = true
+      if (this.isUseAbsolute) {
+        this.fixedStyle = {
+          'position': 'absolute',
+          'top': `${0}px`,
+          'z-index': this.zIndex,
+          'width': `${this.currentSticky.clientWidth}px`,
+          'height': `${this.currentSticky.clientHeight + 1}px`,
+        }
+      } else {
+        this.fixedStyle = {
+          'position': 'fixed',
+          'top': `${this.fixedTop}px`,
+          'z-index': this.zIndex,
+          'width': `${this.currentSticky.clientWidth}px`,
+          'height': `${this.currentSticky.clientHeight + 1}px`,
+        }
+      }
+      this.reset()
+      const element = this.currentSticky.$el
+      this.fixedElement.appendChild(element)
+      this.$emit(EVENT_STICKY_CHANGE, this.currentSticky)
+    },
+    listenTransformTop(newVal) {
+      let fixTransformTop = newVal > 0 ? -newVal : 0
+      if (this.fixTransformTop === fixTransformTop) {
+        return
+      }
+      this.fixTransformTop = fixTransformTop
+      this.fixedElement.style[TRANSFORM] = `translateY(${fixTransformTop}px)`
     },
     recalculate() {
       this._calculateFixedTop()

@@ -246,22 +246,27 @@ export default {
       this.isFetchSearch = false
     },
     selectItem(item) {
-      if (item.type === TYPE_SINGER) {
-        const singer = new Singer({
-          id: item.singermid,
-          name: item.singername
-        })
-        this.setSinger(singer)
-        // this.$router.push({
-        //   path: `/music/singer-detail/${singer.id}`
-        // })
-        this.$router.push({
-          path: `/new-music/singer-detail/${singer.id}`
-        })
-      } else {
-        // 插入歌曲在当前页播放
-        this.insertSong(item)
-      }
+      this.throttle.run(() => {
+        if (item.type === TYPE_SINGER) {
+          const singer = new Singer({
+            id: item.singermid,
+            name: item.singername
+          })
+          this.setSinger(singer)
+          // this.$router.push({
+          //   path: `/music/singer-detail/${singer.id}`
+          // })
+          this.$router.push({
+            name: 'detail-singer',
+            params: {
+              id: singer.id
+            }
+          })
+        } else {
+          // 插入歌曲在当前页播放
+          this.insertSong(item)
+        }
+      })
     },
     clearSearchHistoryHandler() {
       this.$createBaseConfirm({

@@ -20,6 +20,7 @@ import { getSingerList } from '@/api/singer.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
 import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
+import keepAliveRouteManagerMixin from '@/common/mixins/keep-alive-route-manager.js'
 
 const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'
@@ -29,7 +30,8 @@ export default {
   mixins: [
     injectStickyMixin,
     playListMixin,
-    createThrottleInstanceMixin
+    createThrottleInstanceMixin,
+    keepAliveRouteManagerMixin
   ],
   data() {
     return {
@@ -119,7 +121,10 @@ export default {
         //   path: `/music/singer-detail/${singer.id}`
         // })
         this.$router.push({
-          path: `/new-music/singer-detail/${singer.id}`
+          name: 'detail-singer',
+          params: {
+            id: singer.id
+          }
         })
       })
     },

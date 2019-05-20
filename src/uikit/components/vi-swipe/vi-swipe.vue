@@ -259,11 +259,15 @@ export default {
       this.$emit(EVENT_SCROLL, this.x)
     },
     touchendHandler(e) {
+      if (this.moved) {
+        e.stopPropagation()
+      }
       if (this.disabled) {
         return
       }
-      if (this.moved) {
-        e.stopPropagation()
+      let distX = this.x - this.startX
+      if (!distX) {
+        return
       }
       if (this.x <= this.maxScrollX) {
         this.grow()
@@ -277,7 +281,6 @@ export default {
       }
       this.endTime = new Date().getTime()
       let duration = this.endTime - this.startTime
-      let distX = this.x - this.startX
       if (duration < MOMENTUMLIMIT_TIME && -distX > MOMENTUMLIMIT_DISTANCE) {
         this.grow()
       } else if (duration < MOMENTUMLIMIT_TIME && distX > MOMENTUMLIMIT_DISTANCE) {
@@ -334,16 +337,18 @@ export default {
       this.scrollerStyle[TRANSFORM] = `translate(${x}px,0)`
       this.x = x
     },
-    toggleConfirmMenus(isShowConfirm) {
+    toggleConfirmMenu(isShowConfirm) {
       const confirmMenuStyle = this.$refs.confirmMenu.style
       if (isShowConfirm) {
         confirmMenuStyle.display = 'flex'
-        window.setTimeout(() => {
+        window.clearTimeout(this.reflowTimer)
+        this.reflowTimer = window.setTimeout(() => {
           this._translateConfirmMenus(this.maxScrollX)
         }, 30)
       } else {
         confirmMenuStyle.display = 'none'
-        window.setTimeout(() => {
+        window.clearTimeout(this.reflowTimer)
+        this.reflowTimer = window.setTimeout(() => {
           this._translateConfirmMenus(0)
         }, 30)
       }
@@ -366,13 +371,15 @@ export default {
       this.state = STATE_SHRINK
       this.scrollTo(0)
       this._translateMenus(0, true)
-      this.toggleConfirmMenus(0)
+      this.toggleConfirmMenu(0)
     },
     transitionendHandler() {
       this.isInTransition = false
     },
     clickMenuHandler(menu) {
-      this.$emit(EVENT_MENU_CLICK, menu, this.index, this.shrink, this.toggleConfirmMenus)
+      if (this.state === STATE_GROW) {
+        this.$emit(EVENT_MENU_CLICK, menu, this.index, this.shrink, this.toggleConfirmMenu)
+      }
     },
     clickConfirmMenuHandler() {
       this.$emit(EVENT_CONFIRM, this.index, this.shrink)
@@ -380,6 +387,7 @@ export default {
     clearTimer() {
       window.clearTimeout(this.shrinkTimer)
       this.shrinkTimer = null
+      window.clearTimeout(this.reflowTimer)
     }
   },
   beforeDestroy() {

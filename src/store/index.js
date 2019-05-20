@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createLogger from 'vuex/dist/logger'
 import local from './cache/local-storage/index.js'
 
 import createPersistedState from 'vuex-persistedstate'
@@ -53,8 +52,8 @@ const VuexPlugins = [
   })
 ]
 
-// const debug = process.env.NODE_ENV !== 'production'
-const debug = false
+const debug = process.env.NODE_ENV !== 'production'
+// const debug = true
 
 if (debug) {
   const createLogger = require('vuex/dist/logger')()

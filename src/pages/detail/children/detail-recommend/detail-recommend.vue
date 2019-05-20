@@ -1,6 +1,5 @@
 <template>
   <music-list
-    :rank="true"
     :is-fetch-song-list="isFetchSongList"
     :song-list="songList"
     :bg-image="bgImage"
@@ -10,7 +9,7 @@
 <script>
 import MusicList from '../../components/music-list/music-list.vue'
 import { mapGetters } from 'vuex'
-import { getMusicList } from '@/api/rank.js'
+import { getSongList } from '@/api/recommend.js'
 import { createSong } from '@/common/class/song.js'
 
 export default {
@@ -24,40 +23,38 @@ export default {
     }
   },
   mounted() {
-    this._getMusicList()
+    this._getSongList()
   },
   computed: {
     ...mapGetters([
-      'rankAlbum'
+      'recommendAlbum'
     ]),
     title() {
-      return this.rankAlbum.topTitle
+      return this.recommendAlbum.dissname
     },
     bgImage() {
-      if (this.songList.length) {
-        return this.songList[0].image
-      }
-      return ''
+      return this.recommendAlbum.imgurl
     },
   },
   methods: {
-    _getMusicList() {
+    _getSongList() {
       // store失效返回上层
-      if (!this.rankAlbum.id) {
-        this.$router.push('/rank')
+      if (!this.recommendAlbum.dissid) {
+        this.$router.push('/index/recommend')
         return
       }
-      getMusicList({
-        topid: this.rankAlbum.id
+      getSongList({
+        disstid: this.recommendAlbum.dissid
       }).then((res) => {
-        this.songList = this._normalizeSongList(res.songlist)
-        this.isFetchSongList = true
+        window.setTimeout(() => {
+          this.songList = this._normalizeSongList(res.cdlist[0].songlist)
+          this.isFetchSongList = true
+        }, 500)
       })
     },
     _normalizeSongList(list) {
       let result = []
-      list.forEach((item) => {
-        const musicData = item.data
+      list.forEach((musicData) => {
         if (musicData.songid && musicData.albummid) {
           result.push(createSong(musicData))
         }

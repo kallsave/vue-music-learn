@@ -114,6 +114,18 @@ export default {
         return Background
       }
     },
+    keepAliveInclude: {
+      type: Array,
+      default() {
+        return ['index-recommend']
+      }
+    },
+    keepAliveExclude: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
   },
   data() {
     return {

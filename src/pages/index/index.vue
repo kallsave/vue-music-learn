@@ -22,7 +22,7 @@
             slide-right-class="scroll-right"
             slide-left-class="scroll-left"
             mode="in-out">
-            <keep-alive :include="[IMMUTABLE_KEEP_ALIVE_NAME, mutableKeepAliveName]">
+            <keep-alive :include="[]">
               <router-view></router-view>
             </keep-alive>
           </vi-slide-router-transition>
@@ -44,6 +44,7 @@
             class="slide-router-view"
             ref="viSlideRouterView"
             :scroll-events="['scroll']"
+            :backgroundComponent="backgroundComponent"
             @index-change="changePage"
             @scroll="slideScrollHander"
           ></vi-slide-router-view>
@@ -88,11 +89,12 @@
 </template>
 
 <script>
-import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { mapGetters } from 'vuex'
 import MHeader from './components/m-header/m-header.vue'
 import Tab from './components/tab/tab.vue'
 import Background from './components/background/background.vue'
+import keepAliveRouteManagerMixin from '@/common/mixins/keep-alive-route-manager.js'
+
 const Recommend = () => import(/* webpackChunkName: "Recommend" */ './children/recommend/recommend.vue')
 const Singer = () => import(/* webpackChunkName: "Singer" */ './children/singer/singer.vue')
 const Rank = () => import(/* webpackChunkName: "Rank" */ './children/rank/rank.vue')
@@ -101,7 +103,7 @@ const Search = () => import(/* webpackChunkName: "Search" */ './children/search/
 const slideRouterModeList = ['vi-slide-router-transition', 'vi-slide-router-view', 'vi-slide-view']
 
 export default {
-  name: MUTABLE_KEEP_ALIVE_NAME,
+  name: 'index',
   components: {
     MHeader,
     Tab,
@@ -110,9 +112,11 @@ export default {
     Rank,
     Search
   },
+  mixins: [
+    keepAliveRouteManagerMixin,
+  ],
   data() {
     return {
-      IMMUTABLE_KEEP_ALIVE_NAME: IMMUTABLE_KEEP_ALIVE_NAME,
       slideRouterModeList: slideRouterModeList,
       slideRouterMode: slideRouterModeList[1],
       tabList: [
@@ -133,7 +137,8 @@ export default {
       sliderStyle: {
         transition: 'none'
       },
-      scrollY: 0
+      scrollY: 0,
+      backgroundComponent: Background
     }
   },
   computed: {

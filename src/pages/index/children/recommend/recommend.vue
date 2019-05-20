@@ -77,13 +77,15 @@ import { playListMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
 import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
+import keepAliveRouteManagerMixin from '@/common/mixins/keep-alive-route-manager.js'
 
 export default {
-  name: MUTABLE_KEEP_ALIVE_NAME,
+  name: 'index-recommend',
   mixins: [
     injectStickyMixin,
     playListMixin,
-    createThrottleInstanceMixin
+    createThrottleInstanceMixin,
+    keepAliveRouteManagerMixin
   ],
   data() {
     return {
@@ -179,16 +181,16 @@ export default {
       }
     },
     selectItem(e, item) {
-      if (this.stopClick) {
-        return
-      }
       this.throttle.run(() => {
         this.setRecommendAlbum(item)
         // this.$router.push({
         //   path: `/music/recommend-detail/${item.dissid}`
         // })
         this.$router.push({
-          path: `/new-music/recommend-detail/${item.dissid}`
+          name: 'detail-recommend',
+          params: {
+            id: item.dissid
+          }
         })
       })
     },
