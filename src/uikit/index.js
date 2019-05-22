@@ -18,6 +18,7 @@ import {
   ViActionSheet,
   ViSwipe,
   ViNativeScroll,
+  ViUpload
 } from './module.js'
 
 const components = [
@@ -38,6 +39,7 @@ const components = [
   ViActionSheet,
   ViSwipe,
   ViNativeScroll,
+  ViUpload
 ]
 
 function install(Vue) {

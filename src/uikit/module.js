@@ -18,6 +18,7 @@ import ViTab from './components/vi-tab/index.js'
 import ViActionSheet from './components/vi-action-sheet/index.js'
 import ViSwipe from './components/vi-swipe/index.js'
 import ViNativeScroll from './components/vi-native-scroll/index.js'
+import ViUpload from './components/vi-upload/index.js'
 
 export {
   Bscroll,
@@ -39,4 +40,5 @@ export {
   ViActionSheet,
   ViSwipe,
   ViNativeScroll,
+  ViUpload
 }

@@ -23,7 +23,6 @@
 
 <script>
 import ViSlide from '../vi-slide/vi-slide.vue'
-import ViTab from '../vi-tab/vi-tab'
 import Background from './vi-slide-router-view-background.vue'
 import { mulitDeepClone, stylePadPx } from '../../common/helpers/utils.js'
 import { prefixStyle } from '../../common/helpers/dom.js'
@@ -74,7 +73,6 @@ export default {
   name: COMPONENT_NAME,
   components: {
     ViSlide,
-    ViTab
   },
   beforeCreate() {
     const findSiblingsRoute = (routeList) => {
@@ -199,7 +197,7 @@ export default {
 
       // 补全路由params参数
       for (let k in this.$route.params) {
-        if (new RegExp(`(:${k})`).test(siblingsRouteMatchedPath)) {
+        if (new RegExp(`:${k}`).test(siblingsRouteMatchedPath)) {
           let str = this.$route.params[k]
           siblingsRouteMatchedPath = siblingsRouteMatchedPath.replace(RegExp.$1, str)
         }

@@ -1,16 +1,13 @@
 # 计划列表
 
 ## 已完成
-  vi-slide-router-view支持各种场景的$route参数(params参数完成)
+
 ## 未完成
+- vi-slide-router-view支持各种场景的$route参数(query参数)
 - scroll组件支持自定义pulldown并实现网易严选的下拉效果
 - index-list支持slot
 - 使用骨架屏
 - 给各组件写README.md文档
-- store提供同步异步操作
-- vi-slide-router-view像router-view一样可以带props
-- vi-slide-router-view支持各种场景的$route参数(query参数未完成)
-- vi-slide-router-transition支持各种场景的$route参数
 - 网易严选nav组件
 - 阅读createAPI源码
 - 更深入vue源码,阅读vue源码
@@ -23,7 +20,6 @@
 - 打包部署
 - 调研css和js统一
 - 拖拽指令
-- 上传文件
 - 深入svg
 - swipe的confirm做成回弹效果
 - vue-router源码
@@ -38,7 +34,6 @@
 - 在各个浏览器上测试组件,z-index等
 - svg的viewport
 - vi-toast支持自定义icon
-- image-preview
 - cube-ui的scroll做了新的更新,涉及到isInTransition
 - ease函数原理
 - 修复searchHistory的bug
@@ -54,4 +49,7 @@
 - 图片,视频上传组件
 - keep-alive做更细致的管理方案
 - 实现原生的下拉加载
+- vi-slide-router-view像router-view一样可以带props
+- vue源码
+- vue-router源码
 
