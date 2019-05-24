@@ -35,7 +35,6 @@
 - svg的viewport
 - vi-toast支持自定义icon
 - cube-ui的scroll做了新的更新,涉及到isInTransition
-- ease函数原理
 - 修复searchHistory的bug
 - scroll的边界问题
 - 所有组件,工具函数都要有单元测试
@@ -44,10 +43,13 @@
 - switch组件
 
 # 优先
+- ease函数原理
+- canvas background-size: cover算法
 - 自适应高度textarea
+- 拖拽组件
+- clipper剪裁组件
 - scroll-down-refresh用箭头做默认slot
 - 图片,视频上传组件
-- keep-alive做更细致的管理方案
 - 实现原生的下拉加载
 - vi-slide-router-view像router-view一样可以带props
 - vue源码

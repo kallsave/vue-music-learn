@@ -8,8 +8,42 @@
 </template>
 
 <script>
-export default {
+const COMPONENT_NAME = 'vi-upload'
 
+export default {
+  name: COMPONENT_NAME,
+  props: {
+    action: {
+      type: String,
+      default: ''
+    },
+    isAuto: {
+      type: Boolean,
+      default: true
+    },
+    headers: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    max: {
+      type: Number,
+      default: 1
+    },
+    fileType: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  data() {
+    return {}
+  },
+  methods: {
+
+  }
 }
 </script>
 
@@ -96,6 +130,5 @@ export default {
           border-radius: 6px
           background-color: #fff
           transform: translate(-50%, -50%) rotate(-135deg)
-
 
 </style>

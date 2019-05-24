@@ -6,7 +6,7 @@ job1:
     - echo "hello word"
     - ls -hl
     - pwd
-    - cnpm install
+    - npm install
     - npm run gulp
     - npm run test
     - ls -hl dist

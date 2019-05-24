@@ -23,6 +23,8 @@ const Exends = () => import('./test/children/extends/extends.vue')
 const WechatPopup = () => import('./test/children/wechat-popup/wechat-popup.vue')
 const AutoSize = () => import('./test/children/autosize/autosize.vue')
 const Component = () => import('./test/children/component/component.vue')
+const Upload = () => import('./test/children/upload/upload.vue')
+const Arr = () => import('./test/children/arr/arr.vue')
 
 export default {
   path: '/test',
@@ -120,5 +122,13 @@ export default {
       path: '/test/component',
       component: Component
     },
+    {
+      path: '/test/upload',
+      component: Upload
+    },
+    {
+      path: '/test/arr',
+      component: Arr
+    }
   ]
 }
