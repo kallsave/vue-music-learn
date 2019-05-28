@@ -33,6 +33,12 @@ const keepAliveRouteList = {
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
+    // 删除上一个缓存路由再添加一个路由,相当于先reduce再add
+    keepAliveRouteReplace({ commit }, componentName) {
+      keepAliveStack.replace(componentName)
+      let keepAliveRouteList = keepAliveStack.getList().slice()
+      commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
+    },
     // 删除从这个缓存路由连同比这个缓存路由先缓存的路由
     keepAliveRouteRemoveFrom({ commit }, element) {
       keepAliveStack.removeFrom(element)

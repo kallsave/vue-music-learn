@@ -37,6 +37,14 @@ export default class Stack {
     }
     return this.list.shift()
   }
+  // 先reduce再add,清空当前头元素的记录
+  replace(element) {
+    let result = this.reduce()
+    if (!result) {
+      return false
+    }
+    this._add(element)
+  }
   // 删除从这个元素连同在这个元素前面先添加的元素都删除
   removeFrom(element) {
     const index = this.list.findIndex((item) => {
@@ -81,10 +89,10 @@ export default class Stack {
     }
     return this.list.splice(0, index)
   }
-  // 后退index步
+  // 后退index步,如果没有index步,清空全部
   backToByIndex(index) {
-    if (index > this.length - 1) {
-      return false
+    if (index > this.list.length - 1) {
+      return this.list.splice(0)
     }
     return this.list.splice(0, index)
   }
