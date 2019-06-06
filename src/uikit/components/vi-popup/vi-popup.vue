@@ -105,7 +105,10 @@ export default {
     _recoverTop(event) {
       const tagNameList = ['INPUT', 'TEXTAREA']
       if (tagNameList.indexOf(event.target.tagName) !== -1) {
-        window.scrollTo(0, this.top)
+        window.scrollTo({
+          top: this.top,
+          behavior: 'smooth'
+        })
       }
     },
     _cachedTop() {

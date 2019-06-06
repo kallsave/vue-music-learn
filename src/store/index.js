@@ -52,8 +52,8 @@ const VuexPlugins = [
   })
 ]
 
-const debug = process.env.NODE_ENV !== 'production'
-// const debug = true
+// const debug = process.env.NODE_ENV !== 'production'
+const debug = false
 
 if (debug) {
   const createLogger = require('vuex/dist/logger')()

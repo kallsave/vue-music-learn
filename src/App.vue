@@ -3,7 +3,7 @@
     <transition
       :name="transitionName"
       :mode="mode"
-      :duration="{enter: 300, leave: 300}"
+      :duration="routerDuration"
       @after-enter="afterEnter">
       <keep-alive :include="keepAliveRouteList">
         <router-view class="router-view"></router-view>
@@ -30,7 +30,11 @@ export default {
     return {
       transitionName: '',
       mode: '',
-      forwardBackCache: forwardBackCache
+      forwardBackCache: forwardBackCache,
+      routerDuration: {
+        enter: 300,
+        leave: 300
+      },
     }
   },
   computed: {
@@ -42,6 +46,9 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
+        let historyLength = window.history.length
+        console.log(window.history)
+        console.log(historyLength)
         if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
           this.transitionName = ''
           this.mode = ''
@@ -53,21 +60,18 @@ export default {
               name: '',
               mode: ''
             })
-            // 有特定非默认的前进后退动画设置,相当于重新清空了前进和后退的关系
-            this.forwardBackCache.clearAll()
           } else {
-            if (to.fullPath === this.forwardBackCache.getSecond()) {
-              this.transitionName = 'move-left'
-              this.mode = ''
-              // 返回到一个页面,相当于重新清空了前进和后退的关系
-              this.forwardBackCache.clearAll()
-            } else {
+            if (historyLength > this.historyLength) {
               this.transitionName = 'move-right'
+              this.mode = ''
+            } else {
+              this.transitionName = 'move-left'
               this.mode = ''
             }
           }
         }
         this.forwardBackCache.add(to.fullPath)
+        this.historyLength = historyLength
       },
       immediate: true
     },

@@ -41,6 +41,7 @@
 - 增加登录机制,增加个人中心页面
 - 第三方登录
 - switch组件
+- 长列表弹窗阻止底部滚动
 
 # 优先
 - ease函数原理
@@ -54,4 +55,7 @@
 - vi-slide-router-view像router-view一样可以带props
 - vue源码
 - vue-router源码
-
+- scroll实现京东效果
+- webpack4
+- 写一个animation库
+- keep-alive管理和vue-router和路由过渡动画结合的vue-router插件

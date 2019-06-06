@@ -25,6 +25,8 @@ const AutoSize = () => import('./test/children/autosize/autosize.vue')
 const Component = () => import('./test/children/component/component.vue')
 const Upload = () => import('./test/children/upload/upload.vue')
 const Arr = () => import('./test/children/arr/arr.vue')
+const Jump = () => import('./test/children/jump/jump.vue')
+const ListAnimation = () => import('./test/children/list-animation/list-animation.vue')
 
 export default {
   path: '/test',
@@ -129,6 +131,17 @@ export default {
     {
       path: '/test/arr',
       component: Arr
-    }
+    },
+    {
+      path: '/test/jump',
+      component: Jump
+    },
+    {
+      path: '/test/list-animation',
+      component: ListAnimation,
+      meta: {
+        isUseRouterTransition: true,
+      }
+    },
   ]
 }

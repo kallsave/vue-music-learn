@@ -41,10 +41,6 @@ better-scroll文档
 ------------
 [charles](https://pan.baidu.com/s/1nQgt1LBEj7WNLY48nc6eBQ)
 
-科学上网
-------------
-[科学上网](https://github.com/bannedbook/fanqiang/wiki)
-
 调试工具
 ------------
 [postman接口调试](https://www.getpostman.com/)

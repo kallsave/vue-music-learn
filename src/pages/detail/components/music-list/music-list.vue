@@ -167,12 +167,12 @@ export default {
       this.$refs.bgImage.style.zIndex = 0
     },
     selectItem(e, item, index) {
-      // this.throttle.run(() => {
-      //   this.selectPlay({
-      //     list: this.songList,
-      //     index: index
-      //   })
-      // })
+      this.throttle.run(() => {
+        this.selectPlay({
+          list: this.songList,
+          index: index
+        })
+      })
     },
     random(e) {
       this.throttle.run(() => {
