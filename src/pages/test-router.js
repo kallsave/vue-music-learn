@@ -27,6 +27,7 @@ const Upload = () => import('./test/children/upload/upload.vue')
 const Arr = () => import('./test/children/arr/arr.vue')
 const Jump = () => import('./test/children/jump/jump.vue')
 const ListAnimation = () => import('./test/children/list-animation/list-animation.vue')
+const Tree = () => import('./test/children/tree/tree.vue')
 
 export default {
   path: '/test',
@@ -143,5 +144,12 @@ export default {
         isUseRouterTransition: true,
       }
     },
+    {
+      path: '/test/tree',
+      component: Tree,
+      meta: {
+        isUseRouterTransition: true,
+      }
+    }
   ]
 }

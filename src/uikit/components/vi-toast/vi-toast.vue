@@ -1,63 +1,61 @@
 <template>
-  <transition>
-    <vi-popup v-model="isVisible"
-      :is-show-mask="isShowMask"
-      :is-lock-scroll="isLockScroll"
-      :z-index="zIndex"
-      :transitionDuration="{enter: 400, leave: 400}">
-      <transition name="vi-toast-fade">
-        <div class="vi-toast"
-          v-show="isVisible"
-          :style="{'transform': `scale(${scale})`}">
-          <div class="vi-toast-mask"
-            :class="{'vi-toast-mask-active': isShowToastMask}"></div>
-          <div class="vi-toast-content">
-            <transition :duration="{enter: 400, leave: 400}">
-              <div class="vi-toast-spinner-contain"
-                v-if="icon === 'loading' && isVisible">
-                <i class="vi-toast-spinner"
-                  :style="{'background-color': iconColor}"
-                  v-for="(item, index) in balde" :key="index"></i>
-              </div>
-            </transition>
-            <transition name="vi-toast-zoom"
-              :duration="{enter: 400, leave: 400}">
-              <div class="vi-toast-correct-contain"
-                v-if="icon === 'correct' && isVisible">
-                <i class="vi-toast-icon-correct vi-toast-correct"
-                  :style="{'color': iconColor}"></i>
-              </div>
-            </transition>
-            <transition name="vi-svg-path"
-              :duration="{enter: 1000, leave: 400}">
-              <div class="vi-toast-svg-correct-contain"
-                v-if="icon === 'svg-correct' && isVisible">
-                <svg>
-                  <path class="vi-toast-svg-correct"
-                    transform="scale(0.25)"
-                    fill="transparent"
-                    :stroke="iconColor"
-                    stroke-width="25"
-                    stroke-linecap="round"
-                    d="M160 160 L212.5 217.5 A5 5, 0 0,0 220 220 L340 100"></path>
-                </svg>
-              </div>
-            </transition>
-            <transition name="vi-toast-zoom">
-              <div class="vi-toast-error-contain"
-                  v-if="icon === 'error' && isVisible">
-                <i class="vi-toast-icon-error vi-toast-error"
-                  :style="{'color': iconColor}"></i>
-              </div>
-            </transition>
-            <slot name="icon"></slot>
-            <p class="vi-toast-title"
-              :style="{'color': titleColor}">{{title}}</p>
-          </div>
+  <vi-popup v-model="isVisible"
+    :is-show-mask="isShowMask"
+    :is-lock-scroll="isLockScroll"
+    :z-index="zIndex"
+    :transitionDuration="transitionDuration">
+    <transition name="vi-toast-fade">
+      <div class="vi-toast"
+        v-show="isVisible"
+        :style="{'transform': `scale(${scale})`}">
+        <div class="vi-toast-mask"
+          :class="{'vi-toast-mask-active': isShowToastMask}"></div>
+        <div class="vi-toast-content">
+          <transition :duration="{enter: 400, leave: 400}">
+            <div class="vi-toast-spinner-contain"
+              v-if="icon === 'loading' && isVisible">
+              <i class="vi-toast-spinner"
+                :style="{'background-color': iconColor}"
+                v-for="(item, index) in balde" :key="index"></i>
+            </div>
+          </transition>
+          <transition name="vi-toast-zoom"
+            :duration="{enter: 400, leave: 400}">
+            <div class="vi-toast-correct-contain"
+              v-if="icon === 'correct' && isVisible">
+              <i class="vi-toast-icon-correct vi-toast-correct"
+                :style="{'color': iconColor}"></i>
+            </div>
+          </transition>
+          <transition name="vi-svg-path"
+            :duration="{enter: 1000, leave: 400}">
+            <div class="vi-toast-svg-correct-contain"
+              v-if="icon === 'svg-correct' && isVisible">
+              <svg>
+                <path class="vi-toast-svg-correct"
+                  transform="scale(0.25)"
+                  fill="transparent"
+                  :stroke="iconColor"
+                  stroke-width="25"
+                  stroke-linecap="round"
+                  d="M160 160 L212.5 217.5 A5 5, 0 0,0 220 220 L340 100"></path>
+              </svg>
+            </div>
+          </transition>
+          <transition name="vi-toast-zoom">
+            <div class="vi-toast-error-contain"
+                v-if="icon === 'error' && isVisible">
+              <i class="vi-toast-icon-error vi-toast-error"
+                :style="{'color': iconColor}"></i>
+            </div>
+          </transition>
+          <slot name="icon"></slot>
+          <p class="vi-toast-title"
+            :style="{'color': titleColor}">{{title}}</p>
         </div>
-      </transition>
-    </vi-popup>
-  </transition>
+      </div>
+    </transition>
+  </vi-popup>
 </template>
 
 <script>
@@ -114,7 +112,11 @@ export default {
   },
   data() {
     return {
-      balde: 12
+      balde: 12,
+      transitionDuration: {
+        enter: 400,
+        leave: 400
+      }
     }
   },
 }

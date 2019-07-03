@@ -59,3 +59,4 @@
 - webpack4
 - 写一个animation库
 - keep-alive管理和vue-router和路由过渡动画结合的vue-router插件
+- previewer组件及其全局调用的方法

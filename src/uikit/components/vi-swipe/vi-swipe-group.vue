@@ -41,14 +41,12 @@ export default {
       if (index === this.activeIndex) {
         return
       }
-      if (this.activeIndex !== -1) {
-        const activeItem = this.items[this.activeIndex]
-        if (this.isRelative) {
-          activeItem.shrink()
-          this.activeIndex = index
-          this.$emit(EVENT_ACTIVE_INDEX_CHANGE, this.activeIndex)
-        }
+      const activeItem = this.items[this.activeIndex]
+      if (this.isRelative && activeItem) {
+        activeItem.shrink()
       }
+      this.activeIndex = index
+      this.$emit(EVENT_ACTIVE_INDEX_CHANGE, this.activeIndex)
     },
   }
 }

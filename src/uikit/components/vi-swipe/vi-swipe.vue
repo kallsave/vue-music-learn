@@ -1,13 +1,14 @@
 <template>
   <div ref="swipe"
     class="vi-swipe"
-    @touchstart="touchstartHandler"
-    @touchmove="touchmoveHandler"
-    @touchend="touchendHandler"
+    @touchstart.capture="touchstartHandler"
+    @touchmove.capture="touchmoveHandler"
+    @touchend.capture="touchendHandler"
     @transitionend="transitionendHandler"
-    @click="clickHandler">
+    @click.capture="clickCaptureHandler">
     <slot></slot>
-    <div ref="menuWrapper" class="vi-swipe-menu-wrapper">
+    <div ref="menuWrapper"
+      class="vi-swipe-menu-wrapper">
       <div ref="menu"
         class="vi-swipe-menu"
         v-for="(menu, index) in menuList" :key="index"
@@ -44,8 +45,8 @@ const EVENT_START = 'start'
 const EVENT_SCROLL = 'scroll'
 const EVENT_CONFIRM = 'confirm'
 
-const STATE_SHRINK = 0
-const STATE_GROW = 1
+const STATE_SHRINK = 'shrink'
+const STATE_GROW = 'grow'
 const MENU_DURATION_TIME = 600
 const CONFIRM_MENU_DURATION_TIME = 200
 const MOMENTUMLIMIT_TIME = 300
@@ -271,12 +272,10 @@ export default {
       }
       if (this.x <= this.maxScrollX) {
         this.grow()
-        this.isInTransition = false
         return
       }
       if (this.x >= 0) {
         this.shrink()
-        this.isInTransition = false
         return
       }
       this.endTime = new Date().getTime()
@@ -293,9 +292,19 @@ export default {
         }
       }
     },
-    clickHandler(e) {
-      if (this.state === STATE_GROW) {
-        e.stopPropagation()
+    isMenuWrapper(node) {
+      if (node === this.$refs.menuWrapper) {
+        return true
+      } else if (node.parentNode) {
+        return this.isMenuWrapper(node.parentNode)
+      } else {
+        return false
+      }
+    },
+    clickCaptureHandler(e) {
+      let isSwipeMenuWrapper = this.isMenuWrapper(e.target)
+      if (this.state === STATE_GROW && !isSwipeMenuWrapper && !this.isInTransition) {
+        e.stopImmediatePropagation()
         this.shrinkTimer = window.setTimeout(() => {
           this.shrink()
         }, AFTER_SHRINK_TIME)
@@ -388,7 +397,7 @@ export default {
       window.clearTimeout(this.shrinkTimer)
       this.shrinkTimer = null
       window.clearTimeout(this.reflowTimer)
-    }
+    },
   },
   beforeDestroy() {
     this.swipeGroup && this.swipeGroup.removeItem(this)

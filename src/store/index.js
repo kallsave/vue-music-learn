@@ -30,7 +30,7 @@ const persistedstateIgnoreMutations = [
   'SET_KEEP_ALIVE_LIST'
 ]
 
-let timerSlice = 1000 * 60 * 60
+const TIME_SLICE = 1000 * 60 * 60
 
 const VuexPlugins = [
   createPersistedState({
@@ -47,7 +47,7 @@ const VuexPlugins = [
     },
     setState(key, value) {
       // 存储一分钟,因为操作的一个大的数据,在界面保持触发操作永远不会失效
-      local.set(key, value, new Date().getTime() + timerSlice)
+      local.set(key, value, new Date().getTime() + TIME_SLICE)
     },
   })
 ]

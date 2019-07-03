@@ -7,13 +7,17 @@ export default {
   },
   data() {
     return {
-      isVisible: false
+      isVisible: this.value
     }
   },
   watch: {
     value: {
       handler(newVal) {
-        this.isVisible = newVal
+        if (newVal) {
+          this.show()
+        } else {
+          this.hide()
+        }
       }
     }
   },

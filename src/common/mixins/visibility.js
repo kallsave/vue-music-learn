@@ -1,7 +1,24 @@
 export default {
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    },
+  },
   data() {
     return {
-      isVisible: false
+      isVisible: this.value
+    }
+  },
+  watch: {
+    value: {
+      handler(newVal) {
+        if (newVal) {
+          this.show()
+        } else {
+          this.hide()
+        }
+      }
     }
   },
   methods: {

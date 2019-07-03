@@ -1,30 +1,31 @@
 <template>
-  <transition name="vi-action-sheet-fade">
-    <vi-popup v-show="isVisible"
-      :is-show-mask="isShowMask"
-      :is-lock-scroll="isLockScroll"
-      @mask-click="maskClick">
-      <div slot="customContent">
-        <transition name="vi-action-sheet-move">
-          <div class="vi-action-sheet"
-            v-show="isVisible">
-            <div class="vi-action-sheet-menu">
-              <div class="vi-action-sheet-menu-item vi-border-1px"
-                :style="item.style"
-                v-for="(item, index) in data" :key="index"
-                v-html="item.content"
-                v-touch-active="touchColor"
-                @click="select(item)"></div>
-            </div>
-            <div class="vi-action-sheet-cancel"
-              v-if="isShowCancel"
+  <vi-popup
+    v-show="isVisible"
+    transition-name="vi-action-sheet-fade"
+    :is-show-mask="isShowMask"
+    :is-lock-scroll="isLockScroll"
+    :transitionDuration="transitionDuration"
+    @mask-click="maskClick">
+    <div slot="custom-content">
+      <transition name="vi-action-sheet-move">
+        <div class="vi-action-sheet"
+          v-show="isVisible">
+          <div class="vi-action-sheet-menu">
+            <div class="vi-action-sheet-menu-item vi-border-1px"
+              :style="item.style"
+              v-for="(item, index) in data" :key="index"
+              v-html="item.content"
               v-touch-active="touchColor"
-              @click="cancel">取消</div>
+              @click="select(item)"></div>
           </div>
-        </transition>
-      </div>
-    </vi-popup>
-  </transition>
+          <div class="vi-action-sheet-cancel"
+            v-if="isShowCancel"
+            v-touch-active="touchColor"
+            @click="cancel">取消</div>
+        </div>
+      </transition>
+    </div>
+  </vi-popup>
 </template>
 
 <script>
@@ -91,26 +92,29 @@ export default {
   },
   data() {
     return {
-      touchActiveStyle: {}
+      touchActiveStyle: {},
+      transitionDuration: {
+        enter: 400,
+        leave: 400
+      }
     }
   },
   methods: {
     maskClick() {
       if (this.isMaskCloseAble) {
-        this.isVisible = false
+        this.hide()
       }
     },
     select(item) {
-      this.$emit(EVENT_SELECT, item, this.hide)
+      this.hide()
+      this.$emit(EVENT_SELECT, item)
     },
     cancel() {
+      this.hide()
       if (!this._events[EVENT_CANCEL]) {
-        this.isVisible = false
         this.$emit(EVENT_CANCEL)
-      } else {
-        this.$emit(EVENT_CANCEL, this.hide)
       }
-    }
+    },
   }
 }
 </script>

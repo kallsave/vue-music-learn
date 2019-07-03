@@ -32,8 +32,7 @@ export default {
       onSelect(item, hide) {
         console.log(item)
       },
-      onCancel(hide) {
-        hide()
+      onCancel() {
       }
     })
   },

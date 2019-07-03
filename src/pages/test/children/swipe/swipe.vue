@@ -4,7 +4,6 @@
       <vi-scroll
         :options="options">
         <vi-swipe-group
-          :is-relative="false"
           @active-index-change="activeIndexChange">
           <vi-collapse-transition-group tag="ul">
             <li class="swipe-item-wrapper"
@@ -308,7 +307,7 @@ export default {
       console.log(index)
     },
     confirm(index, shrink) {
-      // shrink()
+      this.swipeData.splice(index, 1)
     }
   }
 }
