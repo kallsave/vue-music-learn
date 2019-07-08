@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-05-21 15:44:58
+ * @Last Modified time: 2019-07-04 11:11:16
  */
 
 /**
@@ -143,18 +143,24 @@ export class Throttle {
  * @param {String} [currentUrl=window.location.href] 默认是浏览器地址
  * @returns
  */
-export function getUrlParam(currentUrl = window.location.href) {
+export function getUrlParams(currentUrl = window.location.href) {
   let result = {}
   if (currentUrl.indexOf('?') === -1) {
     return result
   }
-  currentUrl = currentUrl.replace(/.*\?/g, '')
-  if (currentUrl.length === 0) {
+  let paramsUrl = currentUrl.replace(/.*\?/g, '')
+  if (paramsUrl.length === 0) {
     return result
   }
-  let arr = currentUrl.match(/[^&]+?=[^&]*/g).join('=').split('=')
-  for (let i = 0; i < arr.length; i += 2) {
-    result[arr[i]] = arr[i + 1]
+  let arr = paramsUrl.match(/[^&]+?=[^&]*/g)
+  if (arr) {
+    for (let i = 0; i < arr.length; i++) {
+      let key = arr[i].replace(/(.+?)=(.*)/, '$1')
+      let value = arr[i].replace(/(.+?)=(.*)/, '$2')
+      result[key] = value
+    }
+  } else {
+    return result
   }
   return result
 }

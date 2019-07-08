@@ -46,9 +46,6 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
-        let historyLength = window.history.length
-        console.log(window.history)
-        console.log(historyLength)
         if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
           this.transitionName = ''
           this.mode = ''
@@ -60,18 +57,17 @@ export default {
               name: '',
               mode: ''
             })
+          } else if (to.fullPath === this.forwardBackCache.getByIndex(1)) {
+            this.transitionName = 'move-left'
+            this.mode = ''
+            // 返回到一个页面,相当于重新清空了前进和后退的关系
+            this.forwardBackCache.clearAll()
           } else {
-            if (historyLength > this.historyLength) {
-              this.transitionName = 'move-right'
-              this.mode = ''
-            } else {
-              this.transitionName = 'move-left'
-              this.mode = ''
-            }
+            this.transitionName = 'move-right'
+            this.mode = ''
           }
         }
         this.forwardBackCache.add(to.fullPath)
-        this.historyLength = historyLength
       },
       immediate: true
     },

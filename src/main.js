@@ -46,65 +46,72 @@ new Vue({
   store: store,
   render: h => h(App),
   beforeMount() {
-    const DEFAULT_TOAST_PROPS = {
-      icon: 'loading',
-      title: '加载中...',
-      scale: 0.9,
-      zIndex: 5000
-    }
-
-    let $toast = this.$createViToast(DEFAULT_TOAST_PROPS)
-
-    Vue.prototype.$toast = $toast
-    let $toastSourceShow = $toast.show
-    let $toastSourceHide = $toast.hide
-
-    $toast.show = function (props) {
-      // vue-create-api, 更新数据用$updateProps(props)
-      if (props) {
-        this.$updateProps(props)
-      }
-      $toastSourceShow()
-      return this
-    }
-
-    $toast.hide = function (props) {
-      if (props) {
-        this.$updateProps(props)
-      }
-      $toastSourceHide()
-      return this
-    }
-
-    // 配置全局toastTxt的用法
-    const DEFAULT_TOAST_TXT_PROPS = {
-      title: '...',
-      duration: 3000,
-      zIndex: 5001
-    }
-
-    let $toastTxt = this.$createViToastTxt(DEFAULT_TOAST_TXT_PROPS)
-    Vue.prototype.$toastTxt = $toastTxt
-
-    let $toastTxtSourceShow = $toastTxt.show
-    let $toastTxtSourceHide = $toastTxt.hide
-
-    $toastTxt.show = function (props) {
-      if (props) {
-        this.$updateProps(props)
-      }
-      $toastTxtSourceShow()
-      return this
-    }
-
-    $toastTxt.hide = function (props) {
-      if (props) {
-        this.$updateProps(props)
-      }
-      $toastTxtSourceHide()
-      return this
-    }
-
+    // 一些由vue-create-api可以全局编程式调用的组件注册
+    // this.createToastApi()
+    // this.createToastTxtApi()
     showVConsole()
+  },
+  methods: {
+    createToastApi() {
+      const DEFAULT_TOAST_PROPS = {
+        icon: 'loading',
+        title: '加载中...',
+        scale: 0.9,
+        zIndex: 5000
+      }
+
+      let $toast = this.$createViToast(DEFAULT_TOAST_PROPS)
+
+      Vue.prototype.$toast = $toast
+      let $toastSourceShow = $toast.show
+      let $toastSourceHide = $toast.hide
+
+      $toast.show = function (props) {
+        // vue-create-api, 更新数据用$updateProps(props)
+        if (props) {
+          this.$updateProps(props)
+        }
+        $toastSourceShow()
+        return this
+      }
+
+      $toast.hide = function (props) {
+        if (props) {
+          this.$updateProps(props)
+        }
+        $toastSourceHide()
+        return this
+      }
+    },
+    createToastTxtApi() {
+      // 配置全局toastTxt的用法
+      const DEFAULT_TOAST_TXT_PROPS = {
+        title: '...',
+        duration: 2000,
+        zIndex: 5000 + 1
+      }
+
+      let $toastTxt = this.$createViToastTxt(DEFAULT_TOAST_TXT_PROPS)
+      Vue.prototype.$toastTxt = $toastTxt
+
+      let $toastTxtSourceShow = $toastTxt.show
+      let $toastTxtSourceHide = $toastTxt.hide
+
+      $toastTxt.show = function (props) {
+        if (props) {
+          this.$updateProps(props)
+        }
+        $toastTxtSourceShow()
+        return this
+      }
+
+      $toastTxt.hide = function (props) {
+        if (props) {
+          this.$updateProps(props)
+        }
+        $toastTxtSourceHide()
+        return this
+      }
+    }
   }
 })

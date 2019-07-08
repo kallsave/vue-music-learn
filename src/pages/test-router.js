@@ -28,6 +28,7 @@ const Arr = () => import('./test/children/arr/arr.vue')
 const Jump = () => import('./test/children/jump/jump.vue')
 const ListAnimation = () => import('./test/children/list-animation/list-animation.vue')
 const Tree = () => import('./test/children/tree/tree.vue')
+const Abstract = () => import('./test/children/abstract/abstract.vue')
 
 export default {
   path: '/test',
@@ -147,6 +148,14 @@ export default {
     {
       path: '/test/tree',
       component: Tree,
+      meta: {
+        isUseRouterTransition: true,
+      }
+    },
+    {
+      path: '/test/abstract',
+      name: 'abstract',
+      component: Abstract,
       meta: {
         isUseRouterTransition: true,
       }

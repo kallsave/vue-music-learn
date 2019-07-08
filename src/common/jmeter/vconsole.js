@@ -1,10 +1,11 @@
 import VConsole from 'vconsole'
 
-let vConsole = new VConsole()
+window.vConsole = new VConsole()
+
 let vConsoleFirst = false
 
 function observeProperty(obj, key, fn) {
-  let val = obj[key]
+  var val = obj[key]
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
@@ -22,18 +23,18 @@ function observeProperty(obj, key, fn) {
     }
   })
 }
-observeProperty(vConsole, 'isInited', function () {
+observeProperty(window.vConsole, 'isInited', function () {
   if (vConsoleFirst) {
     return
   }
   vConsoleFirst = true
-  vConsole.$dom.style.display = 'none'
+  window.vConsole.$dom.style.display = 'none'
 })
 
 export function showVConsole() {
   window.setTimeout(() => {
-    if (vConsole) {
-      vConsole.$dom.style.display = 'block'
+    if (window.vConsole) {
+      window.vConsole.$dom.style.display = 'block'
     }
-  }, 3000)
+  }, 2000)
 }
