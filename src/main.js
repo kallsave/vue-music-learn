@@ -47,8 +47,8 @@ new Vue({
   render: h => h(App),
   beforeMount() {
     // 一些由vue-create-api可以全局编程式调用的组件注册
-    // this.createToastApi()
-    // this.createToastTxtApi()
+    this.createToastApi()
+    this.createToastTxtApi()
     showVConsole()
   },
   methods: {

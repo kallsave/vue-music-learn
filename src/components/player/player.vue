@@ -58,7 +58,7 @@
                       class="text"
                       :class="{'current': currentLineNum === index}"
                       v-for="(line, index) in currentLyric.lines"
-                      :key="index">{{line.txt}}</p>
+                      :key="index">{{line.title}}</p>
                   </div>
                 </div>
               </vi-scroll>
@@ -579,10 +579,10 @@ export default {
     },
     error() {
       this.isSongReady = false
-      this.toast = this.$createViToastTxt({
+      this.$toastTxt.show({
         title: '资源出错啦',
-        duration: 3000,
-      }).show()
+        durtaion: 2000
+      })
     },
     updateTime(e) {
       this.currentTime = e.target.currentTime
@@ -604,31 +604,28 @@ export default {
       }
     },
     changeMode() {
-      let txt = ''
+      let title = ''
       const mode = (this.mode + 1) % 3
       this.setPlayMode(mode)
       let list = null
       if (mode === playMode.random) {
         list = shuffle(this.sequenceList)
-        txt = '随机播放'
-        this.$createViToastTxt({
-          txt,
-          time: 2000
-        }).show()
+        this.$toastTxt.show({
+          title: '随机播放',
+          durtaion: 2000
+        })
       } else if (mode === playMode.loop) {
         list = this.sequenceList
-        txt = '单曲循环'
-        this.$createViToastTxt({
-          txt,
-          time: 2000
-        }).show()
+        this.$toastTxt.show({
+          title: '单曲循环',
+          durtaion: 2000
+        })
       } else {
         list = this.sequenceList
-        txt = '列表循环'
-        this.$createViToastTxt({
-          txt,
-          time: 2000
-        }).show()
+        this.$toastTxt.show({
+          title: '列表循环',
+          durtaion: 2000
+        })
       }
       // 先改变currentIndex再改变playList
       this.resetCurrentIndex(list)
@@ -650,7 +647,7 @@ export default {
         })
       })
     },
-    handleLyric({lineNum, txt}) {
+    handleLyric({lineNum, title}) {
       this.currentLineNum = lineNum
       if (lineNum > 5) {
         let lineEl = this.$refs.lyricLine[lineNum - 5]
@@ -658,7 +655,7 @@ export default {
       } else {
         this.$refs.lyricScroll.scrollTo(0, 0, 1000)
       }
-      this.playingLyric = txt
+      this.playingLyric = title
     },
     slideEnd(slideIndex) {
       this.currentSlideIndex = slideIndex
