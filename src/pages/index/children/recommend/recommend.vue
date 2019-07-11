@@ -71,9 +71,8 @@
 </template>
 
 <script>
-import { MUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { getRecommend, getDiscList } from '@/api/recommend.js'
-import { playListMixin } from '@/common/mixins/player.js'
+import { playerMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
 import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
@@ -83,7 +82,7 @@ export default {
   name: 'index-recommend',
   mixins: [
     injectStickyMixin,
-    playListMixin,
+    playerMixin,
     createThrottleInstanceMixin,
     keepAliveRouteManagerMixin
   ],

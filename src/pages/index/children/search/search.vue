@@ -38,7 +38,7 @@
             <h1 class="search-history-title">
               <span class="search-history-text">搜索历史</span>
               <span class="clear-search-history"
-                @touchstart="clearSearchHistoryHandler" >
+                @touchstart="tryClearSearchHistory" >
                 <i class="icon-clear"></i>
               </span>
             </h1>
@@ -74,12 +74,6 @@
 
 <script>
 import {
-  MUTABLE_KEEP_ALIVE_NAME,
-  IMMUTABLE_KEEP_ALIVE_NAME,
-  NO_KEEP_ALIVE_NAME
-} from '@/store/modules/keep-alive-name/config.js'
-
-import {
   getHotKey,
   search
 } from '@/api/search.js'
@@ -96,7 +90,7 @@ import {
   Throttle
 } from '@/common/helpers/utils.js'
 
-import { playListMixin } from '@/common/mixins/player.js'
+import { playerMixin } from '@/common/mixins/player.js'
 import Singer from '@/common/class/singer.js'
 
 import NoResult from './components/no-result/no-result.vue'
@@ -114,7 +108,7 @@ const THROTTLE_TIME = 1000
 let perpage = 20
 
 export default {
-  name: MUTABLE_KEEP_ALIVE_NAME,
+  name: 'index-search',
   components: {
     NoResult,
     Loading,
@@ -122,7 +116,7 @@ export default {
   },
   mixins: [
     injectStickyMixin,
-    playListMixin,
+    playerMixin,
     createThrottleInstanceMixin,
     createDebounceInstanceMixin,
     keepAliveRouteManagerMixin,
@@ -300,7 +294,7 @@ export default {
         }
       })
     },
-    clearSearchHistoryHandler() {
+    tryClearSearchHistory() {
       this.$createBaseConfirm({
         text: '确定要删除吗',
         onConfirm: () => {

@@ -1,7 +1,9 @@
 <template>
   <transition
     :name="transitionName"
-    :duration="transitionDuration">
+    :duration="transitionDuration"
+    @after-enter="afterEnter"
+    @after-leave="afterLeave">
     <div ref="popup"
       class="vi-popup"
       v-show="isVisible"
@@ -10,26 +12,17 @@
         @touchstart="touchstart($event)">
         <div class="vi-popup-mask-gray"
           v-show="isShowMask && !$slots.mask"></div>
-        <!-- 自定义背景板 -->
-        <!-- slot的局限性在于只在两级组件中使用,不能多级组件传递 -->
         <slot name="mask"></slot>
-        <!-- 自定义背景板,v-html可以多级调用结构 -->
-        <!-- 对于需求变动过多的组件,比如dialog组件,使用createAPI的createElement来重写 -->
         <template v-if="customMask">
-          <div class="vi-popup-custom-mask"
-            @touchmove.prevent
-            v-html="customMask"></div>
+          <div class="vi-popup-custom-mask" v-html="customMask"></div>
         </template>
       </div>
       <div class="vi-popup-content-center"
-        v-if="$slots.default"
-        @touchmove.prevent>
+        v-if="$slots.default">
         <slot></slot>
       </div>
-      <!-- 不是居中的content,自定义样式,或者可以做关闭按钮小组件插槽 -->
       <template v-if="$slots['custom-content']">
-        <div class="vi-popup-custom-content"
-          @touchmove.prevent>
+        <div class="vi-popup-custom-content">
           <slot name="custom-content"></slot>
         </div>
       </template>
@@ -44,6 +37,8 @@ import popupMixin from '../../common/mixins/popup.js'
 const COMPONENT_NAME = 'vi-popup'
 
 const EVENT_MASK_CLICK = 'mask-click'
+const EVENT_AFTER_ENTER = 'after-enter'
+const EVENT_AFTER_LEAVE = 'after-leave'
 
 export default {
   name: COMPONENT_NAME,
@@ -139,6 +134,12 @@ export default {
       }
       this.$emit(EVENT_MASK_CLICK)
     },
+    afterEnter() {
+      this.$emit(EVENT_AFTER_ENTER)
+    },
+    afterLeave() {
+      this.$emit(EVENT_AFTER_LEAVE)
+    }
   },
   beforeDestroy() {
     this._removeEventListenerBlur()

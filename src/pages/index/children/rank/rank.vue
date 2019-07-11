@@ -30,7 +30,7 @@
 
 <script>
 import { getTopList } from '@/api/rank.js'
-import { playListMixin } from '@/common/mixins/player.js'
+import { playerMixin } from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
 import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
@@ -40,7 +40,7 @@ export default {
   name: 'index-rank',
   mixins: [
     injectStickyMixin,
-    playListMixin,
+    playerMixin,
     createThrottleInstanceMixin,
     keepAliveRouteManagerMixin
   ],

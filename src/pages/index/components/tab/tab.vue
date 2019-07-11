@@ -1,24 +1,52 @@
 <template>
   <div class="tab">
-    <router-link tag="div" class="tab-item" to="/recommend">
-      <span class="tab-link better-scroll">推荐</span>
-    </router-link>
-    <router-link tag="div" class="tab-item" to="/singer">
-      <span class="tab-link better-scroll">歌手</span>
-    </router-link>
-    <router-link tag="div" class="tab-item" to="/rank">
-      <span class="tab-link better-scroll">排行
-      </span>
-    </router-link>
-    <router-link tag="div" class="tab-item" to="/search">
-      <span class="tab-link better-scroll">搜索</span>
-    </router-link>
+    <div class="tab-item"
+      v-for="(item, index) in tabList"
+      :key="index"
+      :class="{'active': item.router.name === $route.name}"
+      @touchstart="pageTurn(index)">
+      <span class="tab-link">{{item.title}}</span>
+    </div>
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 export default {
-
+  data() {
+    return {
+      tabList: [
+        {
+          title: '推荐',
+          router: {
+            name: 'index-recommend',
+          },
+        },
+        {
+          title: '歌手',
+          router: {
+            name: 'index-singer',
+          },
+        },
+        {
+          title: '排行',
+          router: {
+            name: 'index-rank',
+          },
+        },
+        {
+          title: '搜索',
+          router: {
+            name: 'index-search',
+          },
+        },
+      ],
+    }
+  },
+  methods: {
+    pageTurn(index) {
+      this.$router.push(this.tabList[index].router)
+    }
+  }
 }
 </script>
 
@@ -41,10 +69,10 @@ export default {
     flex: 1
     text-align: center
     .tab-link
-      padding-bottom: 5px
+      padding: 0px 5px 5px 5px
       color: $color-text-l
       // background: gold
-    &.router-link-active
+    &.active
       .tab-link
         color: $color-theme
         border-bottom: 2px solid $color-theme

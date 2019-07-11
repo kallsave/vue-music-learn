@@ -221,7 +221,7 @@ async function updateAllImg () {
     ...mapActions([
       'tempDisableMutableKeepAliveName'
     ]),
-    redirectToRecommend() {
+    pageTurnRecommend() {
       this.tempDisableMutableKeepAliveName()
       // /index/recommend页面是动态keep-alive的
       this.$router.push({

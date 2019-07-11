@@ -1,9 +1,11 @@
 <template>
-  <vi-popup v-model="isVisible"
+  <vi-popup
+    v-model="isVisible"
     :is-show-mask="isShowMask"
     :is-lock-scroll="isLockScroll"
     :z-index="zIndex"
-    :transitionDuration="transitionDuration">
+    :transitionDuration="transitionDuration"
+    @touchmove.native.prevent>
     <transition name="vi-toast-fade">
       <div class="vi-toast"
         v-show="isVisible"

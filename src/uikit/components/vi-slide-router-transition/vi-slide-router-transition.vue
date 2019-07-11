@@ -1,6 +1,6 @@
 <template>
   <div class="slide-router">
-    <transition :name="slideDirection" :mode="mode">
+    <transition :name="slideClass" :mode="mode">
       <slot></slot>
     </transition>
   </div>
@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      slideDirection: '',
+      slideClass: '',
       enabled: true
     }
   },
@@ -77,6 +77,7 @@ export default {
   },
   mounted() {
     this._initSlideRouter()
+    console.log(this.siblingsRoute)
   },
   methods: {
     _initSlideRouter() {
@@ -116,10 +117,10 @@ export default {
         return
       }
       if (direction >= 0 && currentIndex < this.routerList.length - 1) {
-        this.slideDirection = this.slideRightClass
+        this.slideClass = this.slideRightClass
         this.$router.push({'path': this.routerList[currentIndex + 1].path})
       } else if (direction < 0 && currentIndex > 0) {
-        this.slideDirection = this.slideLeftClass
+        this.slideClass = this.slideLeftClass
         this.$router.push({'path': this.routerList[currentIndex - 1].path})
       }
     },
@@ -129,6 +130,9 @@ export default {
     disableSlide() {
       this.enabled = false
     },
+    // setSlideClass() {
+
+    // }
   },
   beforeDestroy() {
     this.$el.removeEventListener('touchstart', this.listenerTouchstartHandler, false)

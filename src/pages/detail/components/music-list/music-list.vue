@@ -1,7 +1,7 @@
 <template>
   <div class="music">
     <div class="header">
-      <div class="back" @click="back">
+      <div class="back" @touchstart="back">
         <i class="icon-back"></i>
       </div>
       <h1 ref="title" class="title">{{title}}</h1>
@@ -45,7 +45,7 @@
 
 <script>
 import SongList from '@/components/song-list/song-list.vue'
-import { playListMixin } from '@/common/mixins/player.js'
+import { playerMixin } from '@/common/mixins/player.js'
 import { prefixStyle } from '@/common/helpers/dom.js'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
@@ -60,7 +60,7 @@ export default {
     SongList
   },
   mixins: [
-    playListMixin,
+    playerMixin,
     createThrottleInstanceMixin
   ],
   props: {

@@ -1,8 +1,13 @@
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   mounted() {
     this.keepAliveRouteAdd(this.$options.name)
+  },
+  computed: {
+    ...mapGetters([
+      'keepAliveRouteList'
+    ])
   },
   methods: {
     ...mapActions([

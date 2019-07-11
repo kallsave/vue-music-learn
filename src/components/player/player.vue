@@ -1,6 +1,6 @@
 <template>
   <div class="player"
-    v-show="playList.length>0">
+    v-show="playList.length">
     <transition name="normal">
       <div class="normal-player"
         v-show="fullScreen">
@@ -50,7 +50,7 @@
             <div class="middle-r">
               <vi-scroll
                 ref="lyricScroll"
-                :scroll-events="['scroll']"
+                :scroll-events="scrollEvents"
                 :options="scrollOptions">
                 <div class="lyric-wrapper">
                   <div v-if="currentLyric">
@@ -115,7 +115,7 @@
             <img ref="miniImg"
               width="40" height="40"
               :src="currentSong.image"
-              v-show="!fullScreen">
+              v-show="!fullScreen" />
           </transition>
         </div>
         <div class="text">
@@ -128,21 +128,26 @@
             :percent="percent">
             <i class="icon-mini"
               :class="miniIcon"
-              @click.stop="togglePlaying" ></i>
+              @click.stop="togglePlaying">
+            </i>
           </base-progress-circle>
         </div>
         <div class="control"
-          @click.stop="redirectToRecommend">
+          @click.stop="showPlayList">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+
+    <play-list ref="playList"></play-list>
+
     <audio ref="audio"
       :src="currentSong.url"
       @canplay="ready"
       @error="error"
       @timeupdate="updateTime"
-      @ended="ended"></audio>
+      @ended="ended">
+    </audio>
   </div>
 </template>
 
@@ -154,6 +159,7 @@ import { padZero, shuffle } from '@/common/helpers/utils.js'
 import { playMode } from '@/store/modules/player/config.js'
 import Lyric from 'lyric-parser'
 import { createSong, Song } from '@/common/class/song.js'
+import PlayList from '@/components/play-list/play-list.vue'
 
 const DURATION_MOVE = 400
 const DURATION_ROTATE = 20000
@@ -163,6 +169,9 @@ const DURATION_START_ROTATE = 800
 const TRANSFORM = prefixStyle('transform')
 
 export default {
+  components: {
+    PlayList
+  },
   data() {
     return {
       isSongReady: false,
@@ -178,6 +187,9 @@ export default {
       scrollOptions: {
         probeType: 3
       },
+      scrollEvents: [
+        'scroll'
+      ],
       currentSlideIndex: 0,
       playingLyric: ''
     }
@@ -286,13 +298,9 @@ export default {
     }),
     ...mapActions([
       'addSongClass',
-      'tempDisableMutableKeepAliveName'
     ]),
-    redirectToRecommend() {
-      this.tempDisableMutableKeepAliveName()
-      this.$router.push({
-        path: '/index/recommend'
-      })
+    showPlayList() {
+      this.$refs.playList.show()
     },
     close() {
       this.setFullScreen(false)

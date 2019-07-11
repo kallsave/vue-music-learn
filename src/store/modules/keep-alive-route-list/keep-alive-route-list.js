@@ -21,9 +21,10 @@ const keepAliveRouteList = {
     },
   },
   actions: {
+    // actions只能传一个参数
     // 添加已存在缓存路由时添加无效,原缓存路由位置置顶
-    keepAliveRouteAdd({ commit }, ...componentNameList) {
-      keepAliveStack.add(...componentNameList)
+    keepAliveRouteAdd({ commit }, componentName) {
+      keepAliveStack.add(componentName)
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
@@ -40,8 +41,8 @@ const keepAliveRouteList = {
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
     // 删除从这个缓存路由连同比这个缓存路由先缓存的路由
-    keepAliveRouteRemoveFrom({ commit }, element) {
-      keepAliveStack.removeFrom(element)
+    keepAliveRouteRemoveFrom({ commit }, componentName) {
+      keepAliveStack.removeFrom(componentName)
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
@@ -58,8 +59,8 @@ const keepAliveRouteList = {
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
     // 清除出了参数以外的其他缓存路由
-    keepAliveRouteClearExclude({ commit }, ...componentNameList) {
-      keepAliveStack.clearExclude(...componentNameList)
+    keepAliveRouteClearExclude({ commit }, componentName) {
+      keepAliveStack.clearExclude(componentName)
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },

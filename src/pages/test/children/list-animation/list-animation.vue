@@ -1,6 +1,5 @@
 <template>
   <div class="list-animation">
-    <div style="height: 100px; font-size: 20px; color: #fff; text-align: center">{{text}}</div>
     <div class="item"
       v-for="(item, index) in list" :key="index"
       :style="setStyle(index)"
@@ -22,12 +21,11 @@ export default {
   data() {
     return {
       list: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-      text: ''
     }
   },
   mounted() {
-    window.setTimeout(() => {
-      this.text = 'hh'
+    this.$toast.show({
+      title: '加载中...'
     })
   },
   methods: {
@@ -38,7 +36,7 @@ export default {
       }
     },
     animationend() {
-      console.log(66)
+      // console.log('animationend')
     },
     goRecommend() {
       this.$router.push({
@@ -51,7 +49,8 @@ export default {
 
 <style lang="stylus" modules>
 .list-animation
-  padding-top: 10px
+  box-sizing: border-box
+  padding-top: 50px
   height: 100vh
   .item
     margin: 0 10px 10px 10px

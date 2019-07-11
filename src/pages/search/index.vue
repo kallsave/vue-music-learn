@@ -73,7 +73,7 @@ import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME 
 import { getHotKey, search } from '@/api/search.js'
 import { createSong } from '@/common/class/song.js'
 import { Debounce, Throttle } from '@/common/helpers/utils.js'
-import { playListMixin } from '@/common/mixins/player.js'
+import { playerMixin } from '@/common/mixins/player.js'
 import Singer from '@/common/class/singer.js'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import NoResult from '../index/children/search/components/no-result/no-result.vue'
@@ -95,7 +95,7 @@ export default {
     SearchList
   },
   mixins: [
-    playListMixin,
+    playerMixin,
     createThrottleInstanceMixin,
     createDebounceInstanceMixin,
   ],

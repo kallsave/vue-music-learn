@@ -1,7 +1,7 @@
 import { mapGetters } from 'vuex'
 import { AFTER_ENTER } from '@/store/modules/router-transition-state/config.js'
 
-export const playListMixin = {
+export const playerMixin = {
   data() {
     return {
       playerHeight: '60'
@@ -43,10 +43,4 @@ export const playListMixin = {
       throw new Error('component must implement handlePlayList method')
     }
   },
-  beforeDestroy() {
-  },
-}
-
-export const playerMixin = {
-
 }

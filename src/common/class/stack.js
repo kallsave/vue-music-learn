@@ -27,6 +27,7 @@ export default class Stack {
   add() {
     for (let i = 0; i < arguments.length; i++) {
       let element = arguments[i]
+      console.log('element', element)
       this._add(element)
     }
   }

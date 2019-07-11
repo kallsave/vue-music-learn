@@ -13,9 +13,8 @@
 </template>
 
 <script>
-import { IMMUTABLE_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import Singer from '@/common/class/singer.js'
-import { playListMixin } from '@/common/mixins/player.js'
+import { playerMixin } from '@/common/mixins/player.js'
 import { getSingerList } from '@/api/singer.js'
 import { mapMutations } from 'vuex'
 import { injectStickyMixin } from '../../mixins/inject-sticky.js'
@@ -26,10 +25,10 @@ const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'
 
 export default {
-  name: IMMUTABLE_KEEP_ALIVE_NAME,
+  name: 'index-singer',
   mixins: [
     injectStickyMixin,
-    playListMixin,
+    playerMixin,
     createThrottleInstanceMixin,
     keepAliveRouteManagerMixin
   ],
