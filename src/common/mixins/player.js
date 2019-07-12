@@ -1,7 +1,7 @@
 import { mapGetters } from 'vuex'
 import { AFTER_ENTER } from '@/store/modules/router-transition-state/config.js'
 
-export const playerMixin = {
+const playerPaddingBottom = {
   data() {
     return {
       playerHeight: '60'
@@ -44,3 +44,5 @@ export const playerMixin = {
     }
   },
 }
+
+export default playerPaddingBottom

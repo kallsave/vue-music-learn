@@ -2,33 +2,38 @@
   <div class="vi-collapse">
     <slot name="collapse-header"
       :is-collapse="isCollapse"
-      :toggle="toggle"></slot>
+      :toggle="toggle">
+    </slot>
     <template v-if="isUseTransition">
       <vi-collapse-transition>
         <div ref="collapseContent"
           v-show="!isCollapse">
           <slot name="collapse-content"
             :is-collapse="isCollapse"
-            :toggle="toggle"></slot>
+            :toggle="toggle">
+          </slot>
         </div>
       </vi-collapse-transition>
     </template>
     <template v-else>
       <div ref="collapseContent"
-          v-show="!isCollapse">
-          <slot name="collapse-content"
-            :is-collapse="isCollapse"
-            :toggle="toggle"></slot>
-        </div>
+        v-show="!isCollapse">
+        <slot name="collapse-content"
+          :is-collapse="isCollapse"
+          :toggle="toggle">
+        </slot>
+      </div>
     </template>
     <div v-show="isCollapse">
       <slot name="collapse-skeleton"
         :is-collapse="isCollapse"
-        :toggle="toggle"></slot>
+        :toggle="toggle">
+      </slot>
     </div>
     <slot name="collapse-footer"
       :is-collapse="isCollapse"
-      :toggle="toggle"></slot>
+      :toggle="toggle">
+    </slot>
   </div>
 </template>
 

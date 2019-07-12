@@ -43,14 +43,15 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <vi-swipe-group>
-            <ul class="recommend-ul">
+            <vi-collapse-transition-group tag="ul" class="recommend-ul">
               <li class="item"
                 v-for="(item, index) in discList" :key="item.dissname"
                 @click="selectItem($event, item)">
                 <vi-swipe
                   :index="index"
                   :menu-list="menuList"
-                  @menu-click="menuClick">
+                  @menu-click="menuClick"
+                  @confirm="confirmDelete">
                   <div class="item-wrapper">
                     <div class="icon">
                       <img width="60" height="60" v-lazy="item.imgurl">
@@ -62,7 +63,7 @@
                   </div>
                 </vi-swipe>
               </li>
-            </ul>
+            </vi-collapse-transition-group>
           </vi-swipe-group>
         </div>
       </vi-scroll>
@@ -72,19 +73,19 @@
 
 <script>
 import { getRecommend, getDiscList } from '@/api/recommend.js'
-import { playerMixin } from '@/common/mixins/player.js'
+import playerPaddingBottom from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
-import { injectStickyMixin } from '../../mixins/inject-sticky.js'
-import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
-import keepAliveRouteManagerMixin from '@/common/mixins/keep-alive-route-manager.js'
+import { injectSticky } from '../../mixins/inject-sticky.js'
+import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
+import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
 export default {
   name: 'index-recommend',
   mixins: [
-    injectStickyMixin,
-    playerMixin,
-    createThrottleInstanceMixin,
-    keepAliveRouteManagerMixin
+    injectSticky,
+    playerPaddingBottom,
+    createThrottleInstance,
+    keepAliveRouteManager
   ],
   data() {
     return {
@@ -202,7 +203,10 @@ export default {
       } else {
         toggleConfirmMenu(true)
       }
-    }
+    },
+    confirmDelete(index) {
+      this.discList.splice(index, 1)
+    },
   },
 }
 </script>

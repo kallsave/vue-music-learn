@@ -1,7 +1,7 @@
 <template>
   <textarea v-model="currentVal"
     :style="textareaStyle"
-    @input="handleInput($event)"></textarea>
+    @input="inputHandler($event)"></textarea>
 </template>
 
 <script>
@@ -55,7 +55,7 @@ export default {
     immediate: true
   },
   methods: {
-    handleInput(event) {
+    inputHandler(event) {
       const value = event.target.value
       this.setCurrentValue(value)
       console.log(this.currentVal)

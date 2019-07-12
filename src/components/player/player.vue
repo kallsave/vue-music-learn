@@ -5,8 +5,9 @@
       <div class="normal-player"
         v-show="fullScreen">
         <div class="background">
-            <img width="100%" height="100%"
-              :src="currentSong.image">
+          <img width="100%"
+            height="100%"
+            :src="currentSong.image" />
         </div>
         <div class="top">
           <div class="back"
@@ -156,7 +157,7 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import createKeyframe from 'create-keyframe-animation'
 import { prefixStyle, getTransformAngle } from '@/common/helpers/dom.js'
 import { padZero, shuffle } from '@/common/helpers/utils.js'
-import { playMode } from '@/store/modules/player/config.js'
+import { playModeOptions } from '@/store/modules/player/config.js'
 import Lyric from 'lyric-parser'
 import { createSong, Song } from '@/common/class/song.js'
 import PlayList from '@/components/play-list/play-list.vue'
@@ -228,9 +229,9 @@ export default {
       return this.currentTime / this.currentSong.duration
     },
     iconMode() {
-      return this.mode === playMode.sequence
+      return this.mode === playModeOptions.sequence
         ? 'icon-sequence'
-        : this.mode === playMode.loop
+        : this.mode === playModeOptions.loop
           ? 'icon-loop'
           : 'icon-random'
     }
@@ -570,7 +571,7 @@ export default {
       }
     },
     ended() {
-      if (this.mode === playMode.loop) {
+      if (this.mode === playModeOptions.loop) {
         this.loop()
       } else {
         // 点击玄学,调用I/0操作的回调函数要和I/0操作的效果一模一样要加上异步
@@ -612,17 +613,16 @@ export default {
       }
     },
     changeMode() {
-      let title = ''
       const mode = (this.mode + 1) % 3
       this.setPlayMode(mode)
       let list = null
-      if (mode === playMode.random) {
+      if (mode === playModeOptions.random) {
         list = shuffle(this.sequenceList)
         this.$toastTxt.show({
           title: '随机播放',
           durtaion: 2000
         })
-      } else if (mode === playMode.loop) {
+      } else if (mode === playModeOptions.loop) {
         list = this.sequenceList
         this.$toastTxt.show({
           title: '单曲循环',

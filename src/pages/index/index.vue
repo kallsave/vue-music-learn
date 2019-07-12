@@ -93,7 +93,7 @@ import { mapGetters } from 'vuex'
 import MHeader from './components/m-header/m-header.vue'
 import Tab from './components/tab/tab.vue'
 import Background from './components/background/background.vue'
-import keepAliveRouteManagerMixin from '@/common/mixins/keep-alive-route-manager.js'
+import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
 const Recommend = () => import(/* webpackChunkName: "Recommend" */ './children/recommend/recommend.vue')
 const Singer = () => import(/* webpackChunkName: "Singer" */ './children/singer/singer.vue')
@@ -113,7 +113,7 @@ export default {
     Search
   },
   mixins: [
-    keepAliveRouteManagerMixin,
+    keepAliveRouteManager,
   ],
   data() {
     return {

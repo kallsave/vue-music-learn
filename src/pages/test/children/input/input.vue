@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import SearchBox from '@/base-components/search-box/search-box.vue'
+import SearchBox from '@/base/search-box/search-box.vue'
 
 export default {
   components: {

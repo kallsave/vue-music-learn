@@ -20,7 +20,7 @@ export function scrollHandler(pos) {
   }
 }
 
-export const injectStickyMixin = {
+export const injectSticky = {
   inject: ['ViScroll'],
   methods: {
     scrollHandler: scrollHandler

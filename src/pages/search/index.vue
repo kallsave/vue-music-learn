@@ -73,13 +73,13 @@ import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME 
 import { getHotKey, search } from '@/api/search.js'
 import { createSong } from '@/common/class/song.js'
 import { Debounce, Throttle } from '@/common/helpers/utils.js'
-import { playerMixin } from '@/common/mixins/player.js'
+import playerPaddingBottom from '@/common/mixins/player.js'
 import Singer from '@/common/class/singer.js'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import NoResult from '../index/children/search/components/no-result/no-result.vue'
 import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
 import SearchList from '@/components/search-list/search-list.vue'
-import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
+import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
 import createDebounceInstanceMixin from '@/common/mixins/create-debounce-instance.js'
 
 const TYPE_SINGER = 'singer'
@@ -95,8 +95,8 @@ export default {
     SearchList
   },
   mixins: [
-    playerMixin,
-    createThrottleInstanceMixin,
+    playerPaddingBottom,
+    createThrottleInstance,
     createDebounceInstanceMixin,
   ],
   data() {

@@ -4,8 +4,7 @@
     :is-show-mask="isShowMask"
     :is-lock-scroll="isLockScroll"
     :z-index="zIndex"
-    :transitionDuration="transitionDuration"
-    @touchmove.native.prevent>
+    :transitionDuration="transitionDuration">
     <transition name="vi-toast-fade">
       <div class="vi-toast"
         v-show="isVisible"

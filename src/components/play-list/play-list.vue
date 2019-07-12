@@ -8,9 +8,9 @@
     <div slot="custom-content" class="list-wrapper">
       <div class="list-header">
         <h1 class="title">
-          <i class="icon"></i>
+          <i class="icon" :class="iconMode" @click="changeMode"></i>
           <span class="text">{{modeText}}</span>
-          <span class="clear"><i class="icon-clear"></i></span>
+          <span class="clear" @click="tryDeleteSongList"><i class="icon-clear"></i></span>
         </h1>
       </div>
       <vi-scroll
@@ -18,11 +18,11 @@
         class="list-content"
         :options="scrollOptions"
         :data="sequenceList">
-        <ul>
+        <vi-collapse-transition-group tag="ul">
           <li ref="listItem"
             class="item"
             v-for="(item, index) in sequenceList"
-            :key="index"
+            :key="item.id"
             @click="selectItem(item, index)">
             <i class="icon" :class="{'icon-play': getCurrentIcon(item)}"></i>
             <span class="text">{{item.name}}</span>
@@ -33,7 +33,7 @@
               <i class="icon-delete"></i>
             </span>
           </li>
-        </ul>
+        </vi-collapse-transition-group>
       </vi-scroll>
       <div class="list-operate">
         <div class="add">
@@ -49,15 +49,17 @@
 </template>
 
 <script>
-import visibilityMixin from '@/common/mixins/visibility.js'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
-import { playMode } from '@/store/modules/player/config.js'
-import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
+import visibilityMixin from '@/common/mixins/visibility.js'
+import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
+import playMode from '@/common/mixins/play-mode.js'
+import { playModeOptions } from '@/store/modules/player/config.js'
 
 export default {
   mixins: [
     visibilityMixin,
-    createThrottleInstanceMixin
+    createThrottleInstance,
+    playMode
   ],
   data() {
     return {
@@ -77,9 +79,6 @@ export default {
       'mode',
       'playList',
     ]),
-    modeText() {
-      return this.mode === playMode.sequence ? '顺序播放' : this.mode === playMode.random ? '随机播放' : '单曲循环'
-    }
   },
   watch: {
     currentSong: {
@@ -93,11 +92,14 @@ export default {
   },
   methods: {
     ...mapMutations({
-      'setCurrentIndex': 'SET_CURRENT_INDEX',
-      'setPlayingState': 'SET_PLAYING_STATE'
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setPlayingState: 'SET_PLAYING_STATE',
+      setPlayList: 'SET_PLAY_LIST',
+      setPlayMode: 'SET_PLAY_MODE',
     }),
     ...mapActions([
-      'deleteSong'
+      'deleteSong',
+      'deleteSongList'
     ]),
     show() {
       this.isVisible = true
@@ -114,7 +116,7 @@ export default {
     },
     selectItem(item, index) {
       this.throttle.run(() => {
-        if (this.mode === playMode.random) {
+        if (this.mode === playModeOptions.random) {
           index = this.playList.findIndex((song) => {
             return song.id === item.id
           })
@@ -128,14 +130,22 @@ export default {
         return current.id === item.id
       })
       if (index !== -1) {
-        this.$refs.scroll.scrollToElement(this.$refs.listItem[index])
+        this.$refs.scroll.scrollToElement(this.$refs.listItem[index], 200)
       }
+    },
+    tryDeleteSongList(item) {
+      this.$createBaseConfirm({
+        text: '确定要删除吗?',
+        onConfirm: () => {
+          this.deleteSongList()
+        }
+      }).show()
     },
     deleteItem(item) {
       this.throttle.run(() => {
         this.deleteSong(item)
       })
-    }
+    },
   }
 }
 </script>
@@ -185,7 +195,7 @@ export default {
         align-items: center
         .icon
           margin-right: 10px
-          font-size: 30px
+          font-size: 20px
           color: $color-theme-d
         .text
           flex: 1
@@ -205,10 +215,6 @@ export default {
         height: 40px
         padding: 0 30px 0 20px
         overflow: hidden
-        &.list-enter-active, &.list-leave-active
-          transition: all 0.1s
-        &.list-enter, &.list-leave-to
-          height: 0
         .icon
           flex: 0 0 20px
           width: 20px

@@ -253,9 +253,8 @@ export default {
         this.startTime = timestamp
         this.startX = this.x
       }
-
       this._translate(newX)
-      this._translateMenus(this.x)
+      this._translateMenus(newX)
 
       this.$emit(EVENT_SCROLL, this.x)
     },
@@ -266,18 +265,30 @@ export default {
       if (this.disabled) {
         return
       }
-      let distX = this.x - this.startX
-      if (!distX) {
+      // this.x >= 0 说明touchmove阶段translate为零,不会触发transitionend
+      if (this.x >= 0) {
+        this.isInTransition = false
+        this.state = STATE_SHRINK
+        this._translateMenus(0, true)
+        this.toggleConfirmMenu(false)
         return
       }
+
+      let distX = this.x - this.startX
+      // 说明是点击
+      if (!distX) {
+        let isSwipeMenuWrapper = this.isMenuWrapper(e.target)
+        if (!isSwipeMenuWrapper) {
+          this.shrink()
+          return
+        }
+      }
+
       if (this.x <= this.maxScrollX) {
         this.grow()
         return
       }
-      if (this.x >= 0) {
-        this.shrink()
-        return
-      }
+
       this.endTime = new Date().getTime()
       let duration = this.endTime - this.startTime
       if (duration < MOMENTUMLIMIT_TIME && -distX > MOMENTUMLIMIT_DISTANCE) {
@@ -303,7 +314,7 @@ export default {
     },
     clickCaptureHandler(e) {
       let isSwipeMenuWrapper = this.isMenuWrapper(e.target)
-      if (this.state === STATE_GROW && !isSwipeMenuWrapper && !this.isInTransition) {
+      if (this.state === STATE_GROW && !isSwipeMenuWrapper) {
         e.stopImmediatePropagation()
         this.shrinkTimer = window.setTimeout(() => {
           this.shrink()
@@ -342,10 +353,6 @@ export default {
         }
       }
     },
-    _translate(x) {
-      this.scrollerStyle[TRANSFORM] = `translate(${x}px,0)`
-      this.x = x
-    },
     toggleConfirmMenu(isShowConfirm) {
       const confirmMenuStyle = this.$refs.confirmMenu.style
       if (isShowConfirm) {
@@ -366,24 +373,30 @@ export default {
       const confirmMenuStyle = this.$refs.confirmMenu.style
       confirmMenuStyle[TRANSFORM] = `translate(${x}px)`
     },
+    _translate(x) {
+      this.scrollerStyle[TRANSFORM] = `translate(${x}px, 0)`
+      this.x = x
+    },
+    // 非手动滚动
     scrollTo(x) {
       this.isInTransition = true
       this.scrollerStyle[TRANSITION_DURATION] = `${MENU_DURATION_TIME}ms`
       this._translate(x)
     },
     grow() {
-      this.state = STATE_GROW
+      this.action = STATE_GROW
       this.scrollTo(this.maxScrollX)
       this._translateMenus(this.maxScrollX, true)
     },
     shrink() {
-      this.state = STATE_SHRINK
+      this.action = STATE_SHRINK
       this.scrollTo(0)
       this._translateMenus(0, true)
-      this.toggleConfirmMenu(0)
+      this.toggleConfirmMenu(false)
     },
     transitionendHandler() {
       this.isInTransition = false
+      this.state = this.action
     },
     clickMenuHandler(menu) {
       if (this.state === STATE_GROW) {

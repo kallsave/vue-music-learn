@@ -1,6 +1,6 @@
 // 播放器的各种数据
 
-import { playMode } from './config.js'
+import { playModeOptions } from './config.js'
 import { shuffle } from '@/common/helpers/utils.js'
 import { Song } from '@/common/class/song.js'
 
@@ -33,8 +33,8 @@ const player = {
     playing: false,
     // 是否满屏
     fullScreen: false,
-    // 播放模式默认是playMode.sequence (0)
-    mode: playMode.sequence,
+    // 播放模式默认是playModeOptions.sequence (0)
+    mode: playModeOptions.sequence,
   },
   getters: {
     sequenceList: (state) => state.sequenceList,
@@ -73,7 +73,7 @@ const player = {
   actions: {
     selectPlay({ commit, state }, { list, index }) {
       commit(types.SET_SEQUENCE_LIST, list)
-      if (state.mode === playMode.random) {
+      if (state.mode === playModeOptions.random) {
         let randomList = shuffle(list)
         commit(types.SET_PLAY_LIST, randomList)
         index = findIndex(randomList, list[index])
@@ -85,7 +85,7 @@ const player = {
       commit(types.SET_FULL_SCREEN, true)
     },
     randomPlay({ commit }, { list }) {
-      commit(types.SET_PLAY_MODE, playMode.random)
+      commit(types.SET_PLAY_MODE, playModeOptions.random)
       commit(types.SET_SEQUENCE_LIST, list)
       let randomList = shuffle(list)
       commit(types.SET_PLAY_LIST, randomList)
@@ -169,6 +169,12 @@ const player = {
       } else {
         commit(types.SET_PLAYING_STATE, true)
       }
+    },
+    deleteSongList({ commit }) {
+      commit(types.SET_CURRENT_INDEX, -1)
+      commit(types.SET_PLAY_LIST, [])
+      commit(types.SET_SEQUENCE_LIST, [])
+      commit(types.SET_PLAYING_STATE, false)
     }
   }
 }

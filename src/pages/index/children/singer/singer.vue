@@ -14,12 +14,12 @@
 
 <script>
 import Singer from '@/common/class/singer.js'
-import { playerMixin } from '@/common/mixins/player.js'
+import playerPaddingBottom from '@/common/mixins/player.js'
 import { getSingerList } from '@/api/singer.js'
 import { mapMutations } from 'vuex'
-import { injectStickyMixin } from '../../mixins/inject-sticky.js'
-import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
-import keepAliveRouteManagerMixin from '@/common/mixins/keep-alive-route-manager.js'
+import { injectSticky } from '../../mixins/inject-sticky.js'
+import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
+import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
 const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'
@@ -27,10 +27,10 @@ const HOT_NAME = '热门'
 export default {
   name: 'index-singer',
   mixins: [
-    injectStickyMixin,
-    playerMixin,
-    createThrottleInstanceMixin,
-    keepAliveRouteManagerMixin
+    injectSticky,
+    playerPaddingBottom,
+    createThrottleInstance,
+    keepAliveRouteManager
   ],
   data() {
     return {

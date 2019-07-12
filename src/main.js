@@ -8,12 +8,12 @@ import VueLazyLoad from 'vue-lazyload'
 import '@/common/stylus/index.styl'
 import Vi from '@/uikit/index.js'
 
-import BaseLoadListCon from '@/base-components/load-list-con/index.js'
-import BaseIndexList from '@/base-components/index-list/index.js'
-import BaseSearchBox from '@/base-components/search-box/index.js'
-import BaseProgressBar from '@/base-components/progress-bar/index.js'
-import BaseProgressCircle from '@/base-components/progress-circle/index.js'
-import BaseConfirm from '@/base-components/confirm/index.js'
+import BaseLoadListCon from '@/base/load-list-con/index.js'
+import BaseIndexList from '@/base/index-list/index.js'
+import BaseSearchBox from '@/base/search-box/index.js'
+import BaseProgressBar from '@/base/progress-bar/index.js'
+import BaseProgressCircle from '@/base/progress-circle/index.js'
+import BaseConfirm from '@/base/confirm/index.js'
 
 Vue.use(Vi)
 Vue.use(BaseLoadListCon)
@@ -72,7 +72,6 @@ new Vue({
           this.$updateProps(props)
         }
         $toastSourceShow()
-        return this
       }
 
       $toast.hide = function (props) {
@@ -80,7 +79,6 @@ new Vue({
           this.$updateProps(props)
         }
         $toastSourceHide()
-        return this
       }
     },
     createToastTxtApi() {
@@ -102,7 +100,6 @@ new Vue({
           this.$updateProps(props)
         }
         $toastTxtSourceShow()
-        return this
       }
 
       $toastTxt.hide = function (props) {
@@ -110,7 +107,6 @@ new Vue({
           this.$updateProps(props)
         }
         $toastTxtSourceHide()
-        return this
       }
     }
   }

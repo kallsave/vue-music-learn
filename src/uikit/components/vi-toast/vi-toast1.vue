@@ -1,8 +1,7 @@
 <template>
-  <vi-popup class="a" @click.native="maskClick"
+  <vi-popup
     :mask="false"
-    v-show="isVisible"
-    touchmove.prevent.native>
+    v-show="isVisible">
     <div class="vi-toast" :style="{'transform': `scale(${options.scale})`}">
       <div class="vi-toast-mask" :class="{'vi-toast-mask-active': options.mask}"></div>
       <div class="vi-toast-content">

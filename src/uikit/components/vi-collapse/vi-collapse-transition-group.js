@@ -6,15 +6,14 @@ export default {
   name: COMPONENT_NAME,
   functional: true,
   render(h, { children, data }) {
-    let tag = 'div'
-    if (data.attrs && data.attrs.tag) {
-      tag = data.attrs.tag
-    }
-    return h('transition-group', {
-      on: transitionEvent,
+    let tag = data.attrs && data.attrs.tag ? data.attrs.tag : 'div'
+    let duration = data.attrs && data.attrs.duration ? data.attrs.duration : 200
+    let componentData = Object.assign({
+      on: transitionEvent(duration),
       props: {
         tag: tag
-      }
-    }, children)
+      },
+    }, data)
+    return h('transition-group', componentData, children)
   },
 }

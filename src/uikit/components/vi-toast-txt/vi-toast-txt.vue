@@ -3,8 +3,7 @@
     v-model="isVisible"
     :is-show-mask="isShowMask"
     :is-lock-scroll="isLockScroll"
-    :z-index="zIndex"
-    @touchmove.native.prevent>
+    :z-index="zIndex">
     <transition name="vi-toast-txt">
       <div class="vi-toast-txt"
         v-show="isVisible"

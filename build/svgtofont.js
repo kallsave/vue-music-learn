@@ -54,7 +54,7 @@ let fontFiles = glob.sync([
   resolve(`src/${UIKIT_FOLDER}/**/${SVG_FOLDER}`),
   // resolve(`src/${APP_FOLDER}/**/${SVG_FOLDER}`),
   // resolve(`src/components/**/${SVG_FOLDER}`),
-  resolve(`src/base-components/**/${SVG_FOLDER}`),
+  resolve(`src/base/**/${SVG_FOLDER}`),
 ])
 
 ; (async () => {

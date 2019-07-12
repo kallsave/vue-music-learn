@@ -79,7 +79,7 @@ import {
 } from '@/api/search.js'
 
 import {
-  injectStickyMixin,
+  injectSticky,
   scrollHandler
 } from '../../mixins/inject-sticky.js'
 
@@ -90,15 +90,15 @@ import {
   Throttle
 } from '@/common/helpers/utils.js'
 
-import { playerMixin } from '@/common/mixins/player.js'
+import playerPaddingBottom from '@/common/mixins/player.js'
 import Singer from '@/common/class/singer.js'
 
 import NoResult from './components/no-result/no-result.vue'
 import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
 import SearchList from '@/components/search-list/search-list.vue'
-import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
+import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
 import createDebounceInstanceMixin from '@/common/mixins/create-debounce-instance.js'
-import keepAliveRouteManagerMixin from '@/common/mixins/keep-alive-route-manager.js'
+import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 const TYPE_SINGER = 'singer'
@@ -115,11 +115,11 @@ export default {
     SearchList
   },
   mixins: [
-    injectStickyMixin,
-    playerMixin,
-    createThrottleInstanceMixin,
+    injectSticky,
+    playerPaddingBottom,
+    createThrottleInstance,
     createDebounceInstanceMixin,
-    keepAliveRouteManagerMixin,
+    keepAliveRouteManager,
   ],
   data() {
     return {
@@ -296,7 +296,7 @@ export default {
     },
     tryClearSearchHistory() {
       this.$createBaseConfirm({
-        text: '确定要删除吗',
+        text: '确定要删除吗?',
         onConfirm: () => {
           this.clearSearchHistoryLocalStorage()
         }

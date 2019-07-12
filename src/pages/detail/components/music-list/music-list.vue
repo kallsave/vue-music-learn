@@ -45,10 +45,10 @@
 
 <script>
 import SongList from '@/components/song-list/song-list.vue'
-import { playerMixin } from '@/common/mixins/player.js'
+import playerPaddingBottom from '@/common/mixins/player.js'
 import { prefixStyle } from '@/common/helpers/dom.js'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
-import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
+import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
 
 const TRANSFORM = prefixStyle('transform')
 const BACKDROP_FILTER = prefixStyle('backdrop-filter')
@@ -60,8 +60,8 @@ export default {
     SongList
   },
   mixins: [
-    playerMixin,
-    createThrottleInstanceMixin
+    playerPaddingBottom,
+    createThrottleInstance
   ],
   props: {
     title: {

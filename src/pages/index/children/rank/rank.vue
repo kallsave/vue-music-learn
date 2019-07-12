@@ -30,19 +30,19 @@
 
 <script>
 import { getTopList } from '@/api/rank.js'
-import { playerMixin } from '@/common/mixins/player.js'
+import playerPaddingBottom from '@/common/mixins/player.js'
 import { mapMutations } from 'vuex'
-import { injectStickyMixin } from '../../mixins/inject-sticky.js'
-import createThrottleInstanceMixin from '@/common/mixins/create-throttle-instance.js'
-import keepAliveRouteManagerMixin from '@/common/mixins/keep-alive-route-manager.js'
+import { injectSticky } from '../../mixins/inject-sticky.js'
+import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
+import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
 export default {
   name: 'index-rank',
   mixins: [
-    injectStickyMixin,
-    playerMixin,
-    createThrottleInstanceMixin,
-    keepAliveRouteManagerMixin
+    injectSticky,
+    playerPaddingBottom,
+    createThrottleInstance,
+    keepAliveRouteManager
   ],
   data() {
     return {
