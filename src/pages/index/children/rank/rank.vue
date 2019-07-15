@@ -30,7 +30,7 @@
 
 <script>
 import { getTopList } from '@/api/rank.js'
-import playerPaddingBottom from '@/common/mixins/player.js'
+import playerPaddingBottom from '@/common/mixins/play-padding-bottom.js'
 import { mapMutations } from 'vuex'
 import { injectSticky } from '../../mixins/inject-sticky.js'
 import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'

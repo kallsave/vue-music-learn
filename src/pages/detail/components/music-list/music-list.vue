@@ -45,7 +45,7 @@
 
 <script>
 import SongList from '@/components/song-list/song-list.vue'
-import playerPaddingBottom from '@/common/mixins/player.js'
+import playerPaddingBottom from '@/common/mixins/play-padding-bottom.js'
 import { prefixStyle } from '@/common/helpers/dom.js'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'

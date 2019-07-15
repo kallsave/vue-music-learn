@@ -18,26 +18,26 @@ const playerPaddingBottom = {
       this.handlePlayList()
     }
   },
-  // activated() {
-  //   if (this.playList.length) {
-  //     window.setTimeout(() => {
-  //       this.handlePlayList()
-  //     }, 350)
-  //   }
-  // },
-  watch: {
-    routerTransitionState: {
-      handler(newVal) {
-        if (newVal === AFTER_ENTER) {
-          window.setTimeout(() => {
-            if (this.playList.length) {
-              this.handlePlayList()
-            }
-          }, 20)
-        }
-      }
+  activated() {
+    if (this.playList.length) {
+      window.setTimeout(() => {
+        this.handlePlayList()
+      }, 350)
     }
   },
+  // watch: {
+  //   routerTransitionState: {
+  //     handler(newVal) {
+  //       if (newVal === AFTER_ENTER) {
+  //         window.setTimeout(() => {
+  //           if (this.playList.length) {
+  //             this.handlePlayList()
+  //           }
+  //         }, 20)
+  //       }
+  //     }
+  //   }
+  // },
   methods: {
     handlePlayList() {
       throw new Error('component must implement handlePlayList method')

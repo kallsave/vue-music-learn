@@ -90,7 +90,7 @@ import {
   Throttle
 } from '@/common/helpers/utils.js'
 
-import playerPaddingBottom from '@/common/mixins/player.js'
+import playerPaddingBottom from '@/common/mixins/play-padding-bottom.js'
 import Singer from '@/common/class/singer.js'
 
 import NoResult from './components/no-result/no-result.vue'

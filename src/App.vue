@@ -15,7 +15,7 @@
 
 <script>
 import { AFTER_ENTER, FINISH } from '@/store/modules/router-transition-state/config.js'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Player from '@/components/player/player.vue'
 import Stack from '@/common/class/stack.js'
 
@@ -30,7 +30,6 @@ export default {
     return {
       transitionName: '',
       mode: '',
-      forwardBackCache: forwardBackCache,
       routerDuration: {
         enter: 300,
         leave: 300
@@ -46,6 +45,10 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
+        if (this.$route.name) {
+          this.keepAliveRouteAdd(this.$route.name)
+          // console.log('this.keepAliveRouteList', this.keepAliveRouteList)
+        }
         if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
           this.transitionName = ''
           this.mode = ''
@@ -57,31 +60,41 @@ export default {
               name: '',
               mode: ''
             })
-          } else if (to.fullPath === this.forwardBackCache.getByIndex(1)) {
-            this.transitionName = 'move-left'
-            this.mode = ''
-            // 返回到一个页面,相当于重新清空了前进和后退的关系
-            this.forwardBackCache.clearAll()
           } else {
             this.transitionName = 'move-right'
             this.mode = ''
           }
         }
-        this.forwardBackCache.add(to.fullPath)
       },
       immediate: true
     },
+  },
+  mounted() {
+    this.addEventListenerPopstate()
   },
   methods: {
     ...mapMutations({
       setRouterTransition: 'SET_ROUTER_TRANSITION',
       setRouterTransitionState: 'SET_ROUTER_TRANSITION_STATE'
     }),
+    ...mapActions([
+      'keepAliveRouteAdd',
+      'keepAliveRouteRemove'
+    ]),
     afterEnter() {
       this.setRouterTransitionState(AFTER_ENTER)
       window.setTimeout(() => {
         this.setRouterTransitionState(FINISH)
       }, 100)
+    },
+    addEventListenerPopstate() {
+      window.addEventListener('popstate', () => {
+        this.keepAliveRouteRemove(this.$route.name)
+        this.setRouterTransition({
+          name: 'move-left',
+          mode: ''
+        })
+      })
     }
   }
 }

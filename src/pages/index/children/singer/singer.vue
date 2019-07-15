@@ -14,7 +14,7 @@
 
 <script>
 import Singer from '@/common/class/singer.js'
-import playerPaddingBottom from '@/common/mixins/player.js'
+import playerPaddingBottom from '@/common/mixins/play-padding-bottom.js'
 import { getSingerList } from '@/api/singer.js'
 import { mapMutations } from 'vuex'
 import { injectSticky } from '../../mixins/inject-sticky.js'

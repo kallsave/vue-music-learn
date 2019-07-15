@@ -44,6 +44,10 @@
 - 长列表弹窗阻止底部滚动
 
 # 优先
+- vue源码
+- vue-router源码
+- 实现原生的下拉加载
+- vi-slide-router-view像router-view一样可以带props
 - ease函数原理
 - canvas background-size: cover算法
 - 自适应高度textarea
@@ -51,13 +55,8 @@
 - clipper剪裁组件
 - scroll-down-refresh用箭头做默认slot
 - 图片,视频上传组件
-- 实现原生的下拉加载
-- vi-slide-router-view像router-view一样可以带props
-- vue源码
-- vue-router源码
 - scroll实现京东效果
 - webpack4
 - 写一个animation库
 - keep-alive管理和vue-router和路由过渡动画结合的vue-router插件
 - previewer组件及其全局调用的方法
-- vi-popop isLockScroll测试
