@@ -10,12 +10,12 @@
         @scroll="scrollHandler">
         <m-header></m-header>
         <template v-if="slideRouterMode === slideRouterModeList[0]">
-          <!-- <vi-native-sticky-ele>
+          <vi-native-sticky-ele>
             <tab></tab>
-          </vi-native-sticky-ele> -->
-          <div style="position: sticky; top:0;">
+          </vi-native-sticky-ele>
+          <!-- <div style="position: sticky; top:0;">
             <tab></tab>
-          </div>
+          </div> -->
         </template>
         <template v-if="slideRouterMode === slideRouterModeList[0]">
           <vi-slide-router-transition
@@ -118,7 +118,7 @@ export default {
   data() {
     return {
       slideRouterModeList: slideRouterModeList,
-      slideRouterMode: slideRouterModeList[0],
+      slideRouterMode: slideRouterModeList[1],
       tabList: [
         '推荐',
         '歌手',

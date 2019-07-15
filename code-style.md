@@ -239,18 +239,11 @@ async function updateAllImg () {
  > 为了全局使用,管理keepAlive的数组用vuex来组织
  > 原理:
 
- > 跑在浏览器的页面:
- > 0.可以在每一个页面引入一个没有html模板的管理keepAlive的组件或者mixin,方便调用
+ > 支持浏览器的返回按钮
+ > 0.可以在每一个页面引入一个没有html模板的管理keepAlive的组件或者mixin,方便调用操作keepAlive的方法
  > 1.每进入一个页面用管理keepAlive的数组存当前页面的componentName
- > 2.跳转到新页面时,管理keepAlive的数组先删除即将去的页面的componentName,保证了浏览器反复(跳转+浏览器的返回)也不会导致将去的页面的keepAlive。保存按钮返回到原来页面前管理keepAlive的数组删除当前页面的componentName
+ > 2.监听popstate并保证事件在router进来之前触发(浏览器的返回按钮和调用this.router.back()会触发),删除当前页面的componentName(也就是离开的页面)
  > 3.如果前进页面的数据更新会导致缓存页面的数据需要做刷新处理,如果是相邻的两个页面,使用vuex让列表页和详情页关联起来.如果是相差N(N>2)个页面,可以用vuex也可以数据更新后管理keepAlive的数组删除这个缓存页面的componentName
-
- > 嵌套在app的页面:
- > 0.对于嵌套在app的页面,有顶部导航返回按钮,封装这个page组件统一处理减少代码
- > 1.page组件进来时用管理keepAlive的数组存当前页面的componentName,
- > 2.page组件点击返回按钮删除当前页面的componentName(保持按钮等操作类似)
- > 3.如果前进页面的数据更新会导致缓存页面的数据需要做刷新处理,如果是相邻的两个页面(比如列表和详情)),使用vuex让列表页和详情页关联起来.如果是相差N(N>2)个页面,可以用vuex也可以数据更新后管理keepAlive的数组删除这个缓存页面的componentName
- > 4.保持按钮删除当前页面的componentName要引入vuex的代码,更简便的做法是调用this.$refs.page.back(),相当于点击了返回按钮
 
  > 更好的解决方案
  > 结合vue-router的api写一个插件

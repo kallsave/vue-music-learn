@@ -339,7 +339,7 @@ export default {
         this.stopY = this.pullDownScrollY
         this.pullDownNormalTop = 0
         this.pullDownStyle = {
-          top: `${Math.min(this.scrollY - this.pullDownHeight, 0)}px`
+          top: `${Math.min(this.stopY - this.pullDownHeight, 0)}px`
         }
       }
     },
@@ -417,6 +417,7 @@ export default {
         return
       }
       this.scroll.autoPullDownRefresh()
+      console.log(this.pullDownState)
     },
     _onPullUpLoadEvent() {
       if (this.isOpenPullUpLoad) {
