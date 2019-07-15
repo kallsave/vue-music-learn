@@ -417,7 +417,6 @@ export default {
         return
       }
       this.scroll.autoPullDownRefresh()
-      console.log(this.pullDownState)
     },
     _onPullUpLoadEvent() {
       if (this.isOpenPullUpLoad) {

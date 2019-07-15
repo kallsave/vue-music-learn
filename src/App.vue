@@ -17,9 +17,6 @@
 import { AFTER_ENTER, FINISH } from '@/store/modules/router-transition-state/config.js'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Player from '@/components/player/player.vue'
-import Stack from '@/common/class/stack.js'
-
-const forwardBackCache = new Stack(2)
 
 export default {
   name: 'App',
@@ -105,6 +102,7 @@ export default {
 @import "~@/common/stylus/var/ease.styl"
 
 .app
+  color: #222
   .router-view
     &.move-right-enter
       transform: translate3d(100%, 0, 0)

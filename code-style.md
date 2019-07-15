@@ -241,7 +241,7 @@ async function updateAllImg () {
 
  > 支持浏览器的返回按钮
  > 0.可以在每一个页面引入一个没有html模板的管理keepAlive的组件或者mixin,方便调用操作keepAlive的方法
- > 1.每进入一个页面用管理keepAlive的数组存当前页面的componentName
+ > 1.每进入一个页面用管理keepAlive的数组存当前页面的componentName(可以在watch route里面做)
  > 2.监听popstate并保证事件在router进来之前触发(浏览器的返回按钮和调用this.router.back()会触发),删除当前页面的componentName(也就是离开的页面)
  > 3.如果前进页面的数据更新会导致缓存页面的数据需要做刷新处理,如果是相邻的两个页面,使用vuex让列表页和详情页关联起来.如果是相差N(N>2)个页面,可以用vuex也可以数据更新后管理keepAlive的数组删除这个缓存页面的componentName
 

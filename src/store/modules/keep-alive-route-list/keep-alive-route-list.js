@@ -29,8 +29,8 @@ const keepAliveRouteList = {
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
     // 快捷删除上一个缓存路由,相当于backToByIndex(1)
-    keepAliveRouteReduce({ commit }, componentName) {
-      keepAliveStack.reduce(componentName)
+    keepAliveRouteReduce({ commit }) {
+      keepAliveStack.reduce()
       let keepAliveRouteList = keepAliveStack.getList().slice()
       commit(types.SET_KEEP_ALIVE_LIST, keepAliveRouteList)
     },
