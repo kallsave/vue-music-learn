@@ -25,7 +25,7 @@
             <ul class="hot-key-list">
               <li class="item"
                 :key="index" v-for="(item, index) in hotKey"
-                @touchstart="hotSearch(item)">
+                @click="hotSearch(item)">
                 <span>{{item.k}}</span>
               </li>
             </ul>
@@ -49,7 +49,7 @@
           <ul class="suggest-list">
             <li class="suggest-item"
               :key="index" v-for="(item, index) in result"
-              @touchstart="selectItem(item)">
+              @click="selectItem(item)">
               <div class="icon">
                 <i :class="getIconClass(item)"></i>
               </div>
