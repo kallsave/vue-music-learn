@@ -27,6 +27,17 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'hash',
+  // 对于没用到100vh的better-scroll的页面
+  // 返回原来页面保持原来页面的滚动位置
+  // 对于100vh的better-scroll的页面,savePosition位置就是{x: 0, y: 0}
+  // better-scroll本身可以保持滚动位置
+  scrollBehavior(to, from, savePosition) {
+    return new Promise((resolve) => {
+      if (savePosition) {
+        resolve(savePosition)
+      }
+    })
+  },
   routes: [
     TestRouter,
     {

@@ -6,6 +6,7 @@
 
 <script>
 const COMPONENT_NAME = 'vi-href'
+
 export default {
   name: COMPONENT_NAME,
   mounted() {

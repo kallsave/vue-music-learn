@@ -1,5 +1,6 @@
 <template>
-  <div ref="app" id="app" class="app">
+  <div ref="app"
+    :class="$style['app']">
     <transition
       :name="transitionName"
       :mode="mode"
@@ -97,38 +98,38 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 @import "~@/common/stylus/var/color.styl"
 @import "~@/common/stylus/var/ease.styl"
 
 .app
-  color: #222
-  .router-view
-    &.move-right-enter
-      transform: translate3d(100%, 0, 0)
-    &.move-right-enter-active
-      transition: transform 300ms $ease-in
-    &.move-right-enter-to
-      transform: none
+  background-color: #222
+  :global
+    .router-view
+      &.move-right-enter
+        transform: translate3d(100%, 0, 0)
+      &.move-right-enter-active
+        transition: transform 300ms $ease-in
+      &.move-right-enter-to
+        transform: none
 
-    &.move-right-leave
-    &.move-right-leave-active
-      transition: transform 280ms $ease-out-in
-    &.move-right-leave-to
-      transform: translate3d(-20%, 0, 0)
+      &.move-right-leave
+      &.move-right-leave-active
+        transition: transform 280ms $ease-out-in
+      &.move-right-leave-to
+        transform: translate3d(-20%, 0, 0)
 
-    &.move-left-enter
-      transform: translate3d(-20%, 0, 0)
-    &.move-left-enter-active
-      transition: transform 300ms $ease-in
-    &.move-left-enter-to
-      transform: none
+      &.move-left-enter
+        transform: translate3d(-20%, 0, 0)
+      &.move-left-enter-active
+        transition: transform 300ms $ease-in
+      &.move-left-enter-to
+        transform: none
 
-    &.move-left-leave
-    &.move-left-leave-active
-      transform: translate3d(100%, 0, 0)
-      transition: transform 280ms $ease-out-in
-    &.move-left-leave-to
-      transform: translate3d(100%, 0, 0)
-
+      &.move-left-leave
+      &.move-left-leave-active
+        transform: translate3d(100%, 0, 0)
+        transition: transform 280ms $ease-out-in
+      &.move-left-leave-to
+        transform: translate3d(100%, 0, 0)
 </style>

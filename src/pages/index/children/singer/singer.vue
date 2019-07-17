@@ -1,6 +1,7 @@
 <template>
-  <div class="singer">
-    <div ref="scrollWrapper" class="index-list-scroll-wrapper">
+  <div :class="$style['singer']">
+    <div ref="scrollWrapper"
+      class="index-list-scroll-wrapper">
       <vi-index-list
         ref="scroll"
         :data="singerList"
@@ -131,15 +132,16 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .singer
   width: 100%
   height: calc(100vh - 44px)
   background: $color-background
   overflow: hidden
-  .index-list-scroll-wrapper
-    box-sizing: border-box
-    width: 100%
-    height: calc(100vh - 44px)
-    // height: 100vh
+  :global
+    .index-list-scroll-wrapper
+      box-sizing: border-box
+      width: 100%
+      height: calc(100vh - 44px)
+      // height: 100vh
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="quicklink">
+  <div :class="$style['quicklink']">
     <div style="width: 50px;height: 50px;background:red"
       @click="isShowImage = true"></div>
     <!-- <template v-if="isShowImage">
@@ -29,6 +29,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
-
+<style lang="stylus" module>
+.quicklink
+  height: 100vh
 </style>

@@ -1,13 +1,12 @@
 <template>
-  <div class="scroll-pull-down-jd">
+  <div :class="$style['scroll-pull-down-jd']">
     <div class="scroll-wrapper">
       <vi-scroll
         ref="scroll"
         :options="options"
         @pulling-down="onPullingDown">
         <div class="scroll-content">
-          <div class="item"
-            v-for="(item, index) in list" :key="index">{{item}}</div>
+          <div class="item" v-for="(item, index) in list" :key="index">{{item}}</div>
         </div>
       </vi-scroll>
     </div>
@@ -56,22 +55,23 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .scroll-pull-down-jd
   height: 100vh
   background: #f4f4f4
-  .scroll-wrapper
-    height: 100%
-    position: relative
-    .scroll-content
-      background: #ccc
-      .item
-        line-height: 50px
-        font-size: 18px
-        text-align: center
-        height: 50px
-        background: peru
-        margin-bottom: 20px
-        &:last-child
-          margin-bottom: 0
+  :global
+    .scroll-wrapper
+      height: 100%
+      position: relative
+      .scroll-content
+        background: #ccc
+        .item
+          line-height: 50px
+          font-size: 18px
+          text-align: center
+          height: 50px
+          background: peru
+          margin-bottom: 20px
+          &:last-child
+            margin-bottom: 0
 </style>

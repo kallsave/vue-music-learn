@@ -1,5 +1,5 @@
 <template>
-  <div class="no-result">
+  <div :class="$style['no-result']">
     <div class="no-result-icon"></div>
     <p class="no-result-text">{{title}}</p>
   </div>
@@ -16,13 +16,14 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "~@/common/stylus/var/font-size.styl"
-  @import "~@/common/stylus/var/color.styl"
-  @import "~@/common/stylus/mixin.styl"
+<style lang="stylus" module>
+@import "~@/common/stylus/var/font-size.styl"
+@import "~@/common/stylus/var/color.styl"
+@import "~@/common/stylus/mixin.styl"
 
-  .no-result
-    text-align: center
+.no-result
+  text-align: center
+  :global
     .no-result-icon
       width: 86px
       height: 90px

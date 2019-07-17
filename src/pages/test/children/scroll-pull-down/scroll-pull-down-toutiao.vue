@@ -1,5 +1,5 @@
 <template>
-  <div class="scroll-pull-down">
+  <div :class="$style['scroll-pull-down']">
     <div class="scroll-wrapper">
       <vi-scroll
         ref="scroll"
@@ -23,8 +23,7 @@
           </transition>
         </template>
         <div class="scroll-content">
-          <div class="item"
-            v-for="(item, index) in list" :key="index">{{item}}</div>
+          <div class="item" v-for="(item, index) in list" :key="index">{{item}}</div>
         </div>
       </vi-scroll>
     </div>
@@ -32,7 +31,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -69,50 +67,51 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .scroll-pull-down
   height: 100vh
   background: #f4f4f4
-  .scroll-wrapper
-    height: 100%
-    position: relative
-    color: red
-    .pull-down-normal
-      font-size: 30px
-      line-height: 40px
-      height: 40px
-      span
-        display: inline-block
-        line-height: 1
-        transition: all 0.3s
-        color: #666
-        padding: 5px 0
-        &.rotate
-          transform: rotate(180deg)
-    .pull-down-lock
-      padding: 8px 0
-    .pull-down-finish
-      height: 40px
-      margin: 0 auto
-      line-height: 40px
-      padding: 8px 0
-      color: #498ec2
-      background-color: #d6eaf8
-      &.finish-enter
-        width: 70%
-      &.finish-enter-active
-        transition: all .5s
-      &.finish-enter-to
-        width: 100%
-    .scroll-content
-      background: #ccc
-      .item
-        line-height: 50px
-        font-size: 18px
-        text-align: center
-        height: 50px
-        background: peru
-        margin-bottom: 20px
-        &:last-child
-          margin-bottom: 0
+  :global
+    .scroll-wrapper
+      height: 100%
+      position: relative
+      color: red
+      .pull-down-normal
+        font-size: 30px
+        line-height: 40px
+        height: 40px
+        span
+          display: inline-block
+          line-height: 1
+          transition: all 0.3s
+          color: #666
+          padding: 5px 0
+          &.rotate
+            transform: rotate(180deg)
+      .pull-down-lock
+        padding: 8px 0
+      .pull-down-finish
+        height: 40px
+        margin: 0 auto
+        line-height: 40px
+        padding: 8px 0
+        color: #498ec2
+        background-color: #d6eaf8
+        &.finish-enter
+          width: 70%
+        &.finish-enter-active
+          transition: all .5s
+        &.finish-enter-to
+          width: 100%
+      .scroll-content
+        background: #ccc
+        .item
+          line-height: 50px
+          font-size: 18px
+          text-align: center
+          height: 50px
+          background: peru
+          margin-bottom: 20px
+          &:last-child
+            margin-bottom: 0
 </style>

@@ -7,17 +7,20 @@
       :options="options"
       @scroll="scrollHandler">
       <ul class="vi-index-list-ul">
-        <li ref="listGroup" class="vi-index-list-group"
-          v-for="(group, index) in data" :key="index">
+        <li ref="listGroup"
+          class="vi-index-list-group"
+          v-for="(group, index) in data"
+          :key="index">
           <h2 ref="listTitle" class="vi-index-list-group-title">{{group.title}}</h2>
-          <uL>
+          <ul>
             <li class="vi-index-list-group-item"
-              v-for="(item, index) in group.items" :key="index"
-              @click="selectItem($event, item)" >
+              v-for="(item, index) in group.items"
+              :key="index"
+              @click="selectItem($event, item)">
               <img class="avatar" v-lazy="item.avatar">
               <span class="name">{{item.name}}</span>
             </li>
-          </uL>
+          </ul>
         </li>
       </ul>
     </vi-scroll>
@@ -25,16 +28,18 @@
       @touchstart="onShortcutTouchStart"
       @touchmove="onShortcutTouchMove">
       <ul>
-        <li ref="anchor" class="vi-index-list-nav-item"
-          :class="{'current':currentIndex === index}"
-          v-for="(item, index) in shortcutList" :key="index"
-          :data-index="index">{{item}}
-        </li>
+        <li ref="anchor"
+          class="vi-index-list-nav-item"
+          :class="{'current': currentIndex === index}"
+          v-for="(item, index) in shortcutList"
+          :key="index"
+          :data-index="index">{{item}}</li>
       </ul>
     </div>
 
-    <div ref="fixed" v-show="fixedTitle"
-      class="vi-index-list-fixed-title">{{fixedTitle}}</div>
+    <div ref="fixed"
+      class="vi-index-list-fixed-title"
+      v-show="fixedTitle">{{fixedTitle}}</div>
   </div>
 </template>
 

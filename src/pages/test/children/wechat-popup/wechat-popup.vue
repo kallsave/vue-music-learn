@@ -1,8 +1,10 @@
 <template>
-  <div ref="wechatPopup" class="wechat-popup">
+  <div ref="wechatPopup" :class="$style['wechat-popup']">
     <div style="width: 50px;height: 50px;background:red"
       @click="show($event)"></div>
-    <vi-popup ref="popup"
+    <vi-popup
+      ref="popup"
+      class="wechat-popup-popup"
       transitionName="dialog-fade"
       :transitionDuration="transitionDuration"
       @mask-click="maskClick">
@@ -59,68 +61,70 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .wechat-popup
   width: 100%
   height: 300vh
   background: #fff
-  .popup-content
-    position: relative
-    .image
-      width: 250px
-    .close
-      position: absolute
-      z-index: 2
-      width: 80px
-      height: 80px
-      background: #000
-      border-radius: 50%
-      // transform后写的动画先执行
-      transform: translate(105px, 10px) scale(0.5)
-      transform-origin: 0 0
-      &:before
-        content: ''
+  :global
+    .popup-content
+      position: relative
+      .image
+        width: 250px
+      .close
         position: absolute
-        width: 6px
-        height: 45px
-        top: 50%
-        left: 50%
-        border-radius: 6px
-        background-color: #fff
-        transform: translate(-50%, -50%) rotate(135deg)
-      &:after
-        content: ''
-        position: absolute
-        width: 6px
-        height: 45px
-        top: 50%
-        left: 50%
-        border-radius: 6px
-        background-color: #fff
-        transform: translate(-50%, -50%) rotate(-135deg)
+        z-index: 2
+        width: 80px
+        height: 80px
+        background: #000
+        border-radius: 50%
+        // transform后写的动画先执行
+        transform: translate(105px, 10px) scale(0.5)
+        transform-origin: 0 0
+        &:before
+          content: ''
+          position: absolute
+          width: 6px
+          height: 45px
+          top: 50%
+          left: 50%
+          border-radius: 6px
+          background-color: #fff
+          transform: translate(-50%, -50%) rotate(135deg)
+        &:after
+          content: ''
+          position: absolute
+          width: 6px
+          height: 45px
+          top: 50%
+          left: 50%
+          border-radius: 6px
+          background-color: #fff
+          transform: translate(-50%, -50%) rotate(-135deg)
 
-.dialog-fade-enter-active
-  animation-name: popup-in
-  animation-duration: .5s
-  animation-timing-function: $ease-out-in
-  animation-direction: normal
-  animation-fill-mode: forwards
+    .wechat-popup-popup
+      &.dialog-fade-enter-active
+        animation-name: wechat-popup-in
+        animation-duration: .5s
+        animation-timing-function: $ease-out-in
+        animation-direction: normal
+        animation-fill-mode: forwards
 
-.dialog-fade-leave-active
-  .popup-content
-    animation-name: dialog-out
-    animation-duration: .5s
-    animation-timing-function: $ease-out-in
-    animation-direction: normal
-    animation-fill-mode: forwards
-  .vi-popup-mask-gray
-    animation-name: popup-in
-    animation-duration: .5s
-    animation-timing-function: $ease-out-in
-    animation-direction: reverse
-    animation-fill-mode: forwards
+      &.dialog-fade-leave-active
+        .popup-content
+          animation-name: wechat-dialog-out
+          animation-duration: .5s
+          animation-timing-function: $ease-out-in
+          animation-direction: normal
+          animation-fill-mode: forwards
+        .vi-popup-mask-gray
+          animation-name: wechat-popup-in
+          animation-duration: .5s
+          animation-timing-function: $ease-out-in
+          animation-direction: reverse
+          animation-fill-mode: forwards
 
-@keyframes popup-in
+@keyframes :global(wechat-popup-in)
   0%
     transform: scale(1.185)
     opacity: 0
@@ -128,7 +132,7 @@ export default {
     transform: scale(1)
     opacity: 1
 
-@keyframes dialog-out
+@keyframes :global(wechat-dialog-out)
   0%
     transform: scale(1)
     opacity: 1

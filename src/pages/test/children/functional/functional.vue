@@ -1,5 +1,5 @@
 <template>
-  <div class="functional">
+  <div :class="$style['functional']">
     <vi-view :list=list :options="options">
       <div>
         <m-header></m-header>
@@ -26,6 +26,7 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="stylus" module>
+.functional
+  height: 100vh
 </style>

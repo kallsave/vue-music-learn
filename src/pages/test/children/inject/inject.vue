@@ -28,6 +28,6 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus">
 
 </style>

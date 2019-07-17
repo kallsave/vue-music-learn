@@ -1,3 +1,4 @@
+import ListAnimation from './test/children/list-animation/list-animation.vue'
 // 测试组件路由
 const Test = () => import('./test/index.vue')
 const WechatSticky = () => import('./test/children/wechat-sticky/wechat-sticky.vue')
@@ -26,9 +27,10 @@ const Component = () => import('./test/children/component/component.vue')
 const Upload = () => import('./test/children/upload/upload.vue')
 const Arr = () => import('./test/children/arr/arr.vue')
 const Jump = () => import('./test/children/jump/jump.vue')
-const ListAnimation = () => import('./test/children/list-animation/list-animation.vue')
+// const ListAnimation = () => import('./test/children/list-animation/list-animation.vue')
 const Tree = () => import('./test/children/tree/tree.vue')
 const Abstract = () => import('./test/children/abstract/abstract.vue')
+const KeepAliveList = () => import('./test/children/keep-alive-list/keep-alive-list.vue')
 
 export default {
   path: '/test',
@@ -158,6 +160,14 @@ export default {
       component: Abstract,
       meta: {
         isUseRouterTransition: true,
+      }
+    },
+    {
+      path: '/test/keep-alive-list',
+      name: 'keepAliveList',
+      component: KeepAliveList,
+      meta: {
+        isUseRouterTransition: true
       }
     }
   ]

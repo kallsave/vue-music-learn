@@ -1,9 +1,10 @@
 <template>
-  <div class="auto-size">
+  <div :class="$style['auto-size']">
     <textarea ref="textarea"
       :style="textareaStyle"
       v-model="currentVal"
-      @input="handleInput"></textarea>
+      @input="handleInput">
+    </textarea>
   </div>
 </template>
 
@@ -46,6 +47,7 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="stylus" module>
+.auto-size
+  height: 100vh
 </style>

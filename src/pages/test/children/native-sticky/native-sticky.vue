@@ -1,5 +1,5 @@
 <template>
-  <div class="vi-native-sticky-page">
+  <div :class="$style['vi-native-sticky-page']">
     <div style="height: 300px; background: gold"></div>
     <div class="scroll-wrapper"
       style="height: calc(100vh - 300px)">
@@ -8,8 +8,7 @@
           ref="sticky"
           :scroll-y="scrollY"
           :data="stickyData">
-          <vi-native-scroll
-            @scroll="scrollHandler">
+          <vi-native-scroll @scroll="scrollHandler">
             <div class="scroll-content">
               <img @load="imgLoad" src="https://ss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/6.jpg">
               <ul>
@@ -35,7 +34,8 @@
       <template v-else>
         <vi-native-sticky
           ref="sticky"
-          :scroll-y="scrollY">
+          :scroll-y="scrollY"
+          @sticky-change="stickyChange">
           <vi-scroll
             ref="scroll"
             :options="options"
@@ -105,13 +105,13 @@ export default {
     window.addEventListener('scroll', (e) => {
       console.log('w')
     }, false)
-    window.setTimeout(() => {
-      this.first = true
-      this.$nextTick(() => {
-        this.$refs.sticky.recalculate()
-        this.$refs.scroll.refresh()
-      })
-    }, 2000)
+    // window.setTimeout(() => {
+    //   this.first = true
+    //   this.$nextTick(() => {
+    //     this.$refs.sticky.recalculate()
+    //     this.$refs.scroll.refresh()
+    //   })
+    // }, 2000)
   },
   methods: {
     scrollHandler(pos) {
@@ -128,39 +128,42 @@ export default {
         this.$refs.scroll.refresh()
         this.$refs.sticky.recalculate()
       }
+    },
+    stickyChange() {
+      // this.$nextTick(() => {
+      //   this.$refs.scroll.refresh()
+      // })
     }
   },
 }
 </script>
 
-<style lang="stylus">
-.title1
-  background: gold
-  color: #fff
-  font-size: 20px
-  text-align: center
-  line-height: 30px
-.title2
-  background: peru
-  color: #fff
-  font-size: 20px
-  text-align: center
-  line-height: 60px
-</style>
-
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .vi-native-sticky-page
   height: 100vh
   color: #fff
   overflow: hidden
-  img
-    vertical-align: top
-    width: 100%
-    transform: rotate(180deg)
-  .scroll-wrapper
-    .scroll-content
-      font-size: 14px
-      ul
-        li
-          padding: 20px 10px
+  :global
+    img
+      vertical-align: top
+      width: 100%
+      transform: rotate(180deg)
+    .scroll-wrapper
+      .scroll-content
+        font-size: 14px
+        ul
+          li
+            padding: 20px 10px
+    .title1
+      background: gold
+      color: #fff
+      font-size: 20px
+      text-align: center
+      line-height: 30px
+    .title2
+      background: peru
+      color: #fff
+      font-size: 20px
+      text-align: center
+      line-height: 60px
 </style>

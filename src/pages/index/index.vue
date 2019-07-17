@@ -1,5 +1,5 @@
 <template>
-  <div class="index">
+  <div :class="$style['index']">
     <vi-native-sticky
       :scroll-y="-scrollY"
       @sticky-change="stickyChange">
@@ -29,7 +29,8 @@
         </template>
         <template v-else-if="slideRouterMode === slideRouterModeList[1]">
           <vi-native-sticky-ele>
-            <vi-tab ref="tab"
+            <vi-tab
+              ref="tab"
               style="background: #222"
               :slider-style="sliderStyle">
               <vi-tab-item
@@ -41,8 +42,8 @@
             </vi-tab>
            </vi-native-sticky-ele>
           <vi-slide-router-view
-            class="slide-router-view"
             ref="viSlideRouterView"
+            class="slide-router-view"
             :scroll-events="['scroll']"
             :backgroundComponent="backgroundComponent"
             @index-change="changePage"
@@ -51,7 +52,8 @@
         </template>
         <template v-else-if="slideRouterMode === slideRouterModeList[2]">
           <vi-native-sticky-ele>
-            <vi-tab ref="tab"
+            <vi-tab
+              ref="tab"
               style="background: #222"
               :slider-style="sliderStyle">
               <vi-tab-item
@@ -63,8 +65,8 @@
             </vi-tab>
           </vi-native-sticky-ele>
           <vi-slide
-            class="slide-view"
             ref="viSlideRouterView"
+            class="slide-view"
             :options="slideViewOptions"
             :scroll-events="['scroll']"
             @change-page="changePage"
@@ -178,73 +180,70 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-@import "~@/common/stylus/var/color.styl"
-.index
-  .customer-color
-    color: $color-theme!important
-</style>
-<style lang="stylus">
+<style lang="stylus" module>
 .index
   height: 100vh
   position: relative
+  :global
+    .customer-color
+      color: $color-theme!important
 
-.scroll-right-enter
-  will-change: transform
-  transform:  translate3d(100%, 0px, 0px)
+    .scroll-right-enter
+      will-change: transform
+      transform:  translate3d(100%, 0px, 0px)
 
-.scroll-right-enter-active
-  position: absolute
-  top: 88px
-  width: 100%
-  height: calc(100vh - 44px)
-  z-index: 100
-  will-change: transform
-  transition: transform 0.2s
+    .scroll-right-enter-active
+      position: absolute
+      top: 88px
+      width: 100%
+      height: calc(100vh - 44px)
+      z-index: 100
+      will-change: transform
+      transition: transform 0.2s
 
-.scroll-right-enter-to
-  position: absolute
-  top: 88px
-  width: 100%
-  height: calc(100vh - 44px)
-  z-index: 100
-  will-change: auto
+    .scroll-right-enter-to
+      position: absolute
+      top: 88px
+      width: 100%
+      height: calc(100vh - 44px)
+      z-index: 100
+      will-change: auto
 
-.scroll-right-leave-active
-  display: none
+    .scroll-right-leave-active
+      display: none
 
-.scroll-right-leave-to
-  display: none
+    .scroll-right-leave-to
+      display: none
 
-.scroll-left-enter
-  transform:  translate3d(-100%, 0px, 0px)
+    .scroll-left-enter
+      transform:  translate3d(-100%, 0px, 0px)
 
-.scroll-left-enter-active
-  position: absolute
-  top: 88px
-  width: 100%
-  height: calc(100vh - 44px)
-  z-index: 100
-  will-change: transform
-  transition: transform 0.2s
+    .scroll-left-enter-active
+      position: absolute
+      top: 88px
+      width: 100%
+      height: calc(100vh - 44px)
+      z-index: 100
+      will-change: transform
+      transition: transform 0.2s
 
-.scroll-left-enter
-  position: absolute
-  top: 88px
-  width: 100%
-  height: calc(100vh - 44px)
-  z-index: 100
-  will-change: transform
-  transform:  translate3d(-100%, 0px, 0px)
+    .scroll-left-enter
+      position: absolute
+      top: 88px
+      width: 100%
+      height: calc(100vh - 44px)
+      z-index: 100
+      will-change: transform
+      transform:  translate3d(-100%, 0px, 0px)
 
-.scroll-left-enter-active
-  will-change: transform
-  transition: transform 0.2s
+    .scroll-left-enter-active
+      will-change: transform
+      transition: transform 0.2s
 
-.scroll-left-leave-active
-  display: none
+    .scroll-left-leave-active
+      display: none
 
-.scroll-left-leave-to
-  display: none
+    .scroll-left-leave-to
+      display: none
 
 </style>

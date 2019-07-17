@@ -96,7 +96,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" moduled>
 @import "../../common/stylus/var/color.styl"
 @import "../../common/stylus/var/font-size.styl"
 @import "./style.styl"

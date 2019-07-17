@@ -1,5 +1,5 @@
 <template>
-  <div class="scroll-horizontal">
+  <div :class="$style['scroll-horizontal']">
     <vi-scroll ref="YScroll">
       <div style="height: 100px; background: red"></div>
       <div class="scroll-wrapper">
@@ -49,21 +49,22 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .scroll-horizontal
   height: 100vh
-  .scroll-wrapper
-    width: 280px
-    margin: 0 auto
-    background: gold
-    .vi-scroll-content
-      display: inline-block
-      .list
-        width: (280 * 5)px
-        .item
-          display: inline-block
-          width: 280px
-          img
-            width: 100%
-            height: 100%
+  :global
+    .scroll-wrapper
+      width: 280px
+      margin: 0 auto
+      background: gold
+      .vi-scroll-content
+        display: inline-block
+        .list
+          width: (280 * 5)px
+          .item
+            display: inline-block
+            width: 280px
+            img
+              width: 100%
+              height: 100%
 </style>

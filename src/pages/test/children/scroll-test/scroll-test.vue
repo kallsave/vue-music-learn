@@ -1,5 +1,5 @@
 <template>
-  <div class="scroll-test">
+  <div :class="$style['scroll-test']">
     <div class="header">
       <div class="title">scroll</div>
     </div>
@@ -124,79 +124,80 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" module>
 .scroll-test
   height: 100%
   text-align: center
-  .header
-    color: white
-    background-color: #15191D
-    height: 56px
-    overflow: hidden
-    .title
-      padding: 20px 0
-      font-size: 16px
+  :global
+    .header
       color: white
-      display: inline-block
-  .match-list
-    height: calc(100vh - 56px)
-    background-color: #E2E5EA
-    // color一直继承给上下拉组件的laoding和no-more
-    color: peru
-    .match-inner
-      background-color: #FFFFFF
-      .match-item
-        border-bottom: 1px solid #E4E4E4
-        padding: 10px 0
-        display: flex
-        justify-content: space-around
-        .left-team,.right-team
-          text-align: center
-          width: 80px
-          img
-            display: inline-block
-            height: 38px
-            margin-bottom: 7px
-          .name
-            font-size: 14px
-        .center
-          font-size: 12px
-          width: 80px
-          .guest
-            height: 16px
-            background-color: #3D8F29
-            color: white
-            line-height: 16px
-            padding: 3px 10px
-            border-radius: 25px
-            margin-bottom: 7px
-          .order
-            border:1px #007100 solid
-            color: #49873D
-            border-radius: 25px
-            line-height: 16px
-            padding: 3px 20px
-            margin-bottom: 7px
-          .end
-            background-color: #E86F5D
-          .score
-            font-size: 14px
-            font-weight: 500
-            margin-bottom: 7px
-            position: relative
-            .order
+      background-color: #15191D
+      height: 56px
+      overflow: hidden
+      .title
+        padding: 20px 0
+        font-size: 16px
+        color: white
+        display: inline-block
+    .match-list
+      height: calc(100vh - 56px)
+      background-color: #E2E5EA
+      // color一直继承给上下拉组件的laoding和no-more
+      color: peru
+      .match-inner
+        background-color: #FFFFFF
+        .match-item
+          border-bottom: 1px solid #E4E4E4
+          padding: 10px 0
+          display: flex
+          justify-content: space-around
+          .left-team,.right-team
+            text-align: center
+            width: 80px
+            img
               display: inline-block
+              height: 38px
+              margin-bottom: 7px
+            .name
+              font-size: 14px
+          .center
+            font-size: 12px
+            width: 80px
+            .guest
+              height: 16px
+              background-color: #3D8F29
+              color: white
+              line-height: 16px
+              padding: 3px 10px
               border-radius: 25px
-              border:1px #2F6220 solid
+              margin-bottom: 7px
+            .order
+              border:1px #007100 solid
+              color: #49873D
+              border-radius: 25px
+              line-height: 16px
               padding: 3px 20px
-              font-size: 100%
-              position: absolute
-              right: -100px
-              transform: translateY(-50%)
-          .last
-            font-size: 22px
-            margin-top: 5px
-            color: #878F98
-          .time
-            color: #92929A
+              margin-bottom: 7px
+            .end
+              background-color: #E86F5D
+            .score
+              font-size: 14px
+              font-weight: 500
+              margin-bottom: 7px
+              position: relative
+              .order
+                display: inline-block
+                border-radius: 25px
+                border:1px #2F6220 solid
+                padding: 3px 20px
+                font-size: 100%
+                position: absolute
+                right: -100px
+                transform: translateY(-50%)
+            .last
+              font-size: 22px
+              margin-top: 5px
+              color: #878F98
+            .time
+              color: #92929A
 </style>

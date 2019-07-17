@@ -1,5 +1,5 @@
 <template>
-  <div class="no-keep-alive-detail"></div>
+  <div :class="$style['no-keep-alive-detail']"></div>
 </template>
 
 <script>
@@ -8,6 +8,7 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="stylus" module>
+.no-keep-alive-detail
+  height: 100vh
 </style>

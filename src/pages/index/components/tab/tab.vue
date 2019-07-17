@@ -1,5 +1,5 @@
 <template>
-  <div class="tab">
+  <div :class="$style['tab']">
     <div class="tab-item"
       v-for="(item, index) in tabList"
       :key="index"
@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped >
+<style lang="stylus" module>
 @import "~@/common/stylus/var/font-size.styl"
 @import "~@/common/stylus/var/color.styl"
 
@@ -65,15 +65,16 @@ export default {
   line-height: 44px
   font-size: $font-size-medium
   background: $color-background
-  .tab-item
-    flex: 1
-    text-align: center
-    .tab-link
-      padding: 0px 5px 5px 5px
-      color: $color-text-l
-      // background: gold
-    &.active
+  :global
+    .tab-item
+      flex: 1
+      text-align: center
       .tab-link
-        color: $color-theme
-        border-bottom: 2px solid $color-theme
+        padding: 0px 5px 5px 5px
+        color: $color-text-l
+        // background: gold
+      &.active
+        .tab-link
+          color: $color-theme
+          border-bottom: 2px solid $color-theme
 </style>

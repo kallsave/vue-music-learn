@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky-view-container">
+  <div :class="$style['sticky-view-container']">
     <div class="scroll-wrapper">
       <vi-sticky
         ref="sticky"
@@ -96,31 +96,30 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
-.needsclick
-  touch-action: none;
+<style lang="stylus" module>
 .sticky-view-container
   height: 100vh
-  .scroll-wrapper
-    height: 100%
-    overflow: hidden
-    .title1
-      background: gold
-      color: #fff
-      font-size: 20px
-      text-align: center
-      line-height: 30px
-    .title2
-      background: peru
-      color: #fff
-      font-size: 20px
-      text-align: center
-      line-height: 60px
-    img
-      vertical-align: top
-      width: 100%
-      transform: rotate(180deg)
-    ul
-      li
-        padding: 20px 10px
+  :global
+    .scroll-wrapper
+      height: 100%
+      overflow: hidden
+      .title1
+        background: gold
+        color: #fff
+        font-size: 20px
+        text-align: center
+        line-height: 30px
+      .title2
+        background: peru
+        color: #fff
+        font-size: 20px
+        text-align: center
+        line-height: 60px
+      img
+        vertical-align: top
+        width: 100%
+        transform: rotate(180deg)
+      ul
+        li
+          padding: 20px 10px
 </style>

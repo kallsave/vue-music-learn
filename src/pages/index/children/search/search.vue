@@ -1,72 +1,75 @@
 <template>
   <div ref="search"
-    class="search">
+    :class="$style['search']">
     <div ref="scrollWrapper"
       class="search-scroll-wrapper">
       <vi-native-sticky ref="sticky">
-      <vi-scroll
-        ref="scroll"
-        :data="result"
-        :scroll-events="['scroll']"
-        :options="scrollOptions"
-        @scroll="scrollHandler"
-        @pulling-up="pullingUpHandler"
-        style="color: rgba(255, 255, 255, 0.5);">
-        <vi-native-sticky-ele>
-          <div class="search-box-wrapper">
-            <base-search-box ref="searchBox"
-              v-model="query"
-              placeholder="搜索歌曲、歌手"
-              @clear="clearHandler"
-              @focus="focusHandler"></base-search-box>
+        <vi-scroll
+          ref="scroll"
+          style="color: rgba(255, 255, 255, 0.5);"
+          :data="result"
+          :scroll-events="['scroll']"
+          :options="scrollOptions"
+          @scroll="scrollHandler"
+          @pulling-up="pullingUpHandler">
+          <vi-native-sticky-ele>
+            <div class="search-box-wrapper">
+              <base-search-box ref="searchBox"
+                v-model="query"
+                placeholder="搜索歌曲、歌手"
+                @clear="clearHandler"
+                @focus="focusHandler"></base-search-box>
+            </div>
+          </vi-native-sticky-ele>
+          <div class="shortcut-wrapper"
+            v-show="!query">
+            <div class="hot-key">
+              <h1 class="hot-key-title">热门搜索</h1>
+              <ul class="hot-key-list">
+                <li class="item"
+                   v-for="(item, index) in hotKey"
+                  :key="index"
+                  @click="hotSearch(item)">
+                  <span class="text">{{item.k}}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="search-history"
+              v-show="searchHistory.length">
+              <h1 class="search-history-title">
+                <span class="search-history-text">搜索历史</span>
+                <span class="clear-search-history" @touchstart="tryClearSearchHistory">
+                  <i class="icon-clear"></i>
+                </span>
+              </h1>
+              <search-list
+                :searches="searchHistory"
+                @delete="deleteSearchHistory"
+                @select="addQuery">
+              </search-list>
+            </div>
           </div>
-        </vi-native-sticky-ele>
-        <div class="shortcut-wrapper"
-          v-show="!query">
-          <div class="hot-key">
-            <h1 class="hot-key-title">热门搜索</h1>
-            <ul class="hot-key-list">
-              <li class="item"
-                :key="index" v-for="(item, index) in hotKey"
-                @click="hotSearch(item)">
-                <span class="text">{{item.k}}</span>
+          <div class="result-scroll-wrapper"
+            v-show="query">
+            <ul class="suggest-list">
+              <li class="suggest-item"
+                v-for="(item, index) in result"
+                :key="index"
+                @click="selectItem(item)">
+                <div class="icon">
+                  <i :class="getIconClass(item)"></i>
+                </div>
+                <div class="name">
+                  <p class="text" v-html="getDisplayName(item)"></p>
+                </div>
               </li>
             </ul>
           </div>
-          <div class="search-history"
-            v-show="searchHistory.length">
-            <h1 class="search-history-title">
-              <span class="search-history-text">搜索历史</span>
-              <span class="clear-search-history"
-                @touchstart="tryClearSearchHistory" >
-                <i class="icon-clear"></i>
-              </span>
-            </h1>
-            <search-list :searches="searchHistory"
-              @delete="deleteSearchHistory"
-              @select="addQuery"></search-list>
+          <div class="no-result-wrapper"
+            v-show="query && !result.length && isFetchSearch">
+            <no-result :title="'抱歉，暂无搜索结果'"></no-result>
           </div>
-        </div>
-        <div class="result-scroll-wrapper"
-          v-show="query">
-          <ul class="suggest-list">
-            <li class="suggest-item"
-              :key="index" v-for="(item, index) in result"
-              @click="selectItem(item)">
-              <div class="icon">
-                <i :class="getIconClass(item)"></i>
-              </div>
-              <div class="name">
-                <p class="text" v-html="getDisplayName(item)"></p>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="no-result-wrapper"
-          v-show="query && !result.length && isFetchSearch">
-          <no-result :title="'抱歉，暂无搜索结果'"></no-result>
-        </div>
-      </vi-scroll>
+        </vi-scroll>
       </vi-native-sticky>
     </div>
   </div>
@@ -234,7 +237,6 @@ export default {
       list.forEach((musicData) => {
         if (musicData.songid && musicData.albummid && musicData.songmid) {
           musicData.strMediaMid = musicData.songmid
-          // 类化数据
           ret.push(createSong(musicData))
         }
       })
@@ -316,23 +318,10 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 @import "~@/common/stylus/var/color.styl"
 @import "~@/common/stylus/var/font-size.styl"
 @import "~@/common/stylus/mixin.styl"
-
-.search-box-wrapper
-  box-sizing: border-box
-  padding: 20px
-  background: $color-background
-
-.hot-key-title
-  height: 40px
-  line-height: 40px
-  font-size: $font-size-medium
-  color: $color-text-l
-  padding: 0 0 0 20px
-  background: $color-background
 
 .search
   width: 100%
@@ -341,79 +330,92 @@ export default {
   // overflow: hidden
   background: $color-background
   // position: relative
-  .search-scroll-wrapper
-    box-sizing: border-box
-    width: 100%
-    height: calc(100vh - 44px)
-    // height: 100vh
-    font-size: $font-size-medium
-    .shortcut-wrapper
-      position: relative
+  :global
+    .search-box-wrapper
       box-sizing: border-box
-      z-index: 0
-      .hot-key
-        .hot-key-title
-          height: 40px
-          line-height: 40px
-          font-size: $font-size-medium
-          color: $color-text-l
-          padding: 0 0 0 20px
-          background: $color-background
-        .hot-key-list
-          padding: 0 0 0 20px
-          clear()
-          .item
-            float: left
-            padding: 5px 10px
-            margin: 0 10px 10px 0
-            border-radius: 6px
-            background: $color-highlight-background
-            .text
-              font-size: $font-size-medium
-              color: $color-text-d
-              line-height: 16px
-      .search-history
+      padding: 20px
+      background: $color-background
+
+    .hot-key-title
+      height: 40px
+      line-height: 40px
+      font-size: $font-size-medium
+      color: $color-text-l
+      padding: 0 0 0 20px
+      background: $color-background
+    .search-scroll-wrapper
+      box-sizing: border-box
+      width: 100%
+      height: calc(100vh - 44px)
+      // height: 100vh
+      font-size: $font-size-medium
+      .shortcut-wrapper
         position: relative
-        margin: 0 20px
-        .search-history-title
-          display: flex
-          align-items: center
-          height: 40px
-          line-height: 40px
-          font-size: $font-size-medium
-          color: $color-text-l
-          .search-history-text
-            flex: 1
-          .clear-search-history
-            .icon-clear
-              font-size: $font-size-medium
-              color: $color-text-d
-    .result-scroll-wrapper
-      position: relative
-      .suggest-list
         box-sizing: border-box
-        padding: 5px 30px
-        z-index: -1
-        .suggest-item
-          display: flex
-          align-items: center
-        .icon
-          flex: 0 0 30px
-          width: 30px
-          [class^="icon-"]
-            font-size: 14px
+        z-index: 0
+        .hot-key
+          .hot-key-title
+            height: 40px
+            line-height: 40px
+            font-size: $font-size-medium
+            color: $color-text-l
+            padding: 0 0 0 20px
+            background: $color-background
+          .hot-key-list
+            padding: 0 0 0 20px
+            clear()
+            .item
+              float: left
+              padding: 5px 10px
+              margin: 0 10px 10px 0
+              border-radius: 6px
+              background: $color-highlight-background
+              .text
+                font-size: $font-size-medium
+                color: $color-text-d
+                line-height: 16px
+        .search-history
+          position: relative
+          margin: 0 20px
+          .search-history-title
+            display: flex
+            align-items: center
+            height: 40px
+            line-height: 40px
+            font-size: $font-size-medium
+            color: $color-text-l
+            .search-history-text
+              flex: 1
+            .clear-search-history
+              .icon-clear
+                font-size: $font-size-medium
+                color: $color-text-d
+      .result-scroll-wrapper
+        position: relative
+        .suggest-list
+          box-sizing: border-box
+          padding: 5px 30px
+          z-index: -1
+          .suggest-item
+            display: flex
+            align-items: center
+          .icon
+            flex: 0 0 30px
+            width: 30px
+            [class^="icon-"]
+              font-size: 14px
+              color: $color-text-d
+          .name
+            flex: 1
+            font-size: $font-size-medium
             color: $color-text-d
-        .name
-          flex: 1
-          font-size: $font-size-medium
-          color: $color-text-d
-          overflow: hidden
-          line-height: 35px
-          .text
-            no-wrap()
-      .no-result-wrapper
-        position: absolute
-        width: 100%
-        top: 50%
-        transform: translateY(-50%)
+            overflow: hidden
+            line-height: 35px
+            .text
+              no-wrap()
+        .no-result-wrapper
+          position: absolute
+          width: 100%
+          top: 50%
+          transform: translateY(-50%)
 </style>

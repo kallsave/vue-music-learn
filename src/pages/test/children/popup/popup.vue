@@ -1,10 +1,11 @@
 <template>
-  <div class="popup">
-    <div style="width: 50px;height: 50px;background:red"
-      @click="show"></div>
-      <transition name="dialog-fade"
+  <div :class="$style['popup']">
+    <div style="width: 50px;height: 50px;background:red" @click="show"></div>
+      <transition
+        name="dialog-fade"
         :duration="transitionDuration">
-        <vi-popup ref="popup"
+        <vi-popup
+          ref="popup"
           v-show="isVisible"
           @mask-click="maskClick">
           <!-- <template slot="mask">
@@ -45,92 +46,94 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 @import "~@/common/stylus/var/ease.styl"
 
 .popup
   width: 100%
   height: 200vh
   background: #fff
-  .custom-mask
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    background-image: url('./images/bg.jpg')
-    background-size: cover
-  .popup-content
-    position: relative
-    .image
-      width: 250px
-    .close
+  :global
+    .custom-mask
       position: absolute
-      z-index: 2
-      width: 80px
-      height: 80px
-      background: #000
-      border-radius: 50%
-      // transform后写的动画先执行
-      transform: translate(105px, 10px) scale(0.5)
-      transform-origin: 0 0
-      &:before
-        content: ''
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      background-image: url('./images/bg.jpg')
+      background-size: cover
+    .popup-content
+      position: relative
+      .image
+        width: 250px
+      .close
         position: absolute
-        width: 6px
-        height: 45px
-        top: 50%
-        left: 50%
-        border-radius: 6px
-        background-color: #fff
-        transform: translate(-50%, -50%) rotate(135deg)
-      &:after
-        content: ''
+        z-index: 2
+        width: 80px
+        height: 80px
+        background: #000
+        border-radius: 50%
+        // transform后写的动画先执行
+        transform: translate(105px, 10px) scale(0.5)
+        transform-origin: 0 0
+        &:before
+          content: ''
+          position: absolute
+          width: 6px
+          height: 45px
+          top: 50%
+          left: 50%
+          border-radius: 6px
+          background-color: #fff
+          transform: translate(-50%, -50%) rotate(135deg)
+        &:after
+          content: ''
+          position: absolute
+          width: 6px
+          height: 45px
+          top: 50%
+          left: 50%
+          border-radius: 6px
+          background-color: #fff
+          transform: translate(-50%, -50%) rotate(-135deg)
+      .more
         position: absolute
-        width: 6px
-        height: 45px
-        top: 50%
-        left: 50%
-        border-radius: 6px
-        background-color: #fff
-        transform: translate(-50%, -50%) rotate(-135deg)
-    .more
-      position: absolute
-      width: 105px
-      height: 41px
-      bottom: 21px
-      right: 14px
-      background: peru
+        width: 105px
+        height: 41px
+        bottom: 21px
+        right: 14px
+        background: peru
 
-.dialog-fade-enter-active
-  animation-name: popup-in
-  animation-duration: .5s
-  animation-timing-function: $ease-out-in
-  animation-direction: normal
-  animation-fill-mode: forwards
-  // .popup-content
-  //   animation-name: popup-in
-  //   animation-duration: .5s
-  //   animation-timing-function: $ease-out-in
-  //   animation-direction: normal
-  //   animation-fill-mode: forwards
-
-.dialog-fade-leave-active
-  .popup-content
-    animation-name: dialog-out
+:global
+  .dialog-fade-enter-active
+    animation-name: popup-in
     animation-duration: .5s
     animation-timing-function: $ease-out-in
     animation-direction: normal
     animation-fill-mode: forwards
-  .vi-popup-mask-gray,
-  .custom-mask
-    animation-name: popup-in
-    animation-duration: .5s
-    animation-timing-function: $ease-out-in
-    animation-direction: reverse
-    animation-fill-mode: forwards
+    // .popup-content
+    //   animation-name: popup-in
+    //   animation-duration: .5s
+    //   animation-timing-function: $ease-out-in
+    //   animation-direction: normal
+    //   animation-fill-mode: forwards
 
-@keyframes popup-in
+  .dialog-fade-leave-active
+    .popup-content
+      animation-name: dialog-out
+      animation-duration: .5s
+      animation-timing-function: $ease-out-in
+      animation-direction: normal
+      animation-fill-mode: forwards
+    .vi-popup-mask-gray,
+    .custom-mask
+      animation-name: popup-in
+      animation-duration: .5s
+      animation-timing-function: $ease-out-in
+      animation-direction: reverse
+      animation-fill-mode: forwards
+
+@keyframes :global(popup-in)
   0%
     transform: scale(1.185)
     opacity: 0
@@ -138,7 +141,7 @@ export default {
     transform: scale(1)
     opacity: 1
 
-@keyframes dialog-out
+@keyframes :global(dialog-out)
   0%
     transform: scale(1)
     opacity: 1

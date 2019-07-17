@@ -1,5 +1,5 @@
 <template>
-  <div class="jump">
+  <div :class="$style['jump']">
     <div class="box" ref="box1" @click="jumpTo(600)">1</div>
     <div style="height: 500px"></div>
     <div class="box" ref="box2" @click="jumpToElement('box3')">2</div>
@@ -13,6 +13,7 @@
 
 <script>
 import jump from 'jump.js'
+
 export default {
   methods: {
     jumpTo(y) {
@@ -25,14 +26,15 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .jump
-  .box
-    width: 100px
-    height: 100px
-    background: peru
-    text-align: center
-    font-size: 20px
-    line-height: 100px
-    color: #fff
+  :global
+    .box
+      width: 100px
+      height: 100px
+      background: peru
+      text-align: center
+      font-size: 20px
+      line-height: 100px
+      color: #fff
 </style>

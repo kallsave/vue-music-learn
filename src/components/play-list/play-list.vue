@@ -1,6 +1,6 @@
 <template>
   <vi-popup
-    class="play-list-popup"
+    :class="$style['play-list-popup']"
     v-model="isVisible"
     transitionName="list-fade"
     :transitionDuration="transitionDuration"
@@ -150,112 +150,112 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 @import "~@/common/stylus/var/color.styl"
 @import "~@/common/stylus/var/font-size.styl"
 @import "~@/common/stylus/mixin.styl"
 
 .play-list-popup
-  &.list-fade-enter
+  &:global.list-fade-enter
     opacity: 0
     .list-wrapper
       transform: translate3d(0, 100%, 0)
-  &.list-fade-enter-active
+  &:global.list-fade-enter-active
     transition: all 300ms
     .list-wrapper
       transition: all 300ms
-  &.list-fade-enter-to
+  &:global.list-fade-enter-to
     opacity: 1
     .list-wrapper
       transform: translate3d(0, 0, 0)
-  &.list-fade-leave
+  &:global.list-fade-leave
     opacity: 1
     .list-wrapper
       transform: translate3d(0, 0, 0)
-  &.list-fade-leave-active
+  &:global.list-fade-leave-active
     transition: all 300ms
     .list-wrapper
       transition: all 300ms
-  &.list-fade-leave-to
+  &:global.list-fade-leave-to
     opacity: 0
     .list-wrapper
       transform: translate3d(0, 100%, 0)
-
-  .list-wrapper
-    position: absolute
-    left: 0
-    bottom: 0
-    width: 100%
-    background-color: $color-highlight-background
-    .list-header
-      position: relative
-      padding: 20px 30px 10px 20px
-      .title
-        display: flex
-        align-items: center
-        .icon
-          margin-right: 10px
-          font-size: 20px
-          color: $color-theme-d
-        .text
-          flex: 1
-          font-size: $font-size-medium
-          color: $color-text-l
-        .clear
-          extend-click()
-          .icon-clear
+  :global
+    .list-wrapper
+      position: absolute
+      left: 0
+      bottom: 0
+      width: 100%
+      background-color: $color-highlight-background
+      .list-header
+        position: relative
+        padding: 20px 30px 10px 20px
+        .title
+          display: flex
+          align-items: center
+          .icon
+            margin-right: 10px
+            font-size: 20px
+            color: $color-theme-d
+          .text
+            flex: 1
+            font-size: $font-size-medium
+            color: $color-text-l
+          .clear
+            extend-click()
+            .icon-clear
+              font-size: $font-size-medium
+              color: $color-text-d
+      .list-content
+        max-height: 240px
+        overflow: hidden
+        .item
+          display: flex
+          align-items: center
+          height: 40px
+          padding: 0 30px 0 20px
+          overflow: hidden
+          .icon
+            flex: 0 0 20px
+            width: 20px
+            font-size: $font-size-small
+            color: $color-theme-d
+          .text
+            no-wrap()
+            flex: 1
+            line-height: 40px
             font-size: $font-size-medium
             color: $color-text-d
-    .list-content
-      max-height: 240px
-      overflow: hidden
-      .item
-        display: flex
-        align-items: center
-        height: 40px
-        padding: 0 30px 0 20px
-        overflow: hidden
-        .icon
-          flex: 0 0 20px
-          width: 20px
-          font-size: $font-size-small
-          color: $color-theme-d
-        .text
-          no-wrap()
-          flex: 1
-          line-height: 40px
-          font-size: $font-size-medium
-          color: $color-text-d
-        .like
-          extend-click()
-          margin-right: 15px
-          font-size: $font-size-small
-          color: $color-theme
-          .icon-favorite
-            color: $color-sub-theme
-        .delete
-          extend-click()
-          font-size: $font-size-small
-          color: $color-theme
-    .list-operate
-      width: 140px
-      margin: 20px auto 30px auto
-      .add
-        display: flex
-        align-items: center
-        padding: 8px 16px
-        border: 1px solid $color-text-l
-        border-radius: 100px
+          .like
+            extend-click()
+            margin-right: 15px
+            font-size: $font-size-small
+            color: $color-theme
+            .icon-favorite
+              color: $color-sub-theme
+          .delete
+            extend-click()
+            font-size: $font-size-small
+            color: $color-theme
+      .list-operate
+        width: 140px
+        margin: 20px auto 30px auto
+        .add
+          display: flex
+          align-items: center
+          padding: 8px 16px
+          border: 1px solid $color-text-l
+          border-radius: 100px
+          color: $color-text-l
+          .icon-add
+            margin-right: 5px
+            font-size: $font-size-small-s
+          .text
+            font-size: $font-size-small
+      .list-close
+        text-align: center
+        line-height: 50px
+        background: $color-background
+        font-size: $font-size-medium-x
         color: $color-text-l
-        .icon-add
-          margin-right: 5px
-          font-size: $font-size-small-s
-        .text
-          font-size: $font-size-small
-    .list-close
-      text-align: center
-      line-height: 50px
-      background: $color-background
-      font-size: $font-size-medium-x
-      color: $color-text-l
 </style>

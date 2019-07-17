@@ -1,5 +1,5 @@
 <template>
-  <div class="bubble">
+  <div :class="$style['bubble']">
     <div class="scroll-wrapper">
       <vi-scroll
         ref="scroll"
@@ -8,10 +8,7 @@
         @pulling-down="pullingDownHandler">
         <div class="scroll-content">
           <ul class="list">
-            <li class="item"
-              v-for="(item, index) in list" :key="index">
-              {{item}}
-            </li>
+            <li class="item" v-for="(item, index) in list" :key="index">{{item}}</li>
           </ul>
         </div>
       </vi-scroll>
@@ -58,11 +55,12 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .bubble
   height: 100vh
   background: #f4f4f4
-  .scroll-wrapper
-    height: 100%
-    position: relative
+  :global
+    .scroll-wrapper
+      height: 100%
+      position: relative
 </style>

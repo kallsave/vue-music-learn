@@ -1,10 +1,8 @@
 <template>
-  <div class="swipe">
+  <div :class="$style['swipe']">
     <div class="scroll-wrapper">
-      <vi-scroll
-        :options="options">
-        <vi-swipe-group
-          @active-index-change="activeIndexChange">
+      <vi-scroll :options="options">
+        <vi-swipe-group @active-index-change="activeIndexChange">
           <vi-collapse-transition-group tag="ul">
             <li class="swipe-item-wrapper"
               v-for="(data, index) in swipeData" :key="data.item.name">
@@ -13,8 +11,7 @@
                 :menu-list="data.btns"
                 @menu-click="menuClick"
                 @confirm="confirm">
-                <div class="item-inner"
-                  @click="clickHandler">{{data.item.name}}</div>
+                <div class="item-inner" @click="clickHandler">{{data.item.name}}</div>
               </vi-swipe>
             </li>
           </vi-collapse-transition-group>
@@ -313,18 +310,19 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .swipe
   height: 100vh
-  .scroll-wrapper
-    height: 100%
-    .swipe-item-wrapper
-      .item-inner
-        width: 100%
-        height: 50px
-        line-height: 50px
-        color: #fff
-        content-align: center
-        background: gold
-        margin-bottom: 10px
+  :global
+    .scroll-wrapper
+      height: 100%
+      .swipe-item-wrapper
+        .item-inner
+          width: 100%
+          height: 50px
+          line-height: 50px
+          color: #fff
+          content-align: center
+          background: gold
+          margin-bottom: 10px
 </style>

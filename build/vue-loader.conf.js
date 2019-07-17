@@ -9,7 +9,7 @@ const sourceMapEnabled = isProduction
 module.exports = {
   loaders: utils.cssLoaders({
     sourceMap: sourceMapEnabled,
-    extract: isProduction
+    extract: isProduction,
   }),
   cssSourceMap: sourceMapEnabled,
   cacheBusting: config.dev.cacheBusting,
@@ -18,5 +18,12 @@ module.exports = {
     source: 'src',
     img: 'src',
     image: 'xlink:href'
+  },
+  // 增加css-module规则
+  cssModules: {
+    // vue-loader的local会自带_0
+    localIdentName: '[hash:base64:5]-[local]',
+    // 增加-转驼峰
+    // camelCase: true
   }
 }

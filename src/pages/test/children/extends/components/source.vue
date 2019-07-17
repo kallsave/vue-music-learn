@@ -1,5 +1,5 @@
 <template>
-  <div class="source">
+  <div :class="$style['source']">
     <div>source</div>
     <div class="text" v-show="isShowText">text</div>
   </div>
@@ -37,15 +37,16 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .source
   width: 100%
   height: 100vh
   color: #fff
   font-size: 16px
-  .text
-    height: 30px
-    line-height: 30px
-    text-align: center
-    background: peru
+  :global
+    .text
+      height: 30px
+      line-height: 30px
+      text-align: center
+      background: peru
 </style>

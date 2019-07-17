@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div :class="$style['header']">
     <div class="title">header</div>
     <div v-for="(item, index) in list" :key="index">{{item}}</div>
   </div>
@@ -25,12 +25,12 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .header
   width: 100%
-  .title
-    line-height: 60px
-    color: #fff
-    text-align: center
-
+  :global
+    .title
+      line-height: 60px
+      color: #fff
+      text-align: center
 </style>

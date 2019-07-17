@@ -1,5 +1,5 @@
 <template>
-  <div class="tree">
+  <div :class="$style['tree']">
     <tree-folder :list="list"></tree-folder>
   </div>
 </template>
@@ -78,6 +78,7 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="stylus" module>
+.tree
+  height: 100vh
 </style>

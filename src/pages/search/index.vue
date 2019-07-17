@@ -3,7 +3,8 @@
     class="search">
     <div ref="scrollWrapper"
       class="search-scroll-wrapper">
-      <vi-sticky ref="scroll"
+      <vi-sticky
+        ref="scroll"
         :data="result"
         :options="scrollOptions"
         :scroll-events="['scroll']"
@@ -11,7 +12,8 @@
         style="color: rgba(255, 255, 255, 0.5);">
         <vi-sticky-ele>
           <div class="search-box-wrapper">
-            <base-search-box ref="searchBox"
+            <base-search-box
+              ref="searchBox"
               v-model="query"
               placeholder="搜索歌曲、歌手"
               @clear="clearHandler"
@@ -34,21 +36,23 @@
             v-show="searchHistory.length">
             <h1 class="search-history-title">
               <span class="search-history-text">搜索历史</span>
-              <span class="clear-search-history"
-                @touchstart="clearSearchHistoryHandler" >
+              <span class="clear-search-history" @touchstart="clearSearchHistoryHandler">
                 <i class="icon-clear"></i>
               </span>
             </h1>
-            <search-list :searches="searchHistory"
+            <search-list
+              :searches="searchHistory"
               @delete="deleteSearchHistory"
-              @select="addQuery"></search-list>
+              @select="addQuery">
+            </search-list>
           </div>
         </div>
         <div class="result-scroll-wrapper"
           v-show="query">
           <ul class="suggest-list">
             <li class="suggest-item"
-              :key="index" v-for="(item, index) in result"
+               v-for="(item, index) in result"
+              :key="index"
               @click="selectItem(item)">
               <div class="icon">
                 <i :class="getIconClass(item)"></i>
@@ -290,7 +294,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" moduled>
 @import "~@/common/stylus/var/color.styl"
 @import "~@/common/stylus/var/font-size.styl"
 @import "~@/common/stylus/mixin.styl"

@@ -1,7 +1,6 @@
 <template>
-  <div class="touch">
-    <div
-      ref="swipeItem"
+  <div :class="$style['touch']">
+    <div ref="swipeItem"
       class="item1"
       @touchstart="touchstartHandler"
       @touchmove="touchmoveHandler"
@@ -23,7 +22,7 @@ export default {
   mounted() {
     this._createThrottleInstance()
     this._findScrollerStyle()
-    this.scrollerStyle[TRANSITION] = '0.2s ease-out-in'
+    this.scrollerStyle[TRANSITION] = '200ms ease-out-in'
   },
   methods: {
     _createThrottleInstance() {
@@ -63,14 +62,15 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .touch
-  div
-    border-bottom: 2px solid red
-    width: 100%
-    height: 50px
-    background: gold
-    color: #fff
-    text-align: center
-    line-height: 50px
+  :global
+    div
+      border-bottom: 2px solid red
+      width: 100%
+      height: 50px
+      background: gold
+      color: #fff
+      text-align: center
+      line-height: 50px
 </style>

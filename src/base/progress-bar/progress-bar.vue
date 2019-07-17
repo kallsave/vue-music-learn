@@ -1,8 +1,9 @@
 <template>
-  <div class="vi-progress-bar" ref="progressBar" @click="progressClick">
+  <div ref="progressBar" class="vi-progress-bar" @click="progressClick">
     <div class="vi-bar-inner">
-      <div class="vi-progress" ref="progress"></div>
-      <div ref="progressBtn" class="vi-progress-btn-wrapper"
+      <div ref="progress" class="vi-progress"></div>
+      <div ref="progressBtn"
+        class="vi-progress-btn-wrapper"
         @touchstart.prevent="progressTouchStart"
         @touchmove.prevent="progressTouchMove"
         @touchend.prevent="progressTouchEnd">

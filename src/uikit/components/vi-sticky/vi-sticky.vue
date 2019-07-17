@@ -1,3 +1,4 @@
+<!-- 组件废弃 -->
 <template>
   <div class="vi-sticky">
     <vi-scroll ref="scroll"

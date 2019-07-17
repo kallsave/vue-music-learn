@@ -48,11 +48,11 @@ export default {
     },
     slideRightClass: {
       type: String,
-      default: 'slide-right',
+      default: 'vi-slide-right',
     },
     slideLeftClass: {
       type: String,
-      default: 'slide-left',
+      default: 'vi-slide-left',
     },
     mode: {
       type: String,
@@ -142,38 +142,38 @@ export default {
 </script>
 
 <style lang="stylus">
-.slide-right-enter
+.vi-slide-right-enter
   transform:  translate3d(100%, 0px, 0px)
 
-.slide-right-enter-active
+.vi-slide-right-enter-active
   will-change: transform
   transition: transform 0.2s
 
-.slide-right-leave-active
+.vi-slide-right-leave-active
   will-change: transform
   transition: transform 0.2s
 
-.slide-right-leave-to
+.vi-slide-right-leave-to
   transform:  translate3d(-100%, 0px, 0px)
 
-.slide-left-enter
+.vi-slide-left-enter
   transform:  translate3d(-100%, 0px, 0px)
 
-.slide-left-enter-active
+.vi-slide-left-enter-active
   will-change: transform
   transition: transform 0.2s
 
-.slide-left-enter-to
+.vi-slide-left-enter-to
   transform:  translate3d(0px, 0px, 0px)
 
-.slide-left-leave
+.vi-slide-left-leave
   transform:  translate3d(0px, 0px, 0px)
 
-.slide-left-leave-active
+.vi-slide-left-leave-active
   will-change: transform
   transition: transform 0.2s
 
-.slide-left-leave-to
+.vi-slide-left-leave-to
   transform:  translate3d(100%, 0px, 0px)
 
 </style>

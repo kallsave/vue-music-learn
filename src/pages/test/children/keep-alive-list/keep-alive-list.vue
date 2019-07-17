@@ -1,8 +1,9 @@
 <template>
-  <div class="keep-alive-list">
+  <div :class="$style['keep-alive-list']">
     <div class="list">
       <div class="item"
-        v-for="(item, index) in list" :key="index">
+        v-for="(item, index) in list" :key="item.id"
+        :style="setStyle(item, index)">
           <div class="content">{{item.value}}</div>
           <div class="btn-list">
             <div class="pay">支付</div>
@@ -12,65 +13,110 @@
           </div>
         </div>
     </div>
+    <list-animation v-show="false"></list-animation>
   </div>
 </template>
 
 <script>
-import { MUTABLE_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
+import ListAnimation from '../list-animation/list-animation.vue'
+
+function getRandomInt(min, max) {
+  return (Math.random() * (max - min + 1) + min) | 0
+}
+
+function getRandomColor() {
+  return '#' + (getRandomInt(0, 0xffffff)).toString(16)
+}
+
 export default {
-  name: 'MUTABLE_KEEP_ALIVE_NAME',
+  components: {
+    ListAnimation
+  },
   data() {
     return {
       list: [
         {
+          id: 0,
           status: 0,
           value: 0
         },
         {
+          id: 1,
           status: 0,
           value: 1
         },
         {
+          id: 2,
           status: 0,
           value: 2
         },
         {
+          id: 3,
           status: 0,
           value: 3
         },
         {
+          id: 4,
           status: 0,
           value: 4
         },
         {
+          id: 5,
           status: 0,
           value: 5
         },
         {
+          id: 6,
           status: 0,
           value: 6
         },
         {
+          id: 7,
           status: 0,
           value: 7
         },
         {
+          id: 8,
           status: 0,
           value: 8
         },
       ]
     }
   },
+  mounted() {
+    console.log(this.$style)
+  },
   methods: {
     parseStatus() {
       let map = {
         0: ''
       }
-    }
+    },
+    setStyle(item, index) {
+      let background = getRandomColor()
+      item.background = background
+      return {
+        background: background,
+        animation: `${this.$style['list-load']} ${index * 200 + 400}ms`
+      }
+    },
   }
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
+.keep-alive-list
+  box-sizing: border-box
+  padding-top: 50px
+  :global
+    .item
+      margin: 0 10px 10px 10px
+      height: 150px
+      border-radius: 6px
 
+@keyframes list-load
+  0%
+    transform: translateY(100px)
+  100%
+    transform: translateY(0px)
 </style>

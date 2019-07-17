@@ -1,6 +1,8 @@
 <template>
-  <div class="recommend sticky-content" ref="recommend">
-    <div ref="scrollWrapper" class="scroll-wrapper">
+  <div ref="recommend"
+    :class="$style['recommend']">
+    <div ref="scrollWrapper"
+      class="scroll-wrapper">
       <vi-scroll
         ref="scroll"
         style="color: gold;"
@@ -10,7 +12,8 @@
         @scroll="scrollHandler"
         @pulling-down="onPullingDown">
         <div class="slide-wrapper">
-          <vi-slide ref="slide"
+          <vi-slide
+            ref="slide"
             v-show="recommends.length"
             :init-page-index="2"
             :data="recommends"
@@ -23,8 +26,9 @@
             <template slot="dots" slot-scope="props">
               <div class="slide-dots">
                 <span class="slide-dot"
-                  :class="{active: props.currentPageIndex === index }"
-                  v-for="(item, index) in recommends" :key="index"
+                  :class="{active: props.currentPageIndex === index}"
+                  v-for="(item, index) in recommends"
+                  :key="index"
                   @click.stop="props.goToPage(index)"></span>
               </div>
             </template>
@@ -33,7 +37,9 @@
                 <img :src="item.picUrl">
               </a>
             </div>
-            <!-- <vi-slide-item  v-for="(item, index) in recommends" :key="index">
+            <!-- <vi-slide-item
+              v-for="(item, index) in recommends"
+              :key="index">
               <a :href="item.linkUrl">
                 <img :src="item.picUrl">
               </a>
@@ -43,9 +49,12 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <vi-swipe-group>
-            <vi-collapse-transition-group tag="ul" class="recommend-ul">
+            <vi-collapse-transition-group
+              class="recommend-ul"
+              tag="ul">
               <li class="item"
-                v-for="(item, index) in discList" :key="item.dissname"
+                v-for="(item, index) in discList"
+                :key="item.dissname"
                 @click="selectItem($event, item)">
                 <vi-swipe
                   :index="index"
@@ -211,7 +220,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 @import "~@/common/stylus/var/color.styl"
 @import "~@/common/stylus/var/font-size.styl"
 
@@ -220,96 +229,96 @@ export default {
   height: calc(100vh - 44px)
   overflow: hidden
   background: $color-background
-  .scroll-wrapper
-    box-sizing: border-box
-    width: 100%
-    height: calc(100vh - 44px)
-    .slide-wrapper
-      overflow: hidden
-      .slide-item
-        box-sizing: border-box
-        float: left
+  :global
+    .scroll-wrapper
+      box-sizing: border-box
+      width: 100%
+      height: calc(100vh - 44px)
+      .slide-wrapper
         overflow: hidden
-        text-align: center
-        a
-          display: block
-          overflow: hidden
-          text-decoration: none
-          img
-            // 让img的空白像素去掉
-            display: block
-            // img width100%会穿透宽度自适应的div(比如float)而得到一个宽度
-            // 上层的float不设置宽度会得到img的宽度
-            // 然后width生效后得到一个height,又会把上层的float的高度生效
-            // 所以slide-wrapper的高度应该由img撑起来的
-            width: 100%
-      .slide-dots
-        position: absolute
-        right: 30px
-        bottom: 12px
-        text-align: center
-        font-size: 0
-        .slide-dot
-          display: inline-block
-          margin: 0 4px
-          width: 8px
-          height: 8px
-          border-radius: 50%
-          background: $color-text-l
-          &.active
-            border-radius: 5px
-            background: $color-theme
-    .recommend-list
-      background: $color-background
-      .list-title
-        height: 65px
-        line-height: 65px
-        text-align: center
-        font-size: $font-size-medium
-        color: $color-theme
-      .recommend-ul
-        .item
+        .slide-item
           box-sizing: border-box
-          margin: 0 0 20px 20px
-          .item-wrapper
-            display: flex
-            align-items: center
-            padding-right: 20px
+          float: left
+          overflow: hidden
+          text-align: center
+          a
+            display: block
+            overflow: hidden
+            text-decoration: none
+            img
+              // 让img的空白像素去掉
+              display: block
+              // img width100%会穿透宽度自适应的div(比如float)而得到一个宽度
+              // 上层的float不设置宽度会得到img的宽度
+              // 然后width生效后得到一个height,又会把上层的float的高度生效
+              // 所以slide-wrapper的高度应该由img撑起来的
+              width: 100%
+        .slide-dots
+          position: absolute
+          right: 30px
+          bottom: 12px
+          text-align: center
+          font-size: 0
+          .slide-dot
+            display: inline-block
+            margin: 0 4px
+            width: 8px
+            height: 8px
+            border-radius: 50%
+            background: $color-text-l
+            &.active
+              border-radius: 5px
+              background: $color-theme
+      .recommend-list
+        background: $color-background
+        .list-title
+          height: 65px
+          line-height: 65px
+          text-align: center
+          font-size: $font-size-medium
+          color: $color-theme
+        .recommend-ul
+          .item
             box-sizing: border-box
-            .icon
-              flex: 0 0 60px
-              padding-right: 20px
-            .text
-              position: relative
+            margin: 0 0 20px 20px
+            .item-wrapper
               display: flex
-              flex-direction: column
-              // 轴上元素的位置,column方向设置上下
-              justify-content: center
-              flex: 1
-              line-height: 20px
-              overflow: hidden
-              font-size: $font-size-medium
-              height: 60px
-              .name
-                margin-bottom: 10px
-                color: $color-text
-              .desc
-                color: $color-text-d
-              .load-list-con
-                position: absolute
-                bottom: 10px
-                width: 100%
-                box-sizing: border-box
-                &:before,&:after
-                  height: 15px
-                  background: $color-highlight-background
-                  content: ''
-                  display: block
-                &:before
-                  margin-top: 7px
-                  width: 30%
-                &:after
-                  margin-top: 12px
-                  width: 60%
-
+              align-items: center
+              padding-right: 20px
+              box-sizing: border-box
+              .icon
+                flex: 0 0 60px
+                padding-right: 20px
+              .text
+                position: relative
+                display: flex
+                flex-direction: column
+                // 轴上元素的位置,column方向设置上下
+                justify-content: center
+                flex: 1
+                line-height: 20px
+                overflow: hidden
+                font-size: $font-size-medium
+                height: 60px
+                .name
+                  margin-bottom: 10px
+                  color: $color-text
+                .desc
+                  color: $color-text-d
+                .load-list-con
+                  position: absolute
+                  bottom: 10px
+                  width: 100%
+                  box-sizing: border-box
+                  &:before,&:after
+                    height: 15px
+                    background: $color-highlight-background
+                    content: ''
+                    display: block
+                  &:before
+                    margin-top: 7px
+                    width: 30%
+                  &:after
+                    margin-top: 12px
+                    width: 60%
 </style>

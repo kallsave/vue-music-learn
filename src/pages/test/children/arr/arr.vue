@@ -1,5 +1,5 @@
 <template>
-  <div class="arr">
+  <div :class="$style['arr']">
     <div class="item"
       v-for="(item, index) in list" :key="index">{{item.count}}</div>
   </div>
@@ -54,11 +54,12 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" moduled>
 .arr
   height: 100vh
   background: #fff
-  .item
-    font-size: 16px
-    line-height: 16px
+  :global
+    .item
+      font-size: 16px
+      line-height: 16px
 </style>

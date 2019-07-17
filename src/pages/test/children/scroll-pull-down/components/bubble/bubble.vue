@@ -48,7 +48,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" moduled>
 img
   width: 26px
   height: 26px

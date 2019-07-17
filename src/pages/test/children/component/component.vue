@@ -1,11 +1,10 @@
 <template>
-  <div class="component">
+  <div :class="$style['component']">
     <div class="title">666</div>
     <keep-alive :include="['a-component', 'b-component']">
       <component :is="currentComponent" :a="'a'" :b="'b'"></component>
     </keep-alive>
-    <div class="toggle"
-      @click="toggle"></div>
+    <div class="toggle" @click="toggle"></div>
   </div>
 </template>
 
@@ -34,13 +33,14 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .component
   height: 100vh
-  .title
-    font-size: 16px
-  .toggle
-    width: 50px;
-    height: 50px;
-    background: #058;
+  :global
+    .title
+      font-size: 16px
+    .toggle
+      width: 50px;
+      height: 50px;
+      background: #058
 </style>

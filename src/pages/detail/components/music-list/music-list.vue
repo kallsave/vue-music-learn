@@ -1,5 +1,5 @@
 <template>
-  <div class="music">
+  <div :class="$style['music']">
     <div class="header">
       <div class="back" @touchstart="back">
         <i class="icon-back"></i>
@@ -9,7 +9,8 @@
     <div ref="bgImage" class="bg-image" :style="bgStyle">
       <div ref="filter" class="filter"></div>
     </div>
-    <div ref="stickyWrapper" class="sticky-wrapper">
+    <div ref="stickyWrapper"
+      class="sticky-wrapper">
       <vi-native-sticky
         ref="sticky"
         @sticky-change="stickyChange"
@@ -185,107 +186,108 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 @import "~@/common/stylus/var/font-size.styl"
 @import "~@/common/stylus/var/z-index.styl"
 @import "~@/common/stylus/var/color.styl"
 @import "~@/common/stylus/mixin.styl"
 
 .music
-  position: absolute
-  width: 100%
-  z-index: $z-index-page
-  top: 0
-  bottom: 0
-  // left: 0
-  // right: 0
-  background: $color-background
-  .header
+  :global
     position: absolute
     width: 100%
-    height: 40px
-    top: 0
-    left: 0
     z-index: $z-index-page
-    .back
-      position absolute
-      top: 0
-      left: 6px
-      z-index: $z-index-normal
-      .icon-back
-        display: block
-        padding: 10px
-        font-size: $font-size-large-x
-        color: $color-theme
-    .title
+    top: 0
+    bottom: 0
+    // left: 0
+    // right: 0
+    background: $color-background
+    .header
       position: absolute
-      top: 0
-      left: 10%
-      z-index: $z-index-normal
-      width: 80%
-      no-wrap()
-      text-align: center
-      line-height: 40px
-      font-size: $font-size-large
-      color: $color-text
-      opacity: 0
-  .bg-image
-    position: absolute
-    width: 100%
-    height: 0
-    // margin/padding的百分比都是父元素的宽度
-    padding-top: 70%
-    transform-origin: top
-    background-size: cover
-    z-index: 0
-    .filter
-      position: absolute
+      width: 100%
+      height: 40px
       top: 0
       left: 0
+      z-index: $z-index-page
+      .back
+        position absolute
+        top: 0
+        left: 6px
+        z-index: $z-index-normal
+        .icon-back
+          display: block
+          padding: 10px
+          font-size: $font-size-large-x
+          color: $color-theme
+      .title
+        position: absolute
+        top: 0
+        left: 10%
+        z-index: $z-index-normal
+        width: 80%
+        no-wrap()
+        text-align: center
+        line-height: 40px
+        font-size: $font-size-large
+        color: $color-text
+        opacity: 0
+    .bg-image
+      position: absolute
       width: 100%
-      height: 100%
-      background: rgba(7, 17, 27, 0.4)
-      z-index: -1
-  .sticky-wrapper
-    position: absolute
-    box-sizing: border-box
-    top: 40px
-    bottom: 0
-    width: 100%
-    .scroll-blank
-      position: relative
-      background: transparent
-    .song-list-wrapper
-      padding: 20px 30px
-      background: $color-background
+      height: 0
+      // margin/padding的百分比都是父元素的宽度
+      padding-top: 70%
+      transform-origin: top
+      background-size: cover
+      z-index: 0
+      .filter
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background: rgba(7, 17, 27, 0.4)
+        z-index: -1
+    .sticky-wrapper
+      position: absolute
+      box-sizing: border-box
+      top: 40px
+      bottom: 0
+      width: 100%
+      .scroll-blank
+        position: relative
+        background: transparent
+      .song-list-wrapper
+        padding: 20px 30px
+        background: $color-background
 
-// sticky的样式要写在外围
-.play-wrapper
-  box-sizing: border-box
-  position: absolute
-  padding-top: 20px
-  padding-bottom: 20px
-  bottom: -1px
-  width: 100%
-  // background: $color-background
-  // border-bottom: 1px solid #ccc
-  .play
-    box-sizing: border-box
-    width: 135px
-    margin: 0 auto
-    text-align: center
-    border: 1px solid $color-theme
-    color: $color-theme
-    border-radius: 100px
-    font-size: 0
-    .icon-play
-      display: inline-block
-      vertical-align: middle
-      margin-right: 6px
-      font-size: $font-size-medium-x
-    .text
-      line-height: 30px
-      display: inline-block
-      vertical-align: middle
-      font-size: $font-size-small
+    // sticky的样式要写在外围
+    .play-wrapper
+      box-sizing: border-box
+      position: absolute
+      padding-top: 20px
+      padding-bottom: 20px
+      bottom: -1px
+      width: 100%
+      // background: $color-background
+      // border-bottom: 1px solid #ccc
+      .play
+        box-sizing: border-box
+        width: 135px
+        margin: 0 auto
+        text-align: center
+        border: 1px solid $color-theme
+        color: $color-theme
+        border-radius: 100px
+        font-size: 0
+        .icon-play
+          display: inline-block
+          vertical-align: middle
+          margin-right: 6px
+          font-size: $font-size-medium-x
+        .text
+          line-height: 30px
+          display: inline-block
+          vertical-align: middle
+          font-size: $font-size-small
 </style>

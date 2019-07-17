@@ -1,14 +1,12 @@
 <template>
-  <div class="song-list">
+  <div :class="$style['song-list']">
     <ul>
       <li class="song-list-item"
-        :key="index"
         v-for="(song, index) in songList"
+         :key="index"
         @click="selectItem($event, song, index)">
-        <div class="song-list-rank"
-          v-show="rank">
-          <span :class="getRankCls(index)"
-            v-text="getRankText(index)"></span>
+        <div class="song-list-rank" v-show="rank">
+          <span :class="getRankCls(index)" v-text="getRankText(index)"></span>
         </div>
         <div class="song-list-content">
           <h2 class="song-list-name">{{song.name}}</h2>
@@ -59,47 +57,48 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 @import "~@/common/stylus/var/color.styl"
 @import "~@/common/stylus/var/font-size.styl"
 @import "~@/common/stylus/mixin.styl"
 
 .song-list
-  .song-list-item
-    display: flex
-    align-items: center
-    box-sizing: border-box
-    height: 64px
-    .song-list-rank
-      flex: 0 0 25px
-      width: 25px
-      margin-right: 30px
-      text-align: center
-      .icon
-        display: inline-block
+  :global
+    .song-list-item
+      display: flex
+      align-items: center
+      box-sizing: border-box
+      height: 64px
+      .song-list-rank
+        flex: 0 0 25px
         width: 25px
-        height: 24px
-        background-size: 25px 24px
-        &.icon0
-          bg-image('./images/first')
-        &.icon1
-          bg-image('./images/second')
-        &.icon2
-          bg-image('./images/third')
-      .text
-        color: $color-theme
-        font-size: $font-size-large
-    .song-list-content
-      flex: 1
-      line-height: 20px
-      overflow: hidden
-      .song-list-name
-        no-wrap()
-        font-size: $font-size-medium
-        color: $color-text
-      .song-list-desc
-        no-wrap()
-        margin-top: 4px
-        font-size: $font-size-medium
-        color: $color-text-d
+        margin-right: 30px
+        text-align: center
+        .icon
+          display: inline-block
+          width: 25px
+          height: 24px
+          background-size: 25px 24px
+          &.icon0
+            bg-image('./images/first')
+          &.icon1
+            bg-image('./images/second')
+          &.icon2
+            bg-image('./images/third')
+        .text
+          color: $color-theme
+          font-size: $font-size-large
+      .song-list-content
+        flex: 1
+        line-height: 20px
+        overflow: hidden
+        .song-list-name
+          no-wrap()
+          font-size: $font-size-medium
+          color: $color-text
+        .song-list-desc
+          no-wrap()
+          margin-top: 4px
+          font-size: $font-size-medium
+          color: $color-text-d
 </style>

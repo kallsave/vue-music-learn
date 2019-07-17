@@ -8,7 +8,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus">
 .vi-slide-router-view-background
   height: 100vh
 

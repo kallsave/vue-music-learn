@@ -1,10 +1,12 @@
 <template>
-  <div class="list-animation">
-    <div class="item"
-      v-for="(item, index) in list" :key="index"
-      :style="setStyle(index)"
-      @animationend="animationend"
-      @click="goRecommend"></div>
+  <div :class="$style['list-animation']">
+    <div class="list">
+       <div class="item"
+        v-for="(item, index) in list" :key="index"
+        :style="setStyle(index)"
+        @animationend="animationend"
+        @click="goRecommend"></div>
+    </div>
   </div>
 </template>
 
@@ -27,12 +29,13 @@ export default {
     this.$toast.show({
       title: '加载中...'
     })
+    console.log(this.$style)
   },
   methods: {
     setStyle(i) {
       return {
         background: getRandomColor(),
-        animation: `list-load ${i * 200 + 400}ms`
+        animation: `${this.$style['list-load']} ${i * 200 + 400}ms`
       }
     },
     animationend() {
@@ -47,15 +50,16 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .list-animation
   box-sizing: border-box
   padding-top: 50px
-  height: 100vh
-  .item
-    margin: 0 10px 10px 10px
-    height: 150px
-    border-radius: 6px
+  :global
+    .list
+      .item
+        margin: 0 10px 10px 10px
+        height: 150px
+        border-radius: 6px
 
 @keyframes list-load {
   0% {

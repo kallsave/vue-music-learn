@@ -1,7 +1,7 @@
 <template>
-  <div class="upload">
-    <vi-upload
-      ></vi-upload>
+  <div :class="$style['upload']">
+    <vi-upload>
+    </vi-upload>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .upload
   padding: 50px
   height: 100vh

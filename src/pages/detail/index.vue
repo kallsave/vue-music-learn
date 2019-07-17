@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: 'no-keep-alive'
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 @import "~@/common/stylus/transition.styl"
 </style>

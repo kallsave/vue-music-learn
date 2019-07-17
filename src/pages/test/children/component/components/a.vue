@@ -1,5 +1,5 @@
 <template>
-  <div class="a">
+  <div :class="$style['a']">
     <div>我是a组件</div>
     <div>{{a}}</div>
     <div>{{count}}</div>
@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .a
   font-size: 16px
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="abstract">
+  <div :class="$style['abstract']">
     <div>abstract</div>
     <throttle-button>
       <div @click="clickHandler">sss</div>
@@ -22,16 +22,17 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
+<style lang="stylus" module>
 .abstract
   font-size: 16px
   color: #fff
-  .text
-    width: 90%
-    margin: 0 auto
-    height: 40px
-    line-height: 40px
-    background: peru
-    margin-bottom: 30px
-    border-radius: 5px
+  :global
+    .text
+      width: 90%
+      margin: 0 auto
+      height: 40px
+      line-height: 40px
+      background: peru
+      margin-bottom: 30px
+      border-radius: 5px
 </style>

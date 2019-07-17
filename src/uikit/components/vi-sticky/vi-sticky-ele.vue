@@ -1,3 +1,4 @@
+<!-- 组件废弃 -->
 <template>
   <div class="vi-sticky-ele">
     <slot></slot>
@@ -51,7 +52,7 @@ export default {
       }
     },
     // 计算一些stickyTop的数值,异步的场景需要在sticky组件调用这个方法重新刷新stickyTop
-    calculate(key) {
+    calculate() {
       const stickyTop = this.$el.firstElementChild.getBoundingClientRect().top - this.ViSticky.fixedTop
       mulitDeepClone(this.ViSticky.stickyMap[this.eleKey], {
         stickyTop
@@ -66,6 +67,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus">
-</style>

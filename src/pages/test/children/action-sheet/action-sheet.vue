@@ -1,12 +1,10 @@
 <template>
-  <div class="action-sheet">
+  <div :class="$style['action-sheet']">
     <div class="show-action-sheet" @click="show"></div>
   </div>
 </template>
 
 <script>
-import ViActionSheet from '../../../../uikit/components/vi-action-sheet/vi-action-sheet.vue'
-
 export default {
   data() {
     return {
@@ -48,14 +46,13 @@ export default {
 }
 </script>
 
-<style lang="stylus" modules>
-.gold
-  color: gold
+<style lang="stylus" module>
 .action-sheet
   background: #fff
   height: 100vh
-  .show-action-sheet
-    width: 50px;
-    height: 30px;
-    background: gold;
+  :global
+    .show-action-sheet
+      width: 50px;
+      height: 30px;
+      background: gold
 </style>
