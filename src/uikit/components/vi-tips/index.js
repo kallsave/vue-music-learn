@@ -1,4 +1,4 @@
-import Component from './vi-toast-txt.vue'
+import Component from './vi-tips.vue'
 import create from './api.js'
 
 Component.install = function (Vue) {

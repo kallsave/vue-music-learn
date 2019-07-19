@@ -96,7 +96,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" moduled>
+<style lang="stylus">
 @import "../../common/stylus/var/color.styl"
 @import "../../common/stylus/var/font-size.styl"
 @import "./style.styl"
@@ -130,7 +130,7 @@ export default {
         animation: spinner-fade 1s linear infinite
         for num in (1..12)
           &:nth-child({num})
-            animation-delay: ((num - 1) / 12)s
+            animation-delay: (num / 12)s
             transform: rotate(30deg * (num - 6)) translateY(-150%)
     i[class^="vi-toast-icon"]
       box-sizing: border-box

@@ -181,6 +181,8 @@ export default {
 </script>
 
 <style lang="stylus" module>
+@import "~@/common/stylus/var/color.styl"
+
 .index
   height: 100vh
   position: relative

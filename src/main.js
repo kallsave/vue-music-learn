@@ -46,68 +46,48 @@ new Vue({
   store: store,
   render: h => h(App),
   beforeMount() {
+    this.createGlobal()
     // 一些由vue-create-api可以全局编程式调用的组件注册
-    this.createToastApi()
-    this.createToastTxtApi()
+    this.createGlobalToastApi()
+    this.createGlobalTipsApi()
     showVConsole()
   },
   methods: {
-    createToastApi() {
-      const DEFAULT_TOAST_PROPS = {
+    createGlobal() {
+      Vue.prototype.$global = {}
+    },
+    createGlobalToastApi() {
+      this.$global.toast = this.$createViToast({
         icon: 'loading',
         title: '加载中...',
         scale: 0.9,
         zIndex: 5000
-      }
+      })
 
-      let $toast = this.$createViToast(DEFAULT_TOAST_PROPS)
+      let originToastShow = this.$global.toast.show
 
-      Vue.prototype.$toast = $toast
-      let $toastSourceShow = $toast.show
-      let $toastSourceHide = $toast.hide
-
-      $toast.show = function (props) {
-        // vue-create-api, 更新数据用$updateProps(props)
+      this.$global.toast.show = function (props) {
         if (props) {
           this.$updateProps(props)
         }
-        $toastSourceShow()
-      }
-
-      $toast.hide = function (props) {
-        if (props) {
-          this.$updateProps(props)
-        }
-        $toastSourceHide()
+        originToastShow()
       }
     },
-    createToastTxtApi() {
-      // 配置全局toastTxt的用法
-      const DEFAULT_TOAST_TXT_PROPS = {
-        title: '...',
-        duration: 2000,
-        zIndex: 5000 + 1
-      }
+    createGlobalTipsApi() {
+      this.$global.tips = this.$createViTips({
+        title: '',
+        zIndex: 5000 + 1,
+        duration: 2000
+      })
 
-      let $toastTxt = this.$createViToastTxt(DEFAULT_TOAST_TXT_PROPS)
-      Vue.prototype.$toastTxt = $toastTxt
+      let originTipsShow = this.$global.tips.show
 
-      let $toastTxtSourceShow = $toastTxt.show
-      let $toastTxtSourceHide = $toastTxt.hide
-
-      $toastTxt.show = function (props) {
+      this.$global.tips.show = function (props) {
         if (props) {
           this.$updateProps(props)
         }
-        $toastTxtSourceShow()
+        originTipsShow()
       }
-
-      $toastTxt.hide = function (props) {
-        if (props) {
-          this.$updateProps(props)
-        }
-        $toastTxtSourceHide()
-      }
-    }
+    },
   }
 })

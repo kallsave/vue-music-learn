@@ -70,20 +70,15 @@ export default {
       this.$refs.scroll.refresh()
     },
     _getTopList() {
-      this.$createViToast({
+      this.$global.toast.show({
         icon: 'loading',
         titleColor: '#ffcd32',
         iconColor: '#ffcd32',
         scalc: 0.8,
-      }).show()
+      })
       getTopList().then((res) => {
         this.rankList = res.data.topList
-        this.$createViToast({
-          icon: 'loading',
-          titleColor: '#ffcd32',
-          iconColor: '#ffcd32',
-          scalc: 0.8,
-        }).hide()
+        this.$global.toast.hide()
       })
     },
     selectItem(e, item) {

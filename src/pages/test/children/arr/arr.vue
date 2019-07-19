@@ -54,7 +54,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" moduled>
+<style lang="stylus" module>
 .arr
   height: 100vh
   background: #fff

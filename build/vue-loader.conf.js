@@ -21,8 +21,8 @@ module.exports = {
   },
   // 增加css-module规则
   cssModules: {
-    // vue-loader的local会自带_0
-    localIdentName: '[hash:base64:5]-[local]',
+    // vue-loader的localIdentName会自带_0
+    localIdentName: '[local]-[hash:base64:5]',
     // 增加-转驼峰
     // camelCase: true
   }

@@ -6,8 +6,7 @@
       :style="style">
       <div class="vi-loading-spinner-content"
         :style="{transform: `scale(${scale})`}">
-        <i class="vi-loading-spinner"
-          v-for="(item, index) in balde" :key="index"></i>
+        <i class="vi-loading-spinner" v-for="(item, index) in balde" :key="index"></i>
       </div>
     </div>
   </vi-collapse-transition>
@@ -140,7 +139,7 @@ export default {
       animation: spinner-fade 1s linear infinite
       for num in (1..12)
         &:nth-child({num})
-          animation-delay: ((num - 1) / 12)s
+          animation-delay: (num / 12)s
           transform: rotate(30deg * (num - 6)) translateY(-150%)
 
 @keyframes spinner-fade

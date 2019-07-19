@@ -8,7 +8,7 @@ import ViSlide from './components/vi-slide/index.js'
 import ViSlideRouterTransition from './components/vi-slide-router-transition/index.js'
 import ViSticky from './components/vi-sticky/index.js'
 import ViToast from './components/vi-toast/index.js'
-import ViToastTxt from './components/vi-toast-txt/index.js'
+import ViTips from './components/vi-tips/index.js'
 import ViSlideRouterView from './components/vi-slide-router-view/index.js'
 import ViView from './components/vi-view/index.js'
 import ViInject from './components/vi-inject/index.js'
@@ -30,7 +30,7 @@ export {
   ViSlideRouterTransition,
   ViSticky,
   ViToast,
-  ViToastTxt,
+  ViTips,
   ViSlideRouterView,
   ViView,
   ViInject,

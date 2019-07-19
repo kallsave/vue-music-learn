@@ -1,8 +1,10 @@
 <template>
-  <canvas ref="bubble"
+  <canvas
+    ref="bubble"
     :width="width"
     :height="height"
-    :style="style"></canvas>
+    :style="style">
+  </canvas>
 </template>
 
 <script>
@@ -48,9 +50,8 @@ export default {
 }
 </script>
 
-<style lang="stylus" moduled>
+<style lang="stylus" module>
 img
   width: 26px
   height: 26px
-
 </style>

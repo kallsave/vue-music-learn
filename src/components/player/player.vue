@@ -589,7 +589,7 @@ export default {
     },
     error() {
       this.isSongReady = false
-      this.$toastTxt.show({
+      this.$global.tips.show({
         title: '资源出错啦',
         durtaion: 2000
       })
@@ -619,19 +619,19 @@ export default {
       let list = null
       if (mode === playModeOptions.random) {
         list = shuffle(this.sequenceList)
-        this.$toastTxt.show({
+        this.$global.tips.show({
           title: '随机播放',
           durtaion: 2000
         })
       } else if (mode === playModeOptions.loop) {
         list = this.sequenceList
-        this.$toastTxt.show({
+        this.$global.tips.show({
           title: '单曲循环',
           durtaion: 2000
         })
       } else {
         list = this.sequenceList
-        this.$toastTxt.show({
+        this.$global.tips.show({
           title: '列表循环',
           durtaion: 2000
         })

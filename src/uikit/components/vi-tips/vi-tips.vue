@@ -4,8 +4,8 @@
     :is-show-mask="isShowMask"
     :is-lock-scroll="isLockScroll"
     :z-index="zIndex">
-    <transition name="vi-toast-txt">
-      <div class="vi-toast-txt"
+    <transition name="vi-tips">
+      <div class="vi-tips"
         v-show="isVisible"
         :style="titleStyle">
         {{title}}
@@ -17,7 +17,8 @@
 <script>
 import durationMixin from '../../common/mixins/duration.js'
 
-const COMPONENT_NAME = 'vi-toast-txt'
+const COMPONENT_NAME = 'vi-tips'
+
 export default {
   name: COMPONENT_NAME,
   mixins: [
@@ -51,7 +52,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.vi-toast-txt
+.vi-tips
   box-sizing: border-box
   padding: 4px 20px
   color: #fff
@@ -61,12 +62,12 @@ export default {
   text-align: center
   font-size: 14px
 
-.vi-toast-txt-enter-active
-  animation: vi-toast-txt-in 0.2s ease
-.vi-toast-txt-leave-active
-  animation: vi-toast-txt-out 0.2s ease
+.vi-tips-enter-active
+  animation: vi-tips-in 0.2s ease
+.vi-tips-leave-active
+  animation: vi-tips-out 0.2s ease
 
-@keyframes vi-toast-txt-in
+@keyframes vi-tips-in
   0%
     transform: scale(0.85)
     opacity: 0.8
@@ -74,7 +75,7 @@ export default {
     transform: scale(1)
     opacity: 1
 
-@keyframes vi-toast-txt-out
+@keyframes vi-tips-out
   0%
     transform: scale(1)
     opacity: 1

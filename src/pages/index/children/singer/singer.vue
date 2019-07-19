@@ -54,21 +54,16 @@ export default {
       this.$refs.scroll.refresh()
     },
     _getSingerList() {
-      this.$createViToast({
+      this.$global.toast.show({
         icon: 'loading',
         titleColor: '#ffcd32',
         iconColor: '#ffcd32',
         scalc: 0.8,
-      }).show()
+      })
       setTimeout(() => {
         getSingerList().then((res) => {
           this.singerList = this._normalizeSinger(res.data.list)
-          this.$createViToast({
-            icon: 'loading',
-            titleColor: '#ffcd32',
-            iconColor: '#ffcd32',
-            scalc: 0.8
-          }).hide()
+          this.$global.toast.hide()
         })
       }, 500)
     },

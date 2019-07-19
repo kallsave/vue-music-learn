@@ -1,6 +1,6 @@
 <template>
   <div ref="search"
-    class="search">
+    :class="$style['search']">
     <div ref="scrollWrapper"
       class="search-scroll-wrapper">
       <vi-sticky
@@ -294,7 +294,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" moduled>
+<style lang="stylus" module>
 @import "~@/common/stylus/var/color.styl"
 @import "~@/common/stylus/var/font-size.styl"
 @import "~@/common/stylus/mixin.styl"

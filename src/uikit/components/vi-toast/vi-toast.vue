@@ -5,14 +5,18 @@
     :is-lock-scroll="isLockScroll"
     :z-index="zIndex"
     :transitionDuration="transitionDuration">
-    <transition name="vi-toast-fade">
+    <transition
+      name="vi-toast-fade"
+      :duration="fadeDuration">
       <div class="vi-toast"
         v-show="isVisible"
         :style="{'transform': `scale(${scale})`}">
         <div class="vi-toast-mask"
           :class="{'vi-toast-mask-active': isShowToastMask}"></div>
         <div class="vi-toast-content">
-          <transition :duration="{enter: 400, leave: 400}">
+          <transition
+            name="vi-toast-fade"
+            :duration="fadeDuration">
             <div class="vi-toast-spinner-contain"
               v-if="icon === 'loading' && isVisible">
               <i class="vi-toast-spinner"
@@ -20,16 +24,18 @@
                 v-for="(item, index) in balde" :key="index"></i>
             </div>
           </transition>
-          <transition name="vi-toast-zoom"
-            :duration="{enter: 400, leave: 400}">
+          <transition
+            name="vi-toast-zoom"
+            :duration="zoomDuration">
             <div class="vi-toast-correct-contain"
               v-if="icon === 'correct' && isVisible">
               <i class="vi-toast-icon-correct vi-toast-correct"
                 :style="{'color': iconColor}"></i>
             </div>
           </transition>
-          <transition name="vi-svg-path"
-            :duration="{enter: 1000, leave: 400}">
+          <transition
+            name="vi-svg-path"
+            :duration="pathDuration">
             <div class="vi-toast-svg-correct-contain"
               v-if="icon === 'svg-correct' && isVisible">
               <svg>
@@ -51,8 +57,7 @@
             </div>
           </transition>
           <slot name="icon"></slot>
-          <p class="vi-toast-title"
-            :style="{'color': titleColor}">{{title}}</p>
+          <p class="vi-toast-title" :style="{'color': titleColor}">{{title}}</p>
         </div>
       </div>
     </transition>
@@ -117,6 +122,18 @@ export default {
       transitionDuration: {
         enter: 400,
         leave: 400
+      },
+      fadeDuration: {
+        enter: 400,
+        leave: 400
+      },
+      zoomDuration: {
+        enter: 400,
+        leave: 400
+      },
+      pathDuration: {
+        enter: 1000,
+        leave: 400
       }
     }
   },
@@ -161,7 +178,7 @@ export default {
         animation: vi-toast-spinner-fade 1s linear infinite
         for num in (1..12)
           &:nth-child({num})
-            animation-delay: ((num - 1) / 12)s
+            animation-delay: (num / 12)s
             transform: rotate(30deg * (num - 6)) translateY(-150%)
     i[class^="vi-toast-icon"]
       box-sizing: border-box
