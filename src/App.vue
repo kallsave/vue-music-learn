@@ -18,6 +18,9 @@
 import { AFTER_ENTER, FINISH } from '@/store/modules/router-transition-state/config.js'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Player from '@/components/player/player.vue'
+import Stack from '@/common/class/stack.js'
+
+let historyStack = new Stack(2)
 
 export default {
   name: 'App',
@@ -63,6 +66,7 @@ export default {
             this.mode = ''
           }
         }
+        historyStack.add(window.location.href)
       },
       immediate: true
     },
@@ -86,12 +90,18 @@ export default {
       }, 100)
     },
     addEventListenerPopstate() {
-      window.addEventListener('popstate', () => {
-        this.keepAliveRouteRemove(this.$route.name)
-        this.setRouterTransition({
-          name: 'move-left',
-          mode: ''
-        })
+      window.addEventListener('hashchange', (e) => {
+        // 第一次触发hashchange肯定是浏览器的点击后退
+        let newURL = e.newURL
+        if (historyStack.getByIndex(1) === newURL) {
+          historyStack.clearAll()
+          this.lastRouteName = this.$route.name
+          this.keepAliveRouteRemove(this.lastRouteName)
+          this.setRouterTransition({
+            name: 'move-left',
+            mode: ''
+          })
+        }
       })
     }
   }

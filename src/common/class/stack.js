@@ -3,7 +3,7 @@
 export default class Stack {
   // 设置最大存储
   // 设置最大存储
-  constructor(maxLength) {
+  constructor(maxLength = Infinity) {
     this.maxLength = maxLength
     this.init()
   }

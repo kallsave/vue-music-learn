@@ -82,7 +82,7 @@ export default {
         transform: translate(105px, 10px) scale(0.5)
         transform-origin: 0 0
         &:before
-          content: ''
+          content: ""
           position: absolute
           width: 6px
           height: 45px
@@ -92,7 +92,7 @@ export default {
           background-color: #fff
           transform: translate(-50%, -50%) rotate(135deg)
         &:after
-          content: ''
+          content: ""
           position: absolute
           width: 6px
           height: 45px

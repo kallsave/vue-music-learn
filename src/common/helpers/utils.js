@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-07-04 11:11:16
+ * @Last Modified time: 2019-07-24 15:27:15
  */
 
 /**
@@ -163,6 +163,26 @@ export function getUrlParams(currentUrl = window.location.href) {
     return result
   }
   return result
+}
+
+/**
+ * 拼接url参数成url
+ * @export
+ * @param {String} originUrl
+ * @param {Object} data
+ * @returns
+ */
+export function parseParamUrl(originUrl, data) {
+  let url = ''
+  for (let k in data) {
+    let value = data[k] !== undefined ? data[k] : ''
+    url += `&${k}=${encodeURIComponent(value)}`
+  }
+  url = url ? url.substring(1) : ''
+
+  originUrl += (originUrl.indexOf('?') === -1 ? '?' : '&') + url
+
+  return originUrl
 }
 
 export function checkClass(o) {

@@ -111,7 +111,7 @@ export default {
         border-radius: 50%
         transform: scale(0.25)
         &:before
-          content: ''
+          content: ""
           position: absolute
           width: 6px
           height: 45px
@@ -121,7 +121,7 @@ export default {
           background-color: #fff
           transform: translate(-50%, -50%) rotate(135deg)
         &:after
-          content: ''
+          content: ""
           position: absolute
           width: 6px
           height: 45px

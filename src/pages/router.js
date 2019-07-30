@@ -162,7 +162,7 @@ const router = new Router({
   ]
 })
 
-// 延后页面的进入时间,让popstate先执行
+// 延后页面的进入时间,让hashchange先执行
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title

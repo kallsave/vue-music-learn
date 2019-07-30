@@ -313,7 +313,7 @@ export default {
                   &:before,&:after
                     height: 15px
                     background: $color-highlight-background
-                    content: ''
+                    content: ""
                     display: block
                   &:before
                     margin-top: 7px

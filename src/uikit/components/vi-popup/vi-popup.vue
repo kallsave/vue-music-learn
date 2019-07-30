@@ -122,7 +122,6 @@ export default {
         this.popupStyle['position'] = 'fixed'
         this.popupStyle['top'] = `0`
         this.popupStyle['bottom'] = `0`
-        this.popupStyle['height'] = `100vh`
       }
     },
     show() {

@@ -1,9 +1,9 @@
 <template>
   <div :class="$style['tab']">
     <div class="tab-item"
+      :class="{'active': item.router.name === $route.name}"
       v-for="(item, index) in tabList"
       :key="index"
-      :class="{'active': item.router.name === $route.name}"
       @touchstart="pageTurn(index)">
       <span class="tab-link">{{item.title}}</span>
     </div>

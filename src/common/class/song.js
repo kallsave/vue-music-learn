@@ -1,6 +1,6 @@
 import { getLyric } from '@/api/song.js'
 import { Base64 } from 'js-base64'
-import { param } from '@/api/config.js'
+import { parseParamUrl } from '@/common/helpers/utils.js'
 const musicKey = require('../../../music-key.json')
 
 // 给localStorage的缓存添加类使用这个函数
@@ -37,7 +37,7 @@ export class Song {
 
 // 从接口处理数据使用这个函数
 export function createSong(musicData) {
-  const url = param(`http://dl.stream.qqmusic.qq.com/C400${musicData.strMediaMid}.m4a`, musicKey)
+  const url = parseParamUrl(`http://dl.stream.qqmusic.qq.com/C400${musicData.strMediaMid}.m4a`, musicKey)
 
   return new Song({
     id: musicData.songid,

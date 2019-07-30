@@ -26,7 +26,7 @@ export default {
     height: 15px
     background: $color-highlight-background
     margin: 7px 0 0
-    content: ''
+    content: ""
     display: block
   &:before
     width: 32%
