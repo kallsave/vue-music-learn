@@ -20,7 +20,7 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Player from '@/components/player/player.vue'
 import Stack from '@/common/class/stack.js'
 
-let historyStack = new Stack(2)
+let historyStack = new Stack()
 
 export default {
   name: 'App',
@@ -72,7 +72,7 @@ export default {
     },
   },
   mounted() {
-    this.addEventListenerPopstate()
+    this.addEventListenerHashchange()
   },
   methods: {
     ...mapMutations({
@@ -89,12 +89,12 @@ export default {
         this.setRouterTransitionState(FINISH)
       }, 100)
     },
-    addEventListenerPopstate() {
+    addEventListenerHashchange() {
       window.addEventListener('hashchange', (e) => {
         // 第一次触发hashchange肯定是浏览器的点击后退
         let newURL = e.newURL
         if (historyStack.getByIndex(1) === newURL) {
-          historyStack.clearAll()
+          historyStack.reduce()
           this.lastRouteName = this.$route.name
           this.keepAliveRouteRemove(this.lastRouteName)
           this.setRouterTransition({

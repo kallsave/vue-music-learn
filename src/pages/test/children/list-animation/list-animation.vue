@@ -26,7 +26,7 @@ export default {
     }
   },
   mounted() {
-    this.$toast.show({
+    this.$global.toast.show({
       title: '加载中...'
     })
     console.log(this.$style)

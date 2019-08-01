@@ -2,8 +2,10 @@
   <div :class="$style['keep-alive-list']">
     <div class="list">
       <div class="item"
-        v-for="(item, index) in list" :key="item.id"
-        :style="setStyle(item, index)">
+        v-for="(item, index) in list"
+        :key="item.id"
+        :style="setStyle(item, index)"
+        @click="clickHandler">
           <div class="content">{{item.value}}</div>
           <div class="btn-list">
             <div class="pay">支付</div>
@@ -13,7 +15,6 @@
           </div>
         </div>
     </div>
-    <list-animation v-show="false"></list-animation>
   </div>
 </template>
 
@@ -34,6 +35,7 @@ export default {
   },
   data() {
     return {
+      num: 1,
       list: [
         {
           id: 0,
@@ -83,8 +85,13 @@ export default {
       ]
     }
   },
-  mounted() {
-    console.log(this.$style)
+  watch: {
+    num: {
+      handler(newVal) {
+        console.log(newVal)
+      },
+      deep: true
+    }
   },
   methods: {
     parseStatus() {
@@ -100,6 +107,10 @@ export default {
         animation: `${this.$style['list-load']} ${index * 200 + 400}ms`
       }
     },
+    clickHandler() {
+      this.num = 0
+      this.num = 1
+    }
   }
 }
 </script>
