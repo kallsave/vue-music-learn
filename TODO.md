@@ -45,19 +45,22 @@
 - player组件唱片缩小动画有问题
 
 # 优先
-- vue源码
-- vue-router源码
+- 图片,视频上传组件
+- scroll实现京东效果
 - 实现原生的下拉加载
 - vi-slide-router-view像router-view一样可以带props
-- ease函数原理
 - canvas background-size: cover算法
 - 自适应高度textarea
 - 拖拽组件
 - clipper剪裁组件
 - scroll-down-refresh用箭头做默认slot
-- 图片,视频上传组件
-- scroll实现京东效果
 - webpack4
 - 写一个animation库
 - keep-alive管理和vue-router和路由过渡动画结合的vue-router插件
 - previewer组件及其全局调用的方法
+
+# 近期
+- vue源码
+- vue-router源码
+- 开源前进刷新后退缓存
+- 富文本编辑器

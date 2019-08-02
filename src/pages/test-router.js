@@ -31,6 +31,7 @@ const Jump = () => import('./test/children/jump/jump.vue')
 const Tree = () => import('./test/children/tree/tree.vue')
 const Abstract = () => import('./test/children/abstract/abstract.vue')
 const KeepAliveList = () => import('./test/children/keep-alive-list/keep-alive-list.vue')
+const Slow = () => import('./test/children/slow/slow.vue')
 
 export default {
   path: '/test',
@@ -166,6 +167,14 @@ export default {
       path: '/test/keep-alive-list',
       name: 'keepAliveList',
       component: KeepAliveList,
+      meta: {
+        isUseRouterTransition: true
+      }
+    },
+    {
+      path: '/test/slow',
+      name: 'slow',
+      component: Slow,
       meta: {
         isUseRouterTransition: true
       }
