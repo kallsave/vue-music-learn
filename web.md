@@ -55,3 +55,8 @@ better-scroll文档
 
 [github的travis.yml配置任务](https://www.travis-ci.org/)
 
+开源项目fork
+[fork奉献代码](https://www.cnblogs.com/zhangjianbin/p/7774073.html)
+[fork同步更新](https://www.jianshu.com/p/8ab6ef7ce5e3)
+
+

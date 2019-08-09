@@ -88,6 +88,12 @@ import { injectSticky } from '../../mixins/inject-sticky.js'
 import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
 import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
+let a = {
+  name: 'a'
+}
+
+let b = {...a}
+
 export default {
   name: 'index-recommend',
   mixins: [

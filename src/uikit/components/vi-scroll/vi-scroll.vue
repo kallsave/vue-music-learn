@@ -188,9 +188,6 @@ export default {
       isOpenPullUpLoad: false
     }
   },
-  mounted() {
-    this._initScroll()
-  },
   computed: {
     pullDownRefresh() {
       if (this.options.pullDownRefresh === true) {
@@ -241,6 +238,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this._initScroll()
+  },
   methods: {
     _initScroll() {
       let extraOptions = {}
@@ -254,7 +254,6 @@ export default {
       if (options.scrollX && !options.scrollY) {
         addClass(this.$refs.content, 'vi-scroll-x')
       }
-
       this.scroll = new BScroll(this.$refs.wrapper, options)
       if (this.pullDownRefresh) {
         this._calculatelPullDownContentHeight()

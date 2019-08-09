@@ -36,6 +36,10 @@ export default {
   data() {
     return {
       num: 1,
+      person: {
+        name: 'ss',
+        cityList: []
+      },
       list: [
         {
           id: 0,
@@ -91,6 +95,11 @@ export default {
         console.log(newVal)
       },
       deep: true
+    },
+    'person.cityList': {
+      handler(newVal) {
+        console.log(newVal)
+      }
     }
   },
   methods: {
@@ -108,8 +117,10 @@ export default {
       }
     },
     clickHandler() {
-      this.num = 0
-      this.num = 1
+      // this.num = 0
+      // this.num = 1
+      // this.person.name = 'newName'
+      this.person.cityList.push('深圳')
     }
   }
 }

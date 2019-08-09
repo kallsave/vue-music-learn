@@ -32,6 +32,7 @@ const Tree = () => import('./test/children/tree/tree.vue')
 const Abstract = () => import('./test/children/abstract/abstract.vue')
 const KeepAliveList = () => import('./test/children/keep-alive-list/keep-alive-list.vue')
 const Slow = () => import('./test/children/slow/slow.vue')
+const ScrollTextarea = () => import('./test/children/scroll-textarea/scroll-textarea.vue')
 
 export default {
   path: '/test',
@@ -175,6 +176,14 @@ export default {
       path: '/test/slow',
       name: 'slow',
       component: Slow,
+      meta: {
+        isUseRouterTransition: true
+      }
+    },
+    {
+      path: '/test/scroll-textarea',
+      name: 'scrollTextarea',
+      component: ScrollTextarea,
       meta: {
         isUseRouterTransition: true
       }
