@@ -33,6 +33,8 @@ const Abstract = () => import('./test/children/abstract/abstract.vue')
 const KeepAliveList = () => import('./test/children/keep-alive-list/keep-alive-list.vue')
 const Slow = () => import('./test/children/slow/slow.vue')
 const ScrollTextarea = () => import('./test/children/scroll-textarea/scroll-textarea.vue')
+const Safari100vh = () => import('./test/children/safari-100vh/safari-100vh.vue')
+const ScrollPopup = () => import('./test/children/scroll-popup/scroll-popup.vue')
 
 export default {
   path: '/test',
@@ -184,6 +186,22 @@ export default {
       path: '/test/scroll-textarea',
       name: 'scrollTextarea',
       component: ScrollTextarea,
+      meta: {
+        isUseRouterTransition: true
+      }
+    },
+    {
+      path: '/test/safari-100vh',
+      name: 'safari100vh',
+      component: Safari100vh,
+      meta: {
+        isUseRouterTransition: true
+      }
+    },
+    {
+      path: '/test/scroll-popup',
+      name: 'scrollPopup',
+      component: ScrollPopup,
       meta: {
         isUseRouterTransition: true
       }

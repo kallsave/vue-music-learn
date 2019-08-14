@@ -100,6 +100,12 @@ export default {
       handler(newVal) {
         console.log(newVal)
       }
+    },
+    person: {
+      handler(newVal) {
+        console.log('watch')
+      },
+      deep: true
     }
   },
   methods: {

@@ -12,11 +12,11 @@ export function scrollHandler(pos) {
   } else if (pos.y > -STICKY_TOP_BAR) {
     if (pos.y >= 0) {
       ViScroll.scroll.disable()
-      ViScroll.scroll.scrollTo(0, 0, 100)
+      ViScroll.scroll.scrollTo(0, 0, 0)
       return
     }
     ViScroll.scroll.enable()
-    ViScroll.scroll.scrollTo(0, pos.y, 100)
+    ViScroll.scroll.scrollTo(0, pos.y, 0)
   }
 }
 

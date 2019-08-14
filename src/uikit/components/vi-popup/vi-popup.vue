@@ -7,8 +7,7 @@
     <div ref="popup"
       class="vi-popup"
       v-show="isVisible"
-      :style="popupStyle"
-      @touchmove.prevent>
+      :style="popupStyle">
       <div class="vi-popup-mask"
         @touchstart="touchstart($event)">
         <div class="vi-popup-mask-gray"
