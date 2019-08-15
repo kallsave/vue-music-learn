@@ -13,6 +13,7 @@ import { getSongList } from '@/api/recommend.js'
 import { createSong } from '@/common/class/song.js'
 
 export default {
+  name: 'detail-recommend',
   components: {
     MusicList
   },

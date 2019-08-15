@@ -15,6 +15,7 @@ import { getSingerDetail } from '@/api/singer.js'
 import { createSong } from '@/common/class/song.js'
 
 export default {
+  name: 'detail-singer',
   data() {
     return {
       songList: [],

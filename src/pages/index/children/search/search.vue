@@ -35,7 +35,7 @@
               </ul>
             </div>
             <div class="search-history"
-              v-show="searchHistory.length">
+              v-show="searchHistoryList.length">
               <h1 class="search-history-title">
                 <span class="search-history-text">搜索历史</span>
                 <span class="clear-search-history" @touchstart="tryClearSearchHistory">
@@ -43,8 +43,8 @@
                 </span>
               </h1>
               <search-list
-                :searches="searchHistory"
-                @delete="deleteSearchHistory"
+                :searches="searchHistoryList"
+                @delete="searchHistoryDeleteHistory"
                 @select="addQuery">
               </search-list>
             </div>
@@ -150,7 +150,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'searchHistory',
+      'searchHistoryList',
     ]),
   },
   watch: {
@@ -162,7 +162,7 @@ export default {
           return
         }
         this.debounce.run(() => {
-          this.saveSearchHistoryLocalStorage(newVal)
+          this.searchHistoryAdd(newVal)
           this.page = 1
           // 第三个参数如果是缓动,会导致盒子被拖拽
           this.$refs.scroll.scroll.scrollTo(0, 0, 0)
@@ -183,9 +183,9 @@ export default {
     }),
     ...mapActions([
       'insertSong',
-      'saveSearchHistoryLocalStorage',
-      'deleteSearchHistoryLocalStorage',
-      'clearSearchHistoryLocalStorage'
+      'searchHistoryAdd',
+      'searchHistoryDelete',
+      'searchHistoryClear'
     ]),
     handlePlayList() {
       this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
@@ -300,7 +300,7 @@ export default {
       this.$createBaseConfirm({
         text: '确定要删除吗?',
         onConfirm: () => {
-          this.clearSearchHistoryLocalStorage()
+          this.searchHistoryClear()
         }
       }).show()
     },
@@ -309,9 +309,9 @@ export default {
         this.query = history
       })
     },
-    deleteSearchHistory(item) {
+    searchHistoryDeleteHistory(item) {
       this.throttle.run(() => {
-        this.deleteSearchHistoryLocalStorage(item)
+        this.searchHistoryDelete(item)
       })
     }
   },

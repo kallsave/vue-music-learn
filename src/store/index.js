@@ -10,18 +10,18 @@ import player from './modules/player/index.js'
 import rankAlbum from './modules/rank-album/index.js'
 import recommendAlbum from './modules/recommend-album/index.js'
 import keepAliveName from './modules/keep-alive-name/keep-alive-name.js'
-import searchHistory from './modules/search-history/search-history.js'
+import searchHistoryList from './modules/search-history-list/search-history-list.js'
 import routerTransition from './modules/router-transition/router-transition.js'
 import routerTransitionState from './modules/router-transition-state/router-transition-state.js'
 import keepAliveRouteList from './modules/keep-alive-route-list/keep-alive-route-list.js'
+import browserHistoryList from './modules/browser-history-list/browser-history-list.js'
 
 // 不需要vuex-persistedstate做可持续化的mutations
 const persistedstateIgnoreMutations = [
-  // keep-alive的组件不需要做可持续化
-  'SET_MUTABLE_KEEP_ALIVE_NAME',
-  'SET_IMMUTABLE_KEEP_ALIVE_NAME',
   // 搜索历史纪录用独立的可持续化时间
   'SET_SEARCH_HISTORY',
+  // 浏览器历史用独立的可持续化时间
+  'SET_BROWSER_HISTORY_LIST',
   // 路由过渡动画实现不需要做可持续化
   'SET_ROUTER_TRANSITION',
   // 路由过渡动画的状态不需要做可持续化
@@ -69,10 +69,11 @@ export default new Vuex.Store({
     rankAlbum,
     recommendAlbum,
     keepAliveName,
-    searchHistory,
+    searchHistoryList,
     routerTransition,
     routerTransitionState,
-    keepAliveRouteList
+    keepAliveRouteList,
+    browserHistoryList,
   },
   strict: debug,
   plugins: VuexPlugins

@@ -95,7 +95,7 @@ let a = {
 let b = {...a}
 
 export default {
-  name: 'index-recommend',
+  // name: 'index-recommend',
   mixins: [
     injectSticky,
     playerPaddingBottom,

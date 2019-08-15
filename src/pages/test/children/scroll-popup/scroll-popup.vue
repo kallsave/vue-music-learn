@@ -23,17 +23,19 @@
 
 <script>
 export default {
+  name: 'scroll-popup',
   data() {
     return {
       list: [0, 1, 2, 3, 4, 5, 6, 7, 8]
     }
   },
+  mounted() {
+    console.log('mounted')
+  },
   methods: {
     clickHandler() {
-      let a = 0
-      let b = 0 && a++
-      console.log(a)
-      this.$refs.popup.show()
+      this.$router.push('/test/wechat-popup')
+      // this.$refs.popup.show()
     },
     maskClick() {
 
@@ -61,6 +63,8 @@ export default {
 <style lang="stylus" module>
 .scroll-height
   height: 100vh
+  overflow: scroll
+  -webkit-overflow-scrolling: touch
   :global
     .box
       height: 80px

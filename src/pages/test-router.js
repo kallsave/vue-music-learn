@@ -122,19 +122,31 @@ export default {
     },
     {
       path: '/test/wechat-popup',
-      component: WechatPopup
+      component: WechatPopup,
+      meta: {
+        isUseRouterTransition: true,
+      }
     },
     {
       path: '/test/autosize',
-      component: AutoSize
+      component: AutoSize,
+      meta: {
+        isUseRouterTransition: true,
+      }
     },
     {
       path: '/test/component',
-      component: Component
+      component: Component,
+      meta: {
+        isUseRouterTransition: true,
+      }
     },
     {
       path: '/test/upload',
-      component: Upload
+      component: Upload,
+      meta: {
+        isUseRouterTransition: true,
+      }
     },
     {
       path: '/test/arr',
@@ -199,7 +211,7 @@ export default {
       }
     },
     {
-      path: '/test/scroll-popup',
+      path: '/test/scroll-popup/:id',
       name: 'scrollPopup',
       component: ScrollPopup,
       meta: {

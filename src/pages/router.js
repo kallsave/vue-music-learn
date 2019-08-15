@@ -39,7 +39,7 @@ const router = new Router({
     })
   },
   routes: [
-    TestRouter,
+    ...TestRouter.children,
     {
       path: '/',
       redirect: '/index'

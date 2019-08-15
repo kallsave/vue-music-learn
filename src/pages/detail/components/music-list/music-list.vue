@@ -149,10 +149,6 @@ export default {
       this.$refs.scroll.refresh()
     },
     back() {
-      this.setRouterTransition({
-        name: 'move-left',
-        mode: ''
-      })
       this.$router.back()
     },
     scrollHandler({ y }) {
@@ -176,11 +172,12 @@ export default {
       })
     },
     random(e) {
-      this.throttle.run(() => {
-        this.randomPlay({
-          list: this.songList
-        })
-      })
+      this.$router.push('/test/scroll-popup/1')
+      // this.throttle.run(() => {
+      //   this.randomPlay({
+      //     list: this.songList
+      //   })
+      // })
     }
   },
 }

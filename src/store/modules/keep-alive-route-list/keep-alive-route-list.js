@@ -2,6 +2,7 @@
 
 import Stack from '@/common/class/stack.js'
 
+// 最多存8个页面
 const keepAliveStack = new Stack(8)
 
 const types = {
