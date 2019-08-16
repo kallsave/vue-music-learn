@@ -64,3 +64,6 @@
 - vue-router源码
 - 开源前进刷新后退缓存
 - 富文本编辑器
+- 看板娘
+- python商城
+- vue-lazyload

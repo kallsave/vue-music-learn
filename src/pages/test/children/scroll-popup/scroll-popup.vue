@@ -10,8 +10,7 @@
       @mask-click="maskClick">
         <div class="popup-content"
           @touchstart="touchstartHandler($event)"
-          @touchmove="touchmoveHandler($event)"
-          ref="content">
+          @touchmove.stop="touchmoveHandler($event)">
           <div class="inner-box"
             v-for="(item, index) in list"
             :key="index"
@@ -34,8 +33,8 @@ export default {
   },
   methods: {
     clickHandler() {
-      this.$router.push('/test/wechat-popup')
-      // this.$refs.popup.show()
+      // this.$router.push('/test/wechat-popup')
+      this.$refs.popup.show()
     },
     maskClick() {
 
@@ -46,10 +45,11 @@ export default {
     touchmoveHandler(e) {
       this.moveY = e.changedTouches[0].pageY
       let disY = this.moveY - this.startY
-      let content = this.$refs.content
-      let scrollTop = content.scrollTop
-      let scrollHeight = content.scrollHeight
-      let clientHeight = content.clientHeight
+      // currentTarget是最开始绑定事件的元素,如果是原生的写法,就是this
+      let currentTarget = e.currentTarget
+      let scrollTop = e.currentTarget.scrollTop
+      let scrollHeight = e.currentTarget.scrollHeight
+      let clientHeight = e.currentTarget.clientHeight
       if (!scrollTop && disY >= 0) {
         e.preventDefault()
       } else if (scrollHeight - clientHeight <= scrollTop && disY <= 0) {
