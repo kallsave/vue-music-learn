@@ -30,7 +30,7 @@ instance.interceptors.response.use((response) => {
     response.data = response.data.replace(/^\w+\((.*)\)$/g, '$1')
     response.data = JSON.parse(response.data)
   }
-  if ((response.status === 200 || response.status === '200') && response.data.code === API_OK) {
+  if ((response.status === 200) && response.data.code === API_OK) {
     return Promise.resolve(response)
   } else {
     console.log(response)

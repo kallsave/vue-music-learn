@@ -15,7 +15,7 @@ const searchHistoryList = {
     searchHistoryList: (state) => state.searchHistoryList
   },
   mutations: {
-    [types.SET_SEARCH_HISTORY](state, searchHistoryList) {
+    [types.SET_SEARCH_HISTORY_LIST](state, searchHistoryList) {
       state.searchHistoryList = searchHistoryList
     },
   },

@@ -30,7 +30,7 @@ instance.interceptors.response.use((response) => {
   //   response.data = JSON.parse(response.data)
   // }
   // 根据后台设置的code逻辑做处理
-  if ((response.status === 200 || response.status === '200') && response.data.code === API_OK) {
+  if ((response.status === 200) && response.data.code === API_OK) {
     return Promise.resolve(response)
   } else {
     return Promise.reject(API_ERROR)

@@ -24,16 +24,15 @@ const instance = axios.create({
 })
 
 // 响应拦截器,对404等或者后端自定义的code错误
-instance.interceptors.response.use((response) => {
+instance.interceptors.response.use((response, b, c) => {
   if (response.request.responseURL.indexOf('qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg') !== -1) {
     /* eslint no-useless-escape: "off" */
     response.data = response.data.replace(/^\w+\((.*)\)$/g, '$1')
     response.data = JSON.parse(response.data)
   }
-  if ((response.status === 200 || response.status === '200') && response.data.code === API_OK) {
+  if (response.status === 200 && response.data.code === API_OK) {
     return Promise.resolve(response)
   } else {
-    console.log(response)
     return Promise.reject(API_ERROR)
   }
 })

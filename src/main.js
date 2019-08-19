@@ -15,6 +15,8 @@ import BaseProgressBar from '@/base/progress-bar/index.js'
 import BaseProgressCircle from '@/base/progress-circle/index.js'
 import BaseConfirm from '@/base/confirm/index.js'
 
+import recoverWebviewMixin from '@/common/mixins/recover-webview.js'
+
 Vue.use(Vi)
 Vue.use(BaseLoadListCon)
 Vue.use(BaseSearchBox)
@@ -45,6 +47,9 @@ new Vue({
   router: router,
   store: store,
   render: h => h(App),
+  mixins: [
+    recoverWebviewMixin
+  ],
   beforeMount() {
     this.createGlobal()
     // 一些由vue-create-api可以全局编程式调用的组件注册
