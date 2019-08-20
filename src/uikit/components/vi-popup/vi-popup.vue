@@ -10,7 +10,7 @@
       :style="popupStyle"
       @touchmove.prevent>
       <div class="vi-popup-mask"
-        @touchstart="touchstart($event)">
+        @touchstart="maskTouchstart($event)">
         <div class="vi-popup-mask-gray"
           v-show="isShowMask && !$slots.mask"></div>
         <slot name="mask"></slot>
@@ -19,13 +19,13 @@
         </template>
       </div>
       <div class="vi-popup-content-center"
-        v-if="$slots.default">
+        v-if="$slots.default"
+        @touchstart="contentTouchstartHandler($event)"
+        @touchmove.stop="contentTouchmoveHandler($event)">
         <slot></slot>
       </div>
       <template v-if="$slots['custom-content']">
-        <div class="vi-popup-custom-content">
-          <slot name="custom-content"></slot>
-        </div>
+        <slot name="custom-content"></slot>
       </template>
     </div>
   </transition>
@@ -86,33 +86,8 @@ export default {
       },
     }
   },
-  mounted() {
-    this._addEventListenerBlur()
-  },
   methods: {
-    _addEventListenerBlur() {
-      let popup = this.$refs.popup
-      popup.addEventListener('blur', this._recoverTop, true)
-    },
-    _removeEventListenerBlur() {
-      let popup = this.$refs.popup
-      popup.removeEventListener('blur', this._recoverTop, true)
-    },
-    _recoverTop(event) {
-      const tagNameList = ['INPUT', 'TEXTAREA']
-      if (tagNameList.indexOf(event.target.tagName) !== -1) {
-        window.scrollTo({
-          top: this.top,
-          behavior: 'smooth'
-        })
-      }
-    },
-    _cachedTop() {
-      let top = document.documentElement.scrollTop || document.body.scrollTop
-      this.top = top
-    },
     _setPopupStyle() {
-      this._cachedTop()
       if (this.isUseAbsolute) {
         this.popupStyle['position'] = 'absolute'
         this.popupStyle['top'] = `${this.top}px`
@@ -128,11 +103,38 @@ export default {
       this._setPopupStyle()
       this.isVisible = true
     },
-    touchstart(e) {
+    maskTouchstart(e) {
       if (this.isLockScroll) {
         e.preventDefault()
       }
       this.$emit(EVENT_MASK_CLICK)
+    },
+    contentTouchstartHandler(e) {
+      if (!this.isLockScroll) {
+        return
+      }
+      this.startY = e.changedTouches[0].pageY
+    },
+    contentTouchmoveHandler(e) {
+      if (!this.isLockScroll) {
+        return
+      }
+      // currentTarget是最开始绑定事件的元素
+      let currentTarget = e.currentTarget
+      let content = currentTarget.children[0]
+      if (content) {
+        this.moveY = e.changedTouches[0].pageY
+        let disY = this.moveY - this.startY
+        let scrollTop = content.scrollTop
+        let scrollHeight = content.scrollHeight
+        let clientHeight = content.clientHeight
+        // 修复ios弹窗内部滚动触发body滚动
+        if (!scrollTop && disY >= 0) {
+          e.preventDefault()
+        } else if (scrollHeight - clientHeight <= scrollTop && disY <= 0) {
+          e.preventDefault()
+        }
+      }
     },
     afterEnter() {
       this.$emit(EVENT_AFTER_ENTER)
@@ -141,9 +143,6 @@ export default {
       this.$emit(EVENT_AFTER_LEAVE)
     }
   },
-  beforeDestroy() {
-    this._removeEventListenerBlur()
-  }
 }
 </script>
 
@@ -172,6 +171,4 @@ export default {
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
-  .vi-popup-custom-content
-    z-index: 10
 </style>

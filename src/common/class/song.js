@@ -37,7 +37,7 @@ export class Song {
 
 // 从接口处理数据使用这个函数
 export function createSong(musicData) {
-  const url = parseParamUrl(`http://dl.stream.qqmusic.qq.com/C400${musicData.strMediaMid}.m4a`, musicKey)
+  const url = parseParamUrl(`http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400${musicData.strMediaMid}.m4a`, musicKey)
 
   return new Song({
     id: musicData.songid,
