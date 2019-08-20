@@ -8,7 +8,8 @@
       ref="popup"
       class="popup"
       @mask-click="maskClick">
-        <div class="popup-content">
+        <div class="popup-content"
+          @scroll="scrollHandler">
           <div class="inner-box"
             v-for="(item, index) in list"
             :key="index"
@@ -34,6 +35,9 @@ export default {
     maskClick() {
 
     },
+    scrollHandler() {
+      // console.log(66)
+    }
   }
 }
 </script>

@@ -2,7 +2,6 @@
   <vi-popup
     v-model="isVisible"
     :is-show-mask="isShowMask"
-    :is-lock-scroll="isLockScroll"
     :z-index="zIndex">
     <transition name="vi-tips">
       <div class="vi-tips"
@@ -36,10 +35,6 @@ export default {
     isShowMask: {
       type: Boolean,
       default: false
-    },
-    isLockScroll: {
-      type: Boolean,
-      default: true
     },
     titleStyle: {
       type: Object,

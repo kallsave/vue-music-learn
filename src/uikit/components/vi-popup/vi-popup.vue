@@ -20,8 +20,8 @@
       </div>
       <div class="vi-popup-content-center"
         v-if="$slots.default"
-        @touchstart="contentTouchstartHandler($event)"
-        @touchmove.stop="contentTouchmoveHandler($event)">
+        @touchstart="contentTouchmoveHandler($event)"
+        @touchmove.stop="contentTouchendHandler($event)">
         <slot></slot>
       </div>
       <template v-if="$slots['custom-content']">
@@ -106,30 +106,37 @@ export default {
     maskTouchstart(e) {
       this.$emit(EVENT_MASK_CLICK)
     },
-    contentTouchstartHandler(e) {
+    contentTouchmoveHandler(e) {
       if (!this.isLockScroll) {
         return
       }
       this.startY = e.changedTouches[0].pageY
     },
-    contentTouchmoveHandler(e) {
+    contentTouchendHandler(e) {
       if (!this.isLockScroll) {
         return
       }
-      // currentTarget是最开始绑定事件的元素
-      let currentTarget = e.currentTarget
-      // 必须是第一个元素作为scrollWrapper
-      let scrollWrapper = currentTarget.children[0]
       this.moveY = e.changedTouches[0].pageY
       let disY = this.moveY - this.startY
-      let scrollTop = scrollWrapper.scrollTop
-      let scrollHeight = scrollWrapper.scrollHeight
-      let clientHeight = scrollWrapper.clientHeight
-      // 修复ios弹窗内部滚动触发body滚动
-      if (!scrollTop && disY >= 0) {
-        e.preventDefault()
-      } else if (scrollHeight - clientHeight <= scrollTop && disY <= 0) {
-        e.preventDefault()
+
+      // currentTarget是最开始绑定事件的元素
+      let currentTarget = e.currentTarget
+      let children = currentTarget.children
+      for (let i = 0; i < children.length; i++) {
+        let scrollWrapper = children[i]
+        let scrollHeight = scrollWrapper.scrollHeight
+        let clientHeight = scrollWrapper.clientHeight
+        let scrollTop = scrollWrapper.scrollTop
+        // 说明是可滚动元素
+        if (scrollHeight > clientHeight) {
+          // 修复ios弹窗内部滚动触发body滚动
+          if (!scrollTop && disY > 0) {
+            console.log(111)
+            e.preventDefault()
+          } else if (scrollHeight - clientHeight <= scrollTop && disY <= 0) {
+            e.preventDefault()
+          }
+        }
       }
     },
     afterEnter() {

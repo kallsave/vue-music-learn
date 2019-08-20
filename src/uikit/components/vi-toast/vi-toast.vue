@@ -2,7 +2,6 @@
   <vi-popup
     v-model="isVisible"
     :is-show-mask="isShowMask"
-    :is-lock-scroll="isLockScroll"
     :z-index="zIndex"
     :transitionDuration="transitionDuration">
     <transition
@@ -111,10 +110,6 @@ export default {
       type: Number,
       default: 100
     },
-    isLockScroll: {
-      type: Boolean,
-      default: true
-    }
   },
   data() {
     return {
