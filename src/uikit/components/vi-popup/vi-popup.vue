@@ -104,9 +104,6 @@ export default {
       this.isVisible = true
     },
     maskTouchstart(e) {
-      if (this.isLockScroll) {
-        e.preventDefault()
-      }
       this.$emit(EVENT_MASK_CLICK)
     },
     contentTouchstartHandler(e) {
@@ -121,19 +118,18 @@ export default {
       }
       // currentTarget是最开始绑定事件的元素
       let currentTarget = e.currentTarget
-      let content = currentTarget.children[0]
-      if (content) {
-        this.moveY = e.changedTouches[0].pageY
-        let disY = this.moveY - this.startY
-        let scrollTop = content.scrollTop
-        let scrollHeight = content.scrollHeight
-        let clientHeight = content.clientHeight
-        // 修复ios弹窗内部滚动触发body滚动
-        if (!scrollTop && disY >= 0) {
-          e.preventDefault()
-        } else if (scrollHeight - clientHeight <= scrollTop && disY <= 0) {
-          e.preventDefault()
-        }
+      // 必须是第一个元素作为scrollWrapper
+      let scrollWrapper = currentTarget.children[0]
+      this.moveY = e.changedTouches[0].pageY
+      let disY = this.moveY - this.startY
+      let scrollTop = scrollWrapper.scrollTop
+      let scrollHeight = scrollWrapper.scrollHeight
+      let clientHeight = scrollWrapper.clientHeight
+      // 修复ios弹窗内部滚动触发body滚动
+      if (!scrollTop && disY >= 0) {
+        e.preventDefault()
+      } else if (scrollHeight - clientHeight <= scrollTop && disY <= 0) {
+        e.preventDefault()
       }
     },
     afterEnter() {

@@ -37,6 +37,8 @@ better-scroll文档
 
 [better-scroll各种demo](https://ustbhuangyi.github.io/better-scroll/#/examples/full-page-vertical-slide/en)
 
+[better-scroll2.x文档](https://better-scroll.github.io/docs/en-US/guide/)
+
 抓包工具
 ------------
 [charles](https://pan.baidu.com/s/1nQgt1LBEj7WNLY48nc6eBQ)

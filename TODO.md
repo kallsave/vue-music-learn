@@ -10,7 +10,6 @@
 - 给各组件写README.md文档
 - 网易严选nav组件
 - 阅读createAPI源码
-- 更深入vue源码,阅读vue源码
 - go语言开发后台系统
 - 音量播放器组件开发
 - range组件
@@ -41,29 +40,28 @@
 - 增加登录机制,增加个人中心页面
 - 第三方登录
 - switch组件
-- 长列表弹窗阻止底部滚动
 - player组件唱片缩小动画有问题
+- 移动端手势
 
 # 优先
 - 图片,视频上传组件
 - scroll实现京东效果
 - 实现原生的下拉加载
 - vi-slide-router-view像router-view一样可以带props
-- canvas background-size: cover算法
-- 自适应高度textarea
 - 拖拽组件
 - clipper剪裁组件
 - scroll-down-refresh用箭头做默认slot
 - webpack4
 - 写一个animation库
-- keep-alive管理和vue-router和路由过渡动画结合的vue-router插件
 - previewer组件及其全局调用的方法
 
 # 近期
 - vue源码
 - vue-router源码
-- 开源前进刷新后退缓存
+- rollup + typescript编写前进刷新后退缓存插件
 - 富文本编辑器
 - 看板娘
 - python商城
 - vue-lazyload
+- touch-action
+- 移动端轮播3d
