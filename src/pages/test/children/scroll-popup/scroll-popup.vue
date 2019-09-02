@@ -11,7 +11,7 @@
         <div class="popup-content"
           @scroll="scrollHandler">
           <div class="inner-box"
-            v-for="(item, index) in list"
+            v-for="(item, index) in popupList"
             :key="index"
             @click="clickHandler($event)">{{index}}</div>
         </div>
@@ -24,7 +24,8 @@ export default {
   name: 'scroll-popup',
   data() {
     return {
-      list: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+      list: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      popupList: [0, 1, 2, 3, 4, 5, 6, 7, 8],
     }
   },
   methods: {
@@ -58,6 +59,7 @@ export default {
       text-align: center
     .popup-content
       height: 500px
+      background: #5698cc
       overflow: scroll
       -webkit-overflow-scrolling: touch
       .inner-box

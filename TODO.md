@@ -54,6 +54,7 @@
 - webpack4
 - 写一个animation库
 - previewer组件及其全局调用的方法
+- native-sticky用css来做,不是appendChild
 
 # 近期
 - vue源码

@@ -11,7 +11,10 @@ vuex文档
 ------------
 [vuex](https://vuex.vuejs.org/zh/api/#createnamespacedhelpers)
 
-图片转svg
+各种格式转各种格式(先把图片转svg,再到icomoon.io转font)
+[jinaconvert](https://jinaconvert.com/)
+
+svg转font
 ------------
 [icomoon.io](https://icomoon.io/)
 
@@ -42,6 +45,10 @@ better-scroll文档
 抓包工具
 ------------
 [charles](https://pan.baidu.com/s/1nQgt1LBEj7WNLY48nc6eBQ)
+
+web字体
+------------
+[webfonts](https://www.onlinewebfonts.com/download/12fc160800285847a53d4592b2357737)
 
 调试工具
 ------------

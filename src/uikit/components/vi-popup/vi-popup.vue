@@ -19,9 +19,7 @@
         </template>
       </div>
       <div class="vi-popup-content-center"
-        v-if="$slots.default"
-        @touchstart="contentTouchmoveHandler($event)"
-        @touchmove.stop="contentTouchendHandler($event)">
+        v-if="$slots.default">
         <slot></slot>
       </div>
       <template v-if="$slots['custom-content']">
@@ -105,39 +103,6 @@ export default {
     },
     maskTouchstart(e) {
       this.$emit(EVENT_MASK_CLICK)
-    },
-    contentTouchmoveHandler(e) {
-      if (!this.isLockScroll) {
-        return
-      }
-      this.startY = e.changedTouches[0].pageY
-    },
-    contentTouchendHandler(e) {
-      if (!this.isLockScroll) {
-        return
-      }
-      this.moveY = e.changedTouches[0].pageY
-      let disY = this.moveY - this.startY
-
-      // currentTarget是最开始绑定事件的元素
-      let currentTarget = e.currentTarget
-      let children = currentTarget.children
-      for (let i = 0; i < children.length; i++) {
-        let scrollWrapper = children[i]
-        let scrollHeight = scrollWrapper.scrollHeight
-        let clientHeight = scrollWrapper.clientHeight
-        let scrollTop = scrollWrapper.scrollTop
-        // 说明是可滚动元素
-        if (scrollHeight > clientHeight) {
-          // 修复ios弹窗内部滚动触发body滚动
-          if (!scrollTop && disY > 0) {
-            console.log(111)
-            e.preventDefault()
-          } else if (scrollHeight - clientHeight <= scrollTop && disY <= 0) {
-            e.preventDefault()
-          }
-        }
-      }
     },
     afterEnter() {
       this.$emit(EVENT_AFTER_ENTER)
