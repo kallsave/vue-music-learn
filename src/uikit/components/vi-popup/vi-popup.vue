@@ -10,7 +10,7 @@
       :style="popupStyle"
       @touchmove.prevent>
       <div class="vi-popup-mask"
-        @touchstart="maskTouchstart($event)">
+        @click="maskClick($event)">
         <div class="vi-popup-mask-gray"
           v-show="isShowMask && !$slots.mask"></div>
         <slot name="mask"></slot>
@@ -85,23 +85,19 @@ export default {
     }
   },
   methods: {
-    _setPopupStyle() {
+    _setPopupStyle(top) {
       if (this.isUseAbsolute) {
         this.popupStyle['position'] = 'absolute'
-        this.popupStyle['top'] = `${this.top}px`
-        this.popupStyle['bottom'] = ''
+        this.popupStyle['top'] = `${top}px`
+        this.popupStyle['bottom'] = ``
         this.popupStyle['height'] = `100vh`
-      } else {
-        this.popupStyle['position'] = 'fixed'
-        this.popupStyle['top'] = `0`
-        this.popupStyle['bottom'] = `0`
       }
     },
-    show() {
-      this._setPopupStyle()
+    show({top = 0} = {}) {
+      this._setPopupStyle(top)
       this.isVisible = true
     },
-    maskTouchstart(e) {
+    maskClick(e) {
       this.$emit(EVENT_MASK_CLICK)
     },
     afterEnter() {
@@ -120,10 +116,9 @@ export default {
 
 .vi-popup
   position: fixed
+  width: 100%
   top: 0
   bottom: 0
-  left: 0
-  right: 0
   z-index: $z-index-popup
   .vi-popup-mask
     position: absolute

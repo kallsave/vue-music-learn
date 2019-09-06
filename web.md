@@ -48,6 +48,7 @@ better-scroll文档
 
 web字体
 ------------
+[fontke](https://en.fontke.com/)
 [webfonts](https://www.onlinewebfonts.com/download/12fc160800285847a53d4592b2357737)
 
 调试工具

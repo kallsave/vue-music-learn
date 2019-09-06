@@ -20,7 +20,7 @@
           <span class="vi-slide-dot"
             v-for="(item, index) in dots" :key="index"
             :class="{active: currentPageIndex === index }"
-            @click.stop="goToPage(index)"></span>
+            @click.stop="clickHandler($event, index)"></span>
         </div>
       </slot>
     </template>
@@ -253,6 +253,9 @@ export default {
       // 已经创造过两个div了,不需要再创造
       this.setSlideWidth(true)
       this.slide.refresh()
+    },
+    clickHandler(event, index) {
+      this.goToPage(index)
     },
     goToPage(index, time = 400) {
       window.clearTimeout(this.timer)

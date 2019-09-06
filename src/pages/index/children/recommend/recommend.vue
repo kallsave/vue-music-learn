@@ -23,7 +23,7 @@
             @load-image="loadImage">
             <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
             <!-- 同时使用slot也可以支持自定义样式 -->
-            <template slot="dots" slot-scope="props">
+            <!-- <template slot="dots" slot-scope="props">
               <div class="slide-dots">
                 <span class="slide-dot"
                   :class="{active: props.currentPageIndex === index}"
@@ -31,7 +31,7 @@
                   :key="index"
                   @click.stop="props.goToPage(index)"></span>
               </div>
-            </template>
+            </template> -->
             <div v-for="(item, index) in recommends" :key="index">
               <a :href="item.linkUrl">
                 <img :src="item.picUrl">
@@ -87,12 +87,6 @@ import { mapMutations } from 'vuex'
 import { injectSticky } from '../../mixins/inject-sticky.js'
 import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
 import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
-
-let a = {
-  name: 'a'
-}
-
-let b = {...a}
 
 export default {
   // name: 'index-recommend',
