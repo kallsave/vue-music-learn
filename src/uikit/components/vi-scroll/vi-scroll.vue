@@ -214,13 +214,13 @@ export default {
         this.$nextTick(() => {
           this.deblocking()
         })
-        if (this.pullUpLoad) {
-          if (newVal.length < this.pullUpLoad.size) {
-            this.closePullUpLoad()
-          } else {
-            this.openPullUpLoad()
-          }
-        }
+        // if (this.pullUpLoad) {
+        //   if (newVal.length < this.pullUpLoad.size) {
+        //     this.closePullUpLoad()
+        //   } else {
+        //     this.openPullUpLoad()
+        //   }
+        // }
       },
     },
     isOpenPullUpLoad: {

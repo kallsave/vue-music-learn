@@ -7,9 +7,9 @@
     <vi-popup
       ref="popup"
       class="popup"
+      v-if="isShowPopup"
       @mask-click="maskClick">
-        <div class="popup-content"
-          @scroll="scrollHandler">
+        <div class="popup-content" v-stop-propagation-scroll>
           <div class="inner-box"
             v-for="(item, index) in popupList"
             :key="index"
@@ -20,12 +20,18 @@
 </template>
 
 <script>
+import stopPropagationScroll from '@/common/directive/stop-propagation-scroll.js'
+
 export default {
   name: 'scroll-popup',
+  directives: {
+    stopPropagationScroll
+  },
   data() {
     return {
       list: [0, 1, 2, 3, 4, 5, 6, 7, 8],
       popupList: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      isShowPopup: true
     }
   },
   methods: {
@@ -34,7 +40,7 @@ export default {
       this.$refs.popup.show()
     },
     maskClick() {
-
+      this.isShowPopup = false
     },
     scrollHandler() {
       // console.log(66)
@@ -45,6 +51,7 @@ export default {
 
 <style lang="stylus" module>
 .scroll-height
+  width: 100%
   height: 100vh
   overflow: scroll
   -webkit-overflow-scrolling: touch

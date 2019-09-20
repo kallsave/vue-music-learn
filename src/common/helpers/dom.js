@@ -31,7 +31,7 @@ export function getData(el, name) {
   return el.getAttribute(prefix + name)
 }
 
-export function setData(el, value) {
+export function setData(el, name, value) {
   const prefix = 'data-'
   el.setAttribute(prefix + name, value)
 }

@@ -221,6 +221,7 @@ export default {
       } else {
         this.hasMore = true
       }
+      console.log(this.hasMore)
     },
     _genResult(data) {
       let ret = []

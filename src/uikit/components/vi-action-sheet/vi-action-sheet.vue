@@ -48,9 +48,9 @@ export default {
   ],
   directives: {
     touchActive: {
-      bind(el, s, v) {
+      bind(el, binding, vnode) {
         el.ontouchstart = (e) => {
-          el.style.color = s.value
+          el.style.color = binding.value
         }
         el.ontouchend = (e) => {
           el.style.color = ''
