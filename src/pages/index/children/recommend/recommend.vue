@@ -89,7 +89,7 @@ import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
 import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
 export default {
-  // name: 'index-recommend',
+  name: 'index-recommend',
   mixins: [
     injectSticky,
     playerPaddingBottom,

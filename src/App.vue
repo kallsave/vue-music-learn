@@ -127,6 +127,7 @@ export default {
 @import "~@/common/stylus/var/ease.styl"
 
 .app
+  height: 100%
   background-color: #222
   :global
     .router-view

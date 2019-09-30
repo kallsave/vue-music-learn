@@ -79,15 +79,17 @@ async function updateAllImg () {
 如果在for循环中使用async/await,不想申明没必要的函数名
 ```javascript
 ; (async () => {
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < [1, 2].length; i++) {
     await (() => {
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
+        window.setTimeout(() => {
           console.log(i)
           resolve()
         }, 1000)
       })
-    })()
+    })().catch((err) => {
+      console.log(err)
+    })
   }
   await (() => {
     ...

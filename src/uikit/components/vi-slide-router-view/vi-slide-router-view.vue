@@ -59,7 +59,7 @@ const DEFAULT_OPTIONS = {
   click: false,
   snap: {
     loop: false,
-    threshold: 0.3,
+    threshold: 0.5,
   },
   bounce: {
     top: true,

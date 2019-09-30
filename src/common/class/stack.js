@@ -2,7 +2,6 @@
 
 export default class Stack {
   // 设置最大存储
-  // 设置最大存储
   constructor(maxLength = Infinity) {
     this.maxLength = maxLength
     this.init()
@@ -12,9 +11,7 @@ export default class Stack {
   }
   // 添加已存在元素时添加无效,原元素位置置顶
   _add(element) {
-    const index = this.list.findIndex((item) => {
-      return item === element
-    })
+    const index = this.list.indexOf(element)
     if (index !== -1) {
       this.list.splice(index, 1)
     }
@@ -47,9 +44,7 @@ export default class Stack {
   }
   // 删除从这个元素连同在这个元素前面先添加的元素都删除
   removeFrom(element) {
-    const index = this.list.findIndex((item) => {
-      return item === element
-    })
+    const index = this.list.indexOf(element)
     if (index !== -1) {
       return this.list.splice(index)
     }
@@ -57,13 +52,16 @@ export default class Stack {
   }
   // 删除指定的元素
   remove(element) {
-    const index = this.list.findIndex((item) => {
-      return item === element
-    })
+    const index = this.list.indexOf(element)
     if (index === -1) {
       return false
     }
     return this.list.splice(index, 1)
+  }
+  removeByIndex(index) {
+    if (this.list[index]) {
+      return this.list.splice(index, 1)
+    }
   }
   // 清除所有数据
   clearAll() {
@@ -81,9 +79,7 @@ export default class Stack {
   }
   // 删除在这个元素后面添加的元素
   backTo(element) {
-    const index = this.list.findIndex((item) => {
-      return item === element
-    })
+    const index = this.list.indexOf(element)
     if (index === -1) {
       return false
     }
@@ -112,9 +108,6 @@ export default class Stack {
     return this.list
   }
   has(element) {
-    const index = this.list.findIndex((item) => {
-      return item === element
-    })
-    return index !== -1
+    return this.list.indexOf(element) !== -1
   }
 }

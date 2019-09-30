@@ -1,11 +1,21 @@
 <template>
   <div :class="$style['arr']">
     <div class="item"
-      v-for="(item, index) in list" :key="index">{{item.count}}</div>
+      v-for="(item, index) in list"
+      :key="index"
+      :style="{'background': getColor(item)}">{{item.count}}</div>
   </div>
 </template>
 
 <script>
+function getRandomInt(min, max) {
+  return (Math.random() * (max - min + 1) + min) | 0
+}
+
+function getRandomColor() {
+  return '#' + (getRandomInt(0, 0xffffff)).toString(16)
+}
+
 export default {
   mounted() {
     // window.setInterval(() => {
@@ -21,8 +31,16 @@ export default {
   },
   data() {
     return {
+      arr: [0, 1, 2],
       list: [],
-      arr: [1, 2, 3]
+      baseColor: 100,
+    }
+  },
+  computed: {
+    getColor() {
+      return (item) => {
+        return `rgba(${this.baseColor}, ${item * 100}, 255, 1)`
+      }
     }
   },
   methods: {
@@ -39,13 +57,14 @@ export default {
           await (() => {
             resolve()
           })()
+          console.log(this.list)
         })()
       })
     },
     itemSuccess(i) {
       return new Promise((resolve, reject) => {
         window.setTimeout(() => {
-          console.log(i)
+          this.list.push(i)
           resolve()
         }, 1000)
       })
@@ -56,10 +75,11 @@ export default {
 
 <style lang="stylus" module>
 .arr
-  height: 100vh
+  height: 100%
   background: #fff
   :global
     .item
       font-size: 16px
       line-height: 16px
+      height: 100px
 </style>

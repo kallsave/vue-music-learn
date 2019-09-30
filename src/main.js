@@ -1,4 +1,4 @@
-import { showVConsole } from '@/common/jmeter/vconsole.js'
+// import { showVConsole } from '@/common/jmeter/vconsole.js'
 import Vue from 'vue'
 import App from './App'
 import router from './pages/router.js'
@@ -55,7 +55,7 @@ new Vue({
     // 一些由vue-create-api可以全局编程式调用的组件注册
     this.createGlobalToastApi()
     this.createGlobalTipsApi()
-    showVConsole()
+    // showVConsole()
   },
   methods: {
     createGlobal() {

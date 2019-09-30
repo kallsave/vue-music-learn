@@ -266,7 +266,9 @@ export default {
     pullingUpHandler() {
       if (this.hasMore) {
         this.page++
+        this.$refs.scroll.disable()
         this.search().then((res) => {
+          this.$refs.scroll.enable()
           this.result = this.result.concat(this._genResult(res.data))
         })
       }
