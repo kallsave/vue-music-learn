@@ -73,7 +73,6 @@
 </template>
 
 <script>
-import { MUTABLE_KEEP_ALIVE_NAME, IMMUTABLE_KEEP_ALIVE_NAME, NO_KEEP_ALIVE_NAME } from '@/store/modules/keep-alive-name/config.js'
 import { getHotKey, search } from '@/api/search.js'
 import { createSong } from '@/common/class/song.js'
 import { Debounce, Throttle } from '@/common/helpers/utils.js'
@@ -93,7 +92,6 @@ const THROTTLE_TIME = 1000
 let perpage = 20
 
 export default {
-  name: MUTABLE_KEEP_ALIVE_NAME,
   components: {
     NoResult,
     SearchList
@@ -261,7 +259,7 @@ export default {
           //   path: `/music/singer-detail/${singer.id}`
           // })
           this.$router.push({
-            name: 'detail-singer',
+            name: 'DetailSinger',
             params: {
               id: singer.id
             }

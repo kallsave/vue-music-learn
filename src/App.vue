@@ -45,17 +45,17 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
-        let currentRoute = this.$route.matched[this.$route.matched.length - 1]
-        if (currentRoute) {
-          let componentsOptions = currentRoute.components.default
-          if (!componentsOptions.name) {
-            componentsOptions.name = this.$route.name
-          }
-          this.keepAliveRouteAdd(componentsOptions.name)
-        }
-        // if (this.$route.name) {
-        //   this.keepAliveRouteAdd(this.$route.name)
+        // let currentRoute = this.$route.matched[this.$route.matched.length - 1]
+        // if (currentRoute) {
+        //   let componentsOptions = currentRoute.components.default
+        //   if (!componentsOptions.name) {
+        //     componentsOptions.name = this.$route.name
+        //   }
+        //   this.keepAliveRouteAdd(componentsOptions.name)
         // }
+        if (this.$route.name) {
+          this.keepAliveRouteAdd(this.$route.name)
+        }
         if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
           this.transitionName = ''
           this.mode = ''

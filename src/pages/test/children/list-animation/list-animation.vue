@@ -43,7 +43,7 @@ export default {
     },
     goRecommend() {
       this.$router.push({
-        name: 'index-recommend'
+        name: 'IndexRecommend'
       })
     }
   }

@@ -7,7 +7,7 @@
     <div ref="popup"
       class="vi-popup"
       v-show="isVisible"
-      :style="popupStyle"
+      :style="inlineStyle"
       @touchmove.prevent>
       <div class="vi-popup-mask"
         @click="maskClick($event)">
@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import visibilityMixin from '../../common/mixins/visibility.js'
 import popupMixin from '../../common/mixins/popup.js'
 
 const COMPONENT_NAME = 'vi-popup'
@@ -42,21 +41,12 @@ const EVENT_AFTER_LEAVE = 'after-leave'
 export default {
   name: COMPONENT_NAME,
   mixins: [
-    visibilityMixin,
     popupMixin
   ],
   props: {
-    isShowMask: {
-      type: Boolean,
-      default: true
-    },
     customMask: {
       type: String,
       default: ''
-    },
-    zIndex: {
-      type: Number,
-      default: 200
     },
     transitionName: {
       type: String,
@@ -79,22 +69,23 @@ export default {
   },
   data() {
     return {
-      popupStyle: {
+      inlineStyle: {
         'z-index': this.zIndex
       },
     }
   },
   methods: {
-    _setPopupStyle(top) {
+    _setAbsoluteStyle() {
       if (this.isUseAbsolute) {
-        this.popupStyle['position'] = 'absolute'
-        this.popupStyle['top'] = `${top}px`
-        this.popupStyle['bottom'] = ``
-        this.popupStyle['height'] = `100vh`
+        let top = document.documentElement.scrollTop || document.body.scrollTop
+        this.inlineStyle['position'] = 'absolute'
+        this.inlineStyle['top'] = `${top}px`
+        this.inlineStyle['bottom'] = ``
+        this.inlineStyle['height'] = `${window.innerHeight}px`
       }
     },
-    show({top = 0} = {}) {
-      this._setPopupStyle(top)
+    show() {
+      this._setAbsoluteStyle()
       this.isVisible = true
     },
     maskClick(e) {

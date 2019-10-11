@@ -64,7 +64,6 @@ class Move {
         transform += `${key}(${distance}px) `
       }
     }
-
     this.target.style.transform = transform
   }
   doneCallback() {
@@ -82,7 +81,7 @@ const slow = (target, options) => {
     easing: easeInOutQuad,
     done: function () {}
   }
-  let o = new Move(target, mulitDeepClone({}, defaultOptions, options))
+  return new Move(target, mulitDeepClone({}, defaultOptions, options))
 }
 
 export default slow

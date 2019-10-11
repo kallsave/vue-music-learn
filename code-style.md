@@ -227,7 +227,7 @@ async function updateAllImg () {
       this.tempDisableMutableKeepAliveName()
       // /index/recommend页面是动态keep-alive的
       this.$router.push({
-        path: '/index/recommend'
+        path: 'IndexRecommend'
       })
     },
     ...

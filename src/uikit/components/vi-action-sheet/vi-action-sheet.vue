@@ -3,7 +3,6 @@
     v-show="isVisible"
     transition-name="vi-action-sheet-fade"
     :is-show-mask="isShowMask"
-    :is-lock-scroll="isLockScroll"
     :transitionDuration="transitionDuration"
     @mask-click="maskClick">
     <div slot="custom-content">
@@ -74,10 +73,6 @@ export default {
       default: 100
     },
     isShowCancel: {
-      type: Boolean,
-      default: true
-    },
-    isLockScroll: {
       type: Boolean,
       default: true
     },

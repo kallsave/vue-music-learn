@@ -45,7 +45,7 @@ export default {
     _getMusicList() {
       // store失效返回上层
       if (!this.rankAlbum.id) {
-        this.$router.push('/index/rank')
+        this.$router.push('IndexRank')
         return
       }
       getMusicList({

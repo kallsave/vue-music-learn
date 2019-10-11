@@ -66,3 +66,4 @@
 - vue-lazyload
 - touch-action
 - 移动端轮播3d
+- 重新审视项目的架构的不足,去掉vh单位

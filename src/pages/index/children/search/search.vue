@@ -111,7 +111,7 @@ const THROTTLE_TIME = 1000
 let perpage = 20
 
 export default {
-  name: 'index-search',
+  name: 'IndexSearch',
   components: {
     NoResult,
     Loading,
@@ -288,7 +288,7 @@ export default {
           //   path: `/music/singer-detail/${singer.id}`
           // })
           this.$router.push({
-            name: 'detail-singer',
+            name: 'DetailSinger',
             params: {
               id: singer.id
             }

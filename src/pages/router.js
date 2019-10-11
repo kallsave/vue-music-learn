@@ -6,10 +6,10 @@ import TestRouter from './test-router.js'
 // const Index = () => import(/* webpackChunkName: "Index" */ './index/index.vue')
 import Index from './index/index.vue'
 
-const Recommend = () => import(/* webpackChunkName: "Recommend" */ './index/children/recommend/recommend.vue')
-const Singer = () => import(/* webpackChunkName: "Singer" */ './index/children/singer/singer.vue')
-const Search = () => import(/* webpackChunkName: "Search" */ './index/children/search/search.vue')
-const Rank = () => import(/* webpackChunkName: "Rank" */ './index/children/rank/rank.vue')
+const IndexRecommend = () => import(/* webpackChunkName: "Recommend" */ './index/children/recommend/recommend.vue')
+const IndexSinger = () => import(/* webpackChunkName: "Singer" */ './index/children/singer/singer.vue')
+const IndexSearch = () => import(/* webpackChunkName: "Search" */ './index/children/search/search.vue')
+const IndexRank = () => import(/* webpackChunkName: "Rank" */ './index/children/rank/rank.vue')
 
 // detail路由
 // const MusicList = () => import(/* webpackChunkName: "MusicList" */ './detail/index.vue')
@@ -47,7 +47,7 @@ const router = new Router({
     {
       path: '/index',
       component: Index,
-      name: 'index',
+      name: 'Index',
       // 改成slide-view模式需要去掉
       redirect: '/index/recommend',
       meta: {
@@ -56,8 +56,8 @@ const router = new Router({
       children: [
         {
           path: '/index/recommend',
-          component: Recommend,
-          name: 'index-recommend',
+          component: IndexRecommend,
+          name: 'IndexRecommend',
           meta: {
             isUseRouterTransition: true,
             title: '推荐',
@@ -65,8 +65,8 @@ const router = new Router({
         },
         {
           path: '/index/singer',
-          component: Singer,
-          name: 'index-singer',
+          component: IndexSinger,
+          name: 'IndexSinger',
           meta: {
             isUseRouterTransition: true,
             title: '歌手'
@@ -74,8 +74,8 @@ const router = new Router({
         },
         {
           path: '/index/rank',
-          component: Rank,
-          name: 'index-rank',
+          component: IndexRank,
+          name: 'IndexRank',
           meta: {
             isUseRouterTransition: true,
             title: '排行'
@@ -83,8 +83,8 @@ const router = new Router({
         },
         {
           path: '/index/search',
-          component: Search,
-          name: 'index-search',
+          component: IndexSearch,
+          name: 'IndexSearch',
           meta: {
             isUseRouterTransition: true,
             title: '搜索'
@@ -95,7 +95,7 @@ const router = new Router({
     {
       path: '/new-search',
       component: NewSearch,
-      name: 'new-search',
+      name: 'NewSearch',
       meta: {
         isUseRouterTransition: true,
         title: '搜索'
@@ -127,7 +127,7 @@ const router = new Router({
     {
       path: '/detail/recommend/:id',
       component: DetailRecommend,
-      name: 'detail-recommend',
+      name: 'DetailRecommend',
       meta: {
         isUseRouterTransition: true,
         title: '推荐歌单详情'
@@ -136,7 +136,7 @@ const router = new Router({
     {
       path: '/detail/singer/:id',
       component: DetailSinger,
-      name: 'detail-singer',
+      name: 'DetailSinger',
       meta: {
         isUseRouterTransition: true,
         title: '歌手歌单详情'
@@ -145,7 +145,7 @@ const router = new Router({
     {
       path: '/detail/rank/:id',
       component: DetailRank,
-      name: 'detail-rank',
+      name: 'DetailRank',
       meta: {
         isUseRouterTransition: true,
         title: '排行歌单详情'

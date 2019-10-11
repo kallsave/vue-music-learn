@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-07-24 15:27:15
+ * @Last Modified time: 2019-10-11 15:49:04
  */
 
 /**
@@ -29,7 +29,7 @@ export function padZero(num, n = 2) {
  * @param {Numbe} max 较大的数字
  * @returns
  */
-function getRandomInt(min, max) {
+export function getRandomInt(min, max) {
   // Math.random()不包括1,有缺陷
   return Math.random() * (max - min + 1) + min | 0
 }

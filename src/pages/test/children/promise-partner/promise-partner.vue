@@ -1,71 +1,122 @@
 <template>
-  <div></div>
+  <div :class="$style['promise-partner']">
+    <div class="box" @click="showDialog">1</div>
+    <div class="box" @click="showDialog">2</div>
+    <test-dialog
+      ref="TestDialog"
+      :options="options"
+      :data="data">
+    </test-dialog>
+  </div>
 </template>
 
 <script>
+import TestDialog from './component/test-dialog.vue'
+import { getRandomInt, shuffle } from '@/common/helpers/utils.js'
+
+const OPTIONS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
 export default {
-  props: {
-    options: {
-      type: Number,
-      default: 0
-    },
-    data: {
-      type: Number,
-      default: 0
+  components: {
+    TestDialog
+  },
+  data() {
+    return {
+      options: [],
+      data: [],
     }
   },
-  watch: {
-    // 在一个更新周期watch中,写在前面的先执行
-    // 比如this.options = 1;this.data = 1;会先执行watch.data再watch.options
-    // 对于一般列表页,options通常只会更新两次(一次是初始化,一次是不会再变的异步数据)
-    // 而data会无数次更新,而异步数据的data是依赖于异步数据的options,所以做了处理
-    data: {
-      handler(newVal, oldVal) {
-        if (oldVal !== undefined) {
-          this.dataChangeTime++
-          if (this.dataChangeTime === 1) {
-            this.optionsPromise.then((options) => {
-              let data = newVal
-              this.fillData(data, options)
-            })
-          } else {
-            let data = newVal
-            let options = this.options
-            this.fillData(data, options)
-          }
-        } else {
-          this.dataChangeTime = 0
-        }
-      },
-      immediate: true
-    },
-    options: {
-      handler(newVal, oldVal) {
-        // 每一次更新结束会产生一个promise,在下一次更新reslove上一个promise
-        if (oldVal !== undefined) {
-          console.log('options异步更新', this.options)
-          if (this.dataChangeTime === 0 || this.dataChangeTime === 1) {
-            console.log('this.dataChangeTime', this.dataChangeTime)
-            this.optionsPromiseResolve(newVal)
-          }
-        }
-        if (this.dataChangeTime === 0) {
-          this.optionsPromise = new Promise((reslove) => {
-            this.optionsPromiseResolve = reslove
-          })
-        }
-      },
-      immediate: true
-    },
+  created() {
+    this.setOptionsData()
   },
   methods: {
-    fillData(data, options) {
-
-    }
+    showDialog() {
+      this.$refs.TestDialog.show()
+    },
+    // options是随机的
+    createOptions() {
+      let optionsLength = getRandomInt(6, OPTIONS.length)
+      return shuffle(OPTIONS).slice(0, optionsLength)
+    },
+    // data是随机的
+    createData(options) {
+      let optionsLength = options.length - 1
+      let dataLength = getRandomInt(1, optionsLength)
+      return shuffle(options).slice(0, dataLength)
+    },
+    setOptionsData() {
+      let options = this.createOptions()
+      let data = this.createData(options)
+      // created里面正常
+      // this.syncOptionsData(options, data)
+      // created里面正常
+      // this.syncDataOptions(options, data)
+      // create里面正常
+      // this.asyncOptions(options, data)
+      // create里面正常
+      // this.asyncOptions(options, data)
+      // this.asyncData(options, data)
+      // this.asyncOptionsData(options, data)
+      // this.asyncDataOptions(options, data)
+    },
+    // options, data都是同步的,options比data快
+    syncOptionsData(options, data) {
+      this.options = options
+      this.data = data
+    },
+    // options, data都是同步的,options比data慢
+    syncDataOptions(options, data) {
+      this.data = data
+      this.options = options
+    },
+    // options是异步的情况
+    asyncOptions(options, data) {
+      this.data = data
+      window.setTimeout(() => {
+        this.options = options
+      }, 1000)
+    },
+    // data是异步的情况
+    asyncData(options, data) {
+      this.options = options
+      window.setTimeout(() => {
+        this.data = data
+      }, 1000)
+    },
+    // optinos,data都是异步,但是options比data快
+    asyncOptionsData(options, data) {
+      window.setTimeout(() => {
+        this.options = options
+      }, 500)
+      window.setTimeout(() => {
+        this.data = data
+      }, 1000)
+    },
+    // optinos,data都是异步,但是options比data慢
+    asyncDataOptions(options, data) {
+      window.setTimeout(() => {
+        this.data = data
+      }, 500)
+      window.setTimeout(() => {
+        this.options = options
+      }, 1000)
+    },
   }
 }
 </script>
 
-<style>
-
+<style lang="stylus" module>
+.promise-partner {
+  width: 100%;
+  height: 300%;
+  background: #fff;
+  :global {
+    .box {
+      width: 50px;
+      height 50px;
+      background: peru;
+      margin-bottom: 800px;
+    }
+  }
+}
 </style>

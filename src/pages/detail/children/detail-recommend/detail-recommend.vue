@@ -41,7 +41,7 @@ export default {
     _getSongList() {
       // store失效返回上层
       if (!this.recommendAlbum.dissid) {
-        this.$router.push('/index/recommend')
+        this.$router.push('IndexRecommend')
         return
       }
       getSongList({

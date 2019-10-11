@@ -26,7 +26,7 @@ const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'
 
 export default {
-  name: 'index-singer',
+  name: 'IndexSinger',
   mixins: [
     injectSticky,
     playerPaddingBottom,
@@ -116,7 +116,7 @@ export default {
         //   path: `/music/singer-detail/${singer.id}`
         // })
         this.$router.push({
-          name: 'detail-singer',
+          name: 'DetailSinger',
           params: {
             id: singer.id
           }

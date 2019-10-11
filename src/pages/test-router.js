@@ -1,39 +1,40 @@
 // 测试组件路由
 const Test = () => import('./test/index.vue')
-const WechatSticky = () => import('./test/children/wechat-sticky/wechat-sticky.vue')
-const ScrollTest = () => import('./test/children/scroll-test/scroll-test.vue')
-const Functional = () => import('./test/children/functional/functional.vue')
-const Inject = () => import('./test/children/inject/inject.vue')
-const NativeSticky = () => import('./test/children/native-sticky/native-sticky.vue')
-const Sticky = () => import('./test/children/sticky/sticky.vue')
-const Collapse = () => import('./test/children/collapse/collapse.vue')
-const ActionSheet = () => import('./test/children/action-sheet/action-sheet.vue')
-const Picker = () => import('./test/children/picker/picker.vue')
-const Popup = () => import('./test/children/popup/popup.vue')
-const Swipe = () => import('./test/children/swipe/swipe.vue')
-const Touch = () => import('./test/children/touch/touch.vue')
-const ScrollPullDownToutiao = () => import('./test/children/scroll-pull-down/scroll-pull-down-toutiao.vue')
-const ScrollPullDownBubble = () => import('./test/children/scroll-pull-down/scroll-pull-down-bubble.vue')
-const ScrollPullUp = () => import('./test/children/scroll-pull-up/scroll-pull-up.vue')
-const Input = () => import('./test/children/input/input.vue')
-const BoundaryScroll = () => import('./test/children/boundary-scroll/boundary-scroll.vue')
-const NativeScroll = () => import('./test/children/native-scroll/native-scroll.vue')
-const ScrollHorizontal = () => import('./test/children/scroll-horizontal/scroll-horizontal.vue')
-const Exends = () => import('./test/children/extends/extends.vue')
-const WechatPopup = () => import('./test/children/wechat-popup/wechat-popup.vue')
-const AutoSize = () => import('./test/children/autosize/autosize.vue')
-const Component = () => import('./test/children/component/component.vue')
-const Upload = () => import('./test/children/upload/upload.vue')
-const Arr = () => import('./test/children/arr/arr.vue')
-const Jump = () => import('./test/children/jump/jump.vue')
-const ListAnimation = () => import('./test/children/list-animation/list-animation.vue')
-const Tree = () => import('./test/children/tree/tree.vue')
-const Abstract = () => import('./test/children/abstract/abstract.vue')
-const KeepAliveList = () => import('./test/children/keep-alive-list/keep-alive-list.vue')
-const Slow = () => import('./test/children/slow/slow.vue')
-const ScrollTextarea = () => import('./test/children/scroll-textarea/scroll-textarea.vue')
-const Safari100vh = () => import('./test/children/safari-100vh/safari-100vh.vue')
-const ScrollPopup = () => import('./test/children/scroll-popup/scroll-popup.vue')
+const TestWechatSticky = () => import('./test/children/wechat-sticky/wechat-sticky.vue')
+const TestScrollTest = () => import('./test/children/scroll-test/scroll-test.vue')
+const TestFunctional = () => import('./test/children/functional/functional.vue')
+const TestInject = () => import('./test/children/inject/inject.vue')
+const TestNativeSticky = () => import('./test/children/native-sticky/native-sticky.vue')
+const TestSticky = () => import('./test/children/sticky/sticky.vue')
+const TestCollapse = () => import('./test/children/collapse/collapse.vue')
+const TestActionSheet = () => import('./test/children/action-sheet/action-sheet.vue')
+const TestPicker = () => import('./test/children/picker/picker.vue')
+const TestPopup = () => import('./test/children/popup/popup.vue')
+const TestSwipe = () => import('./test/children/swipe/swipe.vue')
+const TestTouch = () => import('./test/children/touch/touch.vue')
+const TestScrollPullDownToutiao = () => import('./test/children/scroll-pull-down/scroll-pull-down-toutiao.vue')
+const TestScrollPullDownBubble = () => import('./test/children/scroll-pull-down/scroll-pull-down-bubble.vue')
+const TestScrollPullUp = () => import('./test/children/scroll-pull-up/scroll-pull-up.vue')
+const TestInput = () => import('./test/children/input/input.vue')
+const TestBoundaryScroll = () => import('./test/children/boundary-scroll/boundary-scroll.vue')
+const TestNativeScroll = () => import('./test/children/native-scroll/native-scroll.vue')
+const TestScrollHorizontal = () => import('./test/children/scroll-horizontal/scroll-horizontal.vue')
+const TestExends = () => import('./test/children/extends/extends.vue')
+const TestWechatPopup = () => import('./test/children/wechat-popup/wechat-popup.vue')
+const TestAutoSize = () => import('./test/children/autosize/autosize.vue')
+const TestComponent = () => import('./test/children/component/component.vue')
+const TestUpload = () => import('./test/children/upload/upload.vue')
+const TestArr = () => import('./test/children/arr/arr.vue')
+const TestJump = () => import('./test/children/jump/jump.vue')
+const TestListAnimation = () => import('./test/children/list-animation/list-animation.vue')
+const TestTree = () => import('./test/children/tree/tree.vue')
+const TestAbstract = () => import('./test/children/abstract/abstract.vue')
+const TestKeepAliveList = () => import('./test/children/keep-alive-list/keep-alive-list.vue')
+const TestSlow = () => import('./test/children/slow/slow.vue')
+const TestScrollTextarea = () => import('./test/children/scroll-textarea/scroll-textarea.vue')
+const TestSafari100vh = () => import('./test/children/safari-100vh/safari-100vh.vue')
+const TestScrollPopup = () => import('./test/children/scroll-popup/scroll-popup.vue')
+const TestPromisePartner = () => import('./test/children/promise-partner/promise-partner.vue')
 
 export default {
   path: '/test',
@@ -41,178 +42,214 @@ export default {
   children: [
     {
       path: '/test/wechat-sticky',
-      component: WechatSticky
+      name: 'TestWechatSticky',
+      component: TestWechatSticky
     },
     {
       path: '/test/scroll-test',
-      component: ScrollTest
+      name: 'TestScrollTest',
+      component: TestScrollTest
     },
     {
       path: '/test/functional',
-      component: Functional
+      name: 'TestFunctional',
+      component: TestFunctional
     },
     {
       path: '/test/inject',
-      component: Inject
+      name: 'TestInject',
+      component: TestInject
     },
     {
       path: '/test/native-sticky',
-      component: NativeSticky
+      name: 'TestNativeSticky',
+      component: TestNativeSticky
     },
     {
       path: '/test/sticky',
-      component: Sticky
+      name: 'TestSticky',
+      component: TestSticky
     },
     {
       path: '/test/collapse',
-      component: Collapse
+      name: 'TestCollapse',
+      component: TestCollapse
     },
     {
       path: '/test/action-sheet',
-      component: ActionSheet
+      name: 'TestActionSheet',
+      component: TestActionSheet
     },
     {
       path: '/test/picker',
-      component: Picker
+      name: 'TestPicker',
+      component: TestPicker
     },
     {
       path: '/test/popup',
-      component: Popup
+      name: 'TestPopup',
+      component: TestPopup
     },
     {
       path: '/test/swipe',
-      component: Swipe
+      name: 'TestSwipe',
+      component: TestSwipe
     },
     {
       path: '/test/touch',
-      component: Touch
+      name: 'TestTouch',
+      component: TestTouch
     },
     {
       path: '/test/scroll-pull-down-toutiao',
-      component: ScrollPullDownToutiao
+      name: 'TestScrollPullDownToutiao',
+      component: TestScrollPullDownToutiao
     },
     {
       path: '/test/scroll-pull-down-bubble',
-      component: ScrollPullDownBubble
+      name: 'TestScrollPullDownBubble',
+      component: TestScrollPullDownBubble
     },
     {
       path: '/test/scroll-pull-up',
-      component: ScrollPullUp
+      name: 'TestScrollPullUp',
+      component: TestScrollPullUp
     },
     {
       path: '/test/input',
-      component: Input
+      name: 'TestInput',
+      component: TestInput
     },
     {
       path: '/test/boundary-scroll',
-      component: BoundaryScroll
+      name: 'TestBoundaryScroll',
+      component: TestBoundaryScroll
     },
     {
       path: '/test/native-scroll',
-      component: NativeScroll
+      name: 'TestNativeScroll',
+      component: TestNativeScroll
     },
     {
       path: '/test/scroll-horizontal',
-      component: ScrollHorizontal
+      name: 'TestScrollHorizontal',
+      component: TestScrollHorizontal
     },
     {
       path: '/test/extends',
-      component: Exends
+      name: 'TestExends',
+      component: TestExends
     },
     {
       path: '/test/wechat-popup',
-      component: WechatPopup,
+      name: 'TestWechatPopup',
+      component: TestWechatPopup,
       meta: {
         isUseRouterTransition: true,
       }
     },
     {
       path: '/test/autosize',
-      component: AutoSize,
+      name: 'TestAutoSize',
+      component: TestAutoSize,
       meta: {
         isUseRouterTransition: true,
       }
     },
     {
       path: '/test/component',
-      component: Component,
+      name: 'TestComponent',
+      component: TestComponent,
       meta: {
         isUseRouterTransition: true,
       }
     },
     {
       path: '/test/upload',
-      component: Upload,
+      name: 'TestUpload',
+      component: TestUpload,
       meta: {
         isUseRouterTransition: true,
       }
     },
     {
       path: '/test/arr',
-      component: Arr
+      name: 'TestArr',
+      component: TestArr
     },
     {
       path: '/test/jump',
-      component: Jump
+      name: 'TestJump',
+      component: TestJump
     },
     {
       path: '/test/list-animation',
-      component: ListAnimation,
+      name: 'TestListAnimation',
+      component: TestListAnimation,
       meta: {
         isUseRouterTransition: true,
       }
     },
     {
       path: '/test/tree',
-      component: Tree,
+      name: 'TestTree',
+      component: TestTree,
       meta: {
         isUseRouterTransition: true,
       }
     },
     {
       path: '/test/abstract',
-      name: 'abstract',
-      component: Abstract,
+      name: 'TestAbstract',
+      component: TestAbstract,
       meta: {
         isUseRouterTransition: true,
       }
     },
     {
       path: '/test/keep-alive-list',
-      name: 'keepAliveList',
-      component: KeepAliveList,
+      name: 'TestKeepAliveList',
+      component: TestKeepAliveList,
       meta: {
         isUseRouterTransition: true
       }
     },
     {
       path: '/test/slow',
-      name: 'slow',
-      component: Slow,
+      name: 'TestSlow',
+      component: TestSlow,
       meta: {
         isUseRouterTransition: true
       }
     },
     {
       path: '/test/scroll-textarea',
-      name: 'scrollTextarea',
-      component: ScrollTextarea,
+      name: 'TestScrollTextarea',
+      component: TestScrollTextarea,
       meta: {
         isUseRouterTransition: true
       }
     },
     {
       path: '/test/safari-100vh',
-      name: 'safari100vh',
-      component: Safari100vh,
+      name: 'TestSafari100vh',
+      component: TestSafari100vh,
       meta: {
         isUseRouterTransition: true
       }
     },
     {
       path: '/test/scroll-popup/:id',
-      name: 'scrollPopup',
-      component: ScrollPopup,
+      name: 'TestScrollPopup',
+      component: TestScrollPopup,
+      meta: {
+        isUseRouterTransition: true
+      }
+    },
+    {
+      path: '/test/promise-partner',
+      name: 'TestPromisePartner',
+      component: TestPromisePartner,
       meta: {
         isUseRouterTransition: true
       }

@@ -40,7 +40,7 @@ export default {
     _getSingerDetail() {
       // store失效返回上层
       if (!this.singer.id) {
-        this.$router.push('/index/singer')
+        this.$router.push('IndexSinger')
         return
       }
       this.isFetchSongList = false

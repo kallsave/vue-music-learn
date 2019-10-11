@@ -41,7 +41,7 @@ import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
 import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
 export default {
-  name: 'index-rank',
+  name: 'IndexRank',
   mixins: [
     injectSticky,
     playerPaddingBottom,
@@ -88,7 +88,7 @@ export default {
         //   path: `/music/rank-detail/${item.id}`
         // })
         this.$router.push({
-          name: 'detail-rank',
+          name: 'DetailRank',
           params: {
             id: item.id
           }

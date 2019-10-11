@@ -89,7 +89,7 @@ import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
 import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
 export default {
-  name: 'index-recommend',
+  name: 'IndexRecommend',
   mixins: [
     injectSticky,
     playerPaddingBottom,
@@ -196,7 +196,7 @@ export default {
         //   path: `/music/recommend-detail/${item.dissid}`
         // })
         this.$router.push({
-          name: 'detail-recommend',
+          name: 'DetailRecommend',
           params: {
             id: item.dissid
           }
