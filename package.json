@@ -74,7 +74,7 @@
     "shelljs": "^0.7.6",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "svgtofont": "^1.13.0",
+    "svgtofont": "^1.3.0",
     "uglifyjs-webpack-plugin": "^1.3.0",
     "url-loader": "^0.5.8",
     "vue-loader": "^13.7.3",

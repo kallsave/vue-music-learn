@@ -1,8 +1,9 @@
 <template>
   <vi-popup
-    :class="$style['play-list-popup']"
     v-model="isVisible"
     transitionName="list-fade"
+    :class="$style['play-list-popup']"
+    :style="{width: '100%', height: '100%'}"
     :transitionDuration="transitionDuration"
     @mask-click="maskClick">
     <div slot="custom-content" class="list-wrapper">

@@ -18,25 +18,25 @@ export default {
         {
           title: '推荐',
           router: {
-            name: 'index-recommend',
+            name: 'IndexRecommend',
           },
         },
         {
           title: '歌手',
           router: {
-            name: 'index-singer',
+            name: 'IndexSinger',
           },
         },
         {
           title: '排行',
           router: {
-            name: 'index-rank',
+            name: 'IndexRank',
           },
         },
         {
           title: '搜索',
           router: {
-            name: 'index-search',
+            name: 'IndexSearch',
           },
         },
       ],

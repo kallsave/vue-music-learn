@@ -15,7 +15,6 @@ export function formatDate(date, fmt) {
   }
 
   for (let k in o) {
-    // es6正则写变量非常方便,用()定位,用RegExp.$1捕获
     if (new RegExp(`(${k})`).test(fmt)) {
       let str = o[k]
       fmt = fmt.replace(RegExp.$1, padLeftZero(str))

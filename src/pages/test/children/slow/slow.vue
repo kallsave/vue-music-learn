@@ -19,16 +19,23 @@ export default {
   },
   methods: {
     clickHandler(e) {
-      slow(e.target, {
-        duration: 400,
-        offset: {
-          translateY: 200,
-          translateX: 200,
-        },
-        done: () => {
-          console.log('done')
+      if (!this.hadClick) {
+        this.hadClick = !this.hadClick
+        if (!this.move) {
+          this.move = slow(e.target, {
+            duration: 4000,
+            offset: {
+              translateY: 200,
+              translateX: 200,
+            },
+            done: () => {
+              console.log('done')
+            }
+          })
         }
-      })
+        return
+      }
+      this.move.stop()
     }
   }
 }
@@ -36,7 +43,7 @@ export default {
 
 <style lang="stylus" module>
 .slow
-  height: 100vh
+  height: 100%
   background: #fff
   :global
     .box

@@ -1,14 +1,19 @@
-import { requestAnimationFrame } from './bom.js'
+import { requestAnimationFrame, cancelAnimationFrame } from './bom.js'
 import { mulitDeepClone } from './utils.js'
 
-let target
-let timeStart
+// 时间戳,开始的位置,要运动的距离,动画持续的时间
+// function easeInOutQuad(t, b, c, d) {
+//   t /= d / 2
+//   if (t < 1) {
+//     return c / 2 * t * t + b
+//   }
+//   t--
+//   return -c / 2 * (t * (t - 2) - 1) + b
+// }
 
-function easeInOutQuad(t, b, c, d) {
-  t /= d / 2
-  if (t < 1) return c / 2 * t * t + b
-  t--
-  return -c / 2 * (t * (t - 2) - 1) + b
+// 时间占比
+function easeInOutQuad(t) {
+  return 1 - (--t * t * t * t)
 }
 
 class Move {
@@ -17,60 +22,82 @@ class Move {
   }
   init(target, options) {
     this.target = target
-    this.offset = options.offset
+    this.offset = mulitDeepClone({}, options.offset)
     this.duration = options.duration
     this.easing = options.easing
     this.done = options.done
-
+    this.run()
+  }
+  run() {
     for (let key in this.offset) {
-      let distance = this.offset[key]
+      let count = this.offset[key]
       this.offset[key] = {
-        start: 0,
-        distance: distance
+        begin: 0,
+        count: count
       }
     }
-    window.requestAnimationFrame((timeCurrent) => {
+    this.requestAnimationFrameId = requestAnimationFrame((timeCurrent) => {
       this.timeStart = timeCurrent
-      this.loop(timeCurrent)
-    })
-  }
-  update(timeCurrent) {
-    this.timeElapsed = timeCurrent - this.timeStart
-  }
-  requestAnimationFrame(timeCurrent) {
-    this.transform(true)
-    window.requestAnimationFrame((timeCurrent) => {
+      this.isRunning = true
       this.loop(timeCurrent)
     })
   }
   loop(timeCurrent) {
-    this.update(timeCurrent)
-    this.timeElapsed < this.duration
-      ? this.requestAnimationFrame()
-      : this.doneCallback()
-  }
-  transform(isUseEase) {
-    let transform = ''
+    if (!this.isRunning) {
+      return
+    }
 
+    this.update(timeCurrent)
+    this.timeCurrent < this.duration
+      ? this.continueHandler()
+      : this.doneHandler()
+  }
+  continueHandler() {
+    this.transform()
+    this.requestAnimationFrameId = requestAnimationFrame((timeCurrent) => {
+      this.loop(timeCurrent)
+    })
+  }
+  doneHandler() {
+    this.timeCurrent = this.duration
+    this.transform()
+    if (typeof this.done === 'function') {
+      this.done()
+    }
+  }
+  update(timeCurrent) {
+    this.timeCurrent = timeCurrent - this.timeStart
+  }
+  transform() {
+    let transform = ''
     for (let key in this.offset) {
-      // 时间刻度,开始的位置,要运动的距离,动画持续的时间
-      // 时间刻度是变化的,其它不变
-      let start = this.offset[key].start
-      let distance = this.offset[key].distance
-      if (isUseEase) {
-        let next = this.easing(this.timeElapsed, start, distance, this.duration)
+      // 时间戳,开始的位置,要运动的距离,动画持续的时间
+      // 时间戳是变化的,其它不变
+      let timeCurrent = this.timeCurrent
+      let begin = this.offset[key].begin
+      let count = this.offset[key].count
+      let duration = this.duration
+      // 普通缓动公式模式
+      // if (isRunning) {
+      //   let next = this.easing(timeCurrent, begin, count, duration)
+      //   transform += `${key}(${next}px)`
+      // } else {
+      //   transform += `${key}(${count}px)`
+      // }
+      // 时间占比缓动公式模式
+      if (this.timeCurrent < this.duration) {
+        let now = this.timeCurrent / this.duration
+        let next = (count - begin) * now
         transform += `${key}(${next}px) `
       } else {
-        transform += `${key}(${distance}px) `
+        transform += `${key}(${count}px) `
       }
     }
     this.target.style.transform = transform
   }
-  doneCallback() {
-    this.transform(false)
-    if (typeof this.done === 'function') {
-      this.done()
-    }
+  stop() {
+    // this.isRunning = false
+    cancelAnimationFrame(this.requestAnimationFrameId)
   }
 }
 

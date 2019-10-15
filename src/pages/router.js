@@ -25,6 +25,11 @@ const NotFoundComponent = () => import(/* webpackChunkName: "404" */ './404/inde
 
 Vue.use(Router)
 
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err)
+}
+
 const router = new Router({
   mode: 'hash',
   // 对于没用到100vh的better-scroll的页面
