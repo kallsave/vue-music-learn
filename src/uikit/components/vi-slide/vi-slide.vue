@@ -33,6 +33,8 @@ import { camelize, spliceArray, mulitDeepClone, Debounce } from '../../common/he
 import BScroll from 'better-scroll'
 import ViSlideItem from './vi-slide-item.vue'
 
+console.log(BScroll.Version)
+
 const COMPONENT_NAME = 'vi-slide'
 
 const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
@@ -74,7 +76,6 @@ const DEFAULT_OPTIONS = {
   // 不用transition而是requestAnimationFrame帧滚动,这样不会出现白屏
   useTransition: false,
   stopPropagation: false,
-  bounceTime: 800,
   eventPassthrough: 'vertical',
 }
 
@@ -146,7 +147,7 @@ export default {
   },
   watch: {
     data: {
-      handler() {
+      handler(newVal) {
         this.$nextTick(() => {
           this._destroySlide()
           this.setSlideWidth()
@@ -167,10 +168,14 @@ export default {
     window.addEventListener('resize', this._resizeHandler, false)
   },
   methods: {
+    _initDots() {
+      this.dots = new Array(this.$refs.slideGroup.children.length)
+    },
     setSlideWidth(isResize) {
       let width = 0
       let slideWidth = this.$refs.slide.clientWidth
       this.children = this.$refs.slideGroup.children
+      console.log('length', this.children.length)
       Array.apply(null, this.children).forEach((item) => {
         addClass(item, 'vi-slide-float')
         // item本来的width是靠img撑开的,现在要固定,这样img就依赖了固定高度
@@ -183,23 +188,6 @@ export default {
         width += 2 * slideWidth
       }
       this.$refs.slideGroup.style.width = width + 'px'
-    },
-    _listenScrollEvents() {
-      const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
-      finalScrollEvents.forEach((event) => {
-        if (event === EVENT_SCROLL) {
-          this.slide.on(camelize(event), (...args) => {
-            this.$emit(event, ...args)
-            if (this.touchTrigger) {
-              this.$emit(EVENT_TOUCH_SCROLL, ...args)
-            }
-          })
-        } else {
-          this.slide.on(camelize(event), (...args) => {
-            this.$emit(event, ...args)
-          })
-        }
-      })
     },
     _initSlide() {
       let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
@@ -225,10 +213,10 @@ export default {
         if (this.autoPlay) {
           this._play()
         }
-        if (!this.debounceHandler) {
-          this.debounceHandler = new Debounce(SCROLL_STOP_TIME)
+        if (!this.debounceInstance) {
+          this.debounceInstance = new Debounce(SCROLL_STOP_TIME)
         }
-        this.debounceHandler.run(() => {
+        this.debounceInstance.run(() => {
           this.touchTrigger = false
         })
       })
@@ -237,13 +225,27 @@ export default {
 
       this._listenScrollEvents()
     },
-    _initDots() {
-      this.dots = new Array(this.$refs.slideGroup.children.length)
+    _listenScrollEvents() {
+      const finalScrollEvents = spliceArray(this.scrollEvents, BIND_SCROLL_EVENTS)
+      finalScrollEvents.forEach((event) => {
+        if (event === EVENT_SCROLL) {
+          this.slide.on(camelize(event), (...args) => {
+            this.$emit(event, ...args)
+            if (this.touchTrigger) {
+              this.$emit(EVENT_TOUCH_SCROLL, ...args)
+            }
+          })
+        } else {
+          this.slide.on(camelize(event), (...args) => {
+            this.$emit(event, ...args)
+          })
+        }
+      })
     },
     _play() {
       window.clearTimeout(this.timer)
-      this.timer = setTimeout(() => {
-        this.slide && this.slide.next(500)
+      this.timer = window.setTimeout(() => {
+        this.slide && this.slide.next(0)
       }, this.interval)
     },
     _resizeHandler() {
@@ -272,7 +274,7 @@ export default {
       }
     },
     _destroySlide() {
-      this.slide.destroy()
+      this.slide && this.slide.destroy()
       this.slide = null
     },
     enableSlide() {

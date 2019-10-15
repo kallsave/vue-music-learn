@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       slideRouterModeList: slideRouterModeList,
-      slideRouterMode: slideRouterModeList[1],
+      slideRouterMode: slideRouterModeList[0],
       tabList: [
         '推荐',
         '歌手',

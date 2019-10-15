@@ -14,8 +14,8 @@
         <div class="slide-wrapper">
           <vi-slide
             ref="slide"
-            v-show="recommends.length"
-            :init-page-index="2"
+            v-if="recommends.length"
+            :init-page-index="0"
             :data="recommends"
             :options="slideOptions"
             :show-dots="true"
@@ -32,11 +32,11 @@
                   @click.stop="props.goToPage(index)"></span>
               </div>
             </template> -->
-            <div v-for="(item, index) in recommends" :key="index">
+            <!-- <div v-for="(item, index) in recommends" :key="index">
               <a :href="item.linkUrl">
                 <img :src="item.picUrl">
               </a>
-            </div>
+            </div> -->
             <!-- <vi-slide-item
               v-for="(item, index) in recommends"
               :key="index">
@@ -141,8 +141,9 @@ export default {
     }
   },
   mounted() {
+    this._getData(true)
     this.$nextTick(() => {
-      this.$refs.scroll.autoPullDownRefresh()
+      // this.$refs.scroll.autoPullDownRefresh()
     })
   },
   methods: {
@@ -185,6 +186,10 @@ export default {
       if (!this.checkLoaded) {
         this.checkLoaded = true
         this.$nextTick(() => {
+          if (this.hadLoad) {
+            return
+          }
+          this.hadLoad = true
           this.$refs.scroll.refresh()
         })
       }
