@@ -8,7 +8,8 @@
         <vi-slide-item
           v-for="(item, index) in data" :key="index"
           :item="item"
-          @load-image=loadImage></vi-slide-item>
+          @load-image=loadImage>
+        </vi-slide-item>
       </slot>
     </div>
     <template v-if="showDots">
@@ -20,7 +21,8 @@
           <span class="vi-slide-dot"
             v-for="(item, index) in dots" :key="index"
             :class="{active: currentPageIndex === index }"
-            @click.stop="clickHandler($event, index)"></span>
+            @click.stop="clickHandler($event, index)">
+          </span>
         </div>
       </slot>
     </template>
@@ -33,8 +35,6 @@ import { camelize, spliceArray, mulitDeepClone, Debounce } from '../../common/he
 import BScroll from 'better-scroll'
 import ViSlideItem from './vi-slide-item.vue'
 
-console.log(BScroll.Version)
-
 const COMPONENT_NAME = 'vi-slide'
 
 const EVENT_BEFORE_SCROLL_START = 'before-scroll-start'
@@ -46,8 +46,8 @@ const EVENT_SCROLL = 'scroll'
 const SCROLL_EVENTS = [
   EVENT_BEFORE_SCROLL_START,
   EVENT_SCROLL_END,
+  EVENT_SCROLL_START,
   EVENT_SCROLL,
-  EVENT_SCROLL_START
 ]
 
 const BIND_SCROLL_EVENTS = [
@@ -77,6 +77,7 @@ const DEFAULT_OPTIONS = {
   useTransition: false,
   stopPropagation: false,
   eventPassthrough: 'vertical',
+  bounce: false
 }
 
 export default {
@@ -101,7 +102,7 @@ export default {
     },
     autoPlay: {
       type: Boolean,
-      default: false
+      default: true
     },
     interval: {
       type: Number,
@@ -142,12 +143,14 @@ export default {
   computed: {
     loop() {
       let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
+      console.log(options.snap.loop)
       return options.snap.loop
     }
   },
   watch: {
     data: {
       handler(newVal) {
+        console.log('data')
         this.$nextTick(() => {
           this._destroySlide()
           this.setSlideWidth()
@@ -155,16 +158,22 @@ export default {
           this._initSlide()
         })
       },
-      deep: true
     },
+    loop: {
+      handler(newVal) {
+        console.log('loop')
+      }
+    }
   },
   mounted() {
     this._initDots()
     this.setSlideWidth()
-    this._initSlide()
-    if (this.autoPlay) {
-      this._play()
-    }
+    this.$nextTick(() => {
+      this._initSlide()
+    })
+    // if (this.autoPlay) {
+    //   this._play()
+    // }
     window.addEventListener('resize', this._resizeHandler, false)
   },
   methods: {
@@ -175,7 +184,6 @@ export default {
       let width = 0
       let slideWidth = this.$refs.slide.clientWidth
       this.children = this.$refs.slideGroup.children
-      console.log('length', this.children.length)
       Array.apply(null, this.children).forEach((item) => {
         addClass(item, 'vi-slide-float')
         // item本来的width是靠img撑开的,现在要固定,这样img就依赖了固定高度
@@ -183,7 +191,7 @@ export default {
         width += slideWidth
       })
       this.slideWidth = width
-      if (this.loop && !isResize && this.children.length > 1) {
+      if (this.loop && !isResize) {
         // 如果需要loop无缝滚动功能,还有两个缓冲div
         width += 2 * slideWidth
       }
@@ -319,12 +327,12 @@ export default {
 .vi-slide-wrapper
   position: relative
   // 这个很重要,better-scroll会根据wrapper的高宽做判断
-  min-height: 1px;
+  min-height: 1px
   height: 100%
+  overflow: hidden
   .vi-slide-group
     position: relative
     height: 100%
-    overflow: hidden
     white-space: nowrap
     .vi-slide-float
       float: left

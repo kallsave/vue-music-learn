@@ -10,7 +10,7 @@
         <router-view class="router-view"></router-view>
       </keep-alive>
     </transition>
-    <player></player>
+    <!-- <player></player> -->
   </div>
 </template>
 

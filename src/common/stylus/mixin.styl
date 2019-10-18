@@ -40,3 +40,31 @@ z-index-popup(number)
 // 盒子阴影
 box-shadow()
   0 4px 10px 0 rgba(153, 153, 153 , 0.14)
+
+// 设置底部1px,配合.border-1px实现移动端准确的1px
+.border-top-1px(@color) {
+  position: relative;
+  &:after {
+    display: block;
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid @color;
+  }
+}
+
+// 设置底部1px,配合.border-1px实现移动端准确的1px
+.border-bottom-1px(@color) {
+  position: relative;
+  &:after {
+    display: block;
+    position: absolute;
+    content: "";
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid @color;
+  }
+}

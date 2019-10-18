@@ -26,7 +26,7 @@ export default {
   methods: {
     loadImage() {
       this.$emit(EVENT_LOAD_IMAGE)
-    }
+    },
   }
 }
 </script>

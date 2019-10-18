@@ -35,6 +35,7 @@ const TestScrollTextarea = () => import('./test/children/scroll-textarea/scroll-
 const TestSafari100vh = () => import('./test/children/safari-100vh/safari-100vh.vue')
 const TestScrollPopup = () => import('./test/children/scroll-popup/scroll-popup.vue')
 const TestPromisePartner = () => import('./test/children/promise-partner/promise-partner.vue')
+const TestSlide = () => import('./test/children/slide/slide.vue')
 
 export default {
   path: '/test',
@@ -250,6 +251,14 @@ export default {
       path: '/test/promise-partner',
       name: 'TestPromisePartner',
       component: TestPromisePartner,
+      meta: {
+        isUseRouterTransition: true
+      }
+    },
+    {
+      path: '/test/slide',
+      name: 'TestSlide',
+      component: TestSlide,
       meta: {
         isUseRouterTransition: true
       }
