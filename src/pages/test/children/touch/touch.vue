@@ -35,10 +35,10 @@ export default {
       // 当div1,div2只有div2绑定了touchstart
       // 第一次放下一个手指在div1上,触发了touchstart,
       // 这个时候,三个集合的内容都是一样的,都包含这个手指的touch,
-      // 然后再放下第二根手指在div2上,第三根手指放div1上,这个时候会触发touchstart,
-      // changedTouches有一个集合,是div1上的第三根手指的集合
-      // targetTouches有两个集合,是在div1上的两根手指的集合
-      // touches有三根手指集合,是三根手指的集合
+      // 然后再放下第二根手指在div2上,第三根手指放div1上,触发了touchstart,
+      // changedTouches这时候是div1上的第三根手指的集合
+      // targetTouches这时候是在div1上的两根手指的集合
+      // touches这时候是三根手指的集合
       // touchend只有changedTouches
       // 如果做单根手指的动作,使用touches[0]
       console.log(mulitDeepClone({}, e.changedTouches))

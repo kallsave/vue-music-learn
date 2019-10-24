@@ -62,8 +62,11 @@
 - rollup + typescript编写前进刷新后退缓存插件
 - 富文本编辑器
 - 看板娘
-- python商城
+- Python商城
 - vue-lazyload
 - touch-action
 - 移动端轮播3d
 - 重新审视项目的架构的不足,去掉vh单位
+- three.js
+- 宏任务微任务总结已经在动画中的运用
+- Java学习

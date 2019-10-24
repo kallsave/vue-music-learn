@@ -1,6 +1,9 @@
 import VConsole from 'vconsole'
+const env = process.env.NODE_ENV
 
-window.vConsole = new VConsole()
+if (env !== 'development') {
+  window.vConsole = new VConsole()
+}
 
 let vConsoleFirst = false
 
@@ -23,18 +26,23 @@ function observeProperty(obj, key, fn) {
     }
   })
 }
-observeProperty(window.vConsole, 'isInited', function () {
-  if (vConsoleFirst) {
-    return
-  }
-  vConsoleFirst = true
-  window.vConsole.$dom.style.display = 'none'
-})
+
+if (window.vConsole) {
+  observeProperty(window.vConsole, 'isInited', function () {
+    if (vConsoleFirst) {
+      return
+    }
+    vConsoleFirst = true
+    window.vConsole.$dom.style.display = 'none'
+  })
+}
 
 export function showVConsole() {
   window.setTimeout(() => {
     if (window.vConsole) {
       window.vConsole.$dom.style.display = 'block'
+    } else {
+      console.log('%cdevelopment close vconsole', 'color:orange')
     }
-  }, 2000)
+  }, 500)
 }

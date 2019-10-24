@@ -45,17 +45,14 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
-        // let currentRoute = this.$route.matched[this.$route.matched.length - 1]
-        // if (currentRoute) {
-        //   let componentsOptions = currentRoute.components.default
-        //   if (!componentsOptions.name) {
-        //     componentsOptions.name = this.$route.name
-        //   }
-        //   this.keepAliveRouteAdd(componentsOptions.name)
-        // }
-        if (this.$route.name) {
-          this.keepAliveRouteAdd(this.$route.name)
+        let matchedComponents = this.$router.getMatchedComponents()
+        for (let i = 0; i < matchedComponents.length; i++) {
+          let componentName = matchedComponents[i].name
+          if (componentName) {
+            this.keepAliveRouteAdd(componentName)
+          }
         }
+        // 没有配置useRouterTransition的页面的过渡效果
         if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
           this.transitionName = ''
           this.mode = ''
@@ -103,14 +100,13 @@ export default {
         let newURL = e.newURL
         if (this.browserHistoryList[1] === newURL) {
           this.browserHistoryReduce()
-          let lastRoute = this.$route.matched[this.$route.matched.length - 1]
-          let componentsOptions = lastRoute.components.default
-          if (!componentsOptions.name) {
-            componentsOptions.name = this.$route.name
+          let matchedComponents = this.$router.getMatchedComponents()
+          for (let i = 0; i < matchedComponents.length; i++) {
+            let componentName = matchedComponents[i].name
+            if (componentName) {
+              this.keepAliveRouteRemove(componentName)
+            }
           }
-          this.keepAliveRouteRemove(componentsOptions.name)
-          // this.lastRouteName = this.$route.name
-          // this.keepAliveRouteRemove(this.lastRouteName)
           this.setRouterTransition({
             name: 'move-left',
             mode: ''

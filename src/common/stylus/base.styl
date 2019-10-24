@@ -1,4 +1,4 @@
-body, html
+html, body
   font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
   user-select: none
   -webkit-tap-highlight-color: transparent
@@ -16,24 +16,19 @@ body, html
     visibility: hidden
     *zoom: 1
 
-@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-  .border-1px {
-    &:before,&:after {
-      -webkit-transform: scaleY(0.7);
-      transform: scaleY(0.7);
-    }
-  }
-}
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5)
+  .border-1px
+    &:before, &:after
+      -webkit-transform: scaleY(0.7)
+      transform: scaleY(0.7)
+
 
 // dpr大于2生效
-@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-  .border-1px {
-    &:before,&:after {
-      -webkit-transform: scaleY(0.5);
-      transform: scaleY(0.5);
-    }
-  }
-}
+@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2)
+  .border-1px
+    &:before, &:after
+      -webkit-transform: scaleY(0.5)
+      transform: scaleY(0.5)
 
 
 
