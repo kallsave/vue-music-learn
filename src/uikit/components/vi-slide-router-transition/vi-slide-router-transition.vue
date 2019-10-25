@@ -77,7 +77,6 @@ export default {
   },
   mounted() {
     this._initSlideRouter()
-    console.log(this.siblingsRoute)
   },
   methods: {
     _initSlideRouter() {

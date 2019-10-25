@@ -4,6 +4,7 @@ import App from './App'
 import router from './pages/router.js'
 import store from './store/index.js'
 import VueLazyLoad from 'vue-lazyload'
+import routerBackKeepAlive from './plugins/router-back-keep-alive/index.js'
 
 import '@/common/stylus/index.styl'
 import Vi from '@/uikit/index.js'
@@ -24,6 +25,7 @@ Vue.use(BaseIndexList)
 Vue.use(BaseProgressBar)
 Vue.use(BaseProgressCircle)
 Vue.use(BaseConfirm)
+Vue.use(routerBackKeepAlive, router)
 
 // 全局默认vue-lazyload配置,可以在局部组件自定义
 // VueLazyLoad是非常优秀的插件,可以让长列表的部分渲染

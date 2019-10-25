@@ -38,6 +38,7 @@ module.exports = {
     extensions: ['.js', '.vue', '.json', ' '],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
+      // 'vue$': 'vue/src/platforms/web/entry-runtime-with-compiler.js',
       // 'better-scroll$': 'better-scroll/src/index.js',
       'better-scroll$': resolve('lib/better-scroll/src/index.js'),
       'vue-lazyload$': resolve('lib/vue-lazyload/src/index.js'),

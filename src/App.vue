@@ -6,11 +6,14 @@
       :mode="mode"
       :duration="routerDuration"
       @after-enter="afterEnter">
-      <keep-alive :include="keepAliveRouteList">
+      <router-back-keep-alive :include="keepAliveRouteList">
         <router-view class="router-view"></router-view>
-      </keep-alive>
+      </router-back-keep-alive>
     </transition>
     <!-- <player></player> -->
+    <!-- <router-back-keep-alive>
+      <div>55</div>
+    </router-back-keep-alive> -->
   </div>
 </template>
 

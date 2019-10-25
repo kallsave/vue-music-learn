@@ -22,9 +22,9 @@
             slide-right-class="scroll-right"
             slide-left-class="scroll-left"
             mode="in-out">
-            <keep-alive>
+            <router-back-keep-alive>
               <router-view></router-view>
-            </keep-alive>
+            </router-back-keep-alive>
           </vi-slide-router-transition>
         </template>
         <template v-else-if="slideRouterMode === slideRouterModeList[1]">

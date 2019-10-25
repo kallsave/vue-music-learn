@@ -47,9 +47,10 @@ function install(Vue) {
     return
   }
   install.installed = true
-  components.forEach((Component) => {
+  for (let i = 0; i < components.length; i++) {
+    let Component = components[i]
     Component.install(Vue)
-  })
+  }
 }
 
 const Vi = {
