@@ -3,7 +3,8 @@
     :is-fetch-song-list="isFetchSongList"
     :song-list="songList"
     :bg-image="bgImage"
-    :title="title"></music-list>
+    :title="title">
+  </music-list>
 </template>
 
 <script>
@@ -24,6 +25,7 @@ export default {
     }
   },
   mounted() {
+    console.log('detail mounted')
     this._getSongList()
   },
   computed: {

@@ -54,48 +54,48 @@ const router = new Router({
       component: Index,
       name: 'Index',
       // 改成slide-view模式需要去掉
-      redirect: '/index/recommend',
-      meta: {
-        isUseRouterTransition: true,
-      },
-      children: [
-        {
-          path: '/index/recommend',
-          component: IndexRecommend,
-          name: 'IndexRecommend',
-          meta: {
-            isUseRouterTransition: true,
-            title: '推荐',
-          },
-        },
-        {
-          path: '/index/singer',
-          component: IndexSinger,
-          name: 'IndexSinger',
-          meta: {
-            isUseRouterTransition: true,
-            title: '歌手'
-          },
-        },
-        {
-          path: '/index/rank',
-          component: IndexRank,
-          name: 'IndexRank',
-          meta: {
-            isUseRouterTransition: true,
-            title: '排行'
-          },
-        },
-        {
-          path: '/index/search',
-          component: IndexSearch,
-          name: 'IndexSearch',
-          meta: {
-            isUseRouterTransition: true,
-            title: '搜索'
-          },
-        },
-      ]
+      // redirect: '/index/recommend',
+      // meta: {
+      //   isUseRouterTransition: true,
+      // },
+      // children: [
+      //   {
+      //     path: '/index/recommend',
+      //     component: IndexRecommend,
+      //     name: 'IndexRecommend',
+      //     meta: {
+      //       isUseRouterTransition: true,
+      //       title: '推荐',
+      //     },
+      //   },
+      //   {
+      //     path: '/index/singer',
+      //     component: IndexSinger,
+      //     name: 'IndexSinger',
+      //     meta: {
+      //       isUseRouterTransition: true,
+      //       title: '歌手'
+      //     },
+      //   },
+      //   {
+      //     path: '/index/rank',
+      //     component: IndexRank,
+      //     name: 'IndexRank',
+      //     meta: {
+      //       isUseRouterTransition: true,
+      //       title: '排行'
+      //     },
+      //   },
+      //   {
+      //     path: '/index/search',
+      //     component: IndexSearch,
+      //     name: 'IndexSearch',
+      //     meta: {
+      //       isUseRouterTransition: true,
+      //       title: '搜索'
+      //     },
+      //   },
+      // ]
     },
     {
       path: '/new-search',
@@ -172,9 +172,10 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
   }
-  window.setTimeout(() => {
-    next()
-  }, 20)
+  next()
+  // window.setTimeout(() => {
+  // next()
+  // }, 0)
 })
 
 export default router

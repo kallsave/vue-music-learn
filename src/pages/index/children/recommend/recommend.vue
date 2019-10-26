@@ -141,7 +141,7 @@ export default {
     }
   },
   mounted() {
-    console.log('mounted')
+    console.log('remmend mounted')
     this._getData(true)
     this.$nextTick(() => {
       // this.$refs.scroll.autoPullDownRefresh()

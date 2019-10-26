@@ -143,14 +143,12 @@ export default {
   computed: {
     loop() {
       let options = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
-      console.log(options.snap.loop)
       return options.snap.loop
     }
   },
   watch: {
     data: {
       handler(newVal) {
-        console.log('data')
         this.$nextTick(() => {
           this._destroySlide()
           this.setSlideWidth()
@@ -159,11 +157,6 @@ export default {
         })
       },
     },
-    loop: {
-      handler(newVal) {
-        console.log('loop')
-      }
-    }
   },
   mounted() {
     this._initDots()
