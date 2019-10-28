@@ -6,14 +6,14 @@
       :mode="mode"
       :duration="routerDuration"
       @after-enter="afterEnter">
-      <router-back-keep-alive :include="keepAliveRouteList">
+      <router-keep :include="keepAliveRouteList" @back="backHandler">
         <router-view class="router-view"></router-view>
-      </router-back-keep-alive>
+      </router-keep>
     </transition>
     <!-- <player></player> -->
-    <!-- <router-back-keep-alive>
+    <!-- <router-keep>
       <div>55</div>
-    </router-back-keep-alive> -->
+    </router-keep> -->
   </div>
 </template>
 
@@ -48,13 +48,7 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
-        let matchedComponents = this.$router.getMatchedComponents()
-        for (let i = 0; i < matchedComponents.length; i++) {
-          let componentName = matchedComponents[i].name
-          if (componentName) {
-            this.keepAliveRouteAdd(componentName)
-          }
-        }
+        console.log(to.params.actions)
         // 没有配置useRouterTransition的页面的过渡效果
         if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
           this.transitionName = ''
@@ -68,14 +62,47 @@ export default {
               mode: ''
             })
           } else {
-            this.transitionName = 'move-right'
-            this.mode = ''
+            if (to.params.actions === 'back') {
+              this.transitionName = 'move-left'
+              this.mode = ''
+            } else {
+              this.transitionName = 'move-right'
+              this.mode = ''
+            }
           }
         }
-        this.browserHistoryAdd(window.location.href)
-      },
-      immediate: true
-    },
+      }
+    }
+    // $route: {
+    //   handler(to, from) {
+    //     let matchedComponents = this.$router.getMatchedComponents()
+    //     for (let i = 0; i < matchedComponents.length; i++) {
+    //       let componentName = matchedComponents[i].name
+    //       if (componentName) {
+    //         this.keepAliveRouteAdd(componentName)
+    //       }
+    //     }
+    //     // 没有配置useRouterTransition的页面的过渡效果
+    //     if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
+    //       this.transitionName = ''
+    //       this.mode = ''
+    //     } else {
+    //       if (this.routerTransition.name) {
+    //         this.transitionName = this.routerTransition.name
+    //         this.mode = this.routerTransition.mode
+    //         this.setRouterTransition({
+    //           name: '',
+    //           mode: ''
+    //         })
+    //       } else {
+    //         this.transitionName = 'move-right'
+    //         this.mode = ''
+    //       }
+    //     }
+    //     this.browserHistoryAdd(window.location.href)
+    //   },
+    //   immediate: true
+    // },
   },
   mounted() {
     this.addEventListenerHashchange()
@@ -98,24 +125,26 @@ export default {
       }, 100)
     },
     addEventListenerHashchange() {
-      window.addEventListener('hashchange', (e) => {
-        // 第一次触发hashchange肯定是浏览器的点击后退
-        let newURL = e.newURL
-        if (this.browserHistoryList[1] === newURL) {
-          this.browserHistoryReduce()
-          let matchedComponents = this.$router.getMatchedComponents()
-          for (let i = 0; i < matchedComponents.length; i++) {
-            let componentName = matchedComponents[i].name
-            if (componentName) {
-              this.keepAliveRouteRemove(componentName)
-            }
-          }
-          this.setRouterTransition({
-            name: 'move-left',
-            mode: ''
-          })
-        }
-      })
+      // window.addEventListener('hashchange', (e) => {
+      //   // 第一次触发hashchange肯定是浏览器的点击后退
+      //   let newURL = e.newURL
+      //   if (this.browserHistoryList[1] === newURL) {
+      //     this.browserHistoryReduce()
+      //     let matchedComponents = this.$router.getMatchedComponents()
+      //     for (let i = 0; i < matchedComponents.length; i++) {
+      //       let componentName = matchedComponents[i].name
+      //       if (componentName) {
+      //         this.keepAliveRouteRemove(componentName)
+      //       }
+      //     }
+      //     this.setRouterTransition({
+      //       name: 'move-left',
+      //       mode: ''
+      //     })
+      //   }
+      // })
+    },
+    backHandler(actions) {
     }
   }
 }

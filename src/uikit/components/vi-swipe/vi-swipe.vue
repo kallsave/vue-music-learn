@@ -354,6 +354,9 @@ export default {
       }
     },
     toggleConfirmMenu(isShowConfirm) {
+      if (!this.$refs.confirmMenu) {
+        return
+      }
       const confirmMenuStyle = this.$refs.confirmMenu.style
       if (isShowConfirm) {
         confirmMenuStyle.display = 'flex'

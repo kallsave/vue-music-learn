@@ -1,4 +1,6 @@
-import Component from './component.js'
+import { inBrowser } from './util/env.js'
+import Component from './components/router-keep.js'
+import { routerHandler } from './router-plus/index.js'
 
 let isInstalled = false
 
@@ -8,26 +10,15 @@ function install(Vue, router) {
   }
   isInstalled = true
   Vue.component(Component.name, Component)
-  router.beforeEach(async (to, from, next) => {
-    await (() => {
-      return new Promise((resolve) => {
-        resolve()
-      })
-    })
-    window.setTimeout(() => {
-      console.log('next')
-      next()
-    }, 0)
-  })
+  routerHandler(Vue, router)
 }
 
-window.addEventListener('hashchange', (e) => {
-  // 第一次触发hashchange肯定是浏览器的点击后退
-  console.log('hashchange')
-})
-
-const routerBackKeepAlive = {
+const RouterKeep = {
   install: install,
 }
 
-export default routerBackKeepAlive
+if (inBrowser && window.Vue) {
+  window.Vue.use(RouterKeep)
+}
+
+export default RouterKeep

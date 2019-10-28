@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import TestRouter from './test-router.js'
+// import TestRouter from './test-router.js'
 
 // index路由
 // const Index = () => import(/* webpackChunkName: "Index" */ './index/index.vue')
@@ -44,7 +44,7 @@ const router = new Router({
     })
   },
   routes: [
-    ...TestRouter.children,
+    // ...TestRouter.children,
     {
       path: '/',
       redirect: '/index'
@@ -54,48 +54,48 @@ const router = new Router({
       component: Index,
       name: 'Index',
       // 改成slide-view模式需要去掉
-      // redirect: '/index/recommend',
-      // meta: {
-      //   isUseRouterTransition: true,
-      // },
-      // children: [
-      //   {
-      //     path: '/index/recommend',
-      //     component: IndexRecommend,
-      //     name: 'IndexRecommend',
-      //     meta: {
-      //       isUseRouterTransition: true,
-      //       title: '推荐',
-      //     },
-      //   },
-      //   {
-      //     path: '/index/singer',
-      //     component: IndexSinger,
-      //     name: 'IndexSinger',
-      //     meta: {
-      //       isUseRouterTransition: true,
-      //       title: '歌手'
-      //     },
-      //   },
-      //   {
-      //     path: '/index/rank',
-      //     component: IndexRank,
-      //     name: 'IndexRank',
-      //     meta: {
-      //       isUseRouterTransition: true,
-      //       title: '排行'
-      //     },
-      //   },
-      //   {
-      //     path: '/index/search',
-      //     component: IndexSearch,
-      //     name: 'IndexSearch',
-      //     meta: {
-      //       isUseRouterTransition: true,
-      //       title: '搜索'
-      //     },
-      //   },
-      // ]
+      redirect: '/index/recommend',
+      meta: {
+        isUseRouterTransition: true,
+      },
+      children: [
+        {
+          path: '/index/recommend',
+          component: IndexRecommend,
+          name: 'IndexRecommend',
+          meta: {
+            isUseRouterTransition: true,
+            title: '推荐',
+          },
+        },
+        {
+          path: '/index/singer',
+          component: IndexSinger,
+          name: 'IndexSinger',
+          meta: {
+            isUseRouterTransition: true,
+            title: '歌手'
+          },
+        },
+        {
+          path: '/index/rank',
+          component: IndexRank,
+          name: 'IndexRank',
+          meta: {
+            isUseRouterTransition: true,
+            title: '排行'
+          },
+        },
+        {
+          path: '/index/search',
+          component: IndexSearch,
+          name: 'IndexSearch',
+          meta: {
+            isUseRouterTransition: true,
+            title: '搜索'
+          },
+        },
+      ]
     },
     {
       path: '/new-search',

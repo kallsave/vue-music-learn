@@ -22,9 +22,9 @@
             slide-right-class="scroll-right"
             slide-left-class="scroll-left"
             mode="in-out">
-            <router-back-keep-alive>
+            <router-keep>
               <router-view></router-view>
-            </router-back-keep-alive>
+            </router-keep>
           </vi-slide-router-transition>
         </template>
         <template v-else-if="slideRouterMode === slideRouterModeList[1]">
@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       slideRouterModeList: slideRouterModeList,
-      slideRouterMode: slideRouterModeList[2],
+      slideRouterMode: slideRouterModeList[0],
       tabList: [
         '推荐',
         '歌手',
