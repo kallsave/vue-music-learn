@@ -6,9 +6,9 @@
       :mode="mode"
       :duration="routerDuration"
       @after-enter="afterEnter">
-      <router-keep :include="keepAliveRouteList" @back="backHandler">
+      <router-cache>
         <router-view class="router-view"></router-view>
-      </router-keep>
+      </router-cache>
     </transition>
     <!-- <player></player> -->
     <!-- <router-keep>
@@ -19,7 +19,7 @@
 
 <script>
 import { AFTER_ENTER, FINISH } from '@/store/modules/router-transition-state/config.js'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapdirection } from 'vuex'
 import Player from '@/components/player/player.vue'
 import Stack from '@/common/class/stack.js'
 
@@ -41,14 +41,12 @@ export default {
   computed: {
     ...mapGetters([
       'routerTransition',
-      'keepAliveRouteList',
-      'browserHistoryList'
     ])
   },
   watch: {
     $route: {
       handler(to, from) {
-        console.log(to.params.actions)
+        console.log(to.params.direction)
         // 没有配置useRouterTransition的页面的过渡效果
         if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
           this.transitionName = ''
@@ -62,7 +60,7 @@ export default {
               mode: ''
             })
           } else {
-            if (to.params.actions === 'back') {
+            if (to.params.direction === 'back') {
               this.transitionName = 'move-left'
               this.mode = ''
             } else {
@@ -73,79 +71,18 @@ export default {
         }
       }
     }
-    // $route: {
-    //   handler(to, from) {
-    //     let matchedComponents = this.$router.getMatchedComponents()
-    //     for (let i = 0; i < matchedComponents.length; i++) {
-    //       let componentName = matchedComponents[i].name
-    //       if (componentName) {
-    //         this.keepAliveRouteAdd(componentName)
-    //       }
-    //     }
-    //     // 没有配置useRouterTransition的页面的过渡效果
-    //     if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
-    //       this.transitionName = ''
-    //       this.mode = ''
-    //     } else {
-    //       if (this.routerTransition.name) {
-    //         this.transitionName = this.routerTransition.name
-    //         this.mode = this.routerTransition.mode
-    //         this.setRouterTransition({
-    //           name: '',
-    //           mode: ''
-    //         })
-    //       } else {
-    //         this.transitionName = 'move-right'
-    //         this.mode = ''
-    //       }
-    //     }
-    //     this.browserHistoryAdd(window.location.href)
-    //   },
-    //   immediate: true
-    // },
-  },
-  mounted() {
-    this.addEventListenerHashchange()
   },
   methods: {
     ...mapMutations({
       setRouterTransition: 'SET_ROUTER_TRANSITION',
       setRouterTransitionState: 'SET_ROUTER_TRANSITION_STATE'
     }),
-    ...mapActions([
-      'keepAliveRouteAdd',
-      'keepAliveRouteRemove',
-      'browserHistoryAdd',
-      'browserHistoryReduce',
-    ]),
     afterEnter() {
       this.setRouterTransitionState(AFTER_ENTER)
       window.setTimeout(() => {
         this.setRouterTransitionState(FINISH)
       }, 100)
     },
-    addEventListenerHashchange() {
-      // window.addEventListener('hashchange', (e) => {
-      //   // 第一次触发hashchange肯定是浏览器的点击后退
-      //   let newURL = e.newURL
-      //   if (this.browserHistoryList[1] === newURL) {
-      //     this.browserHistoryReduce()
-      //     let matchedComponents = this.$router.getMatchedComponents()
-      //     for (let i = 0; i < matchedComponents.length; i++) {
-      //       let componentName = matchedComponents[i].name
-      //       if (componentName) {
-      //         this.keepAliveRouteRemove(componentName)
-      //       }
-      //     }
-      //     this.setRouterTransition({
-      //       name: 'move-left',
-      //       mode: ''
-      //     })
-      //   }
-      // })
-    },
-    backHandler(actions) {
-    }
   }
 }
 </script>

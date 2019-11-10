@@ -14,36 +14,12 @@
         <div class="slide-wrapper">
           <vi-slide
             ref="slide"
-            v-if="recommends.length"
             :init-page-index="0"
             :data="recommends"
             :options="slideOptions"
             :show-dots="true"
             :auto-play="true"
             @load-image="loadImage">
-            <!-- slide最常用的场景中，每个轮播页是一个可跳转链接的图片 -->
-            <!-- 同时使用slot也可以支持自定义样式 -->
-            <!-- <template slot="dots" slot-scope="props">
-              <div class="slide-dots">
-                <span class="slide-dot"
-                  :class="{active: props.currentPageIndex === index}"
-                  v-for="(item, index) in recommends"
-                  :key="index"
-                  @click.stop="props.goToPage(index)"></span>
-              </div>
-            </template> -->
-            <!-- <div v-for="(item, index) in recommends" :key="index">
-              <a :href="item.linkUrl">
-                <img :src="item.picUrl">
-              </a>
-            </div> -->
-            <!-- <vi-slide-item
-              v-for="(item, index) in recommends"
-              :key="index">
-              <a :href="item.linkUrl">
-                <img :src="item.picUrl">
-              </a>
-            </vi-slide-item> -->
           </vi-slide>
         </div>
         <div class="recommend-list">
@@ -86,15 +62,12 @@ import playerPaddingBottom from '@/common/mixins/play-padding-bottom.js'
 import { mapMutations } from 'vuex'
 import { injectSticky } from '../../mixins/inject-sticky.js'
 import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
-import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
 export default {
-  name: 'IndexRecommend',
   mixins: [
     injectSticky,
     playerPaddingBottom,
     createThrottleInstance,
-    keepAliveRouteManager
   ],
   data() {
     return {
@@ -109,7 +82,6 @@ export default {
           // 滞留的位置
           stop: 60,
           txt: '更新成功',
-          // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
           stopTime: 1500
         },
         directionLockThreshold: 0,
@@ -141,10 +113,8 @@ export default {
     }
   },
   mounted() {
-    console.log('remmend mounted')
-    this._getData(true)
     this.$nextTick(() => {
-      // this.$refs.scroll.autoPullDownRefresh()
+      this.$refs.scroll.autoPullDownRefresh()
     })
   },
   methods: {
@@ -155,35 +125,31 @@ export default {
       this.$refs.scrollWrapper.style.paddingBottom = `${this.playerHeight}px`
       this.$refs.scroll.refresh()
     },
-    _getData(forceUpdate) {
-      this.$global.toast.show({
-        icon: 'loading',
-      })
-      window.setTimeout(() => {
-        this.$global.toast.hide()
-      }, 2000)
-      Promise.all([this._getRecommend(forceUpdate), this._getDiscList(forceUpdate)]).then((res) => {
-        // 两个接口都拿到数据的操作
-        // promise在组件销毁后还是会执行的
-      })
+    _getData() {
+      Promise.all([this._getRecommend(), this._getDiscList()]).then((res) => {})
     },
-    _getRecommend(forceUpdate) {
+    _getRecommend() {
       return getRecommend().then((res) => {
         this.recommends = res.data.slider
+        this.$nextTick(() => {
+          this.$refs.scroll.refresh()
+        })
       })
     },
-    _getDiscList(forceUpdate) {
+    _getDiscList() {
       return new Promise((resolve, reject) => {
         getDiscList().then((res) => {
-          setTimeout(() => {
+          window.setTimeout(() => {
             this.discList = res.data.list
+            this.$nextTick(() => {
+              this.$refs.scroll.refresh()
+            })
             resolve(res)
           }, 1000)
         })
       })
     },
     loadImage() {
-      // 图片是异步撑开的,所以要@load监听第一张图片的下载
       if (!this.checkLoaded) {
         this.checkLoaded = true
         this.$nextTick(() => {
@@ -198,9 +164,6 @@ export default {
     selectItem(e, item) {
       this.throttle.run(() => {
         this.setRecommendAlbum(item)
-        // this.$router.push({
-        //   path: `/music/recommend-detail/${item.dissid}`
-        // })
         this.$router.push({
           name: 'DetailRecommend',
           params: {
@@ -210,7 +173,7 @@ export default {
       })
     },
     onPullingDown() {
-      this._getData(true)
+      this._getData()
     },
     menuClick(menu, index, shrink, toggleConfirmMenu) {
       if (menu.content === '取消') {
@@ -239,7 +202,7 @@ export default {
     .scroll-wrapper
       box-sizing: border-box
       width: 100%
-      height: calc(100vh - 44px)
+      height: 100%
       .slide-wrapper
         overflow: hidden
         .slide-item

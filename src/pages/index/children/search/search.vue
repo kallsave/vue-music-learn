@@ -101,7 +101,6 @@ import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
 import SearchList from '@/components/search-list/search-list.vue'
 import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
 import createDebounceInstanceMixin from '@/common/mixins/create-debounce-instance.js'
-import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 const TYPE_SINGER = 'singer'
@@ -122,7 +121,6 @@ export default {
     playerPaddingBottom,
     createThrottleInstance,
     createDebounceInstanceMixin,
-    keepAliveRouteManager,
   ],
   data() {
     return {

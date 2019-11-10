@@ -38,15 +38,12 @@ import playerPaddingBottom from '@/common/mixins/play-padding-bottom.js'
 import { mapMutations } from 'vuex'
 import { injectSticky } from '../../mixins/inject-sticky.js'
 import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
-import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
 export default {
-  name: 'IndexRank',
   mixins: [
     injectSticky,
     playerPaddingBottom,
     createThrottleInstance,
-    keepAliveRouteManager
   ],
   data() {
     return {
@@ -84,9 +81,6 @@ export default {
     selectItem(e, item) {
       this.throttle.run(() => {
         this.setRankAlbum(item)
-        // this.$router.push({
-        //   path: `/music/rank-detail/${item.id}`
-        // })
         this.$router.push({
           name: 'DetailRank',
           params: {
