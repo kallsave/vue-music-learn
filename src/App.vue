@@ -11,9 +11,6 @@
       </router-cache>
     </transition>
     <!-- <player></player> -->
-    <!-- <router-keep>
-      <div>55</div>
-    </router-keep> -->
   </div>
 </template>
 

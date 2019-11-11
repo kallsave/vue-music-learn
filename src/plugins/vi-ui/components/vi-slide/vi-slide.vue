@@ -8,7 +8,7 @@
         <vi-slide-item
           v-for="(item, index) in data" :key="index"
           :item="item"
-          @load-image=loadImage>
+          @load-image="loadImage">
         </vi-slide-item>
       </slot>
     </div>
@@ -77,7 +77,7 @@ const DEFAULT_OPTIONS = {
   useTransition: false,
   stopPropagation: false,
   eventPassthrough: 'vertical',
-  bounce: false
+  bounce: false,
 }
 
 export default {
@@ -161,12 +161,10 @@ export default {
   mounted() {
     this._initDots()
     this.setSlideWidth()
-    this.$nextTick(() => {
-      this._initSlide()
-    })
-    // if (this.autoPlay) {
-    //   this._play()
-    // }
+    this._initSlide()
+    if (this.autoPlay) {
+      this._play()
+    }
     window.addEventListener('resize', this._resizeHandler, false)
   },
   methods: {
@@ -221,9 +219,7 @@ export default {
           this.touchTrigger = false
         })
       })
-
       this.slide.goToPage(this.initPageIndex, 0, 0)
-
       this._listenScrollEvents()
     },
     _listenScrollEvents() {
@@ -260,19 +256,16 @@ export default {
     clickHandler(event, index) {
       this.goToPage(index)
     },
-    goToPage(index, time = 400) {
+    goToPage(pageX, pageY, time = 400) {
       window.clearTimeout(this.timer)
-      this.slide.goToPage(index, 0, time)
-      if (this.currentPageIndex !== index) {
-        this.currentPageIndex = index
-        this.$emit(EVENT_CHANGE_PAGE, index)
+      if (this.currentPageIndex !== pageX) {
+        this.slide.goToPage(pageX, pageY, time)
+        this.currentPageIndex = pageX
+        this.$emit(EVENT_CHANGE_PAGE, pageX)
       }
     },
     loadImage() {
-      if (!this.checkLoaded) {
-        this.checkLoaded = true
-        this.$emit(EVENT_LOAD_IMAGE)
-      }
+      this.$emit(EVENT_LOAD_IMAGE)
     },
     _destroySlide() {
       this.slide && this.slide.destroy()

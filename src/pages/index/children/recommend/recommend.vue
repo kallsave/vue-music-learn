@@ -90,8 +90,8 @@ export default {
         probeType: 1,
         click: true,
         snap: {
+          threshold: 0.5,
           loop: true,
-          threshold: 0.5
         },
       },
       menuList: [
@@ -197,7 +197,6 @@ export default {
   width: 100%
   height: calc(100vh - 44px)
   overflow: hidden
-  background: $color-background
   :global
     .scroll-wrapper
       box-sizing: border-box

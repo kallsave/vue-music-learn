@@ -89,6 +89,10 @@ export default {
       slideViewOptions: {
         probeType: 3,
         click: true,
+        snap: {
+          loop: false,
+        },
+        test: 'outer'
       },
       sliderStyle: {
         transition: 'none'

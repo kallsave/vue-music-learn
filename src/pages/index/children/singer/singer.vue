@@ -128,7 +128,6 @@ export default {
 .singer
   width: 100%
   height: calc(100vh - 44px)
-  background: $color-background
   overflow: hidden
   :global
     .index-list-scroll-wrapper

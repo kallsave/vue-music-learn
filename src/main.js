@@ -1,4 +1,5 @@
 // import { showVConsole } from '@/common/jmeter/vconsole.js'
+import '@/common/stylus/index.styl'
 import Vue from 'vue'
 import App from './App'
 import router from './pages/router.js'
@@ -6,8 +7,7 @@ import store from './store/index.js'
 import VueLazyLoad from 'vue-lazyload'
 import VueRouterCache from './plugins/vue-router-cache/index.js'
 
-import '@/common/stylus/index.styl'
-import Vi from '@/uikit/index.js'
+import ViUi from '@/plugins/vi-ui/index.js'
 
 import BaseLoadListCon from '@/base/load-list-con/index.js'
 import BaseIndexList from '@/base/index-list/index.js'
@@ -18,7 +18,7 @@ import BaseConfirm from '@/base/confirm/index.js'
 
 import recoverWebviewMixin from '@/common/mixins/recover-webview.js'
 
-Vue.use(Vi)
+Vue.use(ViUi)
 Vue.use(BaseLoadListCon)
 Vue.use(BaseSearchBox)
 Vue.use(BaseIndexList)

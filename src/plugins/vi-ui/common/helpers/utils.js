@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-11-11 17:45:16
+ * @Last Modified time: 2019-11-11 20:15:36
  */
 
 /**
@@ -146,8 +146,6 @@ function _deepAssign(to, from) {
 }
 
 /**
- * 支持多参数的深度克隆
- * 后面的优先级最大
  * @export
  * @param {Object} target
  * @param {Object} rest
@@ -155,7 +153,7 @@ function _deepAssign(to, from) {
  */
 export function deepClone(target, ...rest) {
   for (let i = 0; i < rest.length; i++) {
-    let source = deepClone(rest[i])
+    let source = _deepClone(rest[i])
     _deepAssign(target, source)
   }
   return target

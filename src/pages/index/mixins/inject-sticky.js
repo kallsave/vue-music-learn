@@ -7,9 +7,9 @@ export function scrollHandler(pos) {
       ViScroll.$disY = -STICKY_TOP_BAR
       ViScroll.scroll.scrollTo(0, -29, 0)
       ViScroll.scroll.disable()
-      console.log(1)
+      // console.log(1)
     } else {
-      console.log(77)
+      // console.log(77)
     }
   } else if (pos.y >= -STICKY_TOP_BAR && pos.y <= 0) {
     ViScroll.scroll.enable()
@@ -19,9 +19,9 @@ export function scrollHandler(pos) {
       ViScroll.$disY = STICKY_TOP_BAR
       ViScroll.scroll.enable()
       ViScroll.scroll.scrollTo(0, 0, 0)
-      console.log(4)
+      // console.log(4)
     } else {
-      console.log(66)
+      // console.log(66)
     }
   }
 }

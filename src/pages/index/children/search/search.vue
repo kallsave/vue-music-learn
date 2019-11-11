@@ -97,7 +97,7 @@ import playerPaddingBottom from '@/common/mixins/play-padding-bottom.js'
 import Singer from '@/common/class/singer.js'
 
 import NoResult from './components/no-result/no-result.vue'
-import Loading from '@/uikit/components/vi-scroll/vi-scroll-loading.vue'
+import Loading from '@/plugins/vi-ui/components/vi-scroll/vi-scroll-loading.vue'
 import SearchList from '@/components/search-list/search-list.vue'
 import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
 import createDebounceInstanceMixin from '@/common/mixins/create-debounce-instance.js'
