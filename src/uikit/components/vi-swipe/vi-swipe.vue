@@ -35,7 +35,7 @@ import {
 } from '../../common/helpers/ease.js'
 
 import {
-  mulitDeepClone
+  deepClone
 } from '../../common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-swipe'
@@ -142,7 +142,7 @@ export default {
     // 收缩状态
     this.state = STATE_SHRINK
     this.swipeGroup && this.swipeGroup.addItem(this)
-    this.confirmMenuOptions = mulitDeepClone({}, DEFAULT_CONFIRM_OPTIONS)
+    this.confirmMenuOptions = deepClone({}, DEFAULT_CONFIRM_OPTIONS)
   },
   mounted() {
     this._initCachedMenus()
@@ -192,7 +192,7 @@ export default {
       let menuStyle = {}
       menuStyle[TRANSITION_PROPERTY] = 'all'
       menuStyle[TRANSITION_TIMING_FUNCTION] = EASE_OUT_QUART
-      return mulitDeepClone(menuStyle, menu.style)
+      return deepClone(menuStyle, menu.style)
     },
     touchstartHandler(e) {
       if (this.disabled) {

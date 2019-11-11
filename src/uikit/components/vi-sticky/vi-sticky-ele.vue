@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mulitDeepClone } from '../../common/helpers/utils.js'
+import { deepClone } from '../../common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-sticky-ele'
 
@@ -54,7 +54,7 @@ export default {
     // 计算一些stickyTop的数值,异步的场景需要在sticky组件调用这个方法重新刷新stickyTop
     calculate() {
       const stickyTop = this.$el.firstElementChild.getBoundingClientRect().top - this.ViSticky.fixedTop
-      mulitDeepClone(this.ViSticky.stickyMap[this.eleKey], {
+      deepClone(this.ViSticky.stickyMap[this.eleKey], {
         stickyTop
       })
     },

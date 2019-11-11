@@ -22,7 +22,7 @@ module.exports = {
   // add your custom rules here
   rules: {
     'arrow-parens': 'off',
-    'comma-dangle': ['off'],
+    'comma-dangle': 'off',
     'eol-last': 'off',
     // allow async-await
     'generator-star-spacing': 'off',
@@ -34,6 +34,7 @@ module.exports = {
       'asyncArrow': 'always'
     }],
     'no-unused-vars': 'off',
-    'no-useless-constructor': 'off'
+    'no-useless-constructor': 'off',
+    "lines-between-class-members": 'off'
   }
 }

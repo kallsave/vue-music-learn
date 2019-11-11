@@ -6,7 +6,7 @@ import {
   apiHandler,
 } from './config'
 
-import { mulitDeepClone } from '@/common/helpers/utils.js'
+import { deepClone } from '@/common/helpers/utils.js'
 
 // jsonp接口
 export function getSingerList(params = {}) {
@@ -21,7 +21,7 @@ export function getSingerList(params = {}) {
     needNewCode: 0,
     platform: 'yqq'
   }
-  const data = mulitDeepClone({}, commonParams, defaultParams, params)
+  const data = deepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     return jsonp({
       url,
@@ -41,7 +41,7 @@ export function getSingerDetail(params = {}) {
     num: 80,
     songstatus: 1,
   }
-  const data = mulitDeepClone({}, commonParams, defaultParams, params)
+  const data = deepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     return jsonp({
       url,

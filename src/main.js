@@ -4,7 +4,7 @@ import App from './App'
 import router from './pages/router.js'
 import store from './store/index.js'
 import VueLazyLoad from 'vue-lazyload'
-import RouterKeepBack from './plugins/router-back-keep-alive/index.js'
+import VueRouterKeep from './plugins/router-keep/index.js'
 
 import '@/common/stylus/index.styl'
 import Vi from '@/uikit/index.js'
@@ -25,7 +25,19 @@ Vue.use(BaseIndexList)
 Vue.use(BaseProgressBar)
 Vue.use(BaseProgressCircle)
 Vue.use(BaseConfirm)
-Vue.use(RouterKeepBack, router)
+Vue.use(VueRouterKeep, {
+  router: router,
+  max: 11,
+  mode: 'single',
+  getHistoryStack() {
+    const str = window.sessionStorage.getItem('historyStack')
+    return JSON.parse(str)
+  },
+  setHistoryStack(history) {
+    const str = JSON.stringify(history)
+    window.sessionStorage.setItem('historyStack', str)
+  }
+})
 
 // 全局默认vue-lazyload配置,可以在局部组件自定义
 // VueLazyLoad是非常优秀的插件,可以让长列表的部分渲染

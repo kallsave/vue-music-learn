@@ -60,7 +60,7 @@ export function styleTogglePx(style, mode = true) {
     }
   }
 
-  return mulitDeepClone(style, map)
+  return deepClone(style, map)
 }
 
 export function stylePadPx(style) {
@@ -153,7 +153,7 @@ function deepAssign(to, from) {
  * @param {Object} rest
  * @returns
  */
-export function mulitDeepClone(target, ...rest) {
+export function deepClone(target, ...rest) {
   for (let i = 0; i < rest.length; i++) {
     let source = deepClone(rest[i])
     deepAssign(target, source)

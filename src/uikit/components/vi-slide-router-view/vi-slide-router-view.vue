@@ -24,7 +24,7 @@
 <script>
 import ViSlide from '../vi-slide/vi-slide.vue'
 import Background from './vi-slide-router-view-background.vue'
-import { mulitDeepClone, stylePadPx } from '../../common/helpers/utils.js'
+import { deepClone, stylePadPx } from '../../common/helpers/utils.js'
 import { prefixStyle } from '../../common/helpers/dom.js'
 
 const COMPONENT_NAME = 'vi-slide-router-view'
@@ -165,7 +165,7 @@ export default {
   methods: {
     _propChildren() {
       // created => children.props => children.data => children.created
-      this.slideOptions = mulitDeepClone({}, DEFAULT_OPTIONS, this.options)
+      this.slideOptions = deepClone({}, DEFAULT_OPTIONS, this.options)
     },
     _findSlide() {
       this.slide = this.$refs.slide.slide

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mulitDeepClone, stylePadPx } from '../../common/helpers/utils.js'
+import { deepClone, stylePadPx } from '../../common/helpers/utils.js'
 import { prefixStyle, addClass } from '../../common/helpers/dom.js'
 
 const COMPONENT_NAME = 'vi-tab'
@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     calcSliderStyle() {
-      return mulitDeepClone({}, DEFAULT_TAB_SLIDER_STYLE, stylePadPx(this.sliderStyle))
+      return deepClone({}, DEFAULT_TAB_SLIDER_STYLE, stylePadPx(this.sliderStyle))
     }
   },
   mounted() {

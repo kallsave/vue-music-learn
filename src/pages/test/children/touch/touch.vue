@@ -13,7 +13,7 @@
 
 <script>
 import { prefixStyle } from '@/common/helpers/dom.js'
-import { Throttle, mulitDeepClone } from '@/common/helpers/utils.js'
+import { Throttle, deepClone } from '@/common/helpers/utils.js'
 
 const TRANSFORM = prefixStyle('transform')
 const TRANSITION = prefixStyle('transition')
@@ -41,9 +41,9 @@ export default {
       // touches这时候是三根手指的集合
       // touchend只有changedTouches
       // 如果做单根手指的动作,使用touches[0]
-      console.log(mulitDeepClone({}, e.changedTouches))
-      console.log(mulitDeepClone({}, e.targetTouches))
-      console.log(mulitDeepClone({}, e.touches))
+      console.log(deepClone({}, e.changedTouches))
+      console.log(deepClone({}, e.targetTouches))
+      console.log(deepClone({}, e.touches))
     },
     touchmoveHandler(e) {
       // this.throttle.run(() => {
