@@ -1,8 +1,8 @@
 import { MapStack } from '../util/stack'
 import historyStateEvent from '../history/history-state-event'
-import { EVENT_HISTORY_ACTION_BACK } from '../history/history-action-name'
-import { globalCache, globalStack, multiKeyMap } from '../store/index'
-import routerKeepHelper from '../api/router-keep-helper'
+import { BACK } from '../history/history-direction-name'
+import { globalCache, globalStack, globalMultiKeyMap } from '../store/index'
+import routerCacheHelper from '../api/router-cache-helper'
 import config from '../config/index'
 
 function isDef(v) {
@@ -24,7 +24,7 @@ function getFirstComponentChild(children) {
   }
 }
 
-const COMPONENT_NAME = 'router-keep'
+const COMPONENT_NAME = 'router-cache'
 
 export default {
   name: COMPONENT_NAME,
@@ -40,63 +40,45 @@ export default {
     const vnode = getFirstComponentChild(slot)
     if (vnode) {
       let key
-      if (config.mode === 'single') {
-        key = routerKeepHelper.resolveKeyFromRoute(this.$route)
+      if (config.isSingleMode) {
+        key = routerCacheHelper.resolveKeyFromRoute(this.$route)
       } else {
-        const baseKey = routerKeepHelper.resolveKeyFromRoute(this.$route)
-        if (!multiKeyMap[baseKey]) {
-          multiKeyMap[baseKey] = new MapStack()
+        const baseKey = routerCacheHelper.resolveKeyFromRoute(this.$route)
+        if (!globalMultiKeyMap[baseKey]) {
+          globalMultiKeyMap[baseKey] = new MapStack()
         }
-        // 在多例模式下,会创建新key
-        if (this.$route.params[config.actionKey] === 'forward') {
-          key = baseKey + String(multiKeyMap[baseKey].getSize())
-          multiKeyMap[baseKey].add(key)
+        if (this.$route.params[config.actionKey] !== BACK) {
+          key = `${baseKey}_${globalMultiKeyMap[baseKey].getSize()}`
+          globalMultiKeyMap[baseKey].add(key)
         } else {
-          key = multiKeyMap[baseKey].getByIndex(0)
+          key = globalMultiKeyMap[baseKey].getByIndex(0)
         }
       }
       if (this.cache[key]) {
         vnode.componentInstance = this.cache[key].componentInstance
+        if (config.isDebugger) {
+          console.log(`using cache key: %c${key}`, 'color: orange')
+        }
       } else {
         if (!globalStack.checkFull()) {
           this.cache[key] = vnode
         } else {
           const lastKey = globalStack.getFooter()
-          routerKeepHelper._remove(lastKey)
+          routerCacheHelper._remove(lastKey)
           this.cache[key] = vnode
         }
       }
-      globalStack.add(key)
+      globalStack.pop(key)
       vnode.data.keepAlive = true
+    }
+    if (config.isDebugger) {
+      console.log(`all cache key: %c${JSON.stringify(globalStack.getStore())}`, 'color: orange')
     }
     return vnode || (slot && slot[0])
   },
-  mounted() {
-    this.historyStateBackHandler()
-  },
-  methods: {
-    historyStateBackHandler() {
-      historyStateEvent.on(EVENT_HISTORY_ACTION_BACK, () => {
-        routerKeepHelper.remove(this.$route)
-      })
-    },
-    remove(key) {
-      this.removeCacheItem(key)
-      this.removeStackItem(key)
-    },
-    removeCacheItem(key) {
-      if (this.cache[key]) {
-        this.cache[key].componentInstance.$destroy()
-        this.cache[key] = null
-      }
-    },
-    removeStackItem(key) {
-      globalStack.remove(key)
-    }
-  },
   beforeDestroy() {
     for (const key in this.cache) {
-      this.remove(key)
+      routerCacheHelper._remove(key)
     }
     let index
     for (let i = 0; i < globalCache.length; i++) {

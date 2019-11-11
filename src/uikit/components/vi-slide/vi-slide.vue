@@ -102,7 +102,7 @@ export default {
     },
     autoPlay: {
       type: Boolean,
-      default: true
+      default: false
     },
     interval: {
       type: Number,

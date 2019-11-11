@@ -9,10 +9,10 @@ export function defineReactive(data, key, val, fn) {
   Object.defineProperty(data, key, {
     enumerable: true,
     configurable: true,
-    get: function () {
+    get() {
       return val
     },
-    set: function (newVal) {
+    set(newVal) {
       if (newVal === val) {
         return
       }

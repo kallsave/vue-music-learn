@@ -4,7 +4,7 @@ import App from './App'
 import router from './pages/router.js'
 import store from './store/index.js'
 import VueLazyLoad from 'vue-lazyload'
-import VueRouterKeep from './plugins/router-keep/index.js'
+import VueRouterCache from './plugins/vue-router-cache/index.js'
 
 import '@/common/stylus/index.styl'
 import Vi from '@/uikit/index.js'
@@ -25,10 +25,12 @@ Vue.use(BaseIndexList)
 Vue.use(BaseProgressBar)
 Vue.use(BaseProgressCircle)
 Vue.use(BaseConfirm)
-Vue.use(VueRouterKeep, {
+Vue.use(VueRouterCache, {
   router: router,
-  max: 11,
-  mode: 'single',
+  max: 10,
+  isSingleMode: true,
+  isDebugger: true,
+  directionKey: 'direction',
   getHistoryStack() {
     const str = window.sessionStorage.getItem('historyStack')
     return JSON.parse(str)

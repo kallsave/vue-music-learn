@@ -2,8 +2,9 @@ const noop = function () {}
 
 const config = {
   max: Infinity,
-  actionKey: 'action',
-  mode: 'single',
+  directionKey: 'direction',
+  isSingleMode: true,
+  isDebugger: false,
   getHistoryStack: noop,
   setHistoryStack: noop,
 }

@@ -20,18 +20,15 @@ import { getSingerList } from '@/api/singer.js'
 import { mapMutations } from 'vuex'
 import { injectSticky } from '../../mixins/inject-sticky.js'
 import createThrottleInstance from '@/common/mixins/create-throttle-instance.js'
-import keepAliveRouteManager from '@/common/mixins/keep-alive-route-manager.js'
 
 const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'
 
 export default {
-  name: 'IndexSinger',
   mixins: [
     injectSticky,
     playerPaddingBottom,
     createThrottleInstance,
-    keepAliveRouteManager
   ],
   data() {
     return {

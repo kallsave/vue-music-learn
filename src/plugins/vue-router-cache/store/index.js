@@ -6,7 +6,7 @@ export const globalStack = new MapStack(config.max)
 
 export const globalCache = []
 
-export const multiKeyMap = Object.create(null)
+export const globalMultiKeyMap = Object.create(null)
 
 defineReactive(config, 'max', config.max, (newVal) => {
   globalStack.updateSize(newVal)

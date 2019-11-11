@@ -2,7 +2,7 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-05-21 15:44:29
+ * @Last Modified time: 2019-11-11 17:45:16
  */
 
 /**
@@ -108,7 +108,7 @@ export function checkClass(o) {
   return Object.prototype.toString.call(o).slice(8, -1)
 }
 
-export function deepClone(o) {
+export function _deepClone(o) {
   let ret
   let instance = checkClass(o)
   if (instance === 'Array') {
@@ -121,7 +121,7 @@ export function deepClone(o) {
 
   for (let key in o) {
     let copy = o[key]
-    ret[key] = deepClone(copy)
+    ret[key] = _deepClone(copy)
   }
 
   return ret
@@ -135,12 +135,12 @@ export function deepClone(o) {
  * @param {Object} from
  * @returns
  */
-function deepAssign(to, from) {
+function _deepAssign(to, from) {
   for (let key in from) {
     if (!to[key] || typeof to[key] !== 'object') {
       to[key] = from[key]
     } else {
-      deepAssign(to[key], from[key])
+      _deepAssign(to[key], from[key])
     }
   }
 }
@@ -156,7 +156,7 @@ function deepAssign(to, from) {
 export function deepClone(target, ...rest) {
   for (let i = 0; i < rest.length; i++) {
     let source = deepClone(rest[i])
-    deepAssign(target, source)
+    _deepAssign(target, source)
   }
   return target
 }

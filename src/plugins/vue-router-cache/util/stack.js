@@ -6,76 +6,96 @@ export class Stack {
   init() {
     this.list = []
   }
-  _add(item) {
+  _pop(item) {
     this.list.unshift(item)
     if (this.list.length > this.max) {
-      this.list.pop()
+      return this.list.pop()
     }
+    return null
   }
-  add() {
+  pop() {
+    const removeList = []
     for (let i = 0; i < arguments.length; i++) {
       const item = arguments[i]
-      this._add(item)
+      const removeItem = this._pop(item)
+      if (removeItem) {
+        removeList.push(removeItem)
+      }
     }
+    return removeList
   }
-  reduce() {
-    if (!this.list.length) {
-      return false
+  shift() {
+    if (this.list.length) {
+      return this.list.shift()
     }
-    return this.list.shift()
-  }
-  replace(item) {
-    const result = this.reduce()
-    if (!result) {
-      return false
-    }
-    this._add(item)
+    return null
   }
   _remove(item) {
     const index = this.list.indexOf(item)
-    if (index === -1) {
-      return false
+    if (index !== -1) {
+      return this.list.splice(index, 1)[0]
     }
-    return this.list.splice(index, 1)
+    return null
   }
   remove() {
+    const removeList = []
     for (let i = 0; i < arguments.length; i++) {
       const item = arguments[i]
-      this._remove(item)
+      const removeItem = this._remove(item)
+      if (removeItem) {
+        removeList.push(removeItem)
+      }
     }
+    return removeList
   }
   removeByIndex(index) {
     if (this.list[index]) {
-      return this.list.splice(index, 1)
+      return this.list.splice(index, 1)[0]
     }
-  }
-  removeAll() {
-    return this.list.splice(0)
+    return null
   }
   removeUntil(item) {
     const index = this.list.indexOf(item)
     if (index !== -1) {
       return this.list.splice(0, index)
     }
-    return false
+    return []
   }
   removeExclude() {
-    const removeStack = []
+    const removeList = []
     for (let i = 0; i < this.list.length; i++) {
       const item = this.list[i]
       if (Array.prototype.indexOf.call(arguments, item) === -1) {
-        const remove = this.list.splice(i, 1)
-        Array.prototype.push.apply(removeStack, remove)
+        const remove = this.list.splice(i, 1)[0]
+        Array.prototype.push.call(removeList, remove)
         i--
       }
     }
-    return removeStack
+    return removeList
   }
-  removeBack(index) {
+  removeBackByIndex(index) {
     if (index > this.list.length - 1) {
       return this.list.splice(0)
     }
     return this.list.splice(0, index)
+  }
+  removeBackInclue(item) {
+    const index = this.list.indexOf(item)
+    if (index !== -1) {
+      return this.list.splice(0, index + 1)
+    }
+    return []
+  }
+  removeAll() {
+    return this.list.splice(0)
+  }
+  replace(item) {
+    const removeItem = this.shift()
+    if (removeItem) {
+      this._pop(item)
+      return removeItem
+    }
+    return null
   }
   getHeader() {
     return this.list[0]
@@ -107,20 +127,15 @@ export class Stack {
 }
 
 export class MapStack extends Stack {
-  _add(item) {
+  _pop(item) {
     const index = this.list.indexOf(item)
     if (index !== -1) {
       this.list.splice(index, 1)
     }
     this.list.unshift(item)
     if (this.list.length > this.max) {
-      this.list.pop()
+      return this.list.pop()
     }
-  }
-  add() {
-    for (let i = 0; i < arguments.length; i++) {
-      const item = arguments[i]
-      this._add(item)
-    }
+    return null
   }
 }
