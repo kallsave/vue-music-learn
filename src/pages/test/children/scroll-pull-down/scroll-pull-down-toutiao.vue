@@ -9,7 +9,8 @@
           <div class="pull-down-normal"
             v-show="props.pullDownState == 'normal'"
             :style="{paddingTop: props.pullDownNormalTop + 'px'}">
-            <span :class="{rotate: props.pullDownNormalTop > 0}">↓</span>
+            <span class="pull-down-icon" :class="{rotate: props.pullDownNormalTop > 0}">↓</span>
+            <span class="pull-down-tip">{{props.pullDownNormalTop > 0 ? '释放更新': '下拉刷新'}}</span>
           </div>
           <div class="pull-down-lock"
             v-show="props.pullDownState == 'locking'">
@@ -18,7 +19,7 @@
           <transition name="finish">
             <div class="pull-down-finish"
               v-show="props.pullDownState == 'finish'">
-              <span class="refresh-text">今日头条推荐引擎有x条更新</span>
+              <span class="refresh-text">更新成功</span>
             </div>
           </transition>
         </template>
@@ -45,7 +46,7 @@ export default {
           stop: 56,
           txt: '更新成功了',
           // 更新到数据,调用finishPullDown的延迟时间,会影响到txt的显示持续时间
-          stopTime: 2000
+          stopTime: 1000
         },
         directionLockThreshold: 0,
       }
@@ -61,7 +62,7 @@ export default {
         // window.setTimeout(() => {
         //   this.$refs.scroll.closePullDown()
         // }, 3000)
-      }, 2000)
+      }, 200)
     }
   }
 }
@@ -77,17 +78,22 @@ export default {
       position: relative
       color: red
       .pull-down-normal
-        font-size: 30px
+        font-size: 14px
         line-height: 40px
         height: 40px
-        span
+        .pull-down-icon
           display: inline-block
-          line-height: 1
           transition: all 0.3s
           color: #666
           padding: 5px 0
+          vertical-align: middle
+          margin-right: 10px
           &.rotate
             transform: rotate(180deg)
+        .pull-down-tip
+          display: inline-block
+          font-size: 12px
+          vertical-align: middle
       .pull-down-lock
         padding: 8px 0
       .pull-down-finish

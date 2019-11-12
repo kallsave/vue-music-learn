@@ -28,7 +28,7 @@ Vue.use(Router)
 const router = new Router({
   mode: 'hash',
   routes: [
-    // ...TestRouter.children,
+    ...TestRouter.children,
     {
       path: '/',
       redirect: '/index',

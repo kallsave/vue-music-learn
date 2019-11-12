@@ -51,3 +51,28 @@ li
 body
   -webkit-text-size-adjust: none
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+
+button, input, textarea {
+  background: none;
+  outline: none;
+  border: none;
+}
+
+input {
+  &::-webkit-input-placeholder {
+    color: #999;
+  }
+  &:-moz-placeholder{
+    color: #999;
+  }
+  &::-moz-placeholder{
+    color: #999;
+  }
+  &:-ms-input-placeholder{
+    color: #999;
+  }
+}
+
+input, textarea {
+  -webkit-appearance: none;
+}

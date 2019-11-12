@@ -1,7 +1,7 @@
 
 <template>
   <transition name="confirm-fade">
-    <div class="base-confirm"
+    <div :class="style['base-confirm']"
       v-show="isVisible"
       @click.stop>
       <div class="confirm-wrapper">

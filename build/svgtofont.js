@@ -7,17 +7,15 @@ function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-// 文件是否存在
 function existsSync(filePath) {
   try {
-    fs.statSync(filePath, fs.constants.R_OK | fs.constants.W_OK);
+    fs.statSync(filePath, fs.constants.R_OK | fs.constants.W_OK)
     return true
   } catch (err) {
     return false
   }
 }
 
-// 创建一个目录,如果这个目录没有则递归创建父目录
 function mkdirSync(dirname) {
   if (existsSync(dirname)) {
     return true
