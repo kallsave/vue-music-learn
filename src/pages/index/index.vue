@@ -134,7 +134,7 @@ export default {
 
 .index
   position: relative
-  height: calc(100vh + 44px)
+  height: calc(100vh + 1px)
   :global
     .customer-color
       color: $color-theme!important

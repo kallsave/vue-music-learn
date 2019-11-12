@@ -5,23 +5,15 @@ export function scrollHandler(pos) {
   if (pos.y < -STICKY_TOP_BAR) {
     if (ViScroll.$disY !== -STICKY_TOP_BAR) {
       ViScroll.$disY = -STICKY_TOP_BAR
-      ViScroll.scroll.scrollTo(0, -29, 0)
+      ViScroll.scroll.refresh()
+      ViScroll.scroll.scrollTo(0, -STICKY_TOP_BAR, 0)
       ViScroll.scroll.disable()
-      // console.log(1)
-    } else {
-      // console.log(77)
     }
-  } else if (pos.y >= -STICKY_TOP_BAR && pos.y <= 0) {
-    ViScroll.scroll.enable()
-    ViScroll.scroll.scrollTo(0, pos.y, 0)
-  } else {
+  } else if (pos.y >= 0) {
     if (ViScroll.$disY !== STICKY_TOP_BAR) {
       ViScroll.$disY = STICKY_TOP_BAR
       ViScroll.scroll.enable()
       ViScroll.scroll.scrollTo(0, 0, 0)
-      // console.log(4)
-    } else {
-      // console.log(66)
     }
   }
 }
