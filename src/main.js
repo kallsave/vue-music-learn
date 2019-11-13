@@ -20,6 +20,8 @@ import recoverWebviewMixin from '@/common/mixins/recover-webview.js'
 
 const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
+console.log(1)
+console.log(2)
 
 Vue.use(Viui)
 Vue.use(BaseLoadListCon)
