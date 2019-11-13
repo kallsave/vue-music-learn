@@ -19,6 +19,7 @@ import BaseConfirm from '@/base/confirm/index.js'
 import recoverWebviewMixin from '@/common/mixins/recover-webview.js'
 
 const NODE_ENV = process.env.NODE_ENV
+console.log(NODE_ENV)
 
 Vue.use(Viui)
 Vue.use(BaseLoadListCon)
