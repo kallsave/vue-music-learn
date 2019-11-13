@@ -5,7 +5,7 @@ import {
   apiHandler,
 } from './config'
 
-import { deepClone } from '@/common/helpers/utils.js'
+import { multiDeepClone } from '@/common/helpers/utils.js'
 
 import axios from 'axios'
 
@@ -39,7 +39,7 @@ instance.interceptors.response.use((response) => {
 
 export function getLyric(params) {
   const url = 'lyric/fcgi-bin/fcg_query_lyric_new.fcg'
-  const data = deepClone({}, commonParams, params)
+  const data = multiDeepClone({}, commonParams, params)
   return apiHandler(() => {
     return instance({
       method: 'get',

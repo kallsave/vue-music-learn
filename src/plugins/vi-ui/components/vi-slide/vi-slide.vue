@@ -31,7 +31,7 @@
 
 <script>
 import { addClass } from '../../common/helpers/dom.js'
-import { camelize, spliceArray, deepClone, Debounce } from '../../common/helpers/utils.js'
+import { camelize, spliceArray, multiDeepClone, Debounce } from '../../common/helpers/utils.js'
 import BScroll from 'better-scroll'
 import ViSlideItem from './vi-slide-item.vue'
 
@@ -142,7 +142,7 @@ export default {
   },
   computed: {
     loop() {
-      let options = deepClone({}, DEFAULT_OPTIONS, this.options)
+      let options = multiDeepClone({}, DEFAULT_OPTIONS, this.options)
       return options.snap.loop
     }
   },
@@ -189,7 +189,7 @@ export default {
       this.$refs.slideGroup.style.width = width + 'px'
     },
     _initSlide() {
-      let options = deepClone({}, DEFAULT_OPTIONS, this.options)
+      let options = multiDeepClone({}, DEFAULT_OPTIONS, this.options)
       this.slide = new BScroll(this.$refs.slide, options)
 
       // before-scroll-start其实是touch-start

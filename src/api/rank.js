@@ -6,7 +6,7 @@ import {
   apiHandler,
 } from './config'
 
-import { deepClone } from '@/common/helpers/utils.js'
+import { multiDeepClone } from '@/common/helpers/utils.js'
 
 import axios from 'axios'
 
@@ -41,7 +41,7 @@ export function getTopList(params = {}) {
     platform: 'h5',
     needNewCode: '1',
   }
-  const data = deepClone({}, commonParams, defaultParams, params)
+  const data = multiDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     return instance({
       method: 'get',
@@ -63,7 +63,7 @@ export function getMusicList(params = {}) {
     type: 'top',
     platform: 'h5'
   }
-  const data = deepClone({}, commonParams, defaultParams, params)
+  const data = multiDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
     // url是基础url, data是url参数, options是jsonp的回调参数
     return jsonp({

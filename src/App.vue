@@ -115,7 +115,6 @@ export default {
 
       &.move-left-leave
       &.move-left-leave-active
-        transform: translate3d(100%, 0, 0)
         transition: transform 280ms ease-in-out
       &.move-left-leave-to
         transform: translate3d(100%, 0, 0)

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { deepClone } from '../../common/helpers/utils.js'
+import { multiDeepClone } from '../../common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-native-sticky-ele'
 
@@ -45,7 +45,7 @@ export default {
     calculate(key) {
       const firstElementChild = this.$el.firstElementChild
       const stickyTop = firstElementChild.getBoundingClientRect().top - this.ViNativeSticky.fixedTop
-      deepClone(this.ViNativeSticky.stickyMap[this.eleKey], {
+      multiDeepClone(this.ViNativeSticky.stickyMap[this.eleKey], {
         stickyTop
       })
     },

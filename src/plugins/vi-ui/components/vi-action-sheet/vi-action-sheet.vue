@@ -3,6 +3,7 @@
     v-show="isVisible"
     transition-name="vi-action-sheet-fade"
     :is-show-mask="isShowMask"
+    :z-index="zIndex"
     :transitionDuration="transitionDuration"
     @mask-click="maskClick">
     <div slot="custom-content">
@@ -30,7 +31,6 @@
 <script>
 import visibilityMixin from '../../common/mixins/visibility.js'
 import ViPopup from '../vi-popup/vi-popup.vue'
-import { camelize } from '../../common/helpers/utils.js'
 
 const COMPONENT_NAME = 'vi-action-sheet'
 
@@ -126,7 +126,7 @@ export default {
 
 .vi-action-sheet-fade-enter-active,
 .vi-action-sheet-fade-leave-active
-  transition: opacity .3s $ease-out-in
+  transition: opacity 300ms $ease-out-in
 
 .vi-action-sheet
   position: absolute
@@ -138,7 +138,7 @@ export default {
     transform: translate3d(0, 100%, 0)
   &.vi-action-sheet-move-enter-active,
   &.vi-action-sheet-move-leave-active
-    transition: transform .3s $ease-out-in
+    transition: transform 300ms $ease-out-in
   &.vi-action-sheet-move-leave
     transform: translate3d(0, 0, 0)
   &.vi-action-sheet-move-leave-to

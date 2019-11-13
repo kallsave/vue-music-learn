@@ -1,5 +1,5 @@
 import { requestAnimationFrame, cancelAnimationFrame } from './bom.js'
-import { deepClone } from './utils.js'
+import { multiDeepClone } from './utils.js'
 
 // 时间戳,开始的位置,要运动的距离,动画持续的时间
 // function easeInOutQuad(t, b, c, d) {
@@ -22,7 +22,7 @@ class Move {
   }
   init(target, options) {
     this.target = target
-    this.offset = deepClone({}, options.offset)
+    this.offset = multiDeepClone({}, options.offset)
     this.duration = options.duration
     this.easing = options.easing
     this.done = options.done
@@ -109,7 +109,7 @@ const slow = (target, options) => {
     easing: easeInOutQuad,
     done: function () {}
   }
-  return new Move(target, deepClone({}, defaultOptions, options))
+  return new Move(target, multiDeepClone({}, defaultOptions, options))
 }
 
 export default slow

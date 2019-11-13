@@ -47,7 +47,7 @@ export default {
         if (!globalMultiKeyMap[baseKey]) {
           globalMultiKeyMap[baseKey] = new MapStack()
         }
-        if (this.$route.params[config.actionKey] !== BACK) {
+        if (this.$route.params[config.directionKey] !== BACK) {
           key = `${baseKey}_${globalMultiKeyMap[baseKey].getSize()}`
           globalMultiKeyMap[baseKey].pop(key)
         } else {

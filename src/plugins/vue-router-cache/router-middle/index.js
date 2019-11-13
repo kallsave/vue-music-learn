@@ -43,7 +43,9 @@ const routerMiddle = (Vue, config) => {
   const originGo = router.go.bind(router)
 
   router.push = (location, onComplete, onAbort) => {
-    routerCache.removeBackInclue(location)
+    if (config.isSingleMode && routerCache.has(location)) {
+      routerCache.removeBackInclue(location)
+    }
     originPush(location, onComplete, onAbort)
   }
 
@@ -52,7 +54,9 @@ const routerMiddle = (Vue, config) => {
     historyStack.shift()
     config.setHistoryStack(historyStack.getStore())
     routerCache.shift()
-    routerCache.removeBackInclue(location)
+    if (config.isSingleMode && routerCache.has(location)) {
+      routerCache.removeBackInclue(location)
+    }
     originReplace(location, onComplete, onAbort)
   }
 

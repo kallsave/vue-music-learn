@@ -52,7 +52,7 @@ import ViLoading from '../vi-loading/vi-loading'
 import BScroll from 'better-scroll'
 import {
   camelize,
-  deepClone
+  multiDeepClone
 } from '../../common/helpers/utils.js'
 
 import {
@@ -191,20 +191,20 @@ export default {
   computed: {
     pullDownRefresh() {
       if (this.options.pullDownRefresh === true) {
-        return deepClone({}, PULL_DOWN_REFRESH_DEFAULT_OPTIONS)
+        return multiDeepClone({}, PULL_DOWN_REFRESH_DEFAULT_OPTIONS)
       } else if (!this.options.pullDownRefresh) {
         return false
       } else {
-        return deepClone({}, PULL_DOWN_REFRESH_DEFAULT_OPTIONS, this.options.pullDownRefresh)
+        return multiDeepClone({}, PULL_DOWN_REFRESH_DEFAULT_OPTIONS, this.options.pullDownRefresh)
       }
     },
     pullUpLoad() {
       if (this.options.pullUpLoad === true) {
-        return deepClone({}, PULL_UP_LOAD_DEFAULT_OPTIONS)
+        return multiDeepClone({}, PULL_UP_LOAD_DEFAULT_OPTIONS)
       } else if (!this.options.pullUpLoad) {
         return false
       } else {
-        return deepClone({}, PULL_UP_LOAD_DEFAULT_OPTIONS, this.options.pullUpLoad)
+        return multiDeepClone({}, PULL_UP_LOAD_DEFAULT_OPTIONS, this.options.pullUpLoad)
       }
     },
   },
@@ -250,7 +250,7 @@ export default {
       if (this.pullUpLoad) {
         extraOptions.pullUpLoad = this.pullUpLoad
       }
-      let options = deepClone({}, DEFAULT_OPTIONS, extraOptions, this.options)
+      let options = multiDeepClone({}, DEFAULT_OPTIONS, extraOptions, this.options)
       if (options.scrollX && !options.scrollY) {
         addClass(this.$refs.content, 'vi-scroll-x')
       }

@@ -21,7 +21,7 @@ import {
   getRect,
   prefixStyle
 } from '@/common/helpers/dom.js'
-import { deepClone } from '../../common/helpers/utils.js'
+import { multiDeepClone } from '../../common/helpers/utils.js'
 
 const TRANSFORM = prefixStyle('transform')
 
@@ -205,7 +205,7 @@ export default {
   methods: {
     _propChildren() {
       // created => children.props => children.data => children.created
-      this.stickyOptions = deepClone({}, DEFAULT_OPTIONS, this.options, BIND_OPTIONS)
+      this.stickyOptions = multiDeepClone({}, DEFAULT_OPTIONS, this.options, BIND_OPTIONS)
     },
     scrollHandle(pos) {
       this.scrollY = pos.y
