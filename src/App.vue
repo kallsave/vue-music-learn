@@ -43,6 +43,7 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
+        console.log('test')
         console.log(to.params.direction)
         // 没有配置useRouterTransition的页面的过渡效果
         if (!to.meta || !to.meta.isUseRouterTransition || !from || !from.meta || !from.meta.isUseRouterTransition) {
