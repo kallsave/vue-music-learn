@@ -1,0 +1,22 @@
+@font-face {font-family: "vi-toast-icon";
+  src: url('vi-toast-icon.eot?t=1573620476692'); /* IE9*/
+  src: url('vi-toast-icon.eot?t=1573620476692#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("vi-toast-icon.woff2?t=1573620476692") format("woff2"),
+  url("vi-toast-icon.woff?t=1573620476692") format("woff"),
+  url('vi-toast-icon.ttf?t=1573620476692') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('vi-toast-icon.svg?t=1573620476692#vi-toast-icon') format('svg'); /* iOS 4.1- */
+}
+
+[class^="vi-toast-icon-"], [class*=" vi-toast-icon-"] {
+  font-family: 'vi-toast-icon' !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:global {
+.vi-toast-icon-correct:before { content: "\ea01"; }
+.vi-toast-icon-error:before { content: "\ea02"; }
+
+}

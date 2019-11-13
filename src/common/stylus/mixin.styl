@@ -1,0 +1,67 @@
+@import './var/z-index.styl'
+
+clear()
+  &:after
+    content: ""
+    display: block
+    clear: both
+    width: 0
+    height: 0
+    line-height: 0
+    visibility: hidden
+    *zoom: 1
+
+// 背景图片
+bg-image($url)
+  background-image: url($url + "@2x.png")
+  @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3)
+    background-image: url($url + "@3x.png")
+
+// 不换行
+no-wrap()
+  text-overflow: ellipsis
+  overflow: hidden
+  white-space: nowrap
+
+// 扩展点击区域
+extend-click()
+  position: relative
+  &:before
+    content: ""
+    position: absolute
+    top: -10px
+    left: -10px
+    right: -10px
+    bottom: -10px
+
+z-index-popup(number)
+  z-index: $z-index-popup + number
+
+// 盒子阴影
+box-shadow()
+  0 4px 10px 0 rgba(153, 153, 153 , 0.14)
+
+// 设置底部1px,配合.border-1px实现移动端准确的1px
+border-top-1px(color)
+  position: relative
+  &:after
+    display: block
+    position: absolute
+    content: ""
+    top: 0
+    left: 0
+    width: 100%
+    border-top: 1px solid color
+
+
+// 设置底部1px,配合.border-1px实现移动端准确的1px
+border-bottom-1px(color)
+  position: relative
+  &:after
+    display: block
+    position: absolute
+    content: ""
+    bottom: 0
+    left: 0
+    width: 100%
+    border-top: 1px solid color
