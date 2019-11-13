@@ -1,2 +1,0 @@
-webpackJsonp([20],{rGNO:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var s={render:function(){var e=this.$createElement,t=this._self._c||e;return t("div",{class:this.$style.upload},[t("vi-upload")],1)},staticRenderFns:[]};var l=n("VU/8")({},s,!1,function(e){this.$style=n("xoZg")},null,null);t.default=l.exports},xoZg:function(e,t){e.exports={upload:"upload-9Jqb5_0"}}});
-//# sourceMappingURL=20.70aa4d7d11b0d423ffbf.js.map
