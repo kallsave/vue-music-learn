@@ -7,5 +7,4 @@ branches:
 install:
   - npm install
 script:
-  - npm run svgtofont
   - npm run build

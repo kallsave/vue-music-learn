@@ -7,7 +7,7 @@ import store from './store/index.js'
 import VueLazyLoad from 'vue-lazyload'
 import VueRouterCache from './plugins/vue-router-cache/index.js'
 
-import ViUi from '@/plugins/vi-ui/index.js'
+import Viui from '@/plugins/vi-ui/index.js'
 
 import BaseLoadListCon from '@/base/load-list-con/index.js'
 import BaseIndexList from '@/base/index-list/index.js'
@@ -18,7 +18,10 @@ import BaseConfirm from '@/base/confirm/index.js'
 
 import recoverWebviewMixin from '@/common/mixins/recover-webview.js'
 
-Vue.use(ViUi)
+console.log(process.env.NODE_ENV)
+const NODE_ENV = process.env.NODE_ENV
+
+Vue.use(Viui)
 Vue.use(BaseLoadListCon)
 Vue.use(BaseSearchBox)
 Vue.use(BaseIndexList)
@@ -29,7 +32,7 @@ Vue.use(VueRouterCache, {
   router: router,
   max: 10,
   isSingleMode: true,
-  isDebugger: true,
+  isDebugger: NODE_ENV !== 'production',
   directionKey: 'direction',
   getHistoryStack() {
     const str = window.sessionStorage.getItem('historyStack')

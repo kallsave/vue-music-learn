@@ -38,9 +38,9 @@ const APP_FOLDER = 'common'
 const APP_PREFIX = 'common-icon'
 
 // ui组件所在目录
-const UIKIT_FOLDER = 'uikit'
+const VIUI_FOLDER = 'plugins/vi-ui'
 // ui组件字体前缀
-const UIKIT_PREFIX = ''
+const VIUI_PREFIX = ''
 
 // 其他组件字体前缀
 const LOCAL_PREFIX = 'w-'
@@ -49,7 +49,7 @@ let distRuler = new RegExp(`(.*\/)?${SVG_FOLDER}`, 'g')
 let fontNameRuler = new RegExp(`(.*\/)?(.*)?\/${SVG_FOLDER}`, 'g')
 
 let fontFiles = glob.sync([
-  resolve(`src/${UIKIT_FOLDER}/**/${SVG_FOLDER}`),
+  resolve(`src/${VIUI_FOLDER}/**/${SVG_FOLDER}`),
   // resolve(`src/${APP_FOLDER}/**/${SVG_FOLDER}`),
   // resolve(`src/components/**/${SVG_FOLDER}`),
   resolve(`src/base/**/${SVG_FOLDER}`),
@@ -64,8 +64,8 @@ let fontFiles = glob.sync([
         let fontName = ''
         if (item.indexOf(APP_FOLDER) !== -1) {
           fontName = APP_PREFIX
-        } else if (item.indexOf(UIKIT_FOLDER) !== -1) {
-          fontName = UIKIT_PREFIX + item.replace(fontNameRuler, `$2`) + '-icon'
+        } else if (item.indexOf(VIUI_FOLDER) !== -1) {
+          fontName = VIUI_PREFIX + item.replace(fontNameRuler, `$2`) + '-icon'
         } else {
           fontName = LOCAL_PREFIX + item.replace(fontNameRuler, `$2`) + '-icon'
         }

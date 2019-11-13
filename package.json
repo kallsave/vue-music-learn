@@ -9,7 +9,7 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "svg": "node build/svgtofont.js",
+    "svgtofont": "node build/svgtofont.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
