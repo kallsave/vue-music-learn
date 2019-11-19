@@ -36,6 +36,7 @@ const TestSafari100vh = () => import('./test/children/safari-100vh/safari-100vh.
 const TestScrollPopup = () => import('./test/children/scroll-popup/scroll-popup.vue')
 const TestPromisePartner = () => import('./test/children/promise-partner/promise-partner.vue')
 const TestSlide = () => import('./test/children/slide/slide.vue')
+const TestSortable = () => import('./test/children/sortable/sortable.vue')
 
 export default {
   path: '/test',
@@ -259,6 +260,14 @@ export default {
       path: '/test/slide',
       name: 'TestSlide',
       component: TestSlide,
+      meta: {
+        isUseRouterTransition: true
+      }
+    },
+    {
+      path: '/test/sortable',
+      name: 'TestSortable',
+      component: TestSortable,
       meta: {
         isUseRouterTransition: true
       }

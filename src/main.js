@@ -7,7 +7,7 @@ import store from './store/index.js'
 import VueLazyLoad from 'vue-lazyload'
 import VueRouterCache from './plugins/vue-router-cache/index.js'
 
-import Viui from '@/plugins/vi-ui/index.js'
+import ViUi from '@/plugins/vi-ui/index.js'
 
 import BaseLoadListCon from '@/base/load-list-con/index.js'
 import BaseIndexList from '@/base/index-list/index.js'
@@ -19,11 +19,8 @@ import BaseConfirm from '@/base/confirm/index.js'
 import recoverWebviewMixin from '@/common/mixins/recover-webview.js'
 
 const NODE_ENV = process.env.NODE_ENV
-console.log(NODE_ENV)
-console.log(1)
-console.log(2)
 
-Vue.use(Viui)
+Vue.use(ViUi)
 Vue.use(BaseLoadListCon)
 Vue.use(BaseSearchBox)
 Vue.use(BaseIndexList)

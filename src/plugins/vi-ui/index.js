@@ -53,10 +53,10 @@ function install(Vue) {
   }
 }
 
-const Vi = {
+const ViUi = {
   version: '0.0.1',
   install,
   Bscroll,
 }
 
-export default Vi
+export default ViUi
