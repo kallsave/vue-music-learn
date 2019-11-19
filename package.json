@@ -22,6 +22,7 @@
     "jsonp": "^0.2.1",
     "jump.js": "^1.0.2",
     "lyric-parser": "^1.0.1",
+    "sortablejs": "^1.10.1",
     "store": "^2.0.12",
     "vconsole": "^3.3.4",
     "vue": "^2.5.21",

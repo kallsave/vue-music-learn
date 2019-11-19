@@ -121,7 +121,7 @@ export default {
 @import "../../common/stylus/mixin.styl"
 
 .vi-action-sheet-fade-enter,
-.vi-action-sheet-fade-leave-active
+.vi-action-sheet-fade-leave-to
   opacity: 0
 
 .vi-action-sheet-fade-enter-active,
