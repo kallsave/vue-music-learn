@@ -1,9 +1,9 @@
-import Component from './vi-confirm.vue'
+import ViConfirm from './vi-confirm.vue'
 import create from './api.js'
 
-Component.install = function (Vue) {
-  Vue.component(Component.name, Component)
-  create(Vue, Component)
+ViConfirm.install = function (Vue) {
+  Vue.component(ViConfirm.name, ViConfirm)
+  create(Vue, ViConfirm)
 }
 
-export default Component
+export default ViConfirm

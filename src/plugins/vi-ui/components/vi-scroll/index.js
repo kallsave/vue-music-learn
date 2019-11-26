@@ -1,7 +1,7 @@
-import Component from './vi-scroll.vue'
+import ViScroll from './vi-scroll.vue'
 
-Component.install = function (Vue) {
-  Vue.component(Component.name, Component)
+ViScroll.install = function (Vue) {
+  Vue.component(ViScroll.name, ViScroll)
 }
 
-export default Component
+export default ViScroll

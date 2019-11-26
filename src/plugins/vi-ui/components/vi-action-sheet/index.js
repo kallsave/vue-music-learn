@@ -1,9 +1,9 @@
-import Component from './vi-action-sheet.vue'
+import ViActionSheet from './vi-action-sheet.vue'
 import create from './api.js'
 
-Component.install = function (Vue) {
-  Vue.component(Component.name, Component)
-  create(Vue, Component)
+ViActionSheet.install = function (Vue) {
+  Vue.component(ViActionSheet.name, ViActionSheet)
+  create(Vue, ViActionSheet)
 }
 
-export default Component
+export default ViActionSheet
