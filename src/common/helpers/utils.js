@@ -2,25 +2,8 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2019-11-12 16:59:12
+ * @Last Modified time: 2020-01-10 14:09:48
  */
-
-/**
- * 补零
- *
- * @export
- * @param {Number} num 被补零的数据
- * @param {Number} [n=2] 补零的个数,默认是2
- * @returns
- */
-export function padZero(num, n = 2) {
-  let len = num.toString().length
-  while (len < n) {
-    num = '0' + num
-    len++
-  }
-  return num
-}
 
 /**
  * 返回min~max之间的整数
@@ -136,42 +119,25 @@ export class Throttle {
   }
 }
 
-/**
- * 获取url参数
- *
- * @export
- * @param {String} [currentUrl=window.location.href] 默认是浏览器地址
- * @returns
- */
 export function getUrlParams(currentUrl = window.location.href) {
-  let result = {}
+  const result = {}
   if (currentUrl.indexOf('?') === -1) {
     return result
   }
-  let paramsUrl = currentUrl.replace(/.*\?/g, '')
-  if (paramsUrl.length === 0) {
-    return result
-  }
-  let arr = paramsUrl.match(/[^&]+?=[^&]*/g)
+  const paramsUrl = currentUrl.replace(/.*\?/g, '')
+  const arr = paramsUrl.match(/[^&]+?=[^&]*/g)
   if (arr) {
     for (let i = 0; i < arr.length; i++) {
-      let key = arr[i].replace(/(.+?)=(.*)/, '$1')
-      let value = arr[i].replace(/(.+?)=(.*)/, '$2')
+      const reg = new RegExp(`(.+?)=(.*)`)
+      reg.exec(arr[i])
+      const key = decodeURIComponent(RegExp.$1)
+      const value = decodeURIComponent(RegExp.$2)
       result[key] = value
     }
-  } else {
-    return result
   }
   return result
 }
 
-/**
- * 拼接url参数成url
- * @export
- * @param {String} originUrl
- * @param {Object} data
- * @returns
- */
 export function parseParamUrl(originUrl, data) {
   let url = ''
   for (let k in data) {
@@ -208,14 +174,6 @@ function deepClone(o) {
   return ret
 }
 
-/**
- *
- * 给target合并key(深度)
- * @export
- * @param {Object} to
- * @param {Object} from
- * @returns
- */
 function deepAssign(to, from) {
   for (let key in from) {
     if (!to[key] || typeof to[key] !== 'object') {
@@ -226,18 +184,48 @@ function deepAssign(to, from) {
   }
 }
 
-/**
- * 支持多参数的深度克隆
- * 后面的优先级最大
- * @export
- * @param {Object} target
- * @param {Object} rest
- * @returns
- */
 export function multiDeepClone(target, ...rest) {
   for (let i = 0; i < rest.length; i++) {
     let source = deepClone(rest[i])
     deepAssign(target, source)
   }
   return target
+}
+
+export function stringRepeat(str, num) {
+  return new Array(num + 1).join(str)
+}
+
+export function padLeftZero(str, n = 2) {
+  return (stringRepeat('0', n) + str).substr(str.length)
+}
+
+// 倒计时
+export function formatCountDown(countDownStamp, format = 'DD天 hh:mm:ss') {
+  if (countDownStamp < 0) {
+    countDownStamp = 0
+  }
+  const millisecond = countDownStamp % 1000
+  const restSecond = (countDownStamp - millisecond) / 1000
+  const second = restSecond % 60
+  const restMinute = (restSecond - second) / 60
+  const minute = restMinute % 60
+  const restHour = (restMinute - minute) / 60
+  const hour = restHour % 24
+  const restDay = (restHour - hour) / 24
+  const day = restDay
+  const o = {
+    'D+': day,
+    'h+': hour,
+    'm+': minute,
+    's+': second,
+    't+': millisecond
+  }
+  for (const k in o) {
+    if (new RegExp(`(${k})`).test(format)) {
+      const str = o[k] + ''
+      format = format.replace(RegExp.$1, padLeftZero(str, RegExp.$1.length))
+    }
+  }
+  return format
 }

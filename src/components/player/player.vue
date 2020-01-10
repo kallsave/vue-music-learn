@@ -157,7 +157,7 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import createKeyframe from 'create-keyframe-animation'
 import { prefixStyle, getTransformAngle } from '@/common/helpers/dom.js'
-import { padZero, shuffle } from '@/common/helpers/utils.js'
+import { padLeftZero, shuffle } from '@/common/helpers/utils.js'
 import { playModeOptions } from '@/store/modules/player/config.js'
 import Lyric from 'lyric-parser'
 import { createSong, Song } from '@/common/class/song.js'
@@ -599,8 +599,8 @@ export default {
     },
     format(interval) {
       interval = interval | 0
-      const minute = padZero(interval / 60 | 0)
-      const second = padZero(interval % 60)
+      const minute = padLeftZero(interval / 60 | 0)
+      const second = padLeftZero(interval % 60)
       return `${minute}:${second}`
     },
     percentChange(percent) {
