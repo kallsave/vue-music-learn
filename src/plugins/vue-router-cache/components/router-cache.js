@@ -24,6 +24,14 @@ function getFirstComponentChild(children) {
   }
 }
 
+function hasParentRouterCache(vnode) {
+  while ((vnode = vnode.parent)) {
+    if (vnode.data.routerCache) {
+      return true
+    }
+  }
+}
+
 const COMPONENT_NAME = 'router-cache'
 
 export default {
@@ -35,46 +43,83 @@ export default {
       cache: this.cache,
     })
   },
-  render(h) {
+  render() {
     const slot = this.$slots.default
     const vnode = getFirstComponentChild(slot)
-    if (vnode) {
+
+    const rawChild = vnode || (slot && slot[0])
+
+    if (hasParentRouterCache(this.$vnode)) {
+      return rawChild
+    }
+
+    let parent = this.$parent
+
+    let depth = 0
+    let inactive = false
+    while (parent && parent._routerRoot !== parent) {
+      const vnodeData = parent.$vnode && parent.$vnode.data
+      if (vnodeData) {
+        if (vnodeData.routerView) {
+          depth++
+        }
+        if (parent._inactive) {
+          inactive = true
+        }
+      }
+      parent = parent.$parent
+    }
+
+    const matched = this.$route.matched[depth]
+
+    if (vnode && matched) {
       let key
       if (config.isSingleMode) {
-        key = routerCache.resolveKeyFromRoute(this.$route)
+        key = routerCache.resolveKeyFromRoute(matched)
       } else {
-        const baseKey = routerCache.resolveKeyFromRoute(this.$route)
+        const baseKey = routerCache.resolveKeyFromRoute(matched)
         if (!globalMultiKeyMap[baseKey]) {
           globalMultiKeyMap[baseKey] = new MapStack()
         }
         if (this.$route.params[config.directionKey] !== BACK) {
           key = `${baseKey}_${globalMultiKeyMap[baseKey].getSize()}`
-          globalMultiKeyMap[baseKey].pop(key)
+          globalMultiKeyMap[baseKey].unshift(key)
         } else {
           key = globalMultiKeyMap[baseKey].getByIndex(0)
         }
       }
       if (this.cache[key]) {
-        vnode.componentInstance = this.cache[key].componentInstance
+        if (inactive) {
+          vnode.componentInstance = this.oldComponentInstance
+        } else {
+          vnode.componentInstance = this.cache[key].componentInstance
+        }
         if (config.isDebugger) {
           console.log(`using cache key: %c${key}`, 'color: orange')
         }
       } else {
         if (!globalStack.checkFull()) {
-          this.cache[key] = vnode
+          if (!inactive) {
+            this.cache[key] = vnode
+            this.oldComponentInstance = vnode.componentInstance
+          }
         } else {
           const lastKey = globalStack.getFooter()
           routerCache._remove(lastKey)
-          this.cache[key] = vnode
+          if (!inactive) {
+            this.cache[key] = vnode
+            this.oldComponentInstance = vnode.componentInstance
+          }
         }
       }
-      globalStack.pop(key)
+      globalStack.unshift(key)
+      vnode.data.routerCache = true
       vnode.data.keepAlive = true
     }
     if (config.isDebugger) {
       console.log(`all cache key: %c${JSON.stringify(globalStack.getStore())}`, 'color: orange')
     }
-    return vnode || (slot && slot[0])
+    return rawChild
   },
   beforeDestroy() {
     for (const key in this.cache) {

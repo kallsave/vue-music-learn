@@ -1,7 +1,7 @@
-import Component from './vi-loading.vue'
+import ViLoading from './vi-loading.vue'
 
-Component.install = function (Vue) {
-  Vue.component(Component.name, Component)
+ViLoading.install = function (Vue) {
+  Vue.component(ViLoading.name, ViLoading)
 }
 
-export default Component
+export default ViLoading

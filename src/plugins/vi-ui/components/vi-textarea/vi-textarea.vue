@@ -1,17 +1,20 @@
 <template>
-  <textarea v-model="currentVal"
+  <textarea
+    ref="textarea"
+    class="vi-textarea"
+    v-model="currentVal"
     :style="textareaStyle"
-    @input="inputHandler($event)"></textarea>
+    :placeholder="placeholder">
+  </textarea>
 </template>
 
 <script>
-import {
-  multiDeepClone
-} from '@/common/helpers/utils.js'
+import calcTextareaHeight from './calc-textarea-height.js'
 
 const COMPONENT_NAME = 'vi-textarea'
 
 export default {
+  name: COMPONENT_NAME,
   props: {
     value: {
       type: String,
@@ -23,7 +26,7 @@ export default {
     },
     autosize: {
       type: [Boolean, Object],
-      default: false
+      default: true
     }
   },
   data() {
@@ -50,21 +53,11 @@ export default {
         if (this._autosize) {
           this.$nextTick(this.resizeTextarea)
         }
-      }
-    },
-    immediate: true
+      },
+      immediate: true
+    }
   },
   methods: {
-    inputHandler(event) {
-      const value = event.target.value
-      this.setCurrentValue(value)
-      console.log(this.currentVal)
-    },
-    setCurrentValue(value) {
-      if (this._autosize) {
-        this.$nextTick(this.resizeTextarea)
-      }
-    },
     resizeTextarea() {
       const minRows = this.autosize.minRows
       const maxRows = this.autosize.maxRows
@@ -74,6 +67,15 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="stylus">
+.vi-textarea
+  display: block
+  border: none
+  outline: none
+  resize: none
+  width: 100%
+  color: inherit
+  font-size: 1em
+  line-height: inherit
+  outline: 0
 </style>
