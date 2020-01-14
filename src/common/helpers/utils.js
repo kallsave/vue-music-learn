@@ -2,28 +2,14 @@
  * @Author: kallsave
  * @Date: 2018-10-15 11:07:37
  * @Last Modified by: kallsave
- * @Last Modified time: 2020-01-10 14:09:48
+ * @Last Modified time: 2020-01-10 14:17:14
  */
 
-/**
- * 返回min~max之间的整数
- *
- * @param {Number} min 较小的数字
- * @param {Numbe} max 较大的数字
- * @returns
- */
 export function getRandomInt(min, max) {
   // Math.random()不包括1,有缺陷
   return Math.random() * (max - min + 1) + min | 0
 }
 
-/**
- * 打乱一个数组
- *
- * @export
- * @param {Array} arr
- * @returns
- */
 export function shuffle(arr) {
   let _arr = arr.slice()
   for (let i = 0; i < _arr.length; i++) {
@@ -35,27 +21,13 @@ export function shuffle(arr) {
   return _arr
 }
 
-/**
- * 判断是否是空对象
- *
- * @export
- * @param {Object, Array} obj
- * @returns
- */
 export function isEmptyObject(obj) {
-  for (let key in obj) {
+  for (const key in obj) {
     return false
   }
   return true
 }
 
-/**
- * '-'转驼峰
- *
- * @export
- * @param {*} str
- * @returns
- */
 export function camelize(str) {
   str = String(str)
   return str.replace(/-(\w)/g, function (m, c) {
@@ -63,13 +35,6 @@ export function camelize(str) {
   })
 }
 
-/**
- * 驼峰转'-'
- *
- * @export
- * @param {*} str
- * @returns
- */
 export function middleline(str) {
   str = String(str)
   return str.replace(/([A-Z])/g, '-$1').toLowerCase()
@@ -140,7 +105,7 @@ export function getUrlParams(currentUrl = window.location.href) {
 
 export function parseParamUrl(originUrl, data) {
   let url = ''
-  for (let k in data) {
+  for (const k in data) {
     let value = data[k] !== undefined ? data[k] : ''
     url += `&${k}=${encodeURIComponent(value)}`
   }
@@ -166,8 +131,8 @@ function deepClone(o) {
     return o
   }
 
-  for (let key in o) {
-    let copy = o[key]
+  for (const key in o) {
+    const copy = o[key]
     ret[key] = deepClone(copy)
   }
 
@@ -175,7 +140,7 @@ function deepClone(o) {
 }
 
 function deepAssign(to, from) {
-  for (let key in from) {
+  for (const key in from) {
     if (!to[key] || typeof to[key] !== 'object') {
       to[key] = from[key]
     } else {
@@ -186,7 +151,7 @@ function deepAssign(to, from) {
 
 export function multiDeepClone(target, ...rest) {
   for (let i = 0; i < rest.length; i++) {
-    let source = deepClone(rest[i])
+    const source = deepClone(rest[i])
     deepAssign(target, source)
   }
   return target
@@ -198,6 +163,26 @@ export function stringRepeat(str, num) {
 
 export function padLeftZero(str, n = 2) {
   return (stringRepeat('0', n) + str).substr(str.length)
+}
+
+// 格式化时间
+export function formatDate(date, format = 'YYYY-MM-DD hh:mm:ss') {
+  const o = {
+    'Y+': date.getFullYear(),
+    'M+': date.getMonth() + 1,
+    'D+': date.getDate(),
+    'h+': date.getHours(),
+    'm+': date.getMinutes(),
+    's+': date.getSeconds(),
+    't+': date.getMilliseconds()
+  }
+  for (const k in o) {
+    if (new RegExp(`(${k})`).test(format)) {
+      const str = o[k] + ''
+      format = format.replace(RegExp.$1, padLeftZero(str, RegExp.$1.length))
+    }
+  }
+  return format
 }
 
 // 倒计时

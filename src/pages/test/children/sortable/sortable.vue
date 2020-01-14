@@ -38,7 +38,7 @@ export default {
     }
   },
   mounted() {
-    let wrapper = this.$refs.wrapper
+    const wrapper = this.$refs.wrapper
     /* eslint-disable no-new */
     new Sortable(wrapper, {
       ghostClass: 'dropping',
