@@ -11,19 +11,31 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // /dev/xxx会被代理成https://c.y.qq.com/xxx
+      // /dev/xxx会被代理成https://u.y.qq.com/xxx
       '/dev': {
+        // 这里的地址应该是开发环境的前缀,木有接口
+        target: 'https://u.y.qq.com',
+        // 把/dev去掉
+        pathRewrite: { '^/dev': '' },
+        changeOrigin: true,
+        logLevel: 'debug',
+        headers: {
+          referer: 'https://u.y.qq.com/',
+          host: 'u.y.qq.com'
+        },
+      },
+      '/api': {
         // 这里的地址应该是开发环境的前缀,木有接口
         target: 'https://c.y.qq.com',
         // 把/dev去掉
-        pathRewrite: { '^/dev': '' },
+        pathRewrite: { '^/api': '' },
         changeOrigin: true,
         logLevel: 'debug',
         headers: {
           referer: 'https://c.y.qq.com/',
           host: 'c.y.qq.com'
         },
-      },
+      }
     },
 
     // Various Dev Server settings

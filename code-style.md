@@ -66,7 +66,7 @@ function updateImg (img) {
 }
 async function updateAllImg () {
   for (let i = 0; i < imgList.length; i++) {
-    let item = imgList[i]
+    const item = imgList[i]
     // 当await中的Promise对象reject被catch处理时,不会阻断下一个await执行
     await updateImg(item).catch((err) => {
       // ...

@@ -12,51 +12,52 @@ import axios from 'axios'
 
 const baseURL = process.env.baseURL
 
-const instance = axios.create({
-  baseURL: baseURL,
-  validateStatus(status) {
-    // 默认的status在200~300会Promise.resolve(res)
-    // return status >= 200 && status < 300
-    // 但是这个方法只是针对statusCode,不能对自定义的code做处理
-    // 统一在instance.interceptors.response设置
-    return true
-  }
-})
+export function getRecommend() {
+  const url = '/cgi-bin/musicu.fcg'
 
-// 响应拦截器,对404等或者后端自定义的code错误
-instance.interceptors.response.use((response, b, c) => {
-  if (response.request.responseURL.indexOf('qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg') !== -1) {
-    /* eslint no-useless-escape: "off" */
-    response.data = response.data.replace(/^\w+\((.*)\)$/g, '$1')
-    response.data = JSON.parse(response.data)
-  }
-  if (response.status === 200 && response.data.code === API_OK) {
-    return Promise.resolve(response)
-  } else {
-    return Promise.reject(API_ERROR)
-  }
-})
+  const data = Object.assign({}, commonParams, {
+    platform: 'yqq.json',
+    hostUin: 0,
+    needNewCode: 0,
+    inCharset: 'utf8',
+    format: 'json',
+    '-': 'recom' + (Math.random() + '').replace('0.', ''),
+    data: {
+      'comm': { 'ct': 24 },
+      'category': { 'method': 'get_hot_category', 'param': { 'qq': '' }, 'module': 'music.web_category_svr' },
+      'recomPlaylist': {
+        'method': 'get_hot_recommend',
+        'param': { 'async': 1, 'cmd': 2 },
+        'module': 'playlist.HotRecommendServer'
+      },
+      'playlist': {
+        'method': 'get_playlist_by_category',
+        'param': { 'id': 8, 'curPage': 1, 'size': 40, 'order': 5, 'titleid': 8 },
+        'module': 'playlist.PlayListPlazaServer'
+      },
+      'new_song': { 'module': 'newsong.NewSongServer', 'method': 'get_new_song_info', 'param': { 'type': 5 } },
+      'new_album': {
+        'module': 'newalbum.NewAlbumServer',
+        'method': 'get_new_album_info',
+        'param': { 'area': 1, 'sin': 0, 'num': 10 }
+      },
+      'new_album_tag': { 'module': 'newalbum.NewAlbumServer', 'method': 'get_new_album_area', 'param': {} },
+      'toplist': { 'module': 'musicToplist.ToplistInfoServer', 'method': 'GetAll', 'param': {} },
+      'focus': { 'module': 'QQMusic.MusichallServer', 'method': 'GetFocus', 'param': {} }
+    }
+  })
 
-// jsonp接口
-export function getRecommend(params = {}) {
-  const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
-  const defaultParams = {
-    platform: 'h5',
-    vin: 0,
-    needNewCode: 1
-  }
-  const data = multiDeepClone({}, commonParams, defaultParams, params)
-  return apiHandler(() => {
-    // url是基础url, data是url参数, options是jsonp的回调参数
-    return jsonp({
-      url,
-      data,
-    })
+  return axios({
+    baseURL,
+    url,
+    params: data
+  }).then((res) => {
+    return res.data
   })
 }
 
 export function getDiscList(params = {}) {
-  const url = 'splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
+  const url = '/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
   const defaultParams = {
     platform: 'yqq',
     hostUin: 0,
@@ -70,12 +71,14 @@ export function getDiscList(params = {}) {
   }
   const data = multiDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
-    return instance({
+    return axios({
+      baseURL: '/api',
       method: 'get',
       url: url,
       params: data
     }).then((res) => {
-      return Promise.resolve(res.data)
+      const data = JSON.parse(res.data.replace(/^MusicJsonCallback\((.*)?\)/g, '$1'))
+      return data
     })
   })
 }
@@ -93,7 +96,7 @@ export function getSongList(params = {}) {
   }
   const data = multiDeepClone({}, commonParams, defaultParams, params)
   return apiHandler(() => {
-    return instance({
+    return axios({
       method: 'get',
       url: url,
       params: data

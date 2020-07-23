@@ -217,7 +217,6 @@ export default {
       } else {
         this.hasMore = true
       }
-      console.log(this.hasMore)
     },
     _genResult(data) {
       let ret = []
@@ -230,7 +229,7 @@ export default {
       return ret
     },
     _normalizeSongs(list) {
-      let ret = []
+      const ret = []
       list.forEach((musicData) => {
         if (musicData.songid && musicData.albummid && musicData.songmid) {
           musicData.strMediaMid = musicData.songmid
