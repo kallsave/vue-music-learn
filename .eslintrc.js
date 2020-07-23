@@ -24,9 +24,7 @@ module.exports = {
     'arrow-parens': 'off',
     'comma-dangle': 'off',
     'eol-last': 'off',
-    // allow async-await
     'generator-star-spacing': 'off',
-    // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'space-before-function-paren': ['error', {
       'anonymous': 'always',
@@ -35,6 +33,6 @@ module.exports = {
     }],
     'no-unused-vars': 'off',
     'no-useless-constructor': 'off',
-    "lines-between-class-members": 'off'
+    'lines-between-class-members': 'off'
   }
 }

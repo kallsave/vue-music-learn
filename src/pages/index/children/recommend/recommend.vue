@@ -15,7 +15,7 @@
           <vi-slide
             ref="slide"
             :init-page-index="0"
-            :data="recommends"
+            :data="recommendList"
             :options="slideOptions"
             :show-dots="true"
             :auto-play="true"
@@ -71,7 +71,7 @@ export default {
   ],
   data() {
     return {
-      recommends: [],
+      recommendList: [],
       discList: [],
       scrollOptions: {
         probeType: 3,
@@ -113,9 +113,10 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.$refs.scroll.autoPullDownRefresh()
-    })
+    // this.$nextTick(() => {
+    //   this.$refs.scroll.autoPullDownRefresh()
+    // })
+    this._getData()
   },
   methods: {
     ...mapMutations({
@@ -126,27 +127,29 @@ export default {
       this.$refs.scroll.refresh()
     },
     _getData() {
-      Promise.all([this._getRecommend(), this._getDiscList()]).then((res) => {})
+      Promise.race([this._getRecommend(), this._getDiscList()]).then((res) => {})
     },
     _getRecommend() {
       return getRecommend().then((res) => {
-        this.recommends = res.data.slider
+        this.recommendList = res.focus.data.content.map((item) => {
+          return {
+            linkUrl: item.jump_info.url,
+            picUrl: item.pic_info.url,
+          }
+        })
         this.$nextTick(() => {
           this.$refs.scroll.refresh()
         })
       })
     },
     _getDiscList() {
-      return new Promise((resolve, reject) => {
-        getDiscList().then((res) => {
-          window.setTimeout(() => {
-            this.discList = res.data.list
-            this.$nextTick(() => {
-              this.$refs.scroll.refresh()
-            })
-            resolve(res)
-          }, 1000)
-        })
+      return getDiscList().then((res) => {
+        window.setTimeout(() => {
+          this.discList = res.data.list
+          this.$nextTick(() => {
+            this.$refs.scroll.refresh()
+          })
+        }, 1000)
       })
     },
     loadImage() {

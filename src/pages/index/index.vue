@@ -92,7 +92,6 @@ export default {
         snap: {
           loop: false,
         },
-        test: 'outer'
       },
       sliderStyle: {
         transition: 'none'
